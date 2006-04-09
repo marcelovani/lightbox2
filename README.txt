@@ -13,7 +13,9 @@ This module enables the use of lightbox V2 which places images above your curren
 
 Installation
 ------------
-1. Copy lightbox folder to modules directory
+- Prefix: If using the CSV version, download all the files into a folder called lightbox2.
+
+1. Copy lightbox2 folder to modules directory
 2. At admin/modules enable the module
 3. Add rel="lightbox" attribute to any link tag to activate the lightbox. For example:
 
