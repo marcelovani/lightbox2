@@ -10,6 +10,8 @@ Licensed under the GNU/GPL License
 This module enables the use of lightbox V2 which places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths..
 
 ---------------------------------------------------------------------------------------------------------
+- Prefix: If using the CVS version, download all the files into a folder called lightbox2.
+
 
 Installation
 ------------
