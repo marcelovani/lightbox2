@@ -9,29 +9,17 @@
 */
 
 /**
- * Provides a link to the CSS stylesheet associated with this module.
- * Provides a link to the JS file associated with this module.
- */
-function lightbox2_html_head() {
-  $output = '<script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/prototype.js"></script><script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/scriptaculous.js"></script><script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/lightbox.js"></script>';
-  $output .= theme('stylesheet_import', drupal_get_path('module', 'lightbox2') .'/lightbox.css','screen');
-  return $output;
-}
-
-/*Puts the specified information into the drupal head.*/
-{
-drupal_set_html_head(lightbox2_html_head());
-  }
-  
-/**
  * Displays the information for this module.
  * Displays the help text for this module.
  *
  */
+/**
+ * Implementation of hook_help().
+ */
 function lightbox2_help($section) {
   switch ($section) {
     case 'admin/modules#description':
-      return t('Enables Lightbox V2 for Drupal 4.6.x');
+      return t('Enables Lightbox V2 for Drupal');
     case 'admin/help#lightbox2':
       return t('<h3>Overview</h3>
       <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers.</p>
@@ -47,4 +35,26 @@ function lightbox2_help($section) {
       break;
   }
 }
-?>
+
+/**
+ * Provides a link to the CSS stylesheet associated with this module.
+ * Provides a link to the JS file associated with this module.
+ */
+
+function lightbox2_add_files() {
+  // Load required js and css files.
+  $path = drupal_get_path('module', 'lightbox2');
+  theme_add_style($path . '/lightbox.css');
+  drupal_add_js($path . '/prototype.js');
+  drupal_add_js($path . '/scriptaculous.js');
+  drupal_add_js($path . '/lightbox.js');
+}
+
+
+/*Puts the specified information into the drupal head.*/
+{
+drupal_set_html_head(lightbox2_add_files());
+}
+  
+
+
