@@ -59,8 +59,8 @@
 //
 //	Configuration
 //
-var fileLoadingImage = "/modules/lightbox2/loading.gif";		
-var fileBottomNavCloseImage = "/modules/lightbox2/closelabel.gif";
+var fileLoadingImage = "modules/lightbox2/loading.gif";		
+var fileBottomNavCloseImage = "modules/lightbox2/closelabel.gif";
 
 var resizeSpeed = 7;	// controls the speed of the image resizing (1=slowest and 10=fastest)
 

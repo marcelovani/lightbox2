@@ -10,12 +10,11 @@ Licensed under the GNU/GPL License
 This module enables the use of lightbox V2 which places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths..
 
 ---------------------------------------------------------------------------------------------------------
-- Prefix: If using the CVS version, download all the files into a folder called lightbox2.
 
 
 Installation
 ------------
-1. Copy lightbox folder to modules directory
+1. Copy lightbox2 folder to modules directory
 2. At admin/modules enable the module
 3. Add rel="lightbox" attribute to any link tag to activate the lightbox. For example:
 
@@ -25,9 +24,9 @@ Optional: Use the title attribute if you want to show a caption.
 
 4. If you have a set of related images that you would like to group, follow step one but additionally include a group name between square brackets in the rel attribute. For example: 
 
-<a href="images/image-1.jpg" rel="lightbox[roadtrip]" title="my caption1">image #1</a>
-<a href="images/image-2.jpg" rel="lightbox[roadtrip]" title="my caption2">image #2</a>
-<a href="images/image-3.jpg" rel="lightbox[roadtrip]" title="my caption3">image #3</a>
+<a href="images/image-1.jpg" rel="lightbox[roadtrip]">image #1</a>
+<a href="images/image-2.jpg" rel="lightbox[roadtrip]">image #2</a>
+<a href="images/image-3.jpg" rel="lightbox[roadtrip]">image #3</a>
 
 No limits to the number of image sets per page or how many images are allowed in each set. Go nuts! 
 
