@@ -44,13 +44,13 @@
 #prevLink, #nextLink{
 	width: 49%;
 	height: 100%;
-	background: transparent url(modules/lightbox2/blank.gif) no-repeat; /* Trick IE into showing hover */
+	background: transparent url(blank.gif) no-repeat; /* Trick IE into showing hover */
 	display: block;
 	}
 #prevLink { left: 0; float: left;}
 #nextLink { right: 0; float: right;}
-#prevLink:hover, #prevLink:visited:hover { background: url(modules/lightbox2/prevlabel.gif) left 15% no-repeat; }
-#nextLink:hover, #nextLink:visited:hover { background: url(modules/lightbox2/nextlabel.gif) right 15% no-repeat; }
+#prevLink:hover, #prevLink:visited:hover { background: url(prevlabel.gif) left 15% no-repeat; }
+#nextLink:hover, #nextLink:visited:hover { background: url(nextlabel.gif) right 15% no-repeat; }
 
 
 #imageDataContainer{
