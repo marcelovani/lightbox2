@@ -1,6 +1,6 @@
 // -----------------------------------------------------------------------------------
 //
-//	Lightbox v2.01
+//	Lightbox v2.02
 //	by Lokesh Dhakar - http://www.huddletogether.com
 //	3/31/06
 //
@@ -59,8 +59,9 @@
 //
 //	Configuration
 //
-var fileLoadingImage = "modules/lightbox2/loading2.gif";		
-var fileBottomNavCloseImage = "modules/lightbox2/closelabel.gif";
+var fileLoadingImage = "/modules/lightbox2/loading.gif";
+var fileBottomNavCloseImage = "/modules/lightbox2/closelabel.gif";
+var fileBottomNavZoomImage = "/modules/lightbox2/expand.gif"; //Update to 2.02+
 
 var resizeSpeed = 7;	// controls the speed of the image resizing (1=slowest and 10=fastest)
 
@@ -249,11 +250,13 @@ Lightbox.prototype = {
 		var objPrevLink = document.createElement("a");
 		objPrevLink.setAttribute('id','prevLink');
 		objPrevLink.setAttribute('href','#');
+		objPrevLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
 		objHoverNav.appendChild(objPrevLink);
 		
 		var objNextLink = document.createElement("a");
 		objNextLink.setAttribute('id','nextLink');
 		objNextLink.setAttribute('href','#');
+		objNextLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
 		objHoverNav.appendChild(objNextLink);
 	
 		var objLoading = document.createElement("div");
@@ -294,6 +297,19 @@ Lightbox.prototype = {
 		var objBottomNav = document.createElement("div");
 		objBottomNav.setAttribute('id','bottomNav');
 		objImageData.appendChild(objBottomNav);
+		
+		//Start - Update to 2.02+
+		var objBottomNavZoomLink = document.createElement("a");
+		objBottomNavZoomLink.setAttribute('id','bottomNavZoom');
+		objBottomNavZoomLink.setAttribute('href','#');
+		objBottomNavZoomLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
+		objBottomNavZoomLink.onclick = function() { myLightbox.changeImage(activeImage,'TRUE'); return false; }
+		objBottomNav.appendChild(objBottomNavZoomLink);
+	
+		var objBottomNavZoomImage = document.createElement("img");
+		objBottomNavZoomImage.setAttribute('src', fileBottomNavZoomImage);
+		objBottomNavZoomLink.appendChild(objBottomNavZoomImage);
+		//End - Update to 2.02+
 	
 		var objBottomNavCloseLink = document.createElement("a");
 		objBottomNavCloseLink.setAttribute('id','bottomNavClose');
@@ -303,6 +319,7 @@ Lightbox.prototype = {
 	
 		var objBottomNavCloseImage = document.createElement("img");
 		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
+		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
 		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
 	},
 	
@@ -320,7 +337,7 @@ Lightbox.prototype = {
 		new Effect.Appear('overlay', { duration: 0.2, from: 0.0, to: 0.8 });
 
 		imageArray = [];
-		imageNum = 0;		
+		imageNum = 0;
 
 		if (!document.getElementsByTagName){ return; }
 		var anchors = document.getElementsByTagName('a');
@@ -346,7 +363,8 @@ Lightbox.prototype = {
 		// calculate top offset for the lightbox and display 
 		var arrayPageSize = getPageSize();
 		var arrayPageScroll = getPageScroll();
-		var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 15);
+		//var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 15); //REMed: Update to 2.02+
+		var lightboxTop = arrayPageScroll[1] + 4 //Update to 2.02+
 
 		Element.setTop('lightbox', lightboxTop);
 		Element.show('lightbox');
@@ -358,7 +376,7 @@ Lightbox.prototype = {
 	//	changeImage()
 	//	Hide most elements and preload image in preparation for resizing image container.
 	//
-	changeImage: function(imageNum) {	
+	changeImage: function(imageNum, zoom) {	
 		
 		activeImage = imageNum;	// update global var
 
@@ -374,12 +392,38 @@ Lightbox.prototype = {
 		imgPreloader = new Image();
 		
 		// once image is preloaded, resize image container
+		if (zoom=="TRUE"){
 		imgPreloader.onload=function(){
 			Element.setSrc('lightboxImage', imageArray[activeImage][0]);
+			photo.style.width = (imgPreloader.width)+ 'px';
 			myLightbox.resizeImageContainer(imgPreloader.width, imgPreloader.height);
 		}
+		Element.hide('bottomNavZoom')
+		}else{
+		imgPreloader.onload=function(){
+			Element.setSrc('lightboxImage', imageArray[activeImage][0]);
+			//resize code
+			var arrayPageSize = getPageSize();
+			var targ = { w:arrayPageSize[2] - (borderSize * 2), h:arrayPageSize[3] - (borderSize * 6) };
+		    var orig = { w:imgPreloader.width, h:imgPreloader.height };
+		    //// shrink image with the same aspect
+		    var ratio = 1.0;
+		    Element.hide('bottomNavZoom');
+		    if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w){
+			    ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
+			    Element.show('bottomNavZoom');
+			}
+		    var new_width  = Math.floor(orig.w * ratio);
+		    var new_height = Math.floor(orig.h * ratio);
+			photo = document.getElementById('lightboxImage');
+            		photo.style.width = (new_width)+ 'px';
+			
+			myLightbox.resizeImageContainer(new_width, new_height);	
+		}
+	}
 		imgPreloader.src = imageArray[activeImage][0];
 	},
+
 
 	//
 	//	resizeImageContainer()
@@ -490,29 +534,41 @@ Lightbox.prototype = {
 	//
 	//	keyboardAction()
 	//
+	// Update to 2.02+
 	keyboardAction: function(e) {
-		if (e == null) { // ie
+
+    if (e == null) { // ie
 			keycode = event.keyCode;
 		} else { // mozilla
 			keycode = e.which;
 		}
+		
+		// Instead of the above code, (starting with 'if ...') Roel replaced it with the code below, 
+    // but I see no use for it. Perhaps it has something to do with browsercompatibility, so I 
+    // left it here, so you can try whether it works better in case you run in to any problems.
+
+		//keyboardAction: function(e) {
+    //var keyCode =
+    //document.layers ? e.which :
+    //document.all ? event.keyCode :
+    //document.getElementById ? e.keyCode : 0;
+
 
 		key = String.fromCharCode(keycode).toLowerCase();
 		
 		if((key == 'x') || (key == 'o') || (key == 'c')){	// close lightbox
 			myLightbox.end();
-		} else if(key == 'p'){	// display previous image
+		} else if(key == 'p' || keycode == 37 || keycode == 8 || keycode == 100){	// display previous image
 			if(activeImage != 0){
 				myLightbox.disableKeyboardNav();
 				myLightbox.changeImage(activeImage - 1);
 			}
-		} else if(key == 'n'){	// display next image
+		} else if(key == 'n' || keycode == 39 || keycode == 32 || keycode == 102){	// display next image
 			if(activeImage != (imageArray.length - 1)){
 				myLightbox.disableKeyboardNav();
 				myLightbox.changeImage(activeImage + 1);
 			}
 		}
-
 
 	},
 
