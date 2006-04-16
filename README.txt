@@ -39,9 +39,3 @@ Information
 -------------
 
 This module will include the lightbox CSS and JS files in your Drupal Installation without the need to edit the theme.
-
-
-TODO
--------------
-
-Create a seperate module to introduce the scriptaculous library to Drupal. This will allow porting of other modules without conflict.
