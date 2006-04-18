@@ -1,0 +1,52 @@
+<?php
+/**
+ * Enables the use of lightbox V2 which places images above your current page, not within.
+ * This frees you from the constraints of the layout, particularly column widths.
+ * 
+ * This Module is for Drupal 4.6.x Only.
+ *
+ * Module by: Mark Ashmead
+ * Mailto: bugzie@gmail.com
+*/
+
+/**
+ * Provides a link to the CSS stylesheet associated with this module.
+ * Provides a link to the JS file associated with this module.
+ */
+function lightbox2_html_head() {
+  $output = '<script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/js/prototype.js"></script><script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/js/scriptaculous.js"></script><script type="text/javascript" src="'. drupal_get_path('module', 'lightbox2') .'/js/lightbox.js"></script>';
+  $output .= theme('stylesheet_import', drupal_get_path('module', 'lightbox2') .'/lightbox.css','screen');
+  return $output;
+}
+
+/*Puts the specified information into the drupal head.*/
+{
+drupal_set_html_head(lightbox2_html_head());
+  }
+  
+/**
+ * Displays the information for this module.
+ * Displays the help text for this module.
+ *
+ */
+function lightbox2_help($section) {
+  switch ($section) {
+    case 'admin/modules#description':
+      return t('Enables Lightbox V2 for Drupal 4.6.x');
+    case 'admin/help#lightbox2':
+      return t('<h3>Overview</h3>
+      <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers.</p>
+      <p align="justify">Places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths. Keeps users on the same page. Clicking to view an image and then having to click the back button to return to your site is bad for continuity (and no fun!).</p>
+      <p align="justify"><strong>Usage</strong></p>
+      <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
+      <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
+      <p>Optional: Use the title attribute if you want to show a caption.</p>
+	  <p>If you have a set of related images that you would like to group, follow step one but additionally include a group name between square brackets in the rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg" rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br>
+&lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image #2&lt;/a&gt;<br>
+&lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image #3&lt;/a&gt;<br></p>
+<p>No limits to the number of image sets per page or how many images are allowed in each set. Go nuts!</p>');
+      break;
+  }
+}
+?>
+
