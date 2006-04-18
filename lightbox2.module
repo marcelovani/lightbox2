@@ -3,11 +3,16 @@
  * Enables the use of lightbox V2 which places images above your current page, not within.
  * This frees you from the constraints of the layout, particularly column widths.
  * 
- * This Module is for Drupal 4.7.x Only
+ * This module is for Drupal 4.7.x only.
  *
  * Module by: Mark Ashmead
  * Mailto: bugzie@gmail.com
 */
+
+/**
+ *	GLOBAL VARIABLES
+ */
+$LIGHTBOX2_INCLUDE = false;
 
 /**
  * Displays the information for this module.
@@ -38,6 +43,68 @@ function lightbox2_help($section) {
 }
 
 /**
+ * Implementation of hook_nodeapi().
+ */
+function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {	
+	global $LIGHTBOX2_INCLUDE;
+	
+	if ($op == "view" && !$LIGHTBOX2_INCLUDE) {
+		lightbox2_add_files();
+		$LIGHTBOX2_INCLUDE = true;
+	}
+}
+
+/**
+ * Implementation of hook_settings().
+ */
+function lightbox2_settings() {	
+	$form["image_node_options"] = array(
+		"#type" => "fieldset",
+		"#title" => t("Image Node formatting options")
+	);
+	// Add Checkbox for Image Node
+	$form["image_node_options"]["lightbox2_image_node"]  = array(
+		"#type" => "checkbox",
+		"#title" => t("Enable for Image Nodes"),
+		"#default_value" => variable_get("lightbox2_image_node", true),
+		"#return_value" => true
+	);
+	// Add Checkbox for Gallery2 Image Filter
+	$form["image_node_options"]["lightbox2G2_image_node"]  = array(
+		"#type" => "checkbox",
+		"#title" => t("Enable Gallery 2 Filter"),
+		"#default_value" => variable_get("lightbox2G2_image_node", true),
+		"#return_value" => true
+	);
+	
+	return $form;
+}
+/**
+ *Implementation of hook_filter().
+ */
+function lightbox2_filter_tips($delta, $format, $long = false) {
+    return t('Image links from G2 are formatted for use with Lightbox.V2');
+}
+// Check to see if the G2 Filter is Enabled in Settings
+if (variable_get("lightbox2G2_image_node", true)) {
+function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
+  switch ($op) {
+    case 'list':
+      return array(0 => t('Lightbox filter'));
+    case 'description':
+      return t('Turns g2_filter links into Lighbox.V2 appropriate links');
+    case 'process':
+        $text = ' ' . $text . ' ';
+        $text = preg_replace('/ShowItem/','DownloadItem',$text);
+        $text = preg_replace('/target=""/','rel="lightbox"',$text);
+        $text = substr($text, 1, -1);
+    return $text;
+    default:
+      return $text;
+  }
+ }
+}
+/**
  * Provides a link to the CSS stylesheet associated with this module.
  * Provides a link to the JS file associated with this module.
  */
@@ -45,14 +112,12 @@ function lightbox2_help($section) {
 function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
-  theme_add_style($path . '/lightbox.css');
+  theme("add_style", $path . '/lightbox.css');
   drupal_add_js($path . '/js/prototype.js');
+  // Check to see if the Image Node Option is Enabled in Settings
+  if (variable_get("lightbox2_image_node", true)) {
+  	drupal_add_js(drupal_get_path("module", "lightbox2"). "/js/image_nodes.js");
+  }
   drupal_add_js($path . '/js/scriptaculous.js');
   drupal_add_js($path . '/js/lightbox.js');
-}
-
-
-/*Puts the specified information into the drupal head.*/
-{
-drupal_set_html_head(lightbox2_add_files());
 }
