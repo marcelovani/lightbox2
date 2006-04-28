@@ -7,7 +7,8 @@
 //	For more information on this script, visit:
 //	http://huddletogether.com/projects/lightbox2/
 //
-//	Licensed under the Creative Commons Attribution 2.5 License - http://creativecommons.org/licenses/by/2.5/
+//	Permission has been granted to Mark Ashmead to distribute this file via Drupal.org
+//	Mailto: bugzie@gmail.com
 //	
 //	Credit also due to those who have helped, inspired, and made their code available to the public.
 //	Including: Scott Upton(uptonic.com), Peter-Paul Koch(quirksmode.org), Thomas Fuchs(mir.aculo.us), and others.
@@ -59,9 +60,9 @@
 //
 //	Configuration
 //
-var fileLoadingImage = "modules/lightbox2/images/loading.gif";
-var fileBottomNavCloseImage = "modules/lightbox2/images/closelabel.gif";
-var fileBottomNavZoomImage = "modules/lightbox2/images/expand.gif"; //Update to 2.02+
+var fileLoadingImage = "/modules/lightbox2/images/loading.gif";
+var fileBottomNavCloseImage = "/modules/lightbox2/images/closelabel.gif";
+var fileBottomNavZoomImage = "/modules/lightbox2/images/expand.gif"; //Update to 2.02+
 
 var resizeSpeed = 7;	// controls the speed of the image resizing (1=slowest and 10=fastest)
 
