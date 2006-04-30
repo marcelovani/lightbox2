@@ -7,7 +7,10 @@
 //	For more information on this script, visit:
 //	http://huddletogether.com/projects/lightbox2/
 //
+//  Additional elements added by Mark Ashmead.
+//
 //	Permission has been granted to Mark Ashmead to distribute this file via Drupal.org
+//  Under GPL license.
 //	Mailto: bugzie@gmail.com
 //	
 //	Credit also due to those who have helped, inspired, and made their code available to the public.
