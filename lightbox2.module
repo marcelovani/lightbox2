@@ -116,6 +116,8 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
   theme("add_style", $path . '/lightbox.css');
+  // Check to see if Libraries are installed Correctly.
+  if (file_exists($path .'/js/prototype.js')) {
   drupal_add_js($path . '/js/prototype.js');
   // Check to see if the Image Node Option is Enabled in Settings
   if (variable_get("lightbox2_image_node", true)) {
@@ -123,4 +125,8 @@ function lightbox2_add_files() {
   }
   drupal_add_js($path . '/js/scriptaculous.js');
   drupal_add_js($path . '/js/lightbox.js');
+  }
+  else {
+      drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, rename directory to "scriptaculous" and place in Drupal\'s modules/spajax/ directory.'), 'error');
+    }
 }
