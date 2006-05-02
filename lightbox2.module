@@ -40,7 +40,19 @@ function lightbox2_help($section) {
 	  <p>If you have a set of related images that you would like to group, follow step one but additionally include a group name between square brackets in the rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg" rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br>
 &lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image #2&lt;/a&gt;<br>
 &lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image #3&lt;/a&gt;<br></p>
-<p>No limits to the number of image sets per page or how many images are allowed in each set. Go nuts!</p>');
+<p>No limits to the number of image sets per page or how many images are allowed in each set. Go nuts!</p>
+	<p align="justify"><strong>Known Issues</strong></p>
+	<p>Image Issues - An issue has been identified with the loading of certain images when using the module. (close.gif, prevlabel.gif, nextlabel.gif)</p>
+    <p>If your installation of Drupal exists in the root of your domain, i.e., www.yourinstallation.com then you shouldn\'t have any problems. The issue only occurs when Drupal is installed in a subdirectory, i.e., www.yourinstallation.com/subdirectory.</p>
+    <p>If this is the case, you will need to edit the lightbox.js on lines 63, 64 and 65 to reflect the fully qualified URL of your images. In the above case, this would be as follows;</p>
+    <p>var fileLoadingImage = &quot;/modules/lightbox2/images/loading.gif&quot;;<br>
+      var fileBottomNavCloseImage = &quot;/modules/lightbox2/images/closelabel.gif&quot;;<br>
+      var fileBottomNavZoomImage = &quot;/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p>
+    <p>should be changed to</p>
+    <p>var fileLoadingImage = &quot;/subdirectory/modules/lightbox2/images/loading.gif&quot;;<br>
+      var fileBottomNavCloseImage = &quot;/subdirectory/modules/lightbox2/images/closelabel.gif&quot;;<br>
+      var fileBottomNavZoomImage = &quot;/subdirectory/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p>
+    <p>There may be other methods that can be used to acheive this, but this should be the simplest for those with little or no programming experience.</p>');
       break;
   }
 }
@@ -127,6 +139,6 @@ function lightbox2_add_files() {
   drupal_add_js($path . '/js/lightbox.js');
   }
   else {
-      drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, rename directory to "scriptaculous" and place in Drupal\'s modules/spajax/ directory.'), 'error');
+      drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, follow the instructions in the Lightbox V.2 README.TXT file to copy the files to their correct locations.'), 'error');
     }
 }
