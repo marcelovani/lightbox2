@@ -1,4 +1,5 @@
 <?php
+// $Id$
 /**
  * Enables the use of lightbox V2 which places images above your current page, not within.
  * This frees you from the constraints of the layout, particularly column widths.
@@ -140,22 +141,26 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
 function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
+	// Check to see if Lightbox2 Plus is enabled.
 	if (variable_get("lightbox2_plus", true)) {
   	theme("add_style", $path . '/lightbox.css');
-  		// Check to see if Libraries are installed Correctly.
+  		// Check to see if Libraries are installed correctly.
   		if (file_exists($path .'/js/prototype.js')) {
-			drupal_add_js($path . '/js/prototype.js');
- 	 		// Check to see if the Image Node Option is Enabled in Settings
+		drupal_add_js($path . '/js/prototype.js');
+ 	 		// Check to see if the Image Node Option is enabled in settings.
  	 		if (variable_get("lightbox2_image_node", true)) {
   				drupal_add_js($path . "/js/image_nodes.js");
  	 		}
-  			drupal_add_js($path . '/js/scriptaculous.js');
-  			drupal_add_js($path . '/js/lightbox.js');
+  		drupal_add_js($path . '/js/scriptaculous.js');
+  		drupal_add_js($path . '/js/lightbox.js');
+		drupal_add_js($path . '/js/lightbox_docs.js');
   		}
- 		else {
+ 		// Display warning message if Libraries aren't installed correctly.
+		else {
       	drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, follow the instructions in the Lightbox V.2 README.TXT file to copy the files to their correct locations.'), 'error');
     	}
 	}
+	// Load Lightbox Lite if Plus is not enabled.
  	else {
  	theme("add_style", $path . '/lightbox_lite.css');
  	drupal_add_js($path . '/js/lightbox_lite.js');
