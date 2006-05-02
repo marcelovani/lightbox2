@@ -65,7 +65,7 @@ No limits to the number of image sets per page or how many images are allowed in
 Information
 ------------
 
-This module will include the lightbox CSS and JS files in your Drupal Installation without the need to edit the theme.
+This module will include the lightbox CSS and JS files in your Drupal Installation without the need to edit the theme. The module comes with a Lightbox2 Lite option which does not use the Scriptaculous/Prototype libraries; it is therefore less likely to conflict with anything else. 
 
 Known Issues:
 -------------
@@ -86,5 +86,5 @@ var fileLoadingImage = "/subdirectory/modules/lightbox2/images/loading.gif";
 var fileBottomNavCloseImage = "/subdirectory/modules/lightbox2/images/closelabel.gif";
 var fileBottomNavZoomImage = "/subdirectory/modules/lightbox2/images/expand.gif"; //Update to 2.02+
 
-There may be other methods that can be used to acheive this, but this should be the simplest for those with little or no programming experience.
+There may be other methods that can be used to acheive this, but this should be the simplest for those with little or no programming experience. If you choose to use Lightbox2 Lite option, then you will no to edit the lightbox_lite.js file in a similar manner.
 
