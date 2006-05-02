@@ -153,7 +153,8 @@ function lightbox2_add_files() {
  	 		}
   		drupal_add_js($path . '/js/scriptaculous.js');
   		drupal_add_js($path . '/js/lightbox.js');
-		drupal_add_js($path . '/js/lightbox_docs.js');
+		// Future support for non-images will go here.
+		//drupal_add_js($path . '/js/lightbox_docs.js');
   		}
  		// Display warning message if Libraries aren't installed correctly.
 		else {
