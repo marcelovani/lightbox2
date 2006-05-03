@@ -34,7 +34,7 @@ function lightbox2_help($section) {
       return t('<h3>Overview</h3>
       <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers.</p>
       <p align="justify">Places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths. Keeps users on the same page. Clicking to view an image and then having to click the back button to return to your site is bad for continuity (and no fun!).</p>
-      <p align="justify"><strong>Usage</strong></p>
+      <p align="justify"><h3>Usage</h3></p>
       <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
       <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
       <p>Optional: Use the title attribute if you want to show a caption.</p>
@@ -42,8 +42,8 @@ function lightbox2_help($section) {
 &lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image #2&lt;/a&gt;<br>
 &lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image #3&lt;/a&gt;<br></p>
 <p>No limits to the number of image sets per page or how many images are allowed in each set. Go nuts!</p>
-	<p align="justify"><strong>Known Issues</strong></p>
-	<p>Image Issues - An issue has been identified with the loading of certain images when using the module. (close.gif, prevlabel.gif, nextlabel.gif)</p>
+	<p align="justify"><h3>Known Issues</h3></p>
+	<p>Image Issues - An issue has been identified with the loading of certain images when using the module. (closelabel.gif, expand.gif, loading.gif)</p>
     <p>If your installation of Drupal exists in the root of your domain, i.e., www.yourinstallation.com then you shouldn\'t have any problems. The issue only occurs when Drupal is installed in a subdirectory, i.e., www.yourinstallation.com/subdirectory.</p>
     <p>If this is the case, you will need to edit the lightbox.js on lines 63, 64 and 65 to reflect the fully qualified URL of your images. In the above case, this would be as follows;</p>
     <p>var fileLoadingImage = &quot;/modules/lightbox2/images/loading.gif&quot;;<br>
@@ -53,7 +53,7 @@ function lightbox2_help($section) {
     <p>var fileLoadingImage = &quot;/subdirectory/modules/lightbox2/images/loading.gif&quot;;<br>
       var fileBottomNavCloseImage = &quot;/subdirectory/modules/lightbox2/images/closelabel.gif&quot;;<br>
       var fileBottomNavZoomImage = &quot;/subdirectory/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p>
-    <p>There may be other methods that can be used to acheive this, but this should be the simplest for those with little or no programming experience.</p>');
+    <p>There may be other methods that can be used to achieve this, but this should be the simplest for those with little or no programming experience.</p>');
       break;
   }
 }
@@ -77,33 +77,44 @@ function lightbox2_settings() {
 	// Define Lightbox2 Plus form.
 	$form["lightbox2_plus_options"] = array(
 		"#type" => "fieldset",
-		"#title" => t("Lightbox2 Plus")
+		"#title" => t("Lightbox2 Plus"),
 	);
-	// Add Checkbox for Image Node
+	// Add Checkbox for Lightbox2 Plus.
 	$form["lightbox2_plus_options"]["lightbox2_plus"]  = array(
 		"#type" => "checkbox",
 		"#title" => t("Use Lightbox2 Plus"),
+		"#description" => t("Un-checking this box will enable Lightbox2 Lite."),
 		"#default_value" => variable_get("lightbox2_plus", true),
-		"#return_value" => true
+		"#return_value" => true,		
 	);
 	// Define Image Node Options form.
 	$form["image_node_options"] = array(
 		"#type" => "fieldset",
-		"#title" => t("Lightbox2 Plus Image Node options")
+		"#title" => t("Lightbox2 Plus Image Node options"),
 	);
-	// Add Checkbox for Image Node
+	// Add Checkbox for Image Node.
 	$form["image_node_options"]["lightbox2_image_node"]  = array(
 		"#type" => "checkbox",
 		"#title" => t("Enable for Image Nodes"),
+		"#description" => t("Checking this box will enable automatic URL formatting for Image Nodes."),
 		"#default_value" => variable_get("lightbox2_image_node", true),
-		"#return_value" => true
+		"#return_value" => true,
 	);
-	// Add Checkbox for Gallery2 Image Filter
+	// Add Checkbox for Image Node Grouping.
+	$form["image_node_options"]["lightbox2_image_group"]  = array(
+		"#type" => "checkbox",
+		"#title" => t("Enable Grouping"),
+		"#description" => t("Checking this box will enable automatic grouping of Image Nodes on a page."),
+		"#default_value" => variable_get("lightbox2_image_group", true),
+		"#return_value" => true,
+	);
+	// Add Checkbox for Gallery2 Image Filter.
 	$form["image_node_options"]["lightbox2G2_filter"]  = array(
 		"#type" => "checkbox",
 		"#title" => t("Enable Gallery 2 Filter"),
+		"#description" => t("Checking this box will enable the Gallery 2 filter."),
 		"#default_value" => variable_get("lightbox2G2_filter", true),
-		"#return_value" => true
+		"#return_value" => true,
 	);
 	
 	return $form;
@@ -148,8 +159,11 @@ function lightbox2_add_files() {
   		if (file_exists($path .'/js/prototype.js')) {
 		drupal_add_js($path . '/js/prototype.js');
  	 		// Check to see if the Image Node Option is enabled in settings.
- 	 		if (variable_get("lightbox2_image_node", true)) {
+ 	 		if (variable_get("lightbox2_image_node", true) && variable_get("lightbox2_image_group", true)) {
   				drupal_add_js($path . "/js/image_nodes.js");
+ 	 		}
+			elseif (variable_get("lightbox2_image_node", true)) {
+				drupal_add_js($path . "/js/image_nodes_nogroup.js");
  	 		}
   		drupal_add_js($path . '/js/scriptaculous.js');
   		drupal_add_js($path . '/js/lightbox.js');
