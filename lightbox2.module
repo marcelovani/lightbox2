@@ -32,7 +32,7 @@ function lightbox2_help($section) {
       return t('Enables Lightbox V2 for Drupal');
     case 'admin/help#lightbox2':
       return t('<h3>Overview</h3>
-      <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers.</p>
+      <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers. The module comes with a Lightbox2 Lite option which does not use the Scriptaculous/Prototype libraries; it is therefore less likely to conflict with anything else.</p>
       <p align="justify">Places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths. Keeps users on the same page. Clicking to view an image and then having to click the back button to return to your site is bad for continuity (and no fun!).</p>
       <p align="justify"><h3>Usage</h3></p>
       <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
@@ -53,7 +53,7 @@ function lightbox2_help($section) {
     <p>var fileLoadingImage = &quot;/subdirectory/modules/lightbox2/images/loading.gif&quot;;<br>
       var fileBottomNavCloseImage = &quot;/subdirectory/modules/lightbox2/images/closelabel.gif&quot;;<br>
       var fileBottomNavZoomImage = &quot;/subdirectory/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p>
-    <p>There may be other methods that can be used to achieve this, but this should be the simplest for those with little or no programming experience.</p>');
+    <p>There may be other methods that can be used to achieve this, but this should be the simplest for those with little or no programming experience. If you choose to use Lightbox2 Lite option, then you will need to edit the lightbox_lite.js file in a similar manner on lines 39 and 40.</p>');
       break;
   }
 }
@@ -65,6 +65,10 @@ function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
 	global $LIGHTBOX2_INCLUDE;
 	
 	if ($op == "view" && !$LIGHTBOX2_INCLUDE) {
+		lightbox2_add_files();
+		$LIGHTBOX2_INCLUDE = true;
+	}
+	elseif ($node->type == "image" && !$LIGHTBOX2_INCLUDE) {
 		lightbox2_add_files();
 		$LIGHTBOX2_INCLUDE = true;
 	}
@@ -104,7 +108,7 @@ function lightbox2_settings() {
 	$form["image_node_options"]["lightbox2_image_group"]  = array(
 		"#type" => "checkbox",
 		"#title" => t("Enable Grouping"),
-		"#description" => t("Checking this box will enable automatic grouping of Image Nodes on a page."),
+		"#description" => t("Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries."),
 		"#default_value" => variable_get("lightbox2_image_group", true),
 		"#return_value" => true,
 	);
