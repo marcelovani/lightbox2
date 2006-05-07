@@ -82,6 +82,8 @@ function lightbox2_settings() {
 	$form["lightbox2_plus_options"] = array(
 		"#type" => "fieldset",
 		"#title" => t("Lightbox2 Plus"),
+		"#collapsible" => TRUE, 
+    		"#collapsed" => FALSE,
 	);
 	// Add Checkbox for Lightbox2 Plus.
 	$form["lightbox2_plus_options"]["lightbox2_plus"]  = array(
@@ -95,6 +97,8 @@ function lightbox2_settings() {
 	$form["image_node_options"] = array(
 		"#type" => "fieldset",
 		"#title" => t("Lightbox2 Plus Image Node options"),
+		"#collapsible" => TRUE, 
+    		"#collapsed" => TRUE,
 	);
 	// Add Checkbox for Image Node.
 	$form["image_node_options"]["lightbox2_image_node"]  = array(
