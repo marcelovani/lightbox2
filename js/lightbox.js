@@ -302,6 +302,19 @@ Lightbox.prototype = {
 		objBottomNav.setAttribute('id','bottomNav');
 		objImageData.appendChild(objBottomNav);
 		
+		//Start Close button Placement
+		var objBottomNavCloseLink = document.createElement("a");
+		objBottomNavCloseLink.setAttribute('id','bottomNavClose');
+		objBottomNavCloseLink.setAttribute('href','#');
+		objBottomNavCloseLink.onclick = function() { myLightbox.end(); return false; }
+		objBottomNav.appendChild(objBottomNavCloseLink);
+	
+		var objBottomNavCloseImage = document.createElement("img");
+		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
+		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
+		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
+		//End Close button Placement
+		
 		//Start - Update to 2.02+
 		var objBottomNavZoomLink = document.createElement("a");
 		objBottomNavZoomLink.setAttribute('id','bottomNavZoom');
@@ -314,17 +327,6 @@ Lightbox.prototype = {
 		objBottomNavZoomImage.setAttribute('src', fileBottomNavZoomImage);
 		objBottomNavZoomLink.appendChild(objBottomNavZoomImage);
 		//End - Update to 2.02+
-	
-		var objBottomNavCloseLink = document.createElement("a");
-		objBottomNavCloseLink.setAttribute('id','bottomNavClose');
-		objBottomNavCloseLink.setAttribute('href','#');
-		objBottomNavCloseLink.onclick = function() { myLightbox.end(); return false; }
-		objBottomNav.appendChild(objBottomNavCloseLink);
-	
-		var objBottomNavCloseImage = document.createElement("img");
-		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
-		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
-		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
 	},
 	
 	//
