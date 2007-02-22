@@ -273,9 +273,9 @@ Lightbox.prototype = {
 		objLoadingLink.onclick = function() { myLightbox.end(); return false; }
 		objLoading.appendChild(objLoadingLink);
 	
-		var objLoadingImage = document.createElement("img");
-		objLoadingImage.setAttribute('src', fileLoadingImage);
-		objLoadingLink.appendChild(objLoadingImage);
+		//var objLoadingImage = document.createElement("img");
+//		objLoadingImage.setAttribute('src', fileLoadingImage);
+//		objLoadingLink.appendChild(objLoadingImage);
 
 		var objImageDataContainer = document.createElement("div");
 		objImageDataContainer.setAttribute('id','imageDataContainer');
@@ -309,10 +309,10 @@ Lightbox.prototype = {
 		objBottomNavCloseLink.onclick = function() { myLightbox.end(); return false; }
 		objBottomNav.appendChild(objBottomNavCloseLink);
 	
-		var objBottomNavCloseImage = document.createElement("img");
-		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
-		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
-		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
+		//var objBottomNavCloseImage = document.createElement("img");
+//		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
+//		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
+//		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
 		//End Close button Placement
 		
 		//Start - Update to 2.02+
