@@ -173,7 +173,7 @@ function lightbox2_add_files() {
 			elseif (variable_get("lightbox2_image_node", true)) {
 				drupal_add_js($path . "/js/image_nodes_nogroup.js");
  	 		}
-  		drupal_add_js($path . '/js/scriptaculous.js');
+  		drupal_add_js($path . '/js/scriptaculous.js?load=effects');
   		drupal_add_js($path . '/js/lightbox.js');
 		// Future support for non-images will go here.
 		//drupal_add_js($path . '/js/lightbox_docs.js');
