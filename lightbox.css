@@ -1,13 +1,12 @@
 #lightbox{
-	position: relative;
-	top: 10px;
+	position: absolute;
+	top: 40px;
 	left: 0;
 	width: 100%;
 	z-index: 100;
 	text-align: center;
-	line-height:0;
 	}
-	
+
 #lightbox a img{ border: none; }
 
 #outerImageContainer{
@@ -66,8 +65,9 @@
 	}
 #imageData #imageDetails{ width: 70%; float: left; text-align: left; }	
 #imageData #caption{ font-weight: bold;	}
-#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}			
-#imageData #bottomNavClose{ width: 66px; float: right;  padding-top: 0.7em;	}	
+#imageData #numberDisplay{ display: block; clear: left; padding-bottom: 1.0em;	}
+#imageData #bottomNavClose{ width: 66px; float: right;  padding-top: 0.7em; }	
+
 		
 #overlay{
 	position: absolute;
@@ -92,7 +92,7 @@
 	}
 
 * html>body .clearfix {
-	display: inline-block; 
+	display: inline; 
 	width: 100%;
 	}
 
@@ -107,11 +107,22 @@ display:block;
 background: url(images/closelabel.gif) no-repeat;
 width:66px;
 height:22px;
+position: relative;
+top: 35px;
 }
+
 #loadingLink {
 display:block;
 background: url(images/loading.gif) no-repeat;
 width:32px;
 height:32px;
 }
-	
+#bottomNavZoom {
+display:block;
+background: url(images/expand.gif) no-repeat;
+width:34px;
+height:34px;
+position:relative;
+float:right;
+left: 66px;
+}
