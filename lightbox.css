@@ -71,6 +71,8 @@
 #imageData #caption { font-weight: bold;	}
 #imageData #numberDisplay { display: block; clear: left; padding-bottom: 1.0em;}
 #imageData #bottomNavClose { width: 66px; float: right;  padding-top: 0.7em; }	
+#imageData #bottomNav { height: 57px; }
+
 
 		
 #overlay {
