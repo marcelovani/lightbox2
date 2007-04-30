@@ -4,6 +4,7 @@ LIGHTBOX V2 MODULE
 Drupal Lightbox V2 Module:
 By: Mark Ashmead
 Mailto: bugzie@gmail.com
+Co-maintainer: Stella Power (http://drupal.org/user/66894)
 
 Licensed under the GNU/GPL License
 
