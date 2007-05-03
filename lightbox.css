@@ -16,6 +16,7 @@
  	width: 250px;
  	height: 250px;
  	margin: 0 auto;
+		min-width: 240px;
 }
 
 #imageContainer {
@@ -60,6 +61,7 @@
  	background-color: #fff;
  	margin: 0 auto;
  	line-height: 1.4em;
+		min-width: 240px;
 }
 
 #imageData {
