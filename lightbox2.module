@@ -112,6 +112,16 @@ function lightbox2_settings() {
   		"#return_value" => true,
  	);
 
+ 	// Add Checkbox for disabling lightbox for gallery lists
+ 	$form["image_node_options"]["lightbox2_disable_nested_galleries"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Disable Lightbox for Gallery Lists"),
+  		"#description" => t("Checking this box will disable the lightbox for images in gallery lists, but will still use the lightbox when viewing gallery images."),
+  		"#default_value" => variable_get("lightbox2_disable_nested_galleries", true),
+  		"#return_value" => true,
+ 	);
+
+
  	// Add Checkbox for Gallery2 Image Filter.
  	$form["image_node_options"]["lightbox2G2_filter"]  = array(
   		"#type" => "checkbox",
@@ -169,11 +179,23 @@ function lightbox2_add_files() {
     		drupal_add_js($path .'/js/prototype.js');
 
  	  		// Check to see if the Image Node Option is enabled in settings.
- 	 	 	if (variable_get("lightbox2_image_node", true) && variable_get("lightbox2_image_group", true)) {
-  		  		drupal_add_js($path ."/js/image_nodes.js");
- 	 	 	}
-	   		elseif (variable_get("lightbox2_image_node", true)) {
-	    			drupal_add_js($path ."/js/image_nodes_nogroup.js");
+ 	 	 	if (variable_get("lightbox2_image_node", true)) {
+								if (variable_get("lightbox2_image_group", true)) {
+										if (variable_get("lightbox2_disable_nested_galleries", true)) {
+												drupal_add_js($path ."/js/image_nodes_galleries.js");
+										}
+										else {
+												drupal_add_js($path ."/js/image_nodes.js");
+										}
+								}
+								else {
+										if (variable_get("lightbox2_disable_nested_galleries", true)) {
+												drupal_add_js($path ."/js/image_nodes_nogroup_galleries.js");
+										}
+										else {
+												drupal_add_js($path ."/js/image_nodes_nogroup.js");
+										}
+								}
   	 		}
     		drupal_add_js($path .'/js/scriptaculous.js');
     		drupal_add_js($path .'/js/lightbox.js');
