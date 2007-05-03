@@ -4,6 +4,7 @@ LIGHTBOX V2 MODULE
 Drupal Lightbox V2 Module:
 By: Mark Ashmead
 Mailto: bugzie@gmail.com
+Co-maintainer: Stella Power (http://drupal.org/user/66894)
 
 Licensed under the GNU/GPL License
 
@@ -65,26 +66,7 @@ No limits to the number of image sets per page or how many images are allowed in
 Information
 ------------
 
-This module will include the lightbox CSS and JS files in your Drupal Installation without the need to edit the theme.
-
-Known Issues:
--------------
-
-Image Issues - An issue has been identified with the loading of certain images when using the module. (close.gif, prev.gif, next.gif)
-
-If your installation of Drupal exists in the root of your domain, i.e., www.yourinstallation.com then you shouldn't have any problems. The issue only occurs when Drupal is installed in a subdirectory, i.e., www.yourinstallation.com/subdirectory.
-
-If this is the case, you will need to edit the lightbox.js on lines 63, 64 and 65 to reflect the fully qualified URL of your images. In the above case, this would be as follows;
-
-var fileLoadingImage = "/modules/lightbox2/images/loading.gif";
-var fileBottomNavCloseImage = "/modules/lightbox2/images/closelabel.gif";
-var fileBottomNavZoomImage = "/modules/lightbox2/images/expand.gif"; //Update to 2.02+
-
-should be changed to
-
-var fileLoadingImage = "/subdirectory/modules/lightbox2/images/loading.gif";
-var fileBottomNavCloseImage = "/subdirectory/modules/lightbox2/images/closelabel.gif";
-var fileBottomNavZoomImage = "/subdirectory/modules/lightbox2/images/expand.gif"; //Update to 2.02+
-
-There may be other methods that can be used to acheive this, but this should be the simplest for those with little or no programming experience.
-
+This module will include the lightbox CSS and JS files in your Drupal
+Installation without the need to edit the theme.   The module comes with a
+Lightbox2 Lite option which does not use the Scriptaculous/Prototype libraries;
+it is therefore less likely to conflict with anything else.
