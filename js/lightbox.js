@@ -63,9 +63,9 @@
 //
 //	Configuration
 //
-var fileLoadingImage = "/modules/lightbox2/images/loading.gif";
-var fileBottomNavCloseImage = "/modules/lightbox2/images/closelabel.gif";
-var fileBottomNavZoomImage = "/modules/lightbox2/images/expand.gif"; //Update to 2.02+
+//var fileLoadingImage = "/sites/all/modules/lightbox2/images/loading.gif";
+//var fileBottomNavCloseImage = "/sites/all/modules/lightbox2/images/closelabel.gif";
+//var fileBottomNavZoomImage = "/sites/all/modules/lightbox2/images/expand.gif"; //Update to 2.02+
 
 var resizeSpeed = 7;	// controls the speed of the image resizing (1=slowest and 10=fastest)
 
@@ -91,31 +91,31 @@ resizeDuration = (11 - resizeSpeed) * 0.15;
 //
 Object.extend(Element, {
 	getWidth: function(element) {
-	   	element = $(element);
+	   	element = $ID(element);
 	   	return element.offsetWidth; 
 	},
 	setWidth: function(element,w) {
-	   	element = $(element);
+	   	element = $ID(element);
     	element.style.width = w +"px";
 	},
 	setHeight: function(element,h) {
-   		element = $(element);
+   		element = $ID(element);
     	element.style.height = h +"px";
 	},
 	setTop: function(element,t) {
-	   	element = $(element);
+	   	element = $ID(element);
     	element.style.top = t +"px";
 	},
 	setSrc: function(element,src) {
-    	element = $(element);
+    	element = $ID(element);
     	element.src = src; 
 	},
 	setHref: function(element,href) {
-    	element = $(element);
+    	element = $ID(element);
     	element.href = href; 
 	},
 	setInnerHTML: function(element,content) {
-		element = $(element);
+		element = $ID(element);
 		element.innerHTML = content;
 	}
 });
@@ -274,8 +274,8 @@ Lightbox.prototype = {
 		objLoading.appendChild(objLoadingLink);
 	
 		//var objLoadingImage = document.createElement("img");
-//		objLoadingImage.setAttribute('src', fileLoadingImage);
-//		objLoadingLink.appendChild(objLoadingImage);
+//  objLoadingImage.setAttribute('src', fileLoadingImage);
+//  objLoadingLink.appendChild(objLoadingImage);
 
 		var objImageDataContainer = document.createElement("div");
 		objImageDataContainer.setAttribute('id','imageDataContainer');
@@ -310,9 +310,9 @@ Lightbox.prototype = {
 		objBottomNav.appendChild(objBottomNavCloseLink);
 	
 		//var objBottomNavCloseImage = document.createElement("img");
-//		objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
-//		objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
-//		objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
+		//objBottomNavCloseImage.setAttribute('src', fileBottomNavCloseImage);
+		//objBottomNavCloseLink.setAttribute('onFocus','if(this.blur)this.blur()'); //Update to 2.02+
+		//objBottomNavCloseLink.appendChild(objBottomNavCloseImage);
 		//End Close button Placement
 		
 		//Start - Update to 2.02+
@@ -323,9 +323,9 @@ Lightbox.prototype = {
 		objBottomNavZoomLink.onclick = function() { myLightbox.changeImage(activeImage,'TRUE'); return false; }
 		objBottomNav.appendChild(objBottomNavZoomLink);
 	
-		var objBottomNavZoomImage = document.createElement("img");
-		objBottomNavZoomImage.setAttribute('src', fileBottomNavZoomImage);
-		objBottomNavZoomLink.appendChild(objBottomNavZoomImage);
+		//var objBottomNavZoomImage = document.createElement("img");
+		//objBottomNavZoomImage.setAttribute('src', fileBottomNavZoomImage);
+		//objBottomNavZoomLink.appendChild(objBottomNavZoomImage);
 		//End - Update to 2.02+
 	},
 	
