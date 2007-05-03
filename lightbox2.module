@@ -8,6 +8,7 @@
  *
  * Module by: Mark Ashmead
  * Mailto: bugzie@gmail.com
+	* Co-maintainer: Stella Power (http://drupal.org/user/66894)
  *
  * Image Node Support: Steve McKenzie
  *
@@ -52,96 +53,104 @@ in each set. Go nuts!</p>');
  * Implementation of hook_nodeapi().
  */
 function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {	
-	global $LIGHTBOX2_INCLUDE;
+ 	global $LIGHTBOX2_INCLUDE;
 	
-	if ($op == "view" && !$LIGHTBOX2_INCLUDE) {
-		lightbox2_add_files();
-		$LIGHTBOX2_INCLUDE = true;
-	}
-	elseif ($node->type == "image" && !$LIGHTBOX2_INCLUDE) {
-		lightbox2_add_files();
-		$LIGHTBOX2_INCLUDE = true;
-	}
+ 	if ($op == "view" && !$LIGHTBOX2_INCLUDE) {
+  		lightbox2_add_files();
+  		$LIGHTBOX2_INCLUDE = true;
+ 	}
+ 	elseif ($node->type == "image" && !$LIGHTBOX2_INCLUDE) {
+  		lightbox2_add_files();
+  		$LIGHTBOX2_INCLUDE = true;
+ 	}
 }
 
 /**
  * Implementation of hook_settings().
  */
 function lightbox2_settings() {	
-	// Define Lightbox2 Plus form.
-	$form["lightbox2_plus_options"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Lightbox2 Plus"),
-		"#collapsible" => TRUE, 
-    		"#collapsed" => FALSE,
-	);
-	// Add Checkbox for Lightbox2 Plus.
-	$form["lightbox2_plus_options"]["lightbox2_plus"]  = array(
-		"#type" => "checkbox",
-		"#title" => t("Use Lightbox2 Plus"),
-		"#description" => t("Un-checking this box will enable Lightbox2 Lite."),
-		"#default_value" => variable_get("lightbox2_plus", true),
-		"#return_value" => true,		
-	);
-	// Define Image Node Options form.
-	$form["image_node_options"] = array(
-		"#type" => "fieldset",
-		"#title" => t("Lightbox2 Plus Image Node options"),
-		"#collapsible" => TRUE, 
-    		"#collapsed" => TRUE,
-	);
-	// Add Checkbox for Image Node.
-	$form["image_node_options"]["lightbox2_image_node"]  = array(
-		"#type" => "checkbox",
-		"#title" => t("Enable for Image Nodes"),
-		"#description" => t("Checking this box will enable automatic URL formatting for Image Nodes."),
-		"#default_value" => variable_get("lightbox2_image_node", true),
-		"#return_value" => true,
-	);
-	// Add Checkbox for Image Node Grouping.
-	$form["image_node_options"]["lightbox2_image_group"]  = array(
-		"#type" => "checkbox",
-		"#title" => t("Enable Grouping"),
-		"#description" => t("Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries."),
-		"#default_value" => variable_get("lightbox2_image_group", true),
-		"#return_value" => true,
-	);
-	// Add Checkbox for Gallery2 Image Filter.
-	$form["image_node_options"]["lightbox2G2_filter"]  = array(
-		"#type" => "checkbox",
-		"#title" => t("Enable Gallery 2 Filter"),
-		"#description" => t("Checking this box will enable the Gallery 2 filter."),
-		"#default_value" => variable_get("lightbox2G2_filter", true),
-		"#return_value" => true,
-	);
+ 	// Define Lightbox2 Plus form.
+ 	$form["lightbox2_plus_options"] = array(
+  		"#type" => "fieldset",
+  		"#title" => t("Lightbox2 Plus"),
+  		"#collapsible" => TRUE, 
+  		"#collapsed" => FALSE,
+ 	);
+
+ 	// Add Checkbox for Lightbox2 Plus.
+ 	$form["lightbox2_plus_options"]["lightbox2_plus"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Use Lightbox2 Plus"),
+  		"#description" => t("Un-checking this box will enable Lightbox2 Lite."),
+  		"#default_value" => variable_get("lightbox2_plus", true),
+  		"#return_value" => true,		
+ 	);
+
+ 	// Define Image Node Options form.
+ 	$form["image_node_options"] = array(
+  		"#type" => "fieldset",
+  		"#title" => t("Lightbox2 Plus Image Node options"),
+  		"#collapsible" => TRUE, 
+  		"#collapsed" => TRUE,
+ 	);
+
+ 	// Add Checkbox for Image Node.
+ 	$form["image_node_options"]["lightbox2_image_node"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Enable for Image Nodes"),
+  		"#description" => t("Checking this box will enable automatic URL formatting for Image Nodes."),
+  		"#default_value" => variable_get("lightbox2_image_node", true),
+  		"#return_value" => true,
+ 	);
+
+ 	// Add Checkbox for Image Node Grouping.
+ 	$form["image_node_options"]["lightbox2_image_group"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Enable Grouping"),
+  		"#description" => t("Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries."),
+  		"#default_value" => variable_get("lightbox2_image_group", true),
+  		"#return_value" => true,
+ 	);
+
+ 	// Add Checkbox for Gallery2 Image Filter.
+ 	$form["image_node_options"]["lightbox2G2_filter"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Enable Gallery 2 Filter"),
+  		"#description" => t("Checking this box will enable the Gallery 2 filter."),
+  		"#default_value" => variable_get("lightbox2G2_filter", true),
+  		"#return_value" => true,
+ 	);
 	
-	return $form;
+ 	return $form;
 }
+
 /**
- *Implementation of hook_filter().
+ * Implementation of hook_filter().
  */
 function lightbox2_filter_tips($delta, $format, $long = false) {
-    return t('Image links from G2 are formatted for use with Lightbox.V2');
+  return t('Image links from G2 are formatted for use with Lightbox.V2');
 }
+
 // Check to see if the G2 Filter is Enabled in Settings
 if (variable_get("lightbox2G2_filter", true)) {
-function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
-  switch ($op) {
-    case 'list':
-      return array(0 => t('Lightbox filter'));
-    case 'description':
-      return t('Turns g2_filter links into Lighbox.V2 appropriate links');
-    case 'process':
-        $text = ' ' . $text . ' ';
+  function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
+    switch ($op) {
+      case 'list':
+        return array(0 => t('Lightbox filter'));
+      case 'description':
+        return t('Turns g2_filter links into Lighbox.V2 appropriate links');
+      case 'process':
+        $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/','DownloadItem',$text);
         $text = preg_replace('/target=""/','rel="lightbox"',$text);
         $text = substr($text, 1, -1);
-    return $text;
-    default:
-      return $text;
+        return $text;
+      default:
+        return $text;
+    }
   }
- }
 }
+
 /**
  * Provides a link to the CSS stylesheet associated with this module.
  * Provides a link to the JS file associated with this module.
@@ -150,32 +159,39 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
 function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
-	// Check to see if Lightbox2 Plus is enabled.
-	if (variable_get("lightbox2_plus", true)) {
-  	theme("add_style", $path . '/lightbox.css');
+
+ 	// Check to see if Lightbox2 Plus is enabled.
+ 	if (variable_get("lightbox2_plus", true)) {
+   	theme("add_style", $path .'/lightbox.css');
+
   		// Check to see if Libraries are installed correctly.
   		if (file_exists($path .'/js/prototype.js')) {
-		drupal_add_js($path . '/js/prototype.js');
- 	 		// Check to see if the Image Node Option is enabled in settings.
- 	 		if (variable_get("lightbox2_image_node", true) && variable_get("lightbox2_image_group", true)) {
-  				drupal_add_js($path . "/js/image_nodes.js");
- 	 		}
-			elseif (variable_get("lightbox2_image_node", true)) {
-				drupal_add_js($path . "/js/image_nodes_nogroup.js");
- 	 		}
-  		drupal_add_js($path . '/js/scriptaculous.js');
-  		drupal_add_js($path . '/js/lightbox.js');
-		// Future support for non-images will go here.
-		//drupal_add_js($path . '/js/lightbox_docs.js');
+    		drupal_add_js($path .'/js/prototype.js');
+
+ 	  		// Check to see if the Image Node Option is enabled in settings.
+ 	 	 	if (variable_get("lightbox2_image_node", true) && variable_get("lightbox2_image_group", true)) {
+  		  		drupal_add_js($path ."/js/image_nodes.js");
+ 	 	 	}
+	   		elseif (variable_get("lightbox2_image_node", true)) {
+	    			drupal_add_js($path ."/js/image_nodes_nogroup.js");
+  	 		}
+    		drupal_add_js($path .'/js/scriptaculous.js');
+    		drupal_add_js($path .'/js/lightbox.js');
+
+	   	 // Future support for non-images will go here.
+	   	 //drupal_add_js($path .'/js/lightbox_docs.js');
   		}
- 		// Display warning message if Libraries aren't installed correctly.
-		else {
-      	drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, follow the instructions in the Lightbox V.2 README.TXT file to copy the files to their correct locations.'), 'error');
-    	}
-	}
-	// Load Lightbox Lite if Plus is not enabled.
- 	else {
- 	theme("add_style", $path . '/lightbox_lite.css');
- 	drupal_add_js($path . '/js/lightbox_lite.js');
+
+ 		 // Display warning message if Libraries aren't installed correctly.
+		  else {
+      drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://script.aculo.us/downloads">http://script.aculo.us/downloads</a>, follow the instructions in the Lightbox V.2 README.TXT file to copy the files to their correct locations.'), 'error');
     }
+ 	}
+
+
+ 	// Load Lightbox Lite if Plus is not enabled.
+ 	else {
+   	theme("add_style", $path .'/lightbox_lite.css');
+   	drupal_add_js($path .'/js/lightbox_lite.js');
+  }
 }
