@@ -217,3 +217,70 @@ function lightbox2_add_files() {
    	drupal_add_js($path .'/js/lightbox_lite.js');
   }
 }
+
+/**
+* Implementation of hook_field_formatter_info().
+* Adds certain lightbox+imagecache formatters to CCK image fields if the
+* imagefield.module and the imagecache.module exist.
+*/
+function lightbox2_field_formatter_info() {
+  $formatter = array();
+  if (module_exist('imagefield') && module_exist('imagecache')) {
+    $rules = _imagecache_get_presets();
+    foreach ($rules as $ruleid => $rulename) {
+      $formatters['lightbox2]['. $rulename] = array(
+        'label' => 'Lightbox2: '. $rulename,
+        'field types' => array('image'),
+      );
+    }
+  }
+
+  return $formatters;
+}
+
+
+/**
+* Implementation of hook_field_formatter().
+*/
+function lightbox2_field_formatter($field, $item, $formatter) {
+  if (module_exist('imagefield') && module_exist('imagecache')) {
+    if (!isset($item['fid'])) {
+      return '';
+    }
+    $file = _imagefield_file_load($item['fid']);
+    $item = array_merge($item, $file);
+    if (strpos($formatter, 'lightbox2][') !== false) {
+      list($null, $namespace) = explode('][', $formatter, 2);
+      $rules = _imagecache_get_presets();
+      if (in_array($namespace, (array) $rules)) {
+        return theme('imagefield_image_imagecache_lightbox2', $namespace, $field, $item);
+      }
+    }
+  }
+}
+
+/**
+* Implementation of theme_imagefield_image_imagecache_lightbox2().
+*/
+function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, $attributes = NULL) {
+
+  $attributes = drupal_attributes($attributes);
+  $imagecache_path = file_create_url(
+    file_directory_path() .'/imagecache/'. $namespace .'/'. $item['filepath']);
+
+
+  $rel = "lightbox";
+  if (variable_get("lightbox2_image_group", TRUE)) {
+    $rel = "lightbox[cck_image_nodes]";
+  }
+  $node_link = l(t('View Image Information'), 'node/'. $item['nid']);
+  $link_attributes = array(
+    "rel" => $rel,
+    "title" => $item["alt"] ."<br /><br />". $node_link);
+
+  $image = theme('imagecache', $namespace, $item['filepath'], $item['alt'], $item['title'], $attributes);
+  $output = l($image, $item['filepath'], $link_attributes, NULL, NULL, FALSE, TRUE);
+
+  return $output;
+}
+
