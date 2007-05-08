@@ -103,6 +103,16 @@ function lightbox2_settings() {
   		"#return_value" => true,
  	);
 
+ 	// Add Checkbox for Acidfree Image nodes
+ 	$form["image_node_options"]["lightbox2_acidfree_images"]  = array(
+  		"#type" => "checkbox",
+  		"#title" => t("Enable for Acidfree Images"),
+  		"#description" => t("Checking this box will enable automatic URL formatting for Acidefree Images."),
+  		"#default_value" => variable_get("lightbox2_acidfree_images", true),
+  		"#return_value" => true,
+ 	);
+
+
  	// Add Checkbox for Image Node Grouping.
  	$form["image_node_options"]["lightbox2_image_group"]  = array(
   		"#type" => "checkbox",
@@ -181,6 +191,9 @@ function lightbox2_add_files() {
  	  		// Check to see if the Image Node Option is enabled in settings.
  	 	 	if (variable_get("lightbox2_image_node", true)) {
 								if (variable_get("lightbox2_image_group", true)) {
+										if (variable_get("lightbox2_acidfree_images", true)) {
+												drupal_add_js($path ."/js/acidfree_images.js");
+										}
 										if (variable_get("lightbox2_disable_nested_galleries", true)) {
 												drupal_add_js($path ."/js/image_nodes_galleries.js");
 										}
@@ -189,6 +202,9 @@ function lightbox2_add_files() {
 										}
 								}
 								else {
+										if (variable_get("lightbox2_acidfree_images", true)) {
+												drupal_add_js($path ."/js/acidfree_images_nogroup.js");
+										}
 										if (variable_get("lightbox2_disable_nested_galleries", true)) {
 												drupal_add_js($path ."/js/image_nodes_nogroup_galleries.js");
 										}
