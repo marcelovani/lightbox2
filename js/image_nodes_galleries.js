@@ -3,6 +3,8 @@
 // Stella Power
 
 function lightbox2_image_nodes() {
+ var body = document.getElementsByTagName("body");
+ if (!Element.hasClassName(body, "img_assist")) {
   var gallery = new Array();
  	var nodes = document.getElementsByClassName("galleries");
  	for (var i = 0; i < nodes.length; i++) {
@@ -28,6 +30,7 @@ function lightbox2_image_nodes() {
 						}
   		}
  	}
+ }
 }
 
 if (isJsEnabled()) {
