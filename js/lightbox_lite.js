@@ -435,4 +435,4 @@ function addLoadEvent(func)
 
 
 
-addLoadEvent(initLightbox);	// run initLightbox onLoad
+//addLoadEvent(initLightbox);	// run initLightbox onLoad

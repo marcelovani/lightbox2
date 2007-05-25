@@ -258,6 +258,7 @@ function lightbox2_add_files() {
 				}
    	drupal_add_js($path .'/js/lightbox_lite.js');
   }
+		drupal_add_js($path .'/js/lightningload.js');
 }
 
 /**
