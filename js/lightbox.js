@@ -306,7 +306,6 @@ Lightbox.prototype = {
 		var objBottomNavCloseLink = document.createElement("a");
 		objBottomNavCloseLink.setAttribute('id','bottomNavClose');
 		objBottomNavCloseLink.setAttribute('href','#');
-		objBottomNavCloseLink.setAttribute('accesskey',"B");
 		objBottomNavCloseLink.onclick = function() { myLightbox.end(); return false; }
 		objBottomNav.appendChild(objBottomNavCloseLink);
 	
