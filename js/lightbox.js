@@ -543,10 +543,12 @@ Lightbox.prototype = {
 	// Update to 2.02+
 	keyboardAction: function(e) {
 
-    if (e == null) { // ie
+		if (e == null) { // ie
 			keycode = event.keyCode;
+			escapeKey = 27;
 		} else { // mozilla
 			keycode = e.which;
+			escapeKey = e.DOM_VK_ESCAPE;
 		}
 		
 		// Instead of the above code, (starting with 'if ...') Roel replaced it with the code below, 
@@ -562,14 +564,17 @@ Lightbox.prototype = {
 
 		key = String.fromCharCode(keycode).toLowerCase();
 		
-		if((key == 'x') || (key == 'o') || (key == 'c')){	// close lightbox
+		// close lightbox (x, o, c, ESC)
+		if((key == 'x') || (key == 'o') || (key == 'c') || (keycode == escapeKey)){	
 			myLightbox.end();
-		} else if(key == 'p' || keycode == 37 || keycode == 8 || keycode == 100){	// display previous image
+		// display previous image (p, <-, backspace, ????)
+		} else if(key == 'p' || keycode == 37 || keycode == 8 || keycode == 100){	
 			if(activeImage != 0){
 				myLightbox.disableKeyboardNav();
 				myLightbox.changeImage(activeImage - 1);
 			}
-		} else if(key == 'n' || keycode == 39 || keycode == 32 || keycode == 102){	// display next image
+		// display next image (n, ->, space, ????)
+		} else if(key == 'n' || keycode == 39 || keycode == 32 || keycode == 102){	
 			if(activeImage != (imageArray.length - 1)){
 				myLightbox.disableKeyboardNav();
 				myLightbox.changeImage(activeImage + 1);

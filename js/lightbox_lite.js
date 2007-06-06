@@ -142,12 +142,14 @@ function pause(numberMillis) {
 function getKey(e){
 	if (e == null) { // ie
 		keycode = event.keyCode;
+		escapeKey = 27;
 	} else { // mozilla
 		keycode = e.which;
+		escapeKey = e.DOM_VK_ESCAPE;
 	}
 	key = String.fromCharCode(keycode).toLowerCase();
 	
-	if(key == 'x'){ hideLightbox(); }
+	if(key == 'x' || key == 'c' || keycode == escapeKey){ hideLightbox(); }
 }
 
 
