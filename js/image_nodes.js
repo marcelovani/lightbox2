@@ -4,7 +4,7 @@
 if (Drupal.jsEnabled) {
 		$(document).ready(function lightbox2_image_nodes() {
 				var body = document.getElementsByTagName("body");
-				if (!Element.hasClassName(body, "img_assist")) {
+				if (!Element.hasClassName("img_assist_thumbs", "img_assist")) {
 						var nodes = document.getElementsByClassName("image");
 						for (var i = 0; i < nodes.length; i++) {
 								if (Element.hasClassName(nodes[i], "image-thumbnail") || Element.hasClassName(nodes[i], "thumbnail")) {
