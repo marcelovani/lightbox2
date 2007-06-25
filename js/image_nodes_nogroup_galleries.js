@@ -2,7 +2,6 @@
 // Stella Power
 
 function lightbox2_image_nodes() {
- var body = document.getElementsByTagName("body");
  if (!Element.hasClassName("img_assist_thumbs", "img_assist")) {
   var gallery = new Array();
  	var nodes = document.getElementsByClassName("galleries");
