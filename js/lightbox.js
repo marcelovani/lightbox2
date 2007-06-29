@@ -233,6 +233,14 @@ Lightbox.prototype = {
 		var objLightbox = document.createElement("div");
 		objLightbox.setAttribute('id','lightbox');
 		objLightbox.style.display = 'none';
+		// close Lightbox if user clicks shadow overlay
+		objLightbox.onclick = function(e) { 
+				if (!e) var e = window.event;
+				var clickObj = Event.element(e).id;
+				if (clickObj == 'lightbox') {
+						myLightbox.end();
+				}
+		};
 		objBody.appendChild(objLightbox);
 	
 		var objOuterImageContainer = document.createElement("div");
