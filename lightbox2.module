@@ -14,7 +14,7 @@
  *
  * Image Node Support: Steve McKenzie
  *
-*/
+ */
 
 /**
  * GLOBAL VARIABLES
@@ -41,35 +41,57 @@ function lightbox2_help($section) {
       <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
       <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
       <p>Optional: Use the title attribute if you want to show a caption.</p>
-   <p>If you have a set of related images that you would like to group, follow step one but additionally include a group name between square brackets in the rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg" rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br>
-&lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image #2&lt;/a&gt;<br>
-&lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image #3&lt;/a&gt;<br></p>
+   <p>If you have a set of related images that you would like to group, follow
+			step one but additionally include a group name between square brackets in the
+			rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg"
+			rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br />
+&lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image
+#2&lt;/a&gt;<br />
+&lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image
+#3&lt;/a&gt;<br /></p>
 <p>No limits to the number of image sets per page or how many images are allowed
 in each set. Go nuts!</p>');
-// $notneeded = t('<p align="justify"><h3>Known Issues</h3></p> <p>Image Issues - An issue has been identified with the loading of certain images when using the module. (closelabel.gif, expand.gif, loading.gif)</p> <p>If your installation of Drupal exists in the root of your domain, i.e., www.yourinstallation.com then you shouldn\'t have any problems. The issue only occurs when Drupal is installed in a subdirectory, i.e., www.yourinstallation.com/subdirectory.</p> <p>If this is the case, you will need to edit the lightbox.js on lines 63, 64 and 65 to reflect the fully qualified URL of your images. In the above case, this would be as follows;</p> <p>var fileLoadingImage = &quot;/modules/lightbox2/images/loading.gif&quot;;<br> var fileBottomNavCloseImage = &quot;/modules/lightbox2/images/closelabel.gif&quot;;<br> var fileBottomNavZoomImage = &quot;/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p> <p>should be changed to</p> <p>var fileLoadingImage = &quot;/subdirectory/modules/lightbox2/images/loading.gif&quot;;<br> var fileBottomNavCloseImage = &quot;/subdirectory/modules/lightbox2/images/closelabel.gif&quot;;<br> var fileBottomNavZoomImage = &quot;/subdirectory/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p> <p>There may be other methods that can be used to achieve this, but this should be the simplest for those with little or no programming experience. If you choose to use Lightbox2 Lite option, then you will need to edit the lightbox_lite.js file in a similar manner on lines 39 and 40.</p>');
+// $notneeded = t('<p align="justify"><h3>Known Issues</h3></p> <p>Image Issues
+// - An issue has been identified with the loading of certain images when using
+// the module. (closelabel.gif, expand.gif, loading.gif)</p> <p>If your
+// installation of Drupal exists in the root of your domain, i.e.,
+// www.yourinstallation.com then you shouldn\'t have any problems. The issue
+// only occurs when Drupal is installed in a subdirectory, i.e.,
+// www.yourinstallation.com/subdirectory.</p> <p>If this is the case, you will
+// need to edit the lightbox.js on lines 63, 64 and 65 to reflect the fully
+// qualified URL of your images. In the above case, this would be as
+// follows;</p> <p>var fileLoadingImage =
+// &quot;/modules/lightbox2/images/loading.gif&quot;;<br /> var
+// fileBottomNavCloseImage =
+// &quot;/modules/lightbox2/images/closelabel.gif&quot;;<br /> var
+// fileBottomNavZoomImage = &quot;/modules/lightbox2/images/expand.gif&quot;;
+// //Update to 2.02+</p> <p>should be changed to</p> <p>var fileLoadingImage =
+// &quot;/subdirectory/modules/lightbox2/images/loading.gif&quot;;<br /> var
+// fileBottomNavCloseImage =
+// &quot;/subdirectory/modules/lightbox2/images/closelabel.gif&quot;;<br /> var fileBottomNavZoomImage = &quot;/subdirectory/modules/lightbox2/images/expand.gif&quot;; //Update to 2.02+</p> <p>There may be other methods that can be used to achieve this, but this should be the simplest for those with little or no programming experience. If you choose to use Lightbox2 Lite option, then you will need to edit the lightbox_lite.js file in a similar manner on lines 39 and 40.</p>');
       break;
   }
 }
 
 /**
-* Implementation of hook_perm()
-* Define the permissions this module uses
-*/
+ * Implementation of hook_perm()
+ * Define the permissions this module uses
+ */
 function lightbox2_perm() {
   return array('administer lightbox2');
 }
 
 
 /**
-* Implementation of hook_access()
-*/
+ * Implementation of hook_access()
+ */
 function lightbox2_access($op, $node) {
   return user_access('administer lightbox2');
 }
 
 /**
-* Implementation of hook_menu()
-*/
+ * Implementation of hook_menu()
+ */
 function lightbox2_menu($may_cache) {
   $items = array();
 
@@ -262,10 +284,10 @@ function lightbox2_add_files() {
 }
 
 /**
-* Implementation of hook_field_formatter_info().
-* Adds certain lightbox+imagecache formatters to CCK image fields if the 
-* imagefield.module and the imagecache.module exist.
-*/
+ * Implementation of hook_field_formatter_info().
+ * Adds certain lightbox+imagecache formatters to CCK image fields if the 
+ * imagefield.module and the imagecache.module exist.
+ */
 function lightbox2_field_formatter_info() {
   $formatter = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
@@ -283,8 +305,8 @@ function lightbox2_field_formatter_info() {
 
 
 /**
-* Implementation of hook_field_formatter().
-*/
+ * Implementation of hook_field_formatter().
+ */
 function lightbox2_field_formatter($field, $item, $formatter) {
   if (module_exists('imagefield') && module_exists('imagecache')) {
     if (!isset($item['fid'])) {
@@ -303,8 +325,8 @@ function lightbox2_field_formatter($field, $item, $formatter) {
 }
 
 /**
-* Implementation of theme_imagefield_image_imagecache_lightbox2().
-*/
+ * Implementation of theme_imagefield_image_imagecache_lightbox2().
+ */
 function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, $attributes = NULL) {
 
   $attributes = drupal_attributes($attributes);

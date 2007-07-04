@@ -2,16 +2,16 @@
 // $Id $
 
 /** 
-* Implementation of hook_install()
-* just give a message
-*/
+ * Implementation of hook_install()
+ * just give a message
+ */
 function lightbox2_install() {
   watchdog('lightbox2', 'lightbox2 module installed');
 }
 
 /** 
-* Implementation of hook_uninstall()
-*/
+ * Implementation of hook_uninstall()
+ */
 function lightbox2_uninstall() {
   // delete the variables we created
   variable_del('lightbox2_plus');
