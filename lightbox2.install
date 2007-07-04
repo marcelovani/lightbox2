@@ -6,18 +6,18 @@
 * just give a message
 */
 function lightbox2_install() {
-		watchdog('lightbox2', 'lightbox2 module installed');
+  watchdog('lightbox2', 'lightbox2 module installed');
 }
 
 /** 
 * Implementation of hook_uninstall()
 */
 function lightbox2_uninstall() {
-		// delete the variables we created
-		variable_del('lightbox2_plus');
-		variable_del('lightbox2_image_node');
-		variable_del('lightbox2_image_group');
-		variable_del('lightbox2G2_filter');
+  // delete the variables we created
+  variable_del('lightbox2_plus');
+  variable_del('lightbox2_image_node');
+  variable_del('lightbox2_image_group');
+  variable_del('lightbox2G2_filter');
 
-		watchdog('lightbox2', 'lightbox2 module un-installed');
+  watchdog('lightbox2', 'lightbox2 module un-installed');
 }
