@@ -69,7 +69,7 @@
 
 var resizeSpeed = 7;	// controls the speed of the image resizing (1=slowest and 10=fastest)
 
-var borderSize = 10;	//if you adjust the padding in the CSS, you will need to update this variable
+var borderSize = 18;	//if you adjust the padding in the CSS, you will need to update this variable
 
 // -----------------------------------------------------------------------------------
 
