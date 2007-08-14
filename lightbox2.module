@@ -42,9 +42,9 @@ function lightbox2_help($section) {
       <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
       <p>Optional: Use the title attribute if you want to show a caption.</p>
    <p>If you have a set of related images that you would like to group, follow
-			step one but additionally include a group name between square brackets in the
-			rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg"
-			rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br />
+   step one but additionally include a group name between square brackets in the
+   rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg"
+   rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br />
 &lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]"&gt;image
 #2&lt;/a&gt;<br />
 &lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image
@@ -115,13 +115,15 @@ function lightbox2_menu($may_cache) {
 function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) { 
   global $_LIGHTBOX2_INCLUDE;
  
-  if ($op == "view" && !$_LIGHTBOX2_INCLUDE) {
-    lightbox2_add_files();
-    $_LIGHTBOX2_INCLUDE = true;
-  }
-  elseif ($node->type == "image" && !$_LIGHTBOX2_INCLUDE) {
-    lightbox2_add_files();
-    $_LIGHTBOX2_INCLUDE = true;
+  if (lightbox2_exclude_these_paths() != 1) {
+    if ($op == "view" && !$_LIGHTBOX2_INCLUDE) {
+      lightbox2_add_files();
+      $_LIGHTBOX2_INCLUDE = true;
+    }
+    elseif ($node->type == "image" && !$_LIGHTBOX2_INCLUDE) {
+      lightbox2_add_files();
+      $_LIGHTBOX2_INCLUDE = true;
+    }
   }
 }
 
@@ -185,6 +187,14 @@ function lightbox2_settings_form() {
     "#title" => t("Enable Gallery 2 Filter"),
     "#description" => t("Checking this box will enable the Gallery 2 filter."),
     "#default_value" => variable_get("lightbox2G2_filter", true),
+  );
+
+   // Add Textarea for urls without lightbox
+  $form["image_node_options"]["lightbox2_disable_these_urls"]  = array(
+    "#type" => "textarea",
+    "#title" => t("Disable LightBox for these urls"),
+    "#description" => t("List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Put each url on a separate line."),
+    "#default_value" => variable_get("lightbox2_disable_these_urls", ''),
   );
 
   return system_settings_form($form);
@@ -347,4 +357,23 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
   $output = l($image, $item['filepath'], $link_attributes, NULL, NULL, FALSE, TRUE);
 
   return $output;
+}
+
+function lightbox2_exclude_these_paths() {
+
+  # use lightbox if this url is not excluded
+  $disabled_urls = variable_get("lightbox2_disable_these_urls", "");
+
+  if (!empty($disabled_urls)) {
+    $urls = explode("\n", variable_get("lightbox2_disable_these_urls", ""));
+
+    foreach ($urls as $url) {
+      $url = rtrim ($url);
+      if ($_REQUEST['q'] == $url || strpos($_REQUEST['q'], $url)) {
+        return 1;
+      }
+    }
+  }
+
+  return 0;
 }
