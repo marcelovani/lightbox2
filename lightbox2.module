@@ -369,7 +369,7 @@ function lightbox2_exclude_these_paths() {
 
     foreach ($urls as $url) {
       $url = rtrim ($url);
-      if ($_REQUEST['q'] == $url || strpos($_REQUEST['q'], $url)) {
+      if ($_REQUEST['q'] == $url) {
         return 1;
       }
     }
