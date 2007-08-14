@@ -368,7 +368,7 @@ function lightbox2_exclude_these_paths() {
     $urls = explode("\n", variable_get("lightbox2_disable_these_urls", ""));
 
     foreach ($urls as $url) {
-      $url = rtrim ($url);
+      $url = rtrim($url);
       $url = preg_replace("/%/", '.*?', preg_quote($url, '/'));
       $pattern = "/^". $url ."$/";
       if (preg_match($pattern, $_REQUEST['q'])) {
