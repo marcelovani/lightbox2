@@ -193,7 +193,7 @@ function lightbox2_settings_form() {
   $form["image_node_options"]["lightbox2_disable_these_urls"]  = array(
     "#type" => "textarea",
     "#title" => t("Disable LightBox for these urls"),
-    "#description" => t("List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Put each url on a separate line."),
+    "#description" => t("List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Put each url on a separate line. You can use the % character as a wildcard."),
     "#default_value" => variable_get("lightbox2_disable_these_urls", ''),
   );
 
@@ -365,7 +365,7 @@ function lightbox2_exclude_these_paths() {
   $disabled_urls = variable_get("lightbox2_disable_these_urls", "");
 
   if (!empty($disabled_urls)) {
-    $urls = explode("\n", variable_get("lightbox2_disable_these_urls", ""));
+    $urls = explode("\n", $disabled_urls);
 
     foreach ($urls as $url) {
       $url = rtrim($url);
