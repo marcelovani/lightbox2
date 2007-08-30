@@ -348,10 +348,15 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
   if (variable_get("lightbox2_image_group", TRUE)) {
     $rel = "lightbox[cck_image_nodes]";
   }
-  $node_link = l(t('View Image Information'), 'node/'. $item['nid']);
+
+  $node_link = "";
+  if (!empty($item['nid'])) {
+    $node_link = "<br /><br />". l(t('View Image Information'), 'node/'. $item['nid']);
+  }
+
   $link_attributes = array(
     "rel" => $rel,
-    "title" => $item["alt"] ."<br /><br />". $node_link);
+    "title" => $item["alt"] . $node_link);
 
   $image = theme('imagecache', $namespace, $item['filepath'], $item['alt'], $item['title'], $attributes);
   $output = l($image, $item['filepath'], $link_attributes, NULL, NULL, FALSE, TRUE);
