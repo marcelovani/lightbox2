@@ -339,7 +339,6 @@ function lightbox2_field_formatter($field, $item, $formatter) {
  */
 function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, $attributes = NULL) {
 
-  $attributes = drupal_attributes($attributes);
   $imagecache_path = file_create_url(
     file_directory_path() .'/imagecache/'. $namespace .'/'. $item['filepath']);
 
