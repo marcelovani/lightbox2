@@ -322,6 +322,10 @@ function lightbox2_field_formatter($field, $item, $formatter) {
     if (!isset($item['fid'])) {
       return '';
     }
+				if (!$_LIGHTBOX2_INCLUDE && lightbox2_exclude_these_paths() != 1) {
+						lightbox2_add_files();
+						$_LIGHTBOX2_INCLUDE = true;
+				}
     $file = _imagefield_file_load($item['fid']);
     $item = array_merge($item, $file);
     if (strpos($formatter, 'lightbox2][') !== false) {
