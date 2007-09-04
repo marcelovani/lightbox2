@@ -29,8 +29,8 @@ $_LIGHTBOX2_INCLUDE = false;
 /**
  * Implementation of hook_help().
  */
-function lightbox2_help($section) {
-  switch ($section) {
+function lightbox2_help($path, $arg) {
+  switch ($path) {
     case 'admin/modules#description':
       return t('Enables Lightbox V2 for Drupal');
     case 'admin/help#lightbox2':
@@ -92,18 +92,17 @@ function lightbox2_access($op, $node) {
 /**
  * Implementation of hook_menu()
  */
-function lightbox2_menu($may_cache) {
+function lightbox2_menu() {
   $items = array();
 
-  if ($may_cache) {
-    $items[] = array('path' => 'admin/settings/lightbox2',
-      'title' => t('Lightbox2'),
-      'callback' => 'drupal_get_form',
-      'callback arguments' => array('lightbox2_settings_form'),
-      'access' => user_access('administer lightbox2'),
-      'description' => t('Allows the user to configure the lightbox2 settings'),
-    );
-  }
+  $items['admin/settings/lightbox2'] = array(
+    'title' => 'Lightbox2',
+    'description' => 'Allows the user to configure the lightbox2 settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lightbox2_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer lightbox2'),
+  );
 
   return $items;
 }
@@ -322,10 +321,10 @@ function lightbox2_field_formatter($field, $item, $formatter) {
     if (!isset($item['fid'])) {
       return '';
     }
-				if (!$_LIGHTBOX2_INCLUDE && lightbox2_exclude_these_paths() != 1) {
-						lightbox2_add_files();
-						$_LIGHTBOX2_INCLUDE = true;
-				}
+    if (!$_LIGHTBOX2_INCLUDE && lightbox2_exclude_these_paths() != 1) {
+      lightbox2_add_files();
+      $_LIGHTBOX2_INCLUDE = true;
+    }
     $file = _imagefield_file_load($item['fid']);
     $item = array_merge($item, $file);
     if (strpos($formatter, 'lightbox2][') !== false) {
@@ -336,6 +335,18 @@ function lightbox2_field_formatter($field, $item, $formatter) {
       }
     }
   }
+}
+
+/**
+ * Implementation of hook_theme()
+ */
+function lightbox2_theme() {
+  return array(
+    'imagefield_image_imagecache_lightbox2' => array(
+      'function' => 'imagefield_image_imagecache_lightbox2',
+      'arguments' => array('namespace' => NULL, 'field' => NULL, 'item' => NULL, 'attributes' => NULL),
+    ),
+  );
 }
 
 /**
