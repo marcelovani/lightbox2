@@ -373,7 +373,7 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
     "title" => $item["alt"] . $node_link);
 
   $image = theme('imagecache', $namespace, $item['filepath'], $item['alt'], $item['title'], $attributes);
-  $output = l($image, $item['filepath'], $link_attributes, NULL, NULL, FALSE, TRUE);
+  $output = l($image, $item['filepath'], array("attributes" => $link_attributes, "query" => NULL, "fragment" => NULL, "absolute" => FALSE, "html" => TRUE));
 
   return $output;
 }
