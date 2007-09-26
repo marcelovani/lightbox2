@@ -219,39 +219,29 @@ function lightbox2_add_files() {
       theme('add_style', $path .'/lightbox.css');
     }
     
-    // Check to see if Libraries are installed correctly.
-    if (file_exists($path .'/js/prototype.js')) {
-      drupal_add_js($path .'/js/prototype.js');
-      
-      // Check to see if the Image Node Option is enabled in settings.
-      if (variable_get('lightbox2_image_node', true)) {
-        if (variable_get('lightbox2_image_group', true)) {
-          if (variable_get('lightbox2_disable_nested_galleries', true)) {
-            drupal_add_js($path .'/js/image_nodes_galleries.js');
-          }
-          else {
-            drupal_add_js($path .'/js/image_nodes.js');
-          }
-        }
-        else {
-          if (variable_get('lightbox2_disable_nested_galleries', true)) {
-            drupal_add_js($path .'/js/image_nodes_nogroup_galleries.js');
-          }
-          else {
-            drupal_add_js($path .'/js/image_nodes_nogroup.js');
-          }
-        }
-      }
-      drupal_add_js($path .'/js/scriptaculous.js?load=effects');
-      drupal_add_js($path .'/js/lightbox.js');
-      // Future support for non-images will go here.
-      //drupal_add_js($path .'/js/lightbox_docs.js');
-    }
+				// Check to see if the Image Node Option is enabled in settings.
+				/*
+				if (variable_get('lightbox2_image_node', true)) {
+						if (variable_get('lightbox2_image_group', true)) {
+								if (variable_get('lightbox2_disable_nested_galleries', true)) {
+										drupal_add_js($path .'/js/image_nodes_galleries.js');
+								}
+								else {
+										drupal_add_js($path .'/js/image_nodes.js');
+								}
+						}
+						else {
+								if (variable_get('lightbox2_disable_nested_galleries', true)) {
+										drupal_add_js($path .'/js/image_nodes_nogroup_galleries.js');
+								}
+								else {
+										drupal_add_js($path .'/js/image_nodes_nogroup.js');
+								}
+						}
+				}
+				*/
+				drupal_add_js($path .'/js/lightbox.js');
     
-    // Display warning message if Libraries aren't installed correctly.
-    else {
-      drupal_set_message(t('The script.aculo.us library is in not installed correctly. Please download from <a href="http://www.stellapowerdesign.net/scriptaculous.zip">http://www.stellapowerdesign.net/scriptaculous-drupal.zip</a>, follow the instructions in the Lightbox V.2 README.TXT file to copy the files to their correct locations.'), 'error');
-    }
   }
   // Load Lightbox Lite if Plus is not enabled.
   else {
@@ -261,9 +251,9 @@ function lightbox2_add_files() {
     else {
       theme('add_style', $path .'/lightbox_lite.css');
     }
-    drupal_add_js($path .'/js/lightbox_lite.js');
+    //drupal_add_js($path .'/js/lightbox_lite.js');
   }
-  drupal_add_js($path .'/js/lightningload.js');
+  //drupal_add_js($path .'/js/lightningload.js');
 }
 
 /**

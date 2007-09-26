@@ -4,32 +4,24 @@
 
 if (Drupal.jsEnabled) {
 		$(document).ready(function lightbox2_image_nodes() {
-				if (!Element.hasClassName("img_assist_thumbs", "img_assist")) {
-						var gallery = new Array();
-						var nodes = document.getElementsByClassName("galleries");
-						for (var i = 0; i < nodes.length; i++) {
-								// select all the images inside those lists
-								var sub = nodes[i].getElementsByTagName("img");
-								for (var j = 0; j < sub.length; j++) {
-										if (Element.hasClassName(sub[j], "image-thumbnail") || Element.hasClassName(sub[j], "thumbnail")) {
-												gallery.push(sub[j]);
-										}
-								}
-						}
+   var img_assist = document.getElementById("img_assist_thumbs");
+    if (!img_assist) {
+						// apply to all other images
+      $("a[img.image-thumbnail, img.thumbnail]").each(function(i) {
+								if (!$(this).parents(".galleries").length ) {
 
-
-						var nodes = document.getElementsByClassName("image");
-						for (var i = 0; i < nodes.length; i++) {
-								if (Element.hasClassName(nodes[i], "image-thumbnail") || Element.hasClassName(nodes[i], "thumbnail")) {
-										if (gallery.indexOf(nodes[i]) == -1) {
-												var parent = nodes[i].parentNode;
-												parent.rel = "lightbox[node_thumbnails]";
-												parent.title = nodes[i].alt.concat("<br /><br /><a href=\"" + parent.href + "\">View Image Information</a>");
-												parent.href = nodes[i].src.replace(".thumbnail", "");
-												//parent.title = nodes[i].alt;
-										}
+        var child = $(this).children();
+        var alt = $(child).attr("alt");
+								alert(alt);
+        var link_text = "View Image Information";
+        $(this).attr({rel: "lightbox[node_thumbnails]",
+          title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
+          href: $(child).attr("src").replace(".thumbnail", ""),
+          });
 								}
-						}
-				}
-		});
+
+      });
+    }
+
+  });
 }

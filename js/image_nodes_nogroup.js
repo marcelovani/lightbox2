@@ -1,20 +1,25 @@
 // Image Node Auto-Format
-// Steve McKenzie
+// Original version by Steve McKenzie
+// Altered by Stella Power for jQuery version
+
 
 if (Drupal.jsEnabled) {
 		$(document).ready(function lightbox2_image_nodes() {
-				if (!Element.hasClassName("img_assist_thumbs", "img_assist")) {
-						var nodes = document.getElementsByClassName("image");
-						for (var i = 0; i < nodes.length; i++) {
-								if (Element.hasClassName(nodes[i], "image-thumbnail") || Element.hasClassName(nodes[i], "thumbnail")) {
-										var parent = nodes[i].parentNode;
-										parent.rel = "lightbox";
-										parent.title = nodes[i].alt.concat("<br /><br /><a href=\"" + parent.href + "\">View Image Information</a>");
-										parent.href = nodes[i].src.replace(".thumbnail", "");
-										//parent.title = nodes[i].alt;
-								}
-						}
-				}
+				var img_assist = document.getElementById("img_assist_thumbs");
+    if (!img_assist) {
+      $("a[img.image-thumbnail, img.thumbnail]").each(function(i) {
+
+        var child = $(this).children();
+        var alt = $(child).attr("alt");
+        var link_text = "View Image Information";
+        $(this).attr({rel: "lightbox",
+          title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
+          href: $(child).attr("src").replace(".thumbnail", ""),
+          });
+
+      });
+    }
+
 		});
 }
 

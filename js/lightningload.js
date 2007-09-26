@@ -4,25 +4,25 @@
 * contributed by leo_pape (http://drupal.org/user/132138)
 */
 function init() {
-		// quit if this function has already been called
-		if (arguments.callee.done) return;
+  // quit if this function has already been called
+  if (arguments.callee.done) return;
 
-		// flag this function so we don't do the same thing twice
-		arguments.callee.done = true;
+  // flag this function so we don't do the same thing twice
+  arguments.callee.done = true;
 
-		// kill the timer
-		if (_timer) {
-				clearInterval(_timer);
-				_timer = null;
-		}
+  // kill the timer
+  if (_timer) {
+    clearInterval(_timer);
+    _timer = null;
+  }
 
-		// load the lightbox before images are loaded
-		initLightbox();
+  // load the lightbox before images are loaded
+  initLightbox();
 };
 
 /* for Mozilla */
 if (document.addEventListener) {
-		document.addEventListener("DOMContentLoaded", init, false);
+  document.addEventListener("DOMContentLoaded", init, false);
 }
 
 /* for Internet Explorer */
@@ -39,11 +39,11 @@ init(); // call the onload handler
 
 /* for Safari */
 if (/WebKit/i.test(navigator.userAgent)) { // sniff
-		var _timer = setInterval(function() {
-				if (/loaded|complete/.test(document.readyState)) {
-						init(); // call the onload handler
-				}
-		}, 10);
+  var _timer = setInterval(function() {
+    if (/loaded|complete/.test(document.readyState)) {
+      init(); // call the onload handler
+    }
+  }, 10);
 }
 
 /* for other browsers */
