@@ -105,28 +105,34 @@ function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
  * Implementation of hook_settings()
  */
 function lightbox2_settings_form() {
-  // Define Lightbox2 Plus form.
-  $form['lightbox2_plus_options'] = array(
+
+  // add the javascript which disables / enables form elements
+  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+
+  // Define Lightbox2 Lite form.
+  $use_lite = variable_get('lightbox2_lite', false);
+  $form['lightbox2_lite_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Lightbox2 Plus'),
+    '#title' => t('Lightbox2 Lite'),
     '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
+    '#collapsed' => !$use_lite,
   );
   
-  // Add Checkbox for Lightbox2 Plus.
-  $form['lightbox2_plus_options']['lightbox2_plus'] = array(
+  // Add Checkbox for Lightbox2 Lite.
+  $form['lightbox2_lite_options']['lightbox2_lite'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Use Lightbox2 Plus'),
-    '#description' => t('Un-checking this box will enable Lightbox2 Lite.'),
-    '#default_value' => variable_get('lightbox2_plus', true),
+    '#title' => t('Use Lightbox2 Lite'),
+    '#description' => t('Checking this box will enable Lightbox2 Lite and will disable all of the automatic image node URL re-formatting features.  It also disables all grouping features.'),
+    '#default_value' => $use_lite,
   );
-  
+ 
   // Define Image Node Options form.
   $form['image_node_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Lightbox2 Plus Image Node options'),
+    '#title' => t('Image Node options'),
+    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "thumbnail" or "image-thumbnail" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
     '#collapsible' => TRUE,
-    '#collapsed' => TRUE,
+    '#collapsed' => FALSE,
   );
   
   // Add Checkbox for Image Node.
@@ -153,8 +159,17 @@ function lightbox2_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
   
+
+  // Define Misc form
+  $form['lightbox2_misc_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Miscellaneous settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
   // Add Checkbox for Gallery2 Image Filter.
-  $form['image_node_options']['lightbox2G2_filter'] = array(
+  $form['lightbox2_misc_options']['lightbox2G2_filter'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Gallery 2 Filter'),
     '#description' => t('Checking this box will enable the Gallery 2 filter.'),
@@ -162,13 +177,14 @@ function lightbox2_settings_form() {
   );
   
   // Add Textarea for urls without lightbox
-  $form['image_node_options']['lightbox2_disable_these_urls'] = array(
+  $form['lightbox2_misc_options']['lightbox2_disable_these_urls'] = array(
     '#type' => 'textarea',
     '#title' => t('Disable LightBox for these urls'),
     '#description' => t('List the urls where the lightbox should be disabled, e.g. "node/add/page".  Put each url on a separate line. You can use the % character as a wildcard.'),
     '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
   );
-  
+
+ 
   return system_settings_form($form);
 }
 
@@ -210,50 +226,48 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
   
-  // Check to see if Lightbox2 Plus is enabled.
-  if (variable_get('lightbox2_plus', true)) {
+  // Lightbox2 Plus
+  if (!variable_get('lightbox2_lite', false)) {
     if (function_exists('drupal_add_css')) {
-      drupal_add_css($path .'/lightbox.css');
+      drupal_add_css($path .'/css/lightbox.css');
     }
     else {
-      theme('add_style', $path .'/lightbox.css');
+      theme('add_style', $path .'/css/lightbox.css');
     }
     
-				// Check to see if the Image Node Option is enabled in settings.
-				/*
-				if (variable_get('lightbox2_image_node', true)) {
-						if (variable_get('lightbox2_image_group', true)) {
-								if (variable_get('lightbox2_disable_nested_galleries', true)) {
-										drupal_add_js($path .'/js/image_nodes_galleries.js');
-								}
-								else {
-										drupal_add_js($path .'/js/image_nodes.js');
-								}
-						}
-						else {
-								if (variable_get('lightbox2_disable_nested_galleries', true)) {
-										drupal_add_js($path .'/js/image_nodes_nogroup_galleries.js');
-								}
-								else {
-										drupal_add_js($path .'/js/image_nodes_nogroup.js');
-								}
-						}
-				}
-				*/
-				drupal_add_js($path .'/js/lightbox.js');
+    // Check to see if the Image Node Option is enabled in settings.
+    if (variable_get('lightbox2_image_node', true)) {
+      if (variable_get('lightbox2_image_group', true)) {
+        if (variable_get('lightbox2_disable_nested_galleries', true)) {
+          drupal_add_js($path .'/js/image_nodes_galleries.js');
+        }
+        else {
+          drupal_add_js($path .'/js/image_nodes.js');
+        }
+      }
+      else {
+        if (variable_get('lightbox2_disable_nested_galleries', true)) {
+          drupal_add_js($path .'/js/image_nodes_nogroup_galleries.js');
+        }
+        else {
+          drupal_add_js($path .'/js/image_nodes_nogroup.js');
+        }
+      }
+    }
+    drupal_add_js($path .'/js/lightbox.js');
     
   }
-  // Load Lightbox Lite if Plus is not enabled.
+  // Lightbox Lite
   else {
     if (function_exists('drupal_add_css')) {
-      drupal_add_css($path .'/lightbox_lite.css');
+      drupal_add_css($path .'/css/lightbox_lite.css');
     }
     else {
-      theme('add_style', $path .'/lightbox_lite.css');
+      theme('add_style', $path .'/css/lightbox_lite.css');
     }
-    //drupal_add_js($path .'/js/lightbox_lite.js');
+    drupal_add_js($path .'/js/lightbox_lite.js');
   }
-  //drupal_add_js($path .'/js/lightningload.js');
+  drupal_add_js($path .'/js/lightningload.js');
 }
 
 /**
