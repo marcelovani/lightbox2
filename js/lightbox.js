@@ -55,7 +55,6 @@ var Lightbox = {
   imageArray : new Array,
   activeImage : null,
   inprogress : false,
-  lightboxTop : null,
  
 
 
@@ -290,10 +289,10 @@ var Lightbox = {
 
     // calculate top and left offset for the lightbox 
     var arrayPageScroll = Lightbox.getPageScroll();
-    Lightbox.lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
+    var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
     var lightboxLeft = arrayPageScroll[0];
     $('#lightbox').css({
-      top: Lightbox.lightboxTop + 'px', 
+      top: lightboxTop + 'px', 
       left: lightboxLeft + 'px'
     }).show();
     
@@ -343,7 +342,7 @@ var Lightbox = {
 
           // resize code
           var arrayPageSize = Lightbox.getPageSize();
-          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - Lightbox.lightboxTop };
+          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (arrayPageSize[3] / 10) };
           var orig = { w:imgPreloader.width, h:imgPreloader.height };
           var ratio = 1.0; // shrink image with the same aspect
           $('#bottomNavZoom').hide();
