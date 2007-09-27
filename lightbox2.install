@@ -1,8 +1,7 @@
 <?php
 // $Id $
 
-
-/**
+/** 
  * Implementation of hook_install()
  * just give a message
  */
@@ -10,7 +9,7 @@ function lightbox2_install() {
   watchdog('lightbox2', 'lightbox2 module installed');
 }
 
-/**
+/** 
  * Implementation of hook_uninstall()
  */
 function lightbox2_uninstall() {
@@ -19,7 +18,15 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_image_node');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2G2_filter');
-  
+
   watchdog('lightbox2', 'lightbox2 module un-installed');
+}
+
+function lightbox2_update_1() {
+  $ret = array();
+  $ret[] = update_sql('UPDATE {variable} SET name="lightbox2_lite"
+    WHERE name="lightbox2_plus";');
+
+  return $ret;
 }
 
