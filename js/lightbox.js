@@ -627,7 +627,4 @@ var Lightbox = {
   }
 };
 
-//$(document).ready(function() {
-//  Lightbox.initialize();
-//});
 function initLightbox() { Lightbox.initialize(); }
