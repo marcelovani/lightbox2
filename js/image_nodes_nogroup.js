@@ -7,7 +7,7 @@ if (Drupal.jsEnabled) {
 		$(document).ready(function lightbox2_image_nodes() {
 				var img_assist = document.getElementById("img_assist_thumbs");
     if (!img_assist) {
-      $("a[img.image-thumbnail, img.thumbnail]").each(function(i) {
+      $("a[img.inline, img.image-thumbnail, img.thumbnail]").each(function(i) {
 
         var child = $(this).children();
         var alt = $(child).attr("alt");

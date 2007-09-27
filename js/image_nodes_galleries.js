@@ -7,7 +7,7 @@ if (Drupal.jsEnabled) {
    var img_assist = document.getElementById("img_assist_thumbs");
     if (!img_assist) {
 						// apply to all other images
-      $("a[img.image-thumbnail, img.thumbnail]").each(function(i) {
+      $("a[img.inline, img.image-thumbnail, img.thumbnail]").each(function(i) {
 								if (!$(this).parents(".galleries").length ) {
 
         var child = $(this).children();
