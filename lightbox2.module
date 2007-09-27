@@ -209,7 +209,7 @@ if (variable_get('lightbox2G2_filter', true)) {
       case 'list':
         return array(0 => t('Lightbox filter'));
       case 'description':
-        return t('Turns g2_filter links into Lighbox.V2 appropriate links');
+        return t('Turns g2_filter links into Lightbox.V2 appropriate links');
       case 'process':
         $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
