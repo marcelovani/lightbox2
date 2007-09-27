@@ -14,7 +14,7 @@ if (Drupal.jsEnabled) {
         var link_text = "View Image Information";
         $(this).attr({rel: "lightbox",
           title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
-          href: $(child).attr("src").replace(".thumbnail", ""),
+          href: $(child).attr("src").replace(".thumbnail", "")
           });
         }
 
