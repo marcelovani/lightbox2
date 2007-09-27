@@ -12,7 +12,6 @@ if (Drupal.jsEnabled) {
 
         var child = $(this).children();
         var alt = $(child).attr("alt");
-								alert(alt);
         var link_text = "View Image Information";
         $(this).attr({rel: "lightbox[node_thumbnails]",
           title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
