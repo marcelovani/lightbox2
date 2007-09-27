@@ -34,5 +34,5 @@
   background-color: #333;
   back\ground-color: transparent;
   background-image: url(../images/blank.gif);
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/modules/lightbox2/images/overlay.png", sizingMethod="scale");
+  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../images/overlay.png", sizingMethod="scale");
 }
