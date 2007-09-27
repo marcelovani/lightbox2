@@ -3,10 +3,12 @@
   padding: 10px;
   border-bottom: 2px solid #666;
   border-right: 2px solid #666;
+  min-width: 240px;
 }
 #lightboxDetails {
   font-size: 1.2em;
   padding-top: 0.6em;
+  min-width: 240px;
 }
 #lightboxCaption {
   float: left;
@@ -26,11 +28,11 @@
   border: none;
 }
 #overlay {
-  background-image: url(/modules/lightbox2/images/overlay.png);
+  background-image: url(../images/overlay.png);
 }
 * html #overlay {
   background-color: #333;
   back\ground-color: transparent;
-  background-image: url(/modules/lightbox2/images/blank.gif);
+  background-image: url(../images/blank.gif);
   filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/modules/lightbox2/images/overlay.png", sizingMethod="scale");
 }
