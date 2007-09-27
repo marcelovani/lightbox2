@@ -9,38 +9,22 @@ Co-maintainer: Stella Power (http://drupal.org/user/66894)
 
 Licensed under the GNU/GPL License
 
-Permission has been granted by Lokesh Dhakar to distribute the lightbox.js file via Drupal.org under this license scheme, as allowed by the Creative Commons License.
+Based on Lightbox v2.03.3 by Lokesh Dhakar
+<http://www.huddletogether.com/projects/lightbox2/>
 
-This module enables the use of lightbox V2 which places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths.
+Originally written to make use of the Prototype framework, and Script.acalo.us,
+now altered to use jQuery.
+
+Permission has been granted to Mark Ashmead & other Drupal Lightbox2 module
+maintainers to distribute the original lightbox.js via Drupal.org under this
+license scheme.  This file has been subsequently modified to make use of jQuery
+instead of prototype / script.acalo.us.
+
+This module enables the use of lightbox V2 which places images above your
+current page, not within. This frees you from the constraints of the layout,
+particularly column widths.
 
 ---------------------------------------------------------------------------------------------------------
-
-Pre-Installation
-----------------
-
-Due to variation in licensing, you will need to download the
-Scriptaculous/Prototype libraries seperately. Please visit:
-http://www.stellapowerdesign.net/scriptaculous-drupal.zip - and download the latest version of the libraries. You will then need to copy the files located in \lib and \src directories of this download into the \lightbox2\js\ directory of the LightboxV2 module. 
-
-The files required are: 
-
-\lib\prototype.js
-\src\builder.js
-\src\dragdrop.js
-\src\effects.js
-\src\scriptaculous.js
-\src\slider.js
-\src\unittest.js
-
-When copied, the directory should look like:
-
-\lightbox2\js\prototype.js
-\lightbox2\js\builder.js
-\lightbox2\js\dragdrop.js
-\lightbox2\js\effects.js
-\lightbox2\js\scriptaculous.js
-\lightbox2\js\slider.js
-\lightbox2\js\unittest.js
 
 
 Installation
@@ -69,4 +53,7 @@ No limits to the number of image sets per page or how many images are allowed in
 Information
 ------------
 
-This module will include the lightbox CSS and JS files in your Drupal Installation without the need to edit the theme. The module comes with a Lightbox2 Lite option which does not use the Scriptaculous/Prototype libraries; it is therefore less likely to conflict with anything else. 
+This module will include the lightbox CSS and JS files in your Drupal
+Installation without the need to edit the theme. The module comes with a
+Lightbox2 Lite option which does not use the jQuery libraries; it is therefore 
+less likely to conflict with anything else. 
