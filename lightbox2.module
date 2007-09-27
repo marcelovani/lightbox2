@@ -233,11 +233,15 @@ function lightbox2_add_files() {
 
   // Lightbox2 Plus
   if (!variable_get('lightbox2_lite', false)) {
+    $css = path_to_theme() .'/lightbox.css';
+    if (!file_exists($css)) {
+      $css = $path .'/css/lightbox.css';
+    }
     if (function_exists('drupal_add_css')) {
-      drupal_add_css($path .'/css/lightbox.css');
+      drupal_add_css($css);
     }
     else {
-      theme('add_style', $path .'/css/lightbox.css');
+      theme('add_style', $css);
     }
 
     // Check to see if the Image Node Option is enabled in settings.
@@ -264,11 +268,15 @@ function lightbox2_add_files() {
   }
   // Lightbox Lite
   else {
+    $css = path_to_theme() .'/lightbox_lite.css';
+    if (!file_exists($css)) {
+      $css = $path .'/css/lightbox_lite.css';
+    }
     if (function_exists('drupal_add_css')) {
-      drupal_add_css($path .'/css/lightbox_lite.css');
+      drupal_add_css($css);
     }
     else {
-      theme('add_style', $path .'/css/lightbox_lite.css');
+      theme('add_style', $css);
     }
     drupal_add_js($path .'/js/lightbox_lite.js');
   }
