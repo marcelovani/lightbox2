@@ -16,10 +16,30 @@ function lightbox2_install() {
 function lightbox2_uninstall() {
   // delete the variables we created
   variable_del('lightbox2_plus');
+  variable_del('lightbox2_lite');
   variable_del('lightbox2_image_node');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2G2_filter');
   
   watchdog('lightbox2', 'lightbox2 module un-installed');
 }
+
+function lightbox2_update_1() {
+  $ret = array();
+  switch ($GLOBALS['db_type']) {
+    case 'mysql':
+    case 'mysqli':
+      $ret[] = update_sql('UPDATE {variable} SET name="lightbox2_lite"
+        WHERE name="lightbox2_plus";');
+      break;
+
+    case 'pgsql':
+      $ret[] = update_sql('UPDATE {variable} SET name="lightbox2_lite"
+        WHERE name="lightbox2_plus";');
+      break;
+  }
+
+  return $ret;
+}
+
 
