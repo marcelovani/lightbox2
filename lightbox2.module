@@ -180,7 +180,7 @@ function lightbox2_settings_form() {
   $form['lightbox2_misc_options']['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Image Count Text'),
-    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "!current / !total"'),
+    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total"'),
     '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
   );
   
