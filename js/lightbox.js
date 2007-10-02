@@ -429,11 +429,9 @@ var Lightbox = {
     
     // if image is part of set display 'Image x of x' 
     if (Lightbox.imageArray.length > 1) {
-      var args = new Array();
-      args['@num'] = eval(Lightbox.activeImage + 1);
-      args['@total'] = Lightbox.imageArray.length;
-      var numCount = Drupal.t("Image @num of @total", args);
-      $('#numberDisplay').html(numCount).show();
+      var settings = Drupal.settings.lightbox2;
+      var numberDisplay = settings.image_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+      $('#numberDisplay').html(numberDisplay).show();
     }
 
     $("#imageDataContainer").hide().slideDown("slow");
