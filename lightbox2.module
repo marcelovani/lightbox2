@@ -143,6 +143,14 @@ function lightbox2_settings_form() {
     '#default_value' => variable_get('lightbox2_image_node', true),
   );
   
+  // Add text box for link text to node
+  $form['image_node_options']['lightbox2_node_link_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text for Node Link'),
+    '#description' => t('This is the text that will appear as the link to the node underneath the image in the lightbox'),
+    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
+  );
+  
   // Add Checkbox for Image Node Grouping.
   $form['image_node_options']['lightbox2_image_group'] = array(
     '#type' => 'checkbox',
@@ -158,7 +166,7 @@ function lightbox2_settings_form() {
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.'),
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
-  
+
 
   // Define Misc form
   $form['lightbox2_misc_options'] = array(
@@ -168,6 +176,14 @@ function lightbox2_settings_form() {
     '#collapsed' => FALSE,
   );
 
+  // Add text box for image count for grouping
+  $form['lightbox2_misc_options']['lightbox2_image_count_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Image Count Text'),
+    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "!current / !total"'),
+    '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
+  );
+  
   // Add Checkbox for Gallery2 Image Filter.
   $form['lightbox2_misc_options']['lightbox2G2_filter'] = array(
     '#type' => 'checkbox',
@@ -203,7 +219,7 @@ if (variable_get('lightbox2G2_filter', true)) {
         return array(0 => t('Lightbox filter'));
       
       case 'description':
-        return t('Turns g2_filter links into Lighbox.V2 appropriate links');
+        return t('Turns g2_filter links into Lightbox.V2 appropriate links');
       
       case 'process':
         $text = ' '. $text .' ';
@@ -226,6 +242,15 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
   
+  // load the javascript settings
+  $js_settings = array(
+    'group_images' => variable_get('lightbox2_image_group', true),
+    'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
+    'node_link_text' => t(variable_get('lightbox2_node_link_text', 'View Image Details')),
+    'image_count' => t(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
+  );
+  drupal_add_js(array('lightbox2' => $js_settings), 'setting');
+
   // Lightbox2 Plus
   if (!variable_get('lightbox2_lite', false)) {
     $css = path_to_theme() .'/lightbox.css';
@@ -241,22 +266,7 @@ function lightbox2_add_files() {
     
     // Check to see if the Image Node Option is enabled in settings.
     if (variable_get('lightbox2_image_node', true)) {
-      if (variable_get('lightbox2_image_group', true)) {
-        if (variable_get('lightbox2_disable_nested_galleries', true)) {
-          drupal_add_js($path .'/js/image_nodes_galleries.js');
-        }
-        else {
-          drupal_add_js($path .'/js/image_nodes.js');
-        }
-      }
-      else {
-        if (variable_get('lightbox2_disable_nested_galleries', true)) {
-          drupal_add_js($path .'/js/image_nodes_nogroup_galleries.js');
-        }
-        else {
-          drupal_add_js($path .'/js/image_nodes_nogroup.js');
-        }
-      }
+      drupal_add_js($path .'/js/image_nodes.js');
     }
     drupal_add_js($path .'/js/lightbox.js');
     
