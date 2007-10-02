@@ -11,7 +11,7 @@ if (Drupal.jsEnabled) {
 
         var child = $(this).children();
         var alt = $(child).attr("alt");
-        var link_text = "View Image Information";
+        var link_text = Drupal.t("View Image Information");
         $(this).attr({rel: "lightbox[node_thumbnails]",
           title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
           href: $(child).attr("src").replace(".thumbnail", "")

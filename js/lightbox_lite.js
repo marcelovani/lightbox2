@@ -407,7 +407,7 @@ function initLightbox() {
   // create keyboard message
   var objKeyboardMsg = document.createElement("div");
   objKeyboardMsg.setAttribute('id', 'keyboardMsg');
-  objKeyboardMsg.innerHTML = 'press <a href="#" onclick="hideLightbox(); return false;"><kbd>x</kbd></a> to close';
+  objKeyboardMsg.innerHTML = Drupal.t('press <a href="#" onclick="hideLightbox(); return false;"><kbd>x</kbd></a> to close');
   objLightboxDetails.appendChild(objKeyboardMsg);
 
 
