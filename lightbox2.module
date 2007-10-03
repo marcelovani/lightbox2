@@ -248,7 +248,7 @@ function lightbox2_add_files() {
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'node_link_text' => t(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'image_count' => t(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
-    'lite_press_x_close' => t(variable_get('lightbox2_lite_press_x_close', 'press <em>x</em> to close')),
+    'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return false;"><kbd>x</kbd></a>'),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
