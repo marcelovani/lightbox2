@@ -196,7 +196,7 @@ function lightbox2_settings_form() {
   $form['lightbox2_misc_options']['lightbox2_disable_these_urls'] = array(
     '#type' => 'textarea',
     '#title' => t('Disable LightBox for these urls'),
-    '#description' => t('List the urls where the lightbox should be disabled, e.g. "node/add/page".  Put each url on a separate line. You can use the % character as a wildcard.'),
+    '#description' => t('List the urls where the lightbox should be disabled, e.g. "node/add/page".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
     '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
   );
 
@@ -248,6 +248,7 @@ function lightbox2_add_files() {
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'node_link_text' => t(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'image_count' => t(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
+    'lite_press_x_close' => t(variable_get('lightbox2_lite_press_x_close', 'press <em>x</em> to close')),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
@@ -366,8 +367,11 @@ function lightbox2_exclude_these_paths() {
     $urls = explode("\n", $disabled_urls);
     
     foreach ($urls as $url) {
-      $url     = rtrim($url);
-      $url     = preg_replace('/%/', '.*?', preg_quote($url, '/'));
+      $url = rtrim($url);
+      if ($url == "<front>") {
+        $url = "";
+      }
+      $url = preg_replace('/%/', '.*?', preg_quote($url, '/'));
       $pattern = '/^'. $url .'$/';
       if (preg_match($pattern, $_REQUEST['q'])) {
         return 1;
