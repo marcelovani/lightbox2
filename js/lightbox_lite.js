@@ -31,15 +31,6 @@
 
 
 
-// Configuration
-
-// If you would like to use a custom loading image or close button reference them in the next two lines.
-var loadingImage = '/modules/lightbox2/images/loading_lite.gif';  
-var closeButton = '/modules/lightbox2/images/close_lite.gif';  
-
-
-
-
 
 //
 // getPageScroll()
@@ -136,7 +127,7 @@ function getPageSize() {
 
 
 // pause(numberMillis)
-function pause(numberMillis) {
+function pause(ms) {
   var date = new Date();
   curDate = null;
   do { var curDate = new Date(); }
@@ -177,13 +168,6 @@ function showLightbox(objLink) {
 
   var arrayPageSize = getPageSize();
   var arrayPageScroll = getPageScroll();
-
-  // center loadingImage if it exists
-  if (objLoadingImage) {
-    objLoadingImage.style.top = (arrayPageScroll[1] + ((arrayPageSize[3] - 35 - objLoadingImage.height) / 2) + 'px');
-    objLoadingImage.style.left = (((arrayPageSize[0] - 20 - objLoadingImage.width) / 2) + 'px');
-    objLoadingImage.style.display = 'block';
-  }
 
   // set height of Overlay to take up whole page and show
   objOverlay.style.height = (arrayPageSize[1] + 'px');
@@ -329,31 +313,10 @@ function initLightbox() {
   var arrayPageSize = getPageSize();
   var arrayPageScroll = getPageScroll();
 
-  // preload and create loader image
-  var imgPreloader = new Image();
- 
-  // if loader image found, create link to hide lightbox and create loadingimage
-  imgPreloader.onload = function() {
- 
-    var objLoadingImageLink = document.createElement("a");
-    objLoadingImageLink.setAttribute('href', '#');
-    objLoadingImageLink.onclick = function () { hideLightbox(); return false; }
-    objOverlay.appendChild(objLoadingImageLink);
-  
-    var objLoadingImage = document.createElement("img");
-    objLoadingImage.src = loadingImage;
-    objLoadingImage.setAttribute('id', 'loadingImage');
-    objLoadingImage.style.position = 'absolute';
-    objLoadingImage.style.zIndex = '150';
-    objLoadingImageLink.appendChild(objLoadingImage);
-
-    // clear onLoad, as IE will flip out w/animated gifs
-    imgPreloader.onload = function() {};
-
-    return false;
-  }
-
-  imgPreloader.src = loadingImage;
+  // create loader image
+  var objLoadingImage = document.createElement("span");
+  objLoadingImage.setAttribute('id', 'loadingImage');
+  objOverlay.appendChild(objLoadingImage);
 
   // create lightbox div, same note about styles as above
   var objLightbox = document.createElement("div");
@@ -370,23 +333,10 @@ function initLightbox() {
   objLink.onclick = function () {hideLightbox(); return false;}
   objLightbox.appendChild(objLink);
 
-  // preload and create close button image
-  var imgPreloadCloseButton = new Image();
- 
-  // if close button image found, 
-  imgPreloadCloseButton.onload = function() {
-
-    var objCloseButton = document.createElement("img");
-    objCloseButton.src = closeButton;
-    objCloseButton.setAttribute('id', 'closeButton');
-    objCloseButton.style.position = 'absolute';
-    objCloseButton.style.zIndex = '200';
-    objLink.appendChild(objCloseButton);
-
-    return false;
-  }
-
-  imgPreloadCloseButton.src = closeButton;
+  // create close button image
+  var objCloseButton = document.createElement("span");
+  objCloseButton.setAttribute('id', 'closeButton');
+  objLink.appendChild(objCloseButton);
 
   // create image
   var objImage = document.createElement("img");
