@@ -6,6 +6,7 @@
  * just give a message
  */
 function lightbox2_install() {
+  module_invoke('content', 'clear_type_cache');
   watchdog('lightbox2', 'lightbox2 module installed');
 }
 
