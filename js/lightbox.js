@@ -3,10 +3,11 @@
  * jQuery Lightbox
  * @author
  *   Stella Power (snpower), <http://drupal.org/user/66894>
- *   Warren Krewenki, <http://warren.mesozen.com>
  *
  * Based on Lightbox v2.03.3 by Lokesh Dhakar 
  * <http://www.huddletogether.com/projects/lightbox2/>
+ * Also partially based on the jQuery Lightbox by Warren Krewenki
+ *   <http://warren.mesozen.com>
  *
  * Originally written to make use of the Prototype framework, and 
  * Script.acalo.us, now altered to use jQuery.
@@ -50,7 +51,8 @@
 
 var Lightbox = {
   overlayOpacity : 0.8, // controls transparency of shadow overlay
-  resizeSpeed: 'normal', // controls the speed of the image resizing animations
+  fadeInSpeed: 'normal', // controls the speed of the image appearance
+  slideDownSpeed: 'slow', // controls the speed of the image resizing animations
   borderSize : 18, // if you adjust the padding in the CSS, you will need to update this variable
   imageArray : new Array,
   activeImage : null,
@@ -415,7 +417,7 @@ var Lightbox = {
   // Display image and begin preloading neighbors.
   showImage: function() {
     $('#loading').hide();
-    $('#lightboxImage').fadeIn(Lightbox.resizeSpeed);
+    $('#lightboxImage').fadeIn(Lightbox.fadeInSpeed);
     Lightbox.updateDetails();
     this.preloadNeighborImages();
     this.inprogress = false;
@@ -439,7 +441,7 @@ var Lightbox = {
       $('#numberDisplay').html(numberDisplay).show();
     }
 
-    $("#imageDataContainer").hide().slideDown("slow");
+    $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
     var arrayPageSize = Lightbox.getPageSize();
     $('#overLay').css({height: arrayPageSize[1] + 'px'});
     Lightbox.updateNav();
