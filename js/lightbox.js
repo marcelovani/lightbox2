@@ -173,6 +173,7 @@ var Lightbox = {
     BottomNav.setAttribute('id', 'bottomNav');
     ImageData.appendChild(BottomNav);
 
+
     var BottomNavCloseLink = document.createElement("a");
     BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
     BottomNavCloseLink.setAttribute('href', '#');
@@ -191,7 +192,6 @@ var Lightbox = {
     $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $("#bottomNavClose").click(function() { Lightbox.end(); return false; } );
     $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'TRUE'); return false; } );
-    $('#outerImageContainer').css({width: '250px', height: '250px'} );
 
     // Fix positioning of Prev and Next links.
     $('#prevLink').css({ paddingTop: Lightbox.borderSize});

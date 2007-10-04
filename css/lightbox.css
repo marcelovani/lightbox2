@@ -60,10 +60,10 @@
   float: right;
 }
 #prevLink:hover, #prevLink:visited:hover {
-  background: url(../images/prevlabel.gif) left 15% no-repeat;
+  background: url(../images/prev.gif) left 15% no-repeat;
 }
 #nextLink:hover, #nextLink:visited:hover {
-  background: url(../images/nextlabel.gif) right 15% no-repeat;
+  background: url(../images/next.gif) right 15% no-repeat;
 }
 #imageDataContainer {
   font: 10px Verdana, Helvetica, sans-serif;
@@ -88,13 +88,8 @@
   clear: left;
   padding-bottom: 1.0em;
 }
-#imageData #bottomNavClose {
-  width: 66px;
-  float: right;
-  padding-top: 0.7em;
-}
 #imageData #bottomNav {
-  height: 57px;
+  height: 66px;
 }
 #overlay {
   position: absolute;
@@ -128,11 +123,13 @@
 /* Image location mod */
 #bottomNavClose {
   display: block;
-  background: url(../images/closelabel.gif) no-repeat;
-  width: 66px;
-  height: 22px;
+  background: url(../images/close.gif) right no-repeat;
   position: relative;
   top: 35px;
+  float: right;
+  padding-top: 0.7em;
+  height: 26px;
+  width: 26px;
 }
 #loadingLink {
   display: block;
@@ -146,6 +143,6 @@
   width: 34px;
   height: 34px;
   position: relative;
+  left: 30px;
   float: right;
-  left: 66px;
 }
