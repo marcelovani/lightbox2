@@ -307,6 +307,11 @@ var Lightbox = {
     if (this.inprogress == false) {
       this.inprogress = true;
 
+      var settings = Drupal.settings.lightbox2;
+      if (settings.disable_zoom) {
+        zoom = "TRUE";
+      }
+
       Lightbox.activeImage = imageNum; // update global var
 
       // hide elements during transition
