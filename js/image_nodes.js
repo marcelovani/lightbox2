@@ -9,7 +9,7 @@ if (Drupal.jsEnabled) {
 
     var img_assist = document.getElementById("img_assist_thumbs");
     if (!img_assist) {
-      $("a[img.inline, img.image-thumbnail, img.thumbnail]").each(function(i) {
+      $("a[img.inline-image-link, img.inline, img.image-thumbnail, img.thumbnail]").each(function(i) {
         if (!settings.disable_for_gallery_lists || (settings.disable_for_gallery_lists && !$(this).parents(".galleries").length)) {
 
           var child = $(this).children();
