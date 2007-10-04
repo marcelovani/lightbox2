@@ -194,7 +194,7 @@ function lightbox2_settings_form() {
   $form['image_node_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Automatic image node options'),
-    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "thumbnail" or "image-thumbnail" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
+    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "thumbnail" or "image-thumbnail" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
