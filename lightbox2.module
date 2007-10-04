@@ -38,6 +38,18 @@ function lightbox2_help($section) {
       return t('<h3>Overview</h3>
       <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers. The module comes with a Lightbox2 Lite option which does not use the jQuery libraries; it is therefore less likely to conflict with anything else.</p>
       <p align="justify">Places images above your current page, not within. This frees you from the constraints of the layout, particularly column widths. Keeps users on the same page. Clicking to view an image and then having to click the back button to return to your site is bad for continuity (and no fun!).</p>
+<h3>Features</h3>
+The version 2 module has several benefits over the plain Lightbox module.  Note, not all of these features are available when the "Lightbox2 Lite" option is enabled.
+<ul>
+<li>Image Sets: group related images and navigate through them with ease - ideal for your image galleries.</li>
+<li>Visual Effects: fancy pre-loader and transition when you click on the image.</li>
+<li>Zoom Capability: larger images are reduced in size so they fit snugly inside the browser window.  A zoom button can then be clicked on to see it in its original size.</li>
+<li>Automatic Image Node Detection: configurable automatic re-formatting of image node thumbnails, so there is no need to add \'rel="lightbox"\' to each image node link on your site.  <a href="http://drupal.org/project/image">Image</a>, <a href="http://drupal.org/project/img_assist">Image Assist</a> and <a href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all supported (images must have the "thumbnail" or "image-thumbnail" classes).</li>
+<li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
+<li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
+<li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
+<li>Gallery 2 Support: support for Gallery 2 images via the <a href="http://drupal.org/project/gallery">Gallery</a> module (beta).</li>
+</ul>
       <p align="justify"><h3>Usage</h3></p>
       <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
       <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
