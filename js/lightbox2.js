@@ -13,6 +13,7 @@ if (Drupal.jsEnabled) {
 function lightbox2_lite_handler(event) {
   // enable / disable the image node options
   if ($("input[@name=lightbox2_lite]:checked").val() == 1) {
+    $("input[@name=lightbox2_disable_zoom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_node]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_group]").attr("disabled", "disabled");
@@ -20,6 +21,7 @@ function lightbox2_lite_handler(event) {
     $("input[@name=lightbox2_image_count_str]").attr("disabled", "disabled");
   }
   else {
+    $("input[@name=lightbox2_disable_zoom]").removeAttr("disabled");
     $("input[@name=lightbox2_image_node]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
     $("input[@name=lightbox2_image_group]").removeAttr("disabled");

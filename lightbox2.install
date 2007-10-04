@@ -17,13 +17,16 @@ function lightbox2_uninstall() {
   // delete the variables we created
   variable_del('lightbox2_plus');
   variable_del('lightbox2_lite');
+
+  variable_del('lightbox2_image_count_str');
+  variable_del('lightbox2_disable_zoom');
+  variable_del('lightbox2G2_filter');
+  variable_del('lightbox2_disable_these_urls');
+
   variable_del('lightbox2_image_node');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_node_link_text');
   variable_del('lightbox2_disable_nested_galleries');
-  variable_del('lightbox2_image_count_str');
-  variable_del('lightbox2G2_filter');
-  variable_del('lightbox2_disable_these_urls');
   
   watchdog('lightbox2', 'lightbox2 module un-installed');
 }

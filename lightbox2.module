@@ -109,7 +109,8 @@ function lightbox2_settings_form() {
   // add the javascript which disables / enables form elements
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
-  // Define Lightbox2 Lite form.
+  // Define Lightbox2 Lite fieldset.
+  /* ------------------------------- */
   $use_lite = variable_get('lightbox2_lite', false);
   $form['lightbox2_lite_options'] = array(
     '#type' => 'fieldset',
@@ -126,10 +127,54 @@ function lightbox2_settings_form() {
     '#default_value' => $use_lite,
   );
  
-  // Define Image Node Options form.
+
+  // Define General settings fieldset
+  /* --------------------------------- */
+  $form['lightbox2_general_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('General settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
+  // Add text box for image count for grouping
+  $form['lightbox2_general_options']['lightbox2_image_count_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Image Count Text'),
+    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".'),
+    '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
+  );
+   
+  // Add Checkbox for Zoom image
+  $form['lightbox2_general_options']['lightbox2_disable_zoom'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Disable Zoom Feature'),
+    '#description' => t('By default, when the image being displayed in the lightbox is larger than the browser window, it is resized to fit within the window and a zoom button is provided for users who wish to view the image in its original size.  Checking this box will disable this feature and all images will be displayed without any resizing.'),
+    '#default_value' => variable_get('lightbox2_disable_zoom', false),
+  );
+
+  // Add Checkbox for Gallery2 Image Filter.
+  $form['lightbox2_general_options']['lightbox2G2_filter'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Gallery 2 Filter'),
+    '#description' => t('Checking this box will enable the Gallery 2 filter.'),
+    '#default_value' => variable_get('lightbox2G2_filter', true),
+  );
+  
+  // Add Textarea for urls without lightbox
+  $form['lightbox2_general_options']['lightbox2_disable_these_urls'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Disable LightBox for these urls'),
+    '#description' => t('List the urls where the lightbox should be disabled, e.g. "node/add/page".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
+    '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
+  );
+
+
+  // Define Image Node Options fieldset.
+  /* ----------------------------------- */
   $form['image_node_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Image Node options'),
+    '#title' => t('Automatic image node options'),
     '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "thumbnail" or "image-thumbnail" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
@@ -165,39 +210,6 @@ function lightbox2_settings_form() {
     '#title' => t('Disable Lightbox for Gallery Lists'),
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.'),
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
-  );
-
-
-  // Define Misc form
-  $form['lightbox2_misc_options'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Miscellaneous settings'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
-  // Add text box for image count for grouping
-  $form['lightbox2_misc_options']['lightbox2_image_count_str'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Image Count Text'),
-    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total"'),
-    '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
-  );
-  
-  // Add Checkbox for Gallery2 Image Filter.
-  $form['lightbox2_misc_options']['lightbox2G2_filter'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable Gallery 2 Filter'),
-    '#description' => t('Checking this box will enable the Gallery 2 filter.'),
-    '#default_value' => variable_get('lightbox2G2_filter', true),
-  );
-  
-  // Add Textarea for urls without lightbox
-  $form['lightbox2_misc_options']['lightbox2_disable_these_urls'] = array(
-    '#type' => 'textarea',
-    '#title' => t('Disable LightBox for these urls'),
-    '#description' => t('List the urls where the lightbox should be disabled, e.g. "node/add/page".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
-    '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
   );
 
  
@@ -244,6 +256,7 @@ function lightbox2_add_files() {
   
   // load the javascript settings
   $js_settings = array(
+    'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'node_link_text' => t(variable_get('lightbox2_node_link_text', 'View Image Details')),
