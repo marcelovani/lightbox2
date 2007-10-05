@@ -71,6 +71,7 @@ var Lightbox = {
 
     // MAKE THE LIGHTBOX DIVS
     // Code inserts html at the bottom of the page that looks similar to this:
+				// (default layout)
     //
     // <div id="overlay"></div>
     // <div id="lightbox">
@@ -103,6 +104,8 @@ var Lightbox = {
     //  </div>
     // </div>
 
+    var settings = Drupal.settings.lightbox2;
+
     var Body = document.getElementsByTagName("body").item(0);
 
     var Overlay = document.createElement("div");
@@ -129,7 +132,9 @@ var Lightbox = {
 
     var HoverNav = document.createElement("div");
     HoverNav.setAttribute('id', 'hoverNav');
-    ImageContainer.appendChild(HoverNav);
+    if (!settings.use_alt_layout) {
+      ImageContainer.appendChild(HoverNav);
+    }
 
     var PrevLink = document.createElement("a");
     PrevLink.setAttribute('id', 'prevLink');
@@ -158,6 +163,9 @@ var Lightbox = {
     var ImageData = document.createElement("div");
     ImageData.setAttribute('id', 'imageData');
     ImageDataContainer.appendChild(ImageData);
+    if (settings.use_alt_layout) {
+      ImageData.appendChild(HoverNav);
+    }
 
     var ImageDetails = document.createElement("div");
     ImageDetails.setAttribute('id', 'imageDetails');
@@ -173,8 +181,6 @@ var Lightbox = {
 
     var BottomNav = document.createElement("div");
     BottomNav.setAttribute('id', 'bottomNav');
-    ImageData.appendChild(BottomNav);
-
 
     var BottomNavCloseLink = document.createElement("a");
     BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
@@ -185,6 +191,13 @@ var Lightbox = {
     BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
     BottomNavZoomLink.setAttribute('href', '#');
     BottomNav.appendChild(BottomNavZoomLink);
+    if (settings.use_alt_layout) {
+      ImageContainer.appendChild(BottomNav);
+    }
+    else {
+      ImageData.appendChild(BottomNav);
+    }
+
 
 
     $("#overlay").click(function() { Lightbox.end(); } ).hide();
@@ -199,6 +212,11 @@ var Lightbox = {
     $('#prevLink').css({ paddingTop: Lightbox.borderSize});
     $('#nextLink').css({ paddingTop: Lightbox.borderSize});
 
+    // Force navigation links to always be displayed
+    if (settings.force_show_nav) {
+      $('#prevLink').addClass("force_show_nav");
+      $('#nextLink').addClass("force_show_nav");
+    }
 
   },
  
@@ -407,8 +425,11 @@ var Lightbox = {
       }
     }
 
-    $('#prevLink').css({height: imgHeight + 'px'});
-    $('#nextLink').css({height: imgHeight + 'px'});
+    var settings = Drupal.settings.lightbox2;
+    if (!settings.use_alt_layout) {
+      $('#prevLink').css({height: imgHeight + 'px'});
+      $('#nextLink').css({height: imgHeight + 'px'});
+    }
     $('#imageDataContainer').css({width: widthNew + 'px'});
 
   },
