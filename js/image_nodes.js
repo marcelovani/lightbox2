@@ -20,7 +20,7 @@ if (Drupal.jsEnabled) {
             rel = "lightbox[node_thumbnails]";
           }
           $(this).attr({rel: rel,
-            title: alt + "<br /><br /><a href=\"" + this.href + "\">"+ link_text + "</a>",
+            title: alt + "<br /><a href=\"" + this.href + "\" id=\"node_link_text\">"+ link_text + "</a>",
             href: $(child).attr("src").replace(".thumbnail", "")
             });
         }
