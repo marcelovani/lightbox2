@@ -59,11 +59,17 @@
   right: 0;
   float: right;
 }
-#prevLink:hover, #prevLink:visited:hover {
+#prevLink:hover, #prevLink:visited:hover, #prevLink.force_show_nav {
   background: url(../images/prev.gif) left 15% no-repeat;
 }
-#nextLink:hover, #nextLink:visited:hover {
+#nextLink:hover, #nextLink:visited:hover, #nextLink.force_show_nav {
   background: url(../images/next.gif) right 15% no-repeat;
+}
+#prevLink:hover.force_show_nav, #prevLink:visited:hover.force_show_nav {
+  background: url(../images/prev_hover.gif) left 15% no-repeat;
+}
+#nextLink:hover.force_show_nav, #nextLink:visited:hover.force_show_nav {
+  background: url(../images/next_hover.gif) right 15% no-repeat;
 }
 #imageDataContainer {
   font: 10px Verdana, Helvetica, sans-serif;
@@ -86,6 +92,10 @@
 #imageData #numberDisplay {
   display: block;
   clear: left;
+  padding-bottom: 1.0em;
+}
+#imageData #node_link_text {
+  display: block;
   padding-bottom: 1.0em;
 }
 #imageData #bottomNav {
@@ -130,6 +140,9 @@
   padding-top: 0.7em;
   height: 26px;
   width: 26px;
+}
+#bottomNavClose:hover {
+  background: url(../images/close_hover.gif) right no-repeat;
 }
 #loadingLink {
   display: block;
