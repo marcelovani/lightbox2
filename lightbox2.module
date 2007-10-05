@@ -155,6 +155,22 @@ function lightbox2_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
+ 
+  // Add Checkbox for Alternative Layout
+  $form['lightbox2_general_options']['lightbox2_use_alt_layout'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Use Alternative Layout'),
+    '#description' => t('Enabling this option alters the layout of the lightbox elements.  This doesn\'t apply when using Lightbox Lite.'),
+    '#default_value' => variable_get('lightbox2_use_alt_layout', false),
+  );
+
+  // Add Checkbox for Force Navigation display
+  $form['lightbox2_general_options']['lightbox2_force_show_nav'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Force visibility of navigation links'),
+    '#description' => t('When viewing grouped images using the default layout, the navigational links to the next and previous images are only displayed when you hover over the image.  Checking this box forces these links to be displayed all the time.'),
+    '#default_value' => variable_get('lightbox2_force_show_nav', false),
+  );
 
   // Add text box for image count for grouping
   $form['lightbox2_general_options']['lightbox2_image_count_str'] = array(
@@ -171,7 +187,7 @@ function lightbox2_settings_form() {
     '#description' => t('By default, when the image being displayed in the lightbox is larger than the browser window, it is resized to fit within the window and a zoom button is provided for users who wish to view the image in its original size.  Checking this box will disable this feature and all images will be displayed without any resizing.'),
     '#default_value' => variable_get('lightbox2_disable_zoom', false),
   );
-
+ 
   // Add Checkbox for Gallery2 Image Filter.
   $form['lightbox2_general_options']['lightbox2G2_filter'] = array(
     '#type' => 'checkbox',
@@ -275,7 +291,9 @@ function lightbox2_add_files() {
   
   // load the javascript settings
   $js_settings = array(
+    'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
+    'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'node_link_text' => t(variable_get('lightbox2_node_link_text', 'View Image Details')),
@@ -287,6 +305,9 @@ function lightbox2_add_files() {
   // Lightbox2 Plus
   if (!variable_get('lightbox2_lite', false)) {
     $css = $path .'/css/lightbox.css';
+    if (variable_get('lightbox2_use_alt_layout', false)) {
+      $css = $path .'/css/lightbox_alt.css';
+    }
     if (function_exists('drupal_add_css')) {
       drupal_add_css($css);
     }
