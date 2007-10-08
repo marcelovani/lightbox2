@@ -71,7 +71,7 @@ var Lightbox = {
 
     // MAKE THE LIGHTBOX DIVS
     // Code inserts html at the bottom of the page that looks similar to this:
-				// (default layout)
+    // (default layout)
     //
     // <div id="overlay"></div>
     // <div id="lightbox">
@@ -342,6 +342,7 @@ var Lightbox = {
       $('#nextLink').hide();
       $('#imageDataContainer').hide();
       $('#numberDisplay').hide();  
+      $('#bottomNavZoom').hide();
     
       imgPreloader = new Image();
 
@@ -380,6 +381,7 @@ var Lightbox = {
           photo.style.width = (new_width) + 'px';
 
           Lightbox.resizeImageContainer(new_width, new_height);
+
           // clear onLoad, IE behaves irratically with animated gifs otherwise
           imgPreloader.onload = function() {}; 
         }
@@ -438,7 +440,12 @@ var Lightbox = {
   // Display image and begin preloading neighbors.
   showImage: function() {
     $('#loading').hide();
-    $('#lightboxImage').fadeIn(Lightbox.fadeInSpeed);
+    if($.browser.safari) {
+      $('#lightboxImage').show();
+    }
+    else {
+      $('#lightboxImage').fadeIn(Lightbox.fadeInSpeed);
+    }
     Lightbox.updateDetails();
     this.preloadNeighborImages();
     this.inprogress = false;
