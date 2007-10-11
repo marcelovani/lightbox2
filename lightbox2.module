@@ -19,11 +19,6 @@
  */
 
 /**
- * GLOBAL VARIABLES
- */
-$_LIGHTBOX2_INCLUDE = false;
-
-/**
  * Implementation of hook_help().
  * 
  * Displays the information for this module.
@@ -106,16 +101,12 @@ function lightbox2_menu($may_cache) {
  * Implementation of hook_nodeapi().
  */
 function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
-  global $_LIGHTBOX2_INCLUDE;
-  
   if (lightbox2_exclude_these_paths() != 1) {
-    if ($op == 'view' && !$_LIGHTBOX2_INCLUDE) {
+    if ($op == 'view') {
       lightbox2_add_files();
-      $_LIGHTBOX2_INCLUDE = true;
     }
-    elseif ($node->type == 'image' && !$_LIGHTBOX2_INCLUDE) {
+    elseif ($node->type == 'image') {
       lightbox2_add_files();
-      $_LIGHTBOX2_INCLUDE = true;
     }
   }
 }
@@ -127,6 +118,9 @@ function lightbox2_settings_form() {
 
   // add the javascript which disables / enables form elements
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+
+  // enable translation of default strings for potx
+  $default_strings = array(t('View Image Details'), t('Image !current of !total'));
 
   // Define Lightbox2 Lite fieldset.
   /* ------------------------------- */
@@ -286,6 +280,12 @@ if (variable_get('lightbox2G2_filter', true)) {
  * Provides a link to the JS file associated with this module.
  */
 function lightbox2_add_files() {
+  static $already_added = FALSE;
+  if ($already_added) {
+    return; // don't add the javascript and CSS multiple times
+  }
+  $already_added = TRUE;
+
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
   
@@ -364,9 +364,8 @@ function lightbox2_field_formatter($field, $item, $formatter) {
     if (!isset($item['fid'])) {
       return '';
     }
-    if (!$_LIGHTBOX2_INCLUDE && lightbox2_exclude_these_paths() != 1) {
+    if (lightbox2_exclude_these_paths() != 1) {
       lightbox2_add_files();
-      $_LIGHTBOX2_INCLUDE = true;
     }
     $file = _imagefield_file_load($item['fid']);
     $item = array_merge($item, $file);
@@ -393,7 +392,7 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
   
   $node_link = '';
   if (!empty($item['nid'])) {
-    $node_link = '<br /><br />'. l(t('View Image Information'), 'node/'. $item['nid']);
+    $node_link = '<br /><br />'. l(t(variable_get('lightbox2_node_link_text', 'View Image Details')), 'node/'. $item['nid']);
   }
   
   $link_attributes = array(
@@ -401,7 +400,7 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
     'title' => $item['alt'] . $node_link);
   
   $image = theme('imagecache', $namespace, $item['filepath'], $item['alt'], $item['title'], $attributes);
-  $output = l($image, $item['filepath'], $link_attributes, NULL, NULL, FALSE, TRUE);
+  $output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
   
   return $output;
 }
