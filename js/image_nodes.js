@@ -14,6 +14,9 @@ if (Drupal.jsEnabled) {
 
           var child = $(this).children();
           var alt = $(child).attr("alt");
+          if (!alt) {
+            alt = "";
+          }
           var link_text = settings.node_link_text;
           var rel = "lightbox";
           if (settings.group_images) {
@@ -21,7 +24,7 @@ if (Drupal.jsEnabled) {
           }
           $(this).attr({rel: rel,
             title: alt + "<br /><a href=\"" + this.href + "\" id=\"node_link_text\">"+ link_text + "</a>",
-            href: $(child).attr("src").replace(".thumbnail", "")
+            href: $(child).attr("src").replace(".thumbnail", "").replace(/(image\/view\/\d+)(\/\w*)/, "$1/_original")
             });
         }
 
