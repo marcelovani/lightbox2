@@ -38,14 +38,16 @@ The version 2 module has several benefits over the plain Lightbox module.  Note,
 <li>Image Sets: group related images and navigate through them with ease - ideal for your image galleries.</li>
 <li>Visual Effects: fancy pre-loader and transition when you click on the image.</li>
 <li>Zoom Capability: larger images are reduced in size so they fit snugly inside the browser window.  A zoom button can then be clicked on to see it in its original size.</li>
-<li>Automatic Image Node Detection: configurable automatic re-formatting of
-image node thumbnails, so there is no need to add \'rel="lightbox"\' to each
-image node link on your site.  <a
+<li>Automatic Image Detection: configurable automatic re-formatting of
+image thumbnails, so there is no need to add \'rel="lightbox"\' to each
+image link on your site.  <a
 href="http://drupal.org/project/image">Image</a>, <a
 href="http://drupal.org/project/inline">Inline</a>, <a
+href="http://drupal.org/project/flickr">Flickr</a>, <a
 href="http://drupal.org/project/img_assist">Image Assist</a> and <a
 href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
-supported (images must have the "inline", "inline-image-link", "thumbnail" or "image-thumbnail" classes).</li>
+supported (images must have the "inline", "thumbnail", "image-thumbnail" or
+"flickr-photo-img" classes).</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
 <li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
@@ -213,8 +215,8 @@ function lightbox2_settings_form() {
   /* ------------------------------- */
   $form['image_node_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Automatic image node options'),
-    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "thumbnail" or "image-thumbnail" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
+    '#title' => t('Automatic image handling options'),
+    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
     '#collapsible' => TRUE, 
     '#collapsed' => FALSE,
   );
@@ -233,6 +235,14 @@ function lightbox2_settings_form() {
     '#title' => t('Enable Grouping'),
     '#description' => t('Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries.'),
     '#default_value' => variable_get('lightbox2_image_group', true),
+  );
+
+  // Add Checkbox for Flickr Image support
+  $form['image_node_options']['lightbox2_flickr'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable for Flickr images'),
+    '#description' => t('Checking this box will enable automatic URL formatting for Flickr images.'),
+    '#default_value' => variable_get('lightbox2_flickr', true),
   );
 
   // Add text box for link text to node
@@ -296,11 +306,21 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
 
+  // set the list of image classes to format urls for
+  if (variable_get('lightbox2_image_node', true)) {
+    $image_node_classes = "img.inline, img.image-thumbnail, img.thumbnail,";
+  }
+  if (variable_get('lightbox2_flickr', true)) {
+    $image_node_classes .= "img.flickr-photo-img";
+  }
+  $image_node_classes = rtrim($image_node_classes, ",");
+
   // load the javascript settings
   $js_settings = array(
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
+    'image_node_classes' => $image_node_classes,
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
@@ -321,7 +341,7 @@ function lightbox2_add_files() {
     }
 
     // Check to see if the Image Node Option is enabled in settings.
-    if (variable_get('lightbox2_image_node', true)) {
+    if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true)) {
       drupal_add_js($path .'/js/image_nodes.js');
     }
     drupal_add_js($path .'/js/lightbox.js');

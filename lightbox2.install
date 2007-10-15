@@ -26,6 +26,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_disable_these_urls');
 
   variable_del('lightbox2_image_node');
+  variable_del('lightbox2_flickr');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_node_link_text');
   variable_del('lightbox2_disable_nested_galleries');
