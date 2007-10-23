@@ -95,23 +95,15 @@ function lightbox2_menu($may_cache) {
       'description' => t('Allows the user to configure the lightbox2 settings'),
     );
   }
+  else {
+    if (lightbox2_exclude_these_paths() != 1) {
+      lightbox2_add_files();
+    }
+  }
   
   return $items;
 }
 
-/**
- * Implementation of hook_nodeapi().
- */
-function lightbox2_nodeapi(&$node, $op, $teaser = NULL, $page = NULL) {
-  if (lightbox2_exclude_these_paths() != 1) {
-    if ($op == 'view') {
-      lightbox2_add_files();
-    }
-    elseif ($node->type == 'image') {
-      lightbox2_add_files();
-    }
-  }
-}
 
 /**
  * Implementation of hook_settings()
