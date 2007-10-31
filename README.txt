@@ -61,3 +61,21 @@ This module will include the lightbox CSS and JS files in your Drupal
 Installation without the need to edit the theme. The module comes with a 
 Lightbox2 Lite option which does not use the JQuery library; it is therefore 
 less likely to conflict with anything else. 
+
+Known Issues
+-------------
+There is an issue with Lightbox Lite in IE browsers but only for sites where
+Drupal is installed in a subdirectory.  In such instances, the overlay.png image
+can not be found.  To overcome this issue you will need to edit the
+lightbox2/css/lightbox_lite.css file and change the path to this image.  By
+default the line is set to:
+
+filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../images/overlay.png", sizingMethod="scale");
+
+
+You will need to change the image path on this line to be the full path, e.g.
+
+filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/sites/all/modules/lightbox2/images/overlay.png", sizingMethod="scale");
+
+
+See http://drupal.org/node/185866 for more details.
