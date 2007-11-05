@@ -447,19 +447,7 @@ function lightbox2_exclude_these_paths() {
   $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
 
   if (!empty($disabled_urls)) {
-    $urls = explode("\n", $disabled_urls);
-
-    foreach ($urls as $url) {
-      $url = rtrim($url);
-      if ($url == "<front>") {
-        $url = "";
-      }
-      $url = preg_replace("/%/", '.*?', preg_quote($url, '/'));
-      $pattern = "/^". $url ."$/";
-      if (preg_match($pattern, $_REQUEST['q'])) {
-        return 1;
-      }
-    }
+    return drupal_match_path($_REQUEST['q'], $disabled_urls);
   }
 
   return 0;
