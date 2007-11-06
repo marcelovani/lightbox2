@@ -447,7 +447,7 @@ function lightbox2_exclude_these_paths() {
   $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
 
   if (!empty($disabled_urls)) {
-    return drupal_match_path($_REQUEST['q'], $disabled_urls);
+    return drupal_match_path($_GET['q'], $disabled_urls);
   }
 
   return 0;
