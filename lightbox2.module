@@ -302,6 +302,7 @@ function lightbox2_add_files() {
   $path = drupal_get_path('module', 'lightbox2');
 
   // set the list of image classes to format urls for
+  $image_node_classes = "";
   if (variable_get('lightbox2_image_node', true)) {
     $image_node_classes = "img.inline, img.image-thumbnail, img.thumbnail,";
   }
@@ -353,7 +354,6 @@ function lightbox2_add_files() {
     }
     drupal_add_js($path .'/js/lightbox_lite.js');
   }
-  drupal_add_js($path .'/js/lightningload.js');
 }
 
 /**
