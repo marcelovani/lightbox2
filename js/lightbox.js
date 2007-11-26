@@ -663,4 +663,6 @@ var Lightbox = {
   }
 };
 
-function initLightbox() { Lightbox.initialize(); }
+Drupal.behaviors.initLightbox = function (context) { 
+  Lightbox.initialize();
+};
