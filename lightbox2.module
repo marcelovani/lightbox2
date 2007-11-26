@@ -329,6 +329,9 @@ function lightbox2_add_files() {
   // Lightbox2 Plus
   if (!variable_get('lightbox2_lite', false)) {
     $css = $path .'/css/lightbox.css';
+    if (variable_get('lightbox2_use_alt_layout', false)) {
+      $css = $path .'/css/lightbox_alt.css';
+    }
     if (function_exists('drupal_add_css')) {
       drupal_add_css($css);
     }
