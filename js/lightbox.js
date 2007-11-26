@@ -130,72 +130,126 @@ var Lightbox = {
     LightboxImage.setAttribute('id', 'lightboxImage');
     ImageContainer.appendChild(LightboxImage);
 
-    var HoverNav = document.createElement("div");
-    HoverNav.setAttribute('id', 'hoverNav');
     if (!settings.use_alt_layout) {
+      var HoverNav = document.createElement("div");
+      HoverNav.setAttribute('id', 'hoverNav');
       ImageContainer.appendChild(HoverNav);
-    }
 
-    var PrevLink = document.createElement("a");
-    PrevLink.setAttribute('id', 'prevLink');
-    PrevLink.setAttribute('href', '#');
-    HoverNav.appendChild(PrevLink);
+      var PrevLink = document.createElement("a");
+      PrevLink.setAttribute('id', 'prevLink');
+      PrevLink.setAttribute('href', '#');
+      HoverNav.appendChild(PrevLink);
 
-    var NextLink = document.createElement("a");
-    NextLink.setAttribute('id', 'nextLink');
-    NextLink.setAttribute('href', '#');
-    HoverNav.appendChild(NextLink);
+      var NextLink = document.createElement("a");
+      NextLink.setAttribute('id', 'nextLink');
+      NextLink.setAttribute('href', '#');
+      HoverNav.appendChild(NextLink);
 
-    var Loading = document.createElement("div");
-    Loading.setAttribute('id', 'loading');
-    ImageContainer.appendChild(Loading);
+      var Loading = document.createElement("div");
+      Loading.setAttribute('id', 'loading');
+      ImageContainer.appendChild(Loading);
 
-    var LoadingLink = document.createElement("a");
-    LoadingLink.setAttribute('id', 'loadingLink');
-    LoadingLink.setAttribute('href', '#');
-    Loading.appendChild(LoadingLink);
+      var LoadingLink = document.createElement("a");
+      LoadingLink.setAttribute('id', 'loadingLink');
+      LoadingLink.setAttribute('href', '#');
+      Loading.appendChild(LoadingLink);
 
-    var ImageDataContainer = document.createElement("div");
-    ImageDataContainer.setAttribute('id', 'imageDataContainer');
-    ImageDataContainer.className = 'clearfix';
-    LightboxDiv.appendChild(ImageDataContainer);
+      var ImageDataContainer = document.createElement("div");
+      ImageDataContainer.setAttribute('id', 'imageDataContainer');
+      ImageDataContainer.className = 'clearfix';
+      LightboxDiv.appendChild(ImageDataContainer);
 
-    var ImageData = document.createElement("div");
-    ImageData.setAttribute('id', 'imageData');
-    ImageDataContainer.appendChild(ImageData);
-    if (settings.use_alt_layout) {
-      ImageData.appendChild(HoverNav);
-    }
+      var ImageData = document.createElement("div");
+      ImageData.setAttribute('id', 'imageData');
+      ImageDataContainer.appendChild(ImageData);
 
-    var ImageDetails = document.createElement("div");
-    ImageDetails.setAttribute('id', 'imageDetails');
-    ImageData.appendChild(ImageDetails);
+      var ImageDetails = document.createElement("div");
+      ImageDetails.setAttribute('id', 'imageDetails');
+      ImageData.appendChild(ImageDetails);
 
-    var Caption = document.createElement("span");
-    Caption.setAttribute('id', 'caption');
-    ImageDetails.appendChild(Caption);
+      var Caption = document.createElement("span");
+      Caption.setAttribute('id', 'caption');
+      ImageDetails.appendChild(Caption);
 
-    var NumberDisplay = document.createElement("span");
-    NumberDisplay.setAttribute('id', 'numberDisplay');
-    ImageDetails.appendChild(NumberDisplay);
+      var NumberDisplay = document.createElement("span");
+      NumberDisplay.setAttribute('id', 'numberDisplay');
+      ImageDetails.appendChild(NumberDisplay);
 
-    var BottomNav = document.createElement("div");
-    BottomNav.setAttribute('id', 'bottomNav');
-
-    var BottomNavCloseLink = document.createElement("a");
-    BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
-    BottomNavCloseLink.setAttribute('href', '#');
-    BottomNav.appendChild(BottomNavCloseLink);
-
-    var BottomNavZoomLink = document.createElement("a");
-    BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
-    BottomNavZoomLink.setAttribute('href', '#');
-    BottomNav.appendChild(BottomNavZoomLink);
-    if (settings.use_alt_layout) {
-      ImageContainer.appendChild(BottomNav);
-    }
-    else {
+      var BottomNav = document.createElement("div");
+      BottomNav.setAttribute('id', 'bottomNav');
       ImageData.appendChild(BottomNav);
+
+      var BottomNavCloseLink = document.createElement("a");
+      BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
+      BottomNavCloseLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavCloseLink);
+
+      var BottomNavZoomLink = document.createElement("a");
+      BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
+      BottomNavZoomLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavZoomLink);
+
+    }
+
+    // new layout
+    else {
+      var Loading = document.createElement("div");
+      Loading.setAttribute('id', 'loading');
+      ImageContainer.appendChild(Loading);
+
+      var LoadingLink = document.createElement("a");
+      LoadingLink.setAttribute('id', 'loadingLink');
+      LoadingLink.setAttribute('href', '#');
+      Loading.appendChild(LoadingLink);
+
+      var ImageDataContainer = document.createElement("div");
+      ImageDataContainer.setAttribute('id', 'imageDataContainer');
+      ImageDataContainer.className = 'clearfix';
+      LightboxDiv.appendChild(ImageDataContainer);
+
+      var ImageData = document.createElement("div");
+      ImageData.setAttribute('id', 'imageData');
+      ImageDataContainer.appendChild(ImageData);
+
+      var HoverNav = document.createElement("div");
+      HoverNav.setAttribute('id', 'hoverNav');
+      ImageData.appendChild(HoverNav);
+
+      var PrevLink = document.createElement("a");
+      PrevLink.setAttribute('id', 'prevLink');
+      PrevLink.setAttribute('href', '#');
+      HoverNav.appendChild(PrevLink);
+
+      var NextLink = document.createElement("a");
+      NextLink.setAttribute('id', 'nextLink');
+      NextLink.setAttribute('href', '#');
+      HoverNav.appendChild(NextLink);
+
+      var ImageDetails = document.createElement("div");
+      ImageDetails.setAttribute('id', 'imageDetails');
+      ImageData.appendChild(ImageDetails);
+
+      var Caption = document.createElement("span");
+      Caption.setAttribute('id', 'caption');
+      ImageDetails.appendChild(Caption);
+
+      var NumberDisplay = document.createElement("span");
+      NumberDisplay.setAttribute('id', 'numberDisplay');
+      ImageDetails.appendChild(NumberDisplay);
+
+      var BottomNav = document.createElement("div");
+      BottomNav.setAttribute('id', 'bottomNav');
+      ImageContainer.appendChild(BottomNav);
+
+      var BottomNavCloseLink = document.createElement("a");
+      BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
+      BottomNavCloseLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavCloseLink);
+
+      var BottomNavZoomLink = document.createElement("a");
+      BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
+      BottomNavZoomLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavZoomLink);
     }
 
 
@@ -663,4 +717,9 @@ var Lightbox = {
   }
 };
 
-function initLightbox() { Lightbox.initialize(); }
+// initialize the lightbox
+if (Drupal.jsEnabled) {
+  $(document).ready(function(){
+    Lightbox.initialize();
+  });
+}
