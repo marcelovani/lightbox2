@@ -52,7 +52,7 @@ function getPageScroll() {
     xScroll = document.body.scrollLeft;
   }
 
-  arrayPageScroll = new Array(xScroll, yScroll) 
+  arrayPageScroll = new Array(xScroll, yScroll);
   return arrayPageScroll;
 }
 
@@ -117,7 +117,7 @@ function getPageSize() {
   }
 
 
-  arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight) 
+  arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
   return arrayPageSize;
 }
 
@@ -133,7 +133,7 @@ function pause(ms) {
 // getKey(key)
 // Gets keycode. If 'x' is pressed then it hides the lightbox.
 function getKey(e) {
-  if (e == null) { // ie
+  if (e === null) { // ie
     keycode = event.keyCode;
     escapeKey = 27;
   }
@@ -222,7 +222,7 @@ function showLightbox(objLink) {
     listenKey();
 
     return false;
-  }
+  };
 
   imgPreload.src = objLink.href;
  
@@ -272,7 +272,7 @@ function initLightbox() {
     var relAttribute = String(anchor.getAttribute("rel"));
 
     if (anchor.getAttribute("href") && relAttribute.toLowerCase().match("lightbox")) {
-      anchor.onclick = function () { showLightbox(this); return false; }
+      anchor.onclick = function () { showLightbox(this); return false; };
     }
   }
 
@@ -297,7 +297,7 @@ function initLightbox() {
   // create overlay div and hardcode some functional styles (aesthetic styles are in CSS file)
   var objOverlay = document.createElement("div");
   objOverlay.setAttribute('id', 'overlay');
-  objOverlay.onclick = function () { hideLightbox(); return false; }
+  objOverlay.onclick = function () { hideLightbox(); return false; };
   objOverlay.style.display = 'none';
   objOverlay.style.position = 'absolute';
   objOverlay.style.top = '0';
@@ -326,7 +326,7 @@ function initLightbox() {
   var objLink = document.createElement("a");
   objLink.setAttribute('href', '#');
   objLink.setAttribute('title', 'Click to close');
-  objLink.onclick = function () {hideLightbox(); return false;}
+  objLink.onclick = function () { hideLightbox(); return false; };
   objLightbox.appendChild(objLink);
 
   // create close button image
