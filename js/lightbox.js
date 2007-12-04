@@ -378,7 +378,7 @@ var Lightbox = {
   // container.
   changeImage: function(imageNum, zoom) {
 
-    if (this.inprogress == false) {
+    if (this.inprogress === false) {
       this.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
@@ -409,7 +409,7 @@ var Lightbox = {
           Lightbox.resizeImageContainer(imgPreloader.width, imgPreloader.height);
           // clear onLoad, IE behaves irratically with animated gifs otherwise
           imgPreloader.onload = function() {}; 
-        }
+        };
         $('#bottomNavZoom').hide();
 
       }
@@ -438,7 +438,7 @@ var Lightbox = {
 
           // clear onLoad, IE behaves irratically with animated gifs otherwise
           imgPreloader.onload = function() {}; 
-        }
+        };
 
       }
       imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
@@ -472,7 +472,7 @@ var Lightbox = {
 
     // if new and old image are same size and no scaling transition is necessary
     // do a quick pause to prevent image flicker.
-    if ((hDiff == 0) && (wDiff == 0)) {
+    if ((hDiff === 0) && (wDiff === 0)) {
       if (navigator.appVersion.indexOf("MSIE") != -1) {
         Lightbox.pause(250);
       }
@@ -536,7 +536,7 @@ var Lightbox = {
     $('#hoverNav').show();    
 
     // if not first image in set, display prev image button
-    if (Lightbox.activeImage != 0) {
+    if (Lightbox.activeImage !== 0) {
       $('#prevLink').show().click(function() {
         Lightbox.changeImage(Lightbox.activeImage - 1); return false;
       });
@@ -565,7 +565,7 @@ var Lightbox = {
 
   // keyboardAction()
   keyboardAction: function(e) {
-    if (e == null) { // ie
+    if (e === null) { // ie
       keycode = event.keyCode;
       escapeKey = 27;
     }
@@ -583,7 +583,7 @@ var Lightbox = {
     // display previous image (p, <-)
     }
     else if (key == 'p' || keycode == 37) {
-      if (Lightbox.activeImage != 0) {
+      if (Lightbox.activeImage !== 0) {
         Lightbox.disableKeyboardNav();
         Lightbox.changeImage(Lightbox.activeImage - 1);
       }
@@ -641,7 +641,7 @@ var Lightbox = {
       xScroll = document.body.scrollLeft; 
     }
 
-    arrayPageScroll = new Array(xScroll,yScroll) 
+    arrayPageScroll = new Array(xScroll,yScroll);
     return arrayPageScroll;
   },
  
@@ -703,7 +703,7 @@ var Lightbox = {
       pageWidth = windowWidth;
     }
 
-    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight) 
+    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
     return arrayPageSize;
   },
 
