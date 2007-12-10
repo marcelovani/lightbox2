@@ -515,6 +515,9 @@ var Lightbox = {
     if (Lightbox.imageArray[Lightbox.activeImage][1]) {
       $('#caption').html(Lightbox.imageArray[Lightbox.activeImage][1]).show();
     }
+    else {
+      $('#caption').hide();
+    }
     
     // if image is part of set display 'Image x of x' 
     if (Lightbox.imageArray.length > 1) {
