@@ -384,6 +384,7 @@ function lightbox2_field_formatter($field, $item, $formatter) {
       lightbox2_add_files();
     }
 
+    $item = array_merge($item, (array)$file); 
     $item['filepath'] = $filepath;
     if (strpos($formatter, 'lightbox2][') !== false) {
       list($null, $namespace) = explode('][', $formatter, 2);
