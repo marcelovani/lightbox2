@@ -384,11 +384,12 @@ function lightbox2_field_formatter($field, $item, $formatter) {
       lightbox2_add_files();
     }
 
+    $item['filepath'] = $filepath;
     if (strpos($formatter, 'lightbox2][') !== false) {
       list($null, $namespace) = explode('][', $formatter, 2);
       $rules = _imagecache_get_presets();
       if (in_array($namespace, (array) $rules)) {
-        return theme('imagefield_image_imagecache_thickbox', $namespace, $field, $filepath, $item['alt'], $item['title']);
+        return theme('imagefield_image_imagecache_lightbox2', $namespace, $field, $item);
       }
     }
   }
