@@ -543,12 +543,20 @@ var Lightbox = {
         Lightbox.changeImage(Lightbox.activeImage - 1); return false;
       });
     }
+    // safari browsers need to have hide() called again
+    else {
+      $('#prevLink').hide();
+    }
 
     // if not last image in set, display next image button
     if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
       $('#nextLink').show().click(function() {
         Lightbox.changeImage(Lightbox.activeImage + 1); return false;
       });
+    }
+    // safari browsers need to have hide() called again
+    else {
+      $('#nextLink').hide();
     }
     
     this.enableKeyboardNav();
