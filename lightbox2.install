@@ -1,9 +1,13 @@
 <?php
 // $Id $
 
+/**
+ * @file
+ * Installation functions for Lightbox2
+ */
+
 /** 
- * Implementation of hook_install()
- * just give a message
+ * Implementation of hook_install().
  */
 function lightbox2_install() {
   module_invoke('content', 'clear_type_cache');
@@ -11,7 +15,7 @@ function lightbox2_install() {
 }
 
 /** 
- * Implementation of hook_uninstall()
+ * Implementation of hook_uninstall().
  */
 function lightbox2_uninstall() {
   // delete the variables we created
