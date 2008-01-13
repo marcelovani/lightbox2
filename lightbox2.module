@@ -300,7 +300,7 @@ function lightbox2_add_files() {
   // Set the list of image classes to format urls for.
   $image_node_classes = "";
   if (variable_get('lightbox2_image_node', true)) {
-    $image_node_classes = "img.inline, img.image-thumbnail, img.thumbnail,";
+    $image_node_classes = "img.image-inline, img.inline, img.image-thumbnail, img.thumbnail,";
   }
   if (variable_get('lightbox2_flickr', true)) {
     $image_node_classes .= "img.flickr-photo-img";
