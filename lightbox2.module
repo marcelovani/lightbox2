@@ -151,6 +151,25 @@ function lightbox2_settings_form() {
     '#description' => t('Enabling this option alters the layout of the lightbox elements.  This doesn\'t apply when using Lightbox Lite.'),
     '#default_value' => variable_get('lightbox2_use_alt_layout', false),
   );
+  
+  
+  // Add DropDown for list of available image sizes.
+  if (module_exists('image')) {
+    $sizes = _image_get_sizes();
+    foreach ($sizes as $size_key => $size) {
+      if ($size_key == 'original' || $size_key == '_original') {
+        $size_key = '';
+      }
+      $options[$size_key] = $size['label'];
+    }
+    $form['lightbox2_general_options']['lightbox2_img_size'] = array(
+      '#type' => 'select',
+      '#title' => t('Lightbox image size'),
+      '#options' => $options,
+      '#default_value' => variable_get('lightbox2_img_size', 'preview'),
+      '#description' => t('Select which image size will be loaded in the lightbox.'),
+    );
+  }
 
   // Add Checkbox for Force Navigation display
   $form['lightbox2_general_options']['lightbox2_force_show_nav'] = array(
@@ -302,6 +321,7 @@ function lightbox2_add_files() {
 
   // load the javascript settings
   $js_settings = array(
+    'img_size' => variable_get('lightbox2_img_size', false),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
@@ -374,10 +394,12 @@ function lightbox2_field_formatter($field, $item, $formatter) {
   if (module_exists('imagefield') && module_exists('imagecache')) {
     if (isset($item['filepath'])) {
       $filepath = &$item['filepath'];
-    } else if (!empty($item['fid'])) {
+    }
+    else if (!empty($item['fid'])) {
       $file = _imagefield_file_load($item['fid']);
       $filepath = &$file['filepath'];
-    } else {
+    }
+    else {
       return '';
     }
     if (lightbox2_exclude_these_paths() != 1) {
