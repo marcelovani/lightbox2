@@ -155,7 +155,24 @@ function lightbox2_settings_form() {
     '#description' => t('Enabling this option alters the layout of the lightbox elements.  This doesn\'t apply when using Lightbox Lite.'),
     '#default_value' => variable_get('lightbox2_use_alt_layout', false),
   );
-
+  
+  // Add DropDown for list of available image sizes.
+  if (module_exists('image')) {
+    $sizes = _image_get_sizes();
+    foreach ($sizes as $size_key => $size) {
+      if ($size_key == 'original' or $size_key == '_original')  {
+         $size_key = '';
+      }
+      $options[$size_key] = $size['label'];
+    }
+    $form['lightbox2_general_options']['lightbox2_img_size'] = array(
+      '#type' => 'select',
+      '#title' => t('Lightbox image size'),
+      '#options' => $options,
+      '#default_value' => variable_get('lightbox2_img_size', ''),
+      '#description' => t('Select which image size will be loaded in the lightbox.'),
+    );
+  }
 
   // Add Checkbox for Force Navigation display.
   $form['lightbox2_general_options']['lightbox2_force_show_nav'] = array(
@@ -274,7 +291,7 @@ if (variable_get('lightbox2G2_filter', true)) {
       case 'process':
         $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
-        $text = preg_replace('/target=""/', 'rel="lightbox"', $text);
+        $text = preg_replace('target=""/', 'rel="lightbox"', $text);
         $text = substr($text, 1, -1);
         return $text;
       default:
@@ -309,6 +326,7 @@ function lightbox2_add_files() {
 
   // Load the javascript settings.
   $js_settings = array(
+    'img_size' => variable_get('lightbox2_img_size', ''),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
