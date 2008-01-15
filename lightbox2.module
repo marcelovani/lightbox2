@@ -291,7 +291,7 @@ if (variable_get('lightbox2G2_filter', true)) {
       case 'process':
         $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
-        $text = preg_replace('target=""/', 'rel="lightbox"', $text);
+        $text = preg_replace('/target=""/', 'rel="lightbox"', $text);
         $text = substr($text, 1, -1);
         return $text;
       default:
