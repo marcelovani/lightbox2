@@ -37,7 +37,7 @@ function lightbox2_image_nodes() {
         }
 
         // Set the href attribute.
-								var href = $(child).attr("src").replace(".thumbnail", "."+ settings.img_size).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.img_size == "")?"$1/_original":"$1/"+ settings.img_size));
+        var href = $(child).attr("src").replace(".thumbnail", ((settings.img_size == "")?settings.img_size:"."+ settings.img_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.img_size == "")?"$1/_original":"$1/"+ settings.img_size));
 
         // Handle flickr images.
         if ($(child).attr("class").match("flickr-photo-img")) {
