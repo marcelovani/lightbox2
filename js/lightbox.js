@@ -322,7 +322,7 @@ var Lightbox = {
     var arrayPageSize = Lightbox.getPageSize();
     $("#overlay").hide().css({
       width: '100%',
-      zIndex: '1090',
+      zIndex: '10090',
       height: arrayPageSize[1] + 'px', 
       opacity : Lightbox.overlayOpacity
     }).fadeIn();
@@ -367,7 +367,7 @@ var Lightbox = {
     var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
     var lightboxLeft = arrayPageScroll[0];
     $('#lightbox').css({
-				  zIndex: '1500',
+				  zIndex: '10500',
       top: lightboxTop + 'px', 
       left: lightboxLeft + 'px'
     }).show();
@@ -391,7 +391,7 @@ var Lightbox = {
       Lightbox.activeImage = imageNum; // update global var
 
       // hide elements during transition
-      $('#loading').css({zIndex: '1500'}).show();
+      $('#loading').css({zIndex: '10500'}).show();
       $('#lightboxImage').hide();
       $('#hoverNav').hide();
       $('#prevLink').hide();
@@ -430,7 +430,7 @@ var Lightbox = {
           $('#bottomNavZoom').hide();
           if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
             ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
-            $('#bottomNavZoom').css({zIndex: '1500'}).show();
+            $('#bottomNavZoom').css({zIndex: '10500'}).show();
           }
           var new_width  = Math.floor(orig.w * ratio);
           var new_height = Math.floor(orig.h * ratio);
@@ -497,10 +497,10 @@ var Lightbox = {
   showImage: function() {
     $('#loading').hide();
     if($.browser.safari) {
-      $('#lightboxImage').css({zIndex: '1500'}).show();
+      $('#lightboxImage').css({zIndex: '10500'}).show();
     }
     else {
-      $('#lightboxImage').css({zIndex: '1500'}).fadeIn(Lightbox.fadeInSpeed);
+      $('#lightboxImage').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
     }
     Lightbox.updateDetails();
     this.preloadNeighborImages();
@@ -515,7 +515,7 @@ var Lightbox = {
 
     // if caption is not null
     if (Lightbox.imageArray[Lightbox.activeImage][1]) {
-      $('#caption').html(Lightbox.imageArray[Lightbox.activeImage][1]).css({zIndex: '1500'}).show();
+      $('#caption').html(Lightbox.imageArray[Lightbox.activeImage][1]).css({zIndex: '10500'}).show();
     }
     else {
       $('#caption').hide();
@@ -525,7 +525,7 @@ var Lightbox = {
     if (Lightbox.imageArray.length > 1) {
       var settings = Drupal.settings.lightbox2;
       var numberDisplay = settings.image_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
-      $('#numberDisplay').html(numberDisplay).css({zIndex: '1500'}).show();
+      $('#numberDisplay').html(numberDisplay).css({zIndex: '10500'}).show();
     }
 
     $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
@@ -538,11 +538,11 @@ var Lightbox = {
   // Display appropriate previous and next hover navigation.
   updateNav: function() {
 
-    $('#hoverNav').css({zIndex: '1500'}).show();    
+    $('#hoverNav').css({zIndex: '10500'}).show();    
 
     // if not first image in set, display prev image button
     if (Lightbox.activeImage !== 0) {
-      $('#prevLink').css({zIndex: '1500'}).show().click(function() {
+      $('#prevLink').css({zIndex: '10500'}).show().click(function() {
         Lightbox.changeImage(Lightbox.activeImage - 1); return false;
       });
     }
@@ -553,7 +553,7 @@ var Lightbox = {
 
     // if not last image in set, display next image button
     if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
-      $('#nextLink').css({zIndex: '1500'}).show().click(function() {
+      $('#nextLink').css({zIndex: '10500'}).show().click(function() {
         Lightbox.changeImage(Lightbox.activeImage + 1); return false;
       });
     }
@@ -629,7 +629,7 @@ var Lightbox = {
     $('#lightbox').hide();
     $("#overlay").fadeOut();
     // replaces calls to showSelectBoxes() and showFlash() in original lightbox2
-    $("select, object, embed").css({zIndex: '1500'}).show();
+    $("select, object, embed").css({zIndex: '10500'}).show();
   },
 
 
