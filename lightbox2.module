@@ -170,7 +170,7 @@ function lightbox2_settings_form() {
       '#title' => t('Lightbox image size'),
       '#options' => $options,
       '#default_value' => variable_get('lightbox2_img_size', ''),
-      '#description' => t('Select which image size will be loaded in the lightbox.'),
+      '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
     );
   }
 
@@ -383,11 +383,21 @@ function lightbox2_field_formatter_info() {
   $formatter = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
     $rules = _imagecache_get_presets();
-    foreach ($rules as $ruleid => $rulename) {
-      $formatters['lightbox2]['. $rulename] = array(
-        'label' => 'Lightbox2: '. $rulename,
+    foreach ($rules as $ruleid => $view_rule) {
+      $formatters['lightbox2][original]['. $view_rule] = array(
+        'label' => 'Lightbox2: original->'. $view_rule,
         'field types' => array('image'),
       );
+      $formatters['lightbox2]['. $view_rule .'][original'] = array(
+        'label' => 'Lightbox2: '. $view_rule .'->original',
+        'field types' => array('image'),
+      );
+      foreach ($rules as $rid => $lightbox_rule) {
+        $formatters['lightbox2]['. $view_rule .']['. $lightbox_rule] = array(
+          'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
+          'field types' => array('image'),
+        );
+      }
     }
   }
 
@@ -415,10 +425,18 @@ function lightbox2_field_formatter($field, $item, $formatter) {
     $item['filepath'] = $filepath;
     $item = array_merge($item, (array)$file);
     if (strpos($formatter, 'lightbox2][') !== false) {
-      list($null, $namespace) = explode('][', $formatter, 2);
+      list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
+      $item['view_filepath'] = $item['filepath'];
+      if ($lightbox_preset == 'original') {
+        $item['lightbox_filepath'] = $item['filepath'];
+      }
+      else {
+        $item['lightbox_filepath'] = file_directory_path() .'/imagecache/'.  $lightbox_preset .'/'. $item['filepath'];
+      }
+
       $rules = _imagecache_get_presets();
-      if (in_array($namespace, (array) $rules)) {
-        return theme('imagefield_image_imagecache_lightbox2', $namespace, $field, $item);
+      if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
+        return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item);
       }
     }
   }
@@ -431,7 +449,11 @@ function lightbox2_theme() {
   return array(
     'imagefield_image_imagecache_lightbox2' => array(
       'function' => 'imagefield_image_imagecache_lightbox2',
-      'arguments' => array('namespace' => NULL, 'field' => NULL, 'item' => NULL, 'attributes' => NULL),
+      'arguments' => array('view_preset' => NULL, 'field' => NULL, 'item' => NULL, 'attributes' => NULL),
+    ),
+    'lightbox2_image' => array(
+      'function' => 'lightbox2_image',
+      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
     ),
   );
 }
@@ -439,11 +461,7 @@ function lightbox2_theme() {
 /**
  * Implementation of theme_imagefield_image_imagecache_lightbox2().
  */
-function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, $attributes = NULL) {
-
-  $imagecache_path = file_create_url(
-    file_directory_path() .'/imagecache/'. $namespace .'/'. $item['filepath']);
-
+function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $attributes = NULL) {
 
   $rel = 'lightbox';
   if (variable_get('lightbox2_image_group', TRUE)) {
@@ -459,8 +477,13 @@ function theme_imagefield_image_imagecache_lightbox2($namespace, $field, $item, 
     'rel' => $rel,
     'title' => $item['alt'] . $node_link);
 
-  $image = theme('imagecache', $namespace, file_create_url($item['filepath']), $item['alt'], $item['title'], $attributes);
-  $output = l($image, $item['filepath'], array('attributes' => $link_attributes, 'query' => NULL, 'fragment' => NULL, 'absolute' => FALSE, 'html' => TRUE));
+  if ($view_preset == 'original') {
+    $image = theme('lightbox2_image', $item['view_filepath'], $item['alt'], $item['title'], $attributes);
+  }
+  else {
+    $image = theme('imagecache', $view_preset, $item['view_filepath'], $item['alt'], $item['title'], $attributes);
+  }
+  $output = l($image, file_create_url($item['lightbox_filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
 
   return $output;
 }
@@ -480,3 +503,10 @@ function lightbox2_exclude_these_paths() {
 
   return 0;
 }
+
+function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = NULL) {
+  $attributes = drupal_attributes($attributes);
+  $image = '<img src="'. file_create_url($path) .'" alt="'.  check_plain($alt) .'" title="'. check_plain($title) .'" '. $attributes .' />';
+  return $image;
+}
+
