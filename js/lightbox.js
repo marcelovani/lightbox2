@@ -50,7 +50,7 @@
 
 
 var Lightbox = {
-  overlayOpacity : 0.8, // controls transparency of shadow overlay
+  overlayOpacity : 0.6, // controls transparency of shadow overlay
   fadeInSpeed: 'normal', // controls the speed of the image appearance
   slideDownSpeed: 'slow', // controls the speed of the image resizing animations
   borderSize : 18, // if you adjust the padding in the CSS, you will need to update this variable
@@ -66,8 +66,11 @@ var Lightbox = {
   //  to display the shadow overlay and the image container.
   initialize: function() {
 
+    var settings = Drupal.settings.lightbox2;
+    Lightbox.overlayOpacity = settings.overlay_opacity;
+
     // attach lightbox to any links with rel 'lightbox'
-   Lightbox.updateImageList();
+    Lightbox.updateImageList();
 
     // MAKE THE LIGHTBOX DIVS
     // Code inserts html at the bottom of the page that looks similar to this:
@@ -104,7 +107,6 @@ var Lightbox = {
     //  </div>
     // </div>
 
-    var settings = Drupal.settings.lightbox2;
 
     var Body = document.getElementsByTagName("body").item(0);
 
