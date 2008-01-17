@@ -277,7 +277,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   $form['image_node_options']['lightbox2_disable_nested_galleries']  = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Lightbox for Gallery Lists'),
-    '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.'),
+    '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
 
