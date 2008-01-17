@@ -47,8 +47,8 @@ href="http://drupal.org/project/inline">Inline</a>, <a
 href="http://drupal.org/project/flickr">Flickr</a>, <a
 href="http://drupal.org/project/img_assist">Image Assist</a> and <a
 href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
-supported (images must have the "inline", "thumbnail", "image-thumbnail" or
-"flickr-photo-img" classes).</li>
+supported (images must have the "inline", "image-inline", "thumbnail", 
+"image-thumbnail" or "flickr-photo-img" classes).</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
 <li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
@@ -152,25 +152,6 @@ function lightbox2_settings_form() {
     '#default_value' => variable_get('lightbox2_use_alt_layout', false),
   );
   
-  
-  // Add DropDown for list of available image sizes.
-  if (module_exists('image')) {
-    $sizes = _image_get_sizes();
-    foreach ($sizes as $size_key => $size) {
-      if ($size_key == 'original' || $size_key == '_original') {
-        $size_key = '';
-      }
-      $options[$size_key] = $size['label'];
-    }
-    $form['lightbox2_general_options']['lightbox2_img_size'] = array(
-      '#type' => 'select',
-      '#title' => t('Lightbox image size'),
-      '#options' => $options,
-      '#default_value' => variable_get('lightbox2_img_size', ''),
-      '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
-    );
-  }
-
   // Add Checkbox for Force Navigation display
   $form['lightbox2_general_options']['lightbox2_force_show_nav'] = array(
     '#type' => 'checkbox',
@@ -195,6 +176,19 @@ function lightbox2_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', false),
   );
 
+  // Add Checkbox for overlay opacity
+  for ($i = 0; $i < 10; $i++) {
+    $opacity_options["0.$i"] = "0.$i";
+  }
+  $opacity_options["1.0"] = "1.0";
+  $form['lightbox2_general_options']['lightbox2_overlay_opacity'] = array(
+    '#type' => 'select',
+    '#title' => t('Overlay Opacity'),
+    '#options' => $opacity_options,
+    '#description' => t('The overlay opacity setting determines how visible or transparent the background page is behind the lightbox.  The opacity value can range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
+    '#default_value' => variable_get('lightbox2_overlay_opacity', '0.6'),
+  );
+
   // Add Checkbox for Gallery2 Image Filter.
   $form['lightbox2_general_options']['lightbox2G2_filter'] = array(
     '#type' => 'checkbox',
@@ -217,11 +211,11 @@ function lightbox2_settings_form() {
   $form['image_node_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Automatic image handling options'),
-    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
+    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "image-inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
-  
+
   // Add Checkbox for Image Node.
   $form['image_node_options']['lightbox2_image_node'] = array(
     '#type' => 'checkbox',
@@ -229,7 +223,25 @@ function lightbox2_settings_form() {
     '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
     '#default_value' => variable_get('lightbox2_image_node', true),
   );
-   
+    
+  // Add DropDown for list of available image sizes.
+  if (module_exists('image')) {
+    $sizes = _image_get_sizes();
+    foreach ($sizes as $size_key => $size) {
+      if ($size_key == 'original' || $size_key == '_original') {
+        $size_key = '';
+      }
+      $size_options[$size_key] = $size['label'];
+    }
+    $form['image_node_options']['lightbox2_image_size'] = array(
+      '#type' => 'select',
+      '#title' => t('Lightbox image size'),
+      '#options' => $size_options,
+      '#default_value' => variable_get('lightbox2_image_size', ''),
+      '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
+    );
+  }
+  
   // Add Checkbox for Flickr Image support
   $form['image_node_options']['lightbox2_flickr'] = array(
     '#type' => 'checkbox',
@@ -321,7 +333,8 @@ function lightbox2_add_files() {
 
   // load the javascript settings
   $js_settings = array(
-    'img_size' => variable_get('lightbox2_img_size', ''),
+    'image_size' => variable_get('lightbox2_image_size', ''),
+    'overlay_opacity' => variable_get('lightbox2_overlay_opacity', '0.6'),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
