@@ -153,6 +153,7 @@ function listenKey () { document.onkeypress = getKey; }
 // showLightbox()
 // Preloads images. Pleaces new image in lightbox then centers and displays.
 function showLightbox(objLink) {
+  var settings = Drupal.settings.lightbox2;
   // prep objects
   var objOverlay = document.getElementById('overlay');
   var objLightbox = document.getElementById('lightbox');
@@ -167,6 +168,7 @@ function showLightbox(objLink) {
   // set height of Overlay to take up whole page and show
   objOverlay.style.height = (arrayPageSize[1] + 'px');
   objOverlay.style.display = 'block';
+  objOverlay.style.opacity = settings.overlay_opacity;
 
   // preload image
   imgPreload = new Image();
