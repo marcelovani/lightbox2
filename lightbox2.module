@@ -181,7 +181,7 @@ function lightbox2_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', false),
   );
 
-  // Add Checkbox for overlay opacity
+  // Add checkbox for overlay opacity.
   for ($i = 0; $i < 10; $i++) {
     $opacity_options["0.$i"] = "0.$i";
   }
@@ -195,6 +195,18 @@ transparent the background page is behind the lightbox.  The opacity value can
 range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
     '#default_value' => variable_get('lightbox2_overlay_opacity', '0.6'),
   );
+
+  // Allow users to decide where javascript should be loaded - header or footer.
+  // Header is recommended so user can click on images before page has finished
+  // loading, but footer is needed for sites in IE which use SWFObject.
+  $form['lightbox2_general_options']['lightbox2_js_location'] = array(
+    '#type' => 'select',
+    '#title' => t('Location of Javscript'),
+    '#options' => array('header' => t('Header'), 'footer' => t('Footer')),
+    '#description' => t('By default, the lightbox javascript files are loaded in the HTML header.  However, for sites using SWFObject to load their Flash content, the footer setting is recommended to prevent "Operation Aborted" errors in IE.  If using the footer setting, please note that not all themes correctly implement the footer region and may require a small change.'),
+    '#default_value' => variable_get('lightbox2_js_location', 'header'),
+  );
+
 
   // Add Checkbox for Gallery2 Image Filter.
   $form['lightbox2_general_options']['lightbox2G2_filter']  = array(
@@ -356,6 +368,9 @@ function lightbox2_add_files() {
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
 
+  // Check where we should load the javascript files - header or footer.
+  $js_location = variable_get('lightbox2_js_location', 'header');
+
   // Lightbox2 Plus.
   if (!variable_get('lightbox2_lite', false)) {
     $css = $path .'/css/lightbox.css';
@@ -371,9 +386,9 @@ function lightbox2_add_files() {
 
     // Check to see if the Image Node Option is enabled in settings.
     if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true)) {
-      drupal_add_js($path .'/js/image_nodes.js');
+      drupal_add_js($path .'/js/image_nodes.js', 'module', $js_location);
     }
-    drupal_add_js($path .'/js/lightbox.js');
+    drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
   }
   // Lightbox Lite.
@@ -385,7 +400,7 @@ function lightbox2_add_files() {
     else {
       theme('add_style', $css);
     }
-    drupal_add_js($path .'/js/lightbox_lite.js');
+    drupal_add_js($path .'/js/lightbox_lite.js', 'module', $js_location);
   }
 }
 
