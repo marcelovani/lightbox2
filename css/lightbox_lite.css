@@ -12,9 +12,11 @@
 }
 #lightboxCaption {
   float: left;
+  font: 0.9em black;
 }
 #keyboardMsg {
   float: right;
+  font: 0.9em black;
 }
 #closeButton {
   top: 5px;
