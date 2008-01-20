@@ -248,7 +248,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
     $sizes = _image_get_sizes();
     foreach ($sizes as $size_key => $size) {
       if ($size_key == 'original' or $size_key == '_original')  {
-         $size_key = '';
+        $size_key = '';
       }
       $size_options[$size_key] = $size['label'];
     }
@@ -443,10 +443,12 @@ function lightbox2_field_formatter($field, $item, $formatter) {
   if (module_exists('imagefield') && module_exists('imagecache')) {
     if (isset($item['filepath'])) {
       $filepath = &$item['filepath'];
-    } else if (!empty($item['fid'])) {
+    }
+    else if (!empty($item['fid'])) {
       $file = _imagefield_file_load($item['fid']);
       $filepath = &$file['filepath'];
-    } else {
+    }
+    else {
       return '';
     }
     if (lightbox2_exclude_these_paths() != 1) {
@@ -514,7 +516,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   else {
     $image = theme('imagecache', $view_preset, $item['view_filepath'], $item['alt'], $item['title'], $attributes);
   }
-  $output = l($image, file_create_url($item['lightbox_filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+  $output = l($image, file_create_url($item['lightbox_filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
 
   return $output;
 }
