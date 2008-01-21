@@ -300,7 +300,7 @@ function lightbox2_auto_image_handling_settings_form() {
       '#multiple' => TRUE,
       '#title' => t('Image trigger size'),
       '#options' => $size_options,
-      '#default_value' => variable_get('lightbox2_trigger_image_size', ''),
+      '#default_value' => variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail'))),
       '#description' => t('Select which image size, when clicked on, will automatically trigger the lightbox.  This only applies to images uploaded with the Image module.'),
     );
 
@@ -405,7 +405,7 @@ function lightbox2_add_files() {
   if (variable_get('lightbox2_flickr', true)) {
     $image_node_classes .= "img.flickr-photo-img,";
   }
-  $trigger_sizes = variable_get('lightbox2_trigger_image_size', '');
+  $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
   foreach ($trigger_sizes as $size) {
     $image_node_classes .= "img.$size, img.image-$size,";
   }
