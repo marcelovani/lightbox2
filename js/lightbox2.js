@@ -20,7 +20,8 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_force_show_nav]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_zoom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_count_str]").attr("disabled", "disabled");
-    $("select[@name=lightbox2_image_size]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
+    $("select[@name='lightbox2_trigger_image_size[]']").attr("disabled", "disabled");
     $("input[@name=lightbox2_overlay_opacity]").attr("disabled", "disabled");
   }
   else {
@@ -28,7 +29,8 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_force_show_nav]").removeAttr("disabled");
     $("input[@name=lightbox2_disable_zoom]").removeAttr("disabled");
     $("input[@name=lightbox2_image_count_str]").removeAttr("disabled");
-    $("select[@name=lightbox2_image_size]").removeAttr("disabled");
+    $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
+    $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
     $("input[@name=lightbox2_overlay_opacity]").removeAttr("disabled");
     alt_layout_handler();
   }
@@ -40,7 +42,8 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_image_node]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_group]").attr("disabled", "disabled");
-    $("select[@name=lightbox2_image_size]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
+    $("select[@name='lightbox2_trigger_image_size[]']").attr("disabled", "disabled");
     $("input[@name=lightbox2_flickr]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_nested_galleries]").attr("disabled", "disabled");
   }
@@ -49,7 +52,8 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_flickr]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
     $("input[@name=lightbox2_image_group]").removeAttr("disabled");
-    $("select[@name=lightbox2_image_size]").removeAttr("disabled");
+    $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
+    $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
     $("input[@name=lightbox2_disable_nested_galleries]").removeAttr("disabled");
     image_node_handler();
   }
@@ -81,11 +85,13 @@ function image_node_handler(event) {
     // Image node only stuff.
     if ($("input[@name=lightbox2_image_node]:checked").val() == 1) {
       $("input[@name=lightbox2_disable_nested_galleries]").removeAttr("disabled");
-      $("select[@name=lightbox2_image_size]").removeAttr("disabled");
+      $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
+      $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
     }
     else {
       $("input[@name=lightbox2_disable_nested_galleries]").attr("disabled", "disabled");
-      $("select[@name=lightbox2_image_size]").attr("disabled", "disabled");
+      $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
+      $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
     }
   }
 }

@@ -266,7 +266,7 @@ function lightbox2_auto_image_handling_settings_form() {
 
   // Set Image Node Options help text.
   $form['image_node_options'] = array(
-    '#value' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "image-inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
+    '#value' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  You can select which image sizes will trigger the lightbox and images which have the CSS classes "inline" or "flickr-photo-img" will also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
 
 
@@ -287,13 +287,23 @@ function lightbox2_auto_image_handling_settings_form() {
       }
       $size_options[$size_key] = $size['label'];
     }
-    $form['lightbox2_image_size'] = array(
+    $form['lightbox2_display_image_size'] = array(
       '#type' => 'select',
-      '#title' => t('Lightbox image size'),
+      '#title' => t('Lightbox image display size'),
       '#options' => $size_options,
-      '#default_value' => variable_get('lightbox2_image_size', ''),
+      '#default_value' => variable_get('lightbox2_display_image_size', ''),
       '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
     );
+
+    $form['lightbox2_trigger_image_size'] = array(
+      '#type' => 'select',
+      '#multiple' => TRUE,
+      '#title' => t('Image trigger size'),
+      '#options' => $size_options,
+      '#default_value' => variable_get('lightbox2_trigger_image_size', ''),
+      '#description' => t('Select which image size, when clicked on, will automatically trigger the lightbox.  This only applies to images uploaded with the Image module.'),
+    );
+
   }
 
   // Add Checkbox for Image Node Grouping.
@@ -379,16 +389,21 @@ function lightbox2_add_files() {
   // Set the list of image classes to format urls for.
   $image_node_classes = "";
   if (variable_get('lightbox2_image_node', true)) {
-    $image_node_classes = "img.image-inline, img.inline, img.image-thumbnail, img.thumbnail,";
+    $image_node_classes = "img.inline,";
   }
   if (variable_get('lightbox2_flickr', true)) {
-    $image_node_classes .= "img.flickr-photo-img";
+    $image_node_classes .= "img.flickr-photo-img,";
   }
+  $trigger_sizes = variable_get('lightbox2_trigger_image_size', '');
+  foreach ($trigger_sizes as $size) {
+    $image_node_classes .= "img.$size, img.image-$size,";
+  }
+
   $image_node_classes = rtrim($image_node_classes, ",");
 
   // Load the javascript settings.
   $js_settings = array(
-    'image_size' => variable_get('lightbox2_image_size', ''),
+    'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', '0.6'),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
