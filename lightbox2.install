@@ -34,6 +34,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_node_link_text');
   variable_del('lightbox2_disable_nested_galleries');
+  variable_del('lightbox2_disable_nested_acidfree_galleries');
   
   watchdog('lightbox2', 'lightbox2 module un-installed');
 }
