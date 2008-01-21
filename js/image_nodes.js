@@ -33,15 +33,19 @@ if (Drupal.jsEnabled) {
             rel = "lightbox[node_thumbnails]";
           }
           
-          // Set the href attribute.
-          var href = $(child).attr("src").replace(".thumbnail", ((settings.image_size == "")?settings.image_size:"."+ settings.image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.image_size == "")?"$1/_original":"$1/"+ settings.image_size));
 
           // Handle flickr images.
+          var href = '';
           if ($(child).attr("class").match("flickr-photo-img")) {
             href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
             if (settings.group_images) {
               rel = "lightbox[flickr]";
             }
+          }
+
+          // Set the href attribute.
+          else {
+            href = $(child).attr("src").replace(".thumbnail", ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
           }
 
           // Modify the image url.
