@@ -338,6 +338,17 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
 
+  // Add Checkbox for disabling lightbox for acidfree gallery lists.
+  if (module_exists("acidfree")) {
+    $form['lightbox2_disable_nested_acidfree_galleries'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Disable Lightbox for Acidfree Gallery Lists'),
+      '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "acidfree" module.'),
+      '#default_value' => variable_get('lightbox2_disable_nested_acidfree_galleries', true),
+    );
+  }
+
+
   return system_settings_form($form);
 }
 
@@ -411,6 +422,7 @@ function lightbox2_add_files() {
     'image_node_classes' => $image_node_classes,
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
+    'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', true),
     'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
     'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return false;"><kbd>x</kbd></a>')),
