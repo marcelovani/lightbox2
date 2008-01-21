@@ -89,10 +89,29 @@ function lightbox2_menu() {
   $items['admin/settings/lightbox2'] = array(
     'title' => 'Lightbox2',
     'description' => 'Allows the user to configure the lightbox2 settings',
-    'page callback' => 'drupal_get_form',
-    'page arguments' => array('lightbox2_settings_form'),
+    'page callback' => 'lightbox2_settings_page',
     'access callback' => 'user_access',
     'access arguments' => array('administer lightbox2'),
+  );
+  $items['admin/settings/lightbox2/general'] = array(
+    'title' => 'General',
+    'description' => 'Allows the user to configure the lightbox2 settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lightbox2_general_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer lightbox2'),
+    'type' => MENU_DEFAULT_LOCAL_TASK,
+    'weight' => 0,
+  );
+  $items['admin/settings/lightbox2/automatic'] = array(
+    'title' => 'Automatic image handling',
+    'description' => 'Allows the user to configure the lightbox2 automatic image handling settings',
+    'page callback' => 'drupal_get_form',
+    'page arguments' => array('lightbox2_auto_image_handling_settings_form'),
+    'access callback' => 'user_access',
+    'access arguments' => array('administer lightbox2'),
+    'type' => MENU_LOCAL_TASK,
+    'weight' => 1,
   );
 
   return $items;
@@ -107,18 +126,21 @@ function lightbox2_init() {
   }
 }
 
+function lightbox2_settings_page($op = NULL) {
+  $output = drupal_get_form('lightbox2_general_settings_form');
+  return $output;
+}
 
 /**
  * Implementation of hook_settings().
  */
-function lightbox2_settings_form() {
+function lightbox2_general_settings_form() {
 
   // Add the javascript which disables / enables form elements.
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
   // Enable translation of default strings for potx.
   $default_strings = array(t('View Image Details'), t('Image !current of !total'));
-
 
   // Define Lightbox2 Lite fieldset.
   /* ------------------------------- */
@@ -139,17 +161,8 @@ function lightbox2_settings_form() {
   );
 
 
-  // Define General settings fieldset.
-  /* ---------------------------------- */
-  $form['lightbox2_general_options'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('General settings'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-
   // Add Checkbox for Force Navigation display.
-  $form['lightbox2_general_options']['lightbox2_use_alt_layout'] = array(
+  $form['lightbox2_use_alt_layout'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use Alternative Layout'),
     '#description' => t('Enabling this option alters the layout of the lightbox elements.  This doesn\'t apply when using Lightbox Lite.'),
@@ -157,7 +170,7 @@ function lightbox2_settings_form() {
   );
 
   // Add Checkbox for Force Navigation display.
-  $form['lightbox2_general_options']['lightbox2_force_show_nav'] = array(
+  $form['lightbox2_force_show_nav'] = array(
     '#type' => 'checkbox',
     '#title' => t('Force visibility of navigation links'),
     '#description' => t('When viewing grouped images, the navigational links to the next and previous images are only displayed when you hover over the image.  Checking this box forces these links to be displayed all the time.'),
@@ -166,7 +179,7 @@ function lightbox2_settings_form() {
 
 
   // Add text box for image count for grouping.
-  $form['lightbox2_general_options']['lightbox2_image_count_str'] = array(
+  $form['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Image Count Text'),
     '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".'),
@@ -174,11 +187,36 @@ function lightbox2_settings_form() {
   );
 
   // Add Checkbox for Zoom image.
-  $form['lightbox2_general_options']['lightbox2_disable_zoom'] = array(
+  $form['lightbox2_disable_zoom'] = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Zoom Feature'),
     '#description' => t('By default, when the image being displayed in the lightbox is larger than the browser window, it is resized to fit within the window and a zoom button is provided for users who wish to view the image in its original size.  Checking this box will disable this feature and all images will be displayed without any resizing.'),
     '#default_value' => variable_get('lightbox2_disable_zoom', false),
+  );
+
+  // Add Checkbox for Gallery2 Image Filter.
+  $form['lightbox2G2_filter']  = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Gallery 2 Filter'),
+    '#description' => t('Checking this box will enable the Gallery 2 filter.'),
+    '#default_value' => variable_get('lightbox2G2_filter', true),
+  );
+
+   // Add Textarea for urls without lightbox.
+  $form['lightbox2_disable_these_urls']  = array(
+    '#type' => 'textarea',
+    '#title' => t('Disable LightBox for these urls'),
+    '#description' => t('List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
+    '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
+  );
+
+  // Define Advanced settings fieldset
+  /* --------------------------------- */
+  $form['lightbox2_advanced_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Advanced settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
 
   // Add checkbox for overlay opacity.
@@ -186,7 +224,7 @@ function lightbox2_settings_form() {
     $opacity_options["0.$i"] = "0.$i";
   }
   $opacity_options["1.0"] = "1.0";
-  $form['lightbox2_general_options']['lightbox2_overlay_opacity'] = array(
+  $form['lightbox2_advanced_options']['lightbox2_overlay_opacity'] = array(
     '#type' => 'select',
     '#title' => t('Overlay Opacity'),
     '#options' => $opacity_options,
@@ -199,7 +237,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   // Allow users to decide where javascript should be loaded - header or footer.
   // Header is recommended so user can click on images before page has finished
   // loading, but footer is needed for sites in IE which use SWFObject.
-  $form['lightbox2_general_options']['lightbox2_js_location'] = array(
+  $form['lightbox2_advanced_options']['lightbox2_js_location'] = array(
     '#type' => 'select',
     '#title' => t('Location of Javscript'),
     '#options' => array('header' => t('Header'), 'footer' => t('Footer')),
@@ -208,35 +246,32 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   );
 
 
-  // Add Checkbox for Gallery2 Image Filter.
-  $form['lightbox2_general_options']['lightbox2G2_filter']  = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable Gallery 2 Filter'),
-    '#description' => t('Checking this box will enable the Gallery 2 filter.'),
-    '#default_value' => variable_get('lightbox2G2_filter', true),
+
+  return system_settings_form($form);
+}
+
+
+/**
+ * Implementation of hook_settings().
+ */
+function lightbox2_auto_image_handling_settings_form() {
+  // Add the javascript which disables / enables form elements.
+  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+
+  // Set up a hidden variable.
+  $form['lightbox2_lite'] = array(
+    '#type' => 'hidden',
+    '#value' => variable_get('lightbox2_lite', false),
   );
 
-   // Add Textarea for urls without lightbox.
-  $form['lightbox2_general_options']['lightbox2_disable_these_urls']  = array(
-    '#type' => 'textarea',
-    '#title' => t('Disable LightBox for these urls'),
-    '#description' => t('List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
-    '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
-  );
-
-
-  // Define Image Node Options fieldset.
-  /* ------------------------------- */
+  // Set Image Node Options help text.
   $form['image_node_options'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('Automatic image handling options'),
-    '#description' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "image-inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
-    '#collapsible' => TRUE, 
-    '#collapsed' => FALSE,
+    '#value' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  Only image nodes which have the CSS classes "inline", "image-inline", "thumbnail", "image-thumbnail" or "flickr-photo-img" will have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
+
 
   // Add Checkbox for Image Node.
-  $form['image_node_options']['lightbox2_image_node']  = array(
+  $form['lightbox2_image_node']  = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Image Nodes'),
     '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
@@ -252,7 +287,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
       }
       $size_options[$size_key] = $size['label'];
     }
-    $form['image_node_options']['lightbox2_image_size'] = array(
+    $form['lightbox2_image_size'] = array(
       '#type' => 'select',
       '#title' => t('Lightbox image size'),
       '#options' => $size_options,
@@ -262,7 +297,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   }
 
   // Add Checkbox for Image Node Grouping.
-  $form['image_node_options']['lightbox2_image_group']  = array(
+  $form['lightbox2_image_group']  = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Grouping'),
     '#description' => t('Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries.'),
@@ -270,7 +305,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   );
 
   // Add Checkbox for Flickr Image support.
-  $form['image_node_options']['lightbox2_flickr'] = array(
+  $form['lightbox2_flickr'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Flickr images'),
     '#description' => t('Checking this box will enable automatic URL formatting for Flickr images.'),
@@ -278,7 +313,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   );
 
   // Add text box for link text to node.
-  $form['image_node_options']['lightbox2_node_link_text'] = array(
+  $form['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for Node Link'),
     '#description' => t('This is the text that will appear as the link to the node underneath the image in the lightbox'),
@@ -286,7 +321,7 @@ range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
   );
 
   // Add Checkbox for disabling lightbox for gallery lists.
-  $form['image_node_options']['lightbox2_disable_nested_galleries']  = array(
+  $form['lightbox2_disable_nested_galleries']  = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Lightbox for Gallery Lists'),
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
