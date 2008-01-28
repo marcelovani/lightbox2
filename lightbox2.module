@@ -434,7 +434,11 @@ function lightbox2_add_files() {
   // Lightbox2 Plus
   if (!variable_get('lightbox2_lite', false)) {
     $css = $path .'/css/lightbox.css';
+    if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
+      $css = $path .'/css/lightbox-rtl.css';
+    }
     if (variable_get('lightbox2_use_alt_layout', false)) {
+      // no need for rtl version, everything is centred
       $css = $path .'/css/lightbox_alt.css';
     }
     if (function_exists('drupal_add_css')) {
@@ -454,6 +458,9 @@ function lightbox2_add_files() {
   // Lightbox Lite
   else {
     $css = $path .'/css/lightbox_lite.css';
+    if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
+      $css = $path .'/css/lightbox_lite-rtl.css';
+    }
     if (function_exists('drupal_add_css')) {
       drupal_add_css($css);
     }
