@@ -1,4 +1,5 @@
-/* $Id $ */
+/* $Id$ */
+
 /**
  * jQuery Lightbox
  * @author

@@ -1,3 +1,5 @@
+/* $Id$ */
+
 // Image Node Auto-Format with Auto Image Grouping.
 // Original version by Steve McKenzie.
 // Altered by Stella Power for jQuery version.

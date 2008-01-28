@@ -1,3 +1,5 @@
+/* $Id$ */
+
 /**
  * Lightbox JS: Fullsize Image Overlays 
  * by Lokesh Dhakar - http://www.huddletogether.com
