@@ -17,7 +17,8 @@ if (Drupal.jsEnabled) {
       var classes = settings.image_node_classes;
       $("a["+classes+"]").each(function(i) {
 
-        if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (settings.disable_for_gallery_lists && !$(this).parents(".galleries").length) || (settings.disable_for_acidfree_gallery_lists && !$(this).parents(".acidfree-folder").length)) {
+        if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
+
           var child = $(this).children();
 
           // Set the alt text.
