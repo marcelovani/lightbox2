@@ -3,10 +3,10 @@
 
 /**
  * @file
- * Enables the use of lightbox V2 which places images above your current page, 
- * not within. This frees you from the constraints of the layout, 
+ * Enables the use of lightbox V2 which places images above your current page,
+ * not within. This frees you from the constraints of the layout,
  * particularly column widths.
- * 
+ *
  * This module is for Drupal 6.x only.
  *
  * Module by: Mark Ashmead
@@ -41,7 +41,7 @@ href="http://drupal.org/project/inline">Inline</a>, <a
 href="http://drupal.org/project/flickr">Flickr</a>, <a
 href="http://drupal.org/project/img_assist">Image Assist</a> and <a
 href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
-supported (images must have the "inline", "image-inline", "thumbnail", 
+supported (images must have the "inline", "image-inline", "thumbnail",
 "image-thumbnail" or "flickr-photo-img" classes).</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
 <li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
@@ -149,7 +149,7 @@ function lightbox2_general_settings_form() {
   $form['lightbox2_lite_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Lightbox2 Lite'),
-    '#collapsible' => TRUE, 
+    '#collapsible' => TRUE,
     '#collapsed' => !$use_lite,
   );
 
@@ -270,7 +270,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
     '#default_value' => variable_get('lightbox2_image_node', true),
   );
-  
+
   // Add DropDown for list of available image sizes.
   if (module_exists('image')) {
     $sizes = _image_get_sizes();
@@ -486,8 +486,8 @@ function lightbox2_add_files() {
 
 /**
  * Implementation of hook_field_formatter_info().
- * 
- * Add certain lightbox and imagecache formatters to CCK image fields if  
+ *
+ * Add certain lightbox and imagecache formatters to CCK image fields if
  * the imagefield.module and the imagecache.module exist.
  */
 function lightbox2_field_formatter_info() {
