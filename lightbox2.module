@@ -20,7 +20,7 @@
 
 /**
  * Implementation of hook_help().
- * 
+ *
  * Displays the information for this module.
  * Displays the help text for this module.
  */
@@ -28,7 +28,7 @@ function lightbox2_help($section) {
   switch ($section) {
     case 'admin/modules#description':
       return t('Enables Lightbox V2 for Drupal');
-    
+
     case 'admin/help#lightbox2':
       return t('<h3>Overview</h3>
       <p align="justify">Lightbox JS V2 is a simple, unobtrusive script used to overlay images on the current page. It\'s a snap to setup and works on all modern browsers. The module comes with a Lightbox2 Lite option which does not use the jQuery libraries; it is therefore less likely to conflict with anything else.</p>
@@ -47,7 +47,7 @@ href="http://drupal.org/project/inline">Inline</a>, <a
 href="http://drupal.org/project/flickr">Flickr</a>, <a
 href="http://drupal.org/project/img_assist">Image Assist</a> and <a
 href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
-supported (images must have the "inline", "image-inline", "thumbnail", 
+supported (images must have the "inline", "image-inline", "thumbnail",
 "image-thumbnail" or "flickr-photo-img" classes).</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
 <li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
@@ -85,7 +85,7 @@ function lightbox2_perm() {
  */
 function lightbox2_menu($may_cache) {
   $items = array();
-  
+
   if ($may_cache) {
     $items[] = array('path' => 'admin/settings/lightbox2',
       'title' => t('Lightbox2'),
@@ -117,7 +117,7 @@ function lightbox2_menu($may_cache) {
       lightbox2_add_files();
     }
   }
-  
+
   return $items;
 }
 
@@ -147,7 +147,7 @@ function lightbox2_general_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => !$use_lite,
   );
-  
+
   // Add Checkbox for Lightbox2 Lite.
   $form['lightbox2_lite_options']['lightbox2_lite'] = array(
     '#type' => 'checkbox',
@@ -155,7 +155,7 @@ function lightbox2_general_settings_form() {
     '#description' => t('Checking this box will enable Lightbox2 Lite and will disable all of the automatic image node URL re-formatting features.  It also disables all grouping features.'),
     '#default_value' => $use_lite,
   );
- 
+
 
   // Add Checkbox for Alternative Layout
   $form['lightbox2_use_alt_layout'] = array(
@@ -164,7 +164,7 @@ function lightbox2_general_settings_form() {
     '#description' => t('Enabling this option alters the layout of the lightbox elements.  This doesn\'t apply when using Lightbox Lite.'),
     '#default_value' => variable_get('lightbox2_use_alt_layout', false),
   );
-  
+
   // Add Checkbox for Force Navigation display
   $form['lightbox2_force_show_nav'] = array(
     '#type' => 'checkbox',
@@ -180,7 +180,7 @@ function lightbox2_general_settings_form() {
     '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".'),
     '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
   );
-   
+
   // Add Checkbox for Zoom image
   $form['lightbox2_disable_zoom'] = array(
     '#type' => 'checkbox',
@@ -206,7 +206,7 @@ function lightbox2_general_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
- 
+
   // Add Checkbox for overlay opacity.
   for ($i = 0; $i < 10; $i++) {
     $opacity_options["0.$i"] = "0.$i";
@@ -258,7 +258,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
     '#default_value' => variable_get('lightbox2_image_node', true),
   );
-    
+
   // Add DropDown for list of available image sizes.
   if (module_exists('image')) {
     $sizes = _image_get_sizes();
@@ -285,14 +285,14 @@ function lightbox2_auto_image_handling_settings_form() {
       '#description' => t('Select which image size, when clicked on, will automatically trigger the lightbox.  This only applies to images uploaded with the Image module.'),
     );
   }
-  
+
   // Add Checkbox for Flickr Image support
   $form['lightbox2_flickr'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Flickr images'),
     '#description' => t('Checking this box will enable automatic URL formatting for Flickr images.'),
     '#default_value' => variable_get('lightbox2_flickr', true),
-  ); 
+  );
 
   // Add text box for link text to node
   $form['lightbox2_node_link_text'] = array(
@@ -301,7 +301,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('This is the text that will appear as the link to the node underneath the image in the lightbox'),
     '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
   );
-  
+
   // Add Checkbox for Image Node Grouping.
   $form['lightbox2_image_group'] = array(
     '#type' => 'checkbox',
@@ -309,7 +309,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries.'),
     '#default_value' => variable_get('lightbox2_image_group', true),
   );
-  
+
   // Add Checkbox for disabling lightbox for gallery lists
   $form['lightbox2_disable_nested_galleries'] = array(
     '#type' => 'checkbox',
@@ -317,7 +317,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
-  
+
   // Add Checkbox for disabling lightbox for acidfree gallery lists
   if (module_exists("acidfree")) {
     $form['lightbox2_disable_nested_acidfree_galleries'] = array(
@@ -361,7 +361,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
   switch ($op) {
     case 'list':
       return array(0 => t('Lightbox filter'), 1 => t('Lightbox G2 filter'));
-    
+
     case 'description':
       if ($delta == 1) {
         return t('Turns g2_filter links into Lightbox.V2 appropriate links');
@@ -369,7 +369,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
       else {
         return t('Image links with \'rel="lightbox"\' in the <a> tag will appear in a Lightbox when clicked on.');
       }
-    
+
     case 'process':
       if ($delta == 1) {
         $text = ' '. $text .' ';
@@ -378,7 +378,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
         $text = substr($text, 1, -1);
       }
       return $text;
-    
+
     default:
       return $text;
   }
@@ -397,7 +397,7 @@ function lightbox2_add_files() {
 
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
-  
+
   // set the list of image classes to format urls for
   if (variable_get('lightbox2_image_node', true)) {
     $image_node_classes = "img.inline,";
@@ -447,13 +447,13 @@ function lightbox2_add_files() {
     else {
       theme('add_style', $css);
     }
-    
+
     // Check to see if the Image Node Option is enabled in settings.
     if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true)) {
       drupal_add_js($path .'/js/image_nodes.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
-    
+
   }
   // Lightbox Lite
   else {
@@ -497,7 +497,7 @@ function lightbox2_field_formatter_info() {
       }
     }
   }
-  
+
   return $formatters;
 }
 
@@ -520,7 +520,7 @@ function lightbox2_field_formatter($field, $item, $formatter) {
       lightbox2_add_files();
     }
 
-    $item = array_merge($item, (array)$file); 
+    $item = array_merge($item, (array)$file);
     $item['filepath'] = $filepath;
     if (strpos($formatter, 'lightbox2][') !== false) {
       list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
@@ -544,21 +544,21 @@ function lightbox2_field_formatter($field, $item, $formatter) {
  * Implementation of theme_imagefield_image_imagecache_lightbox2().
  */
 function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $attributes = NULL) {
-  
+
   $rel = 'lightbox';
   if (variable_get('lightbox2_image_group', TRUE)) {
     $rel = 'lightbox[cck_image_nodes]';
   }
-  
+
   $node_link = '';
   if (!empty($item['nid'])) {
     $node_link = '<br /><br />'. l(t(variable_get('lightbox2_node_link_text', 'View Image Details')), 'node/'. $item['nid']);
   }
-  
+
   $link_attributes = array(
     'rel' => $rel,
     'title' => $item['alt'] . $node_link);
-  
+
   if ($view_preset == 'original') {
     $image = theme('lightbox2_image', $item['view_filepath'], $item['alt'], $item['title'], $attributes);
   }
@@ -566,17 +566,17 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $image = theme('imagecache', $view_preset, $item['view_filepath'], $item['alt'], $item['title'], $attributes);
   }
   $output = l($image, file_create_url($item['lightbox_filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
-  
+
   return $output;
 }
 
 function lightbox2_exclude_these_paths() {
   // Use lightbox if this url is not excluded
   $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
-  
+
   if (!empty($disabled_urls)) {
     $urls = explode("\n", $disabled_urls);
-    
+
     foreach ($urls as $url) {
       $url = rtrim($url);
       if ($url == "<front>") {
@@ -589,7 +589,7 @@ function lightbox2_exclude_these_paths() {
       }
     }
   }
-  
+
   return 0;
 }
 
