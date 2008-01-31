@@ -577,7 +577,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
 
   $rel = 'lightbox';
   if (variable_get('lightbox2_image_group', TRUE)) {
-    $rel = 'lightbox[cck_image_nodes]';
+    $rel = 'lightbox['. $field['field_name'] .']';
   }
 
   $node_link = '';
