@@ -405,7 +405,7 @@ function lightbox2_add_files() {
     $image_node_classes .= "img.flickr-photo-img,";
   }
   $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
-  foreach ($trigger_sizes as $size) {
+  foreach ($trigger_sizes as $size => $size_name) {
     $image_node_classes .= "img.$size, img.image-$size,";
   }
   $image_node_classes = rtrim($image_node_classes, ",");
