@@ -58,6 +58,7 @@ var Lightbox = {
   imageArray : new Array,
   activeImage : null,
   inprogress : false,
+  rtl : false,
  
 
 
@@ -68,7 +69,8 @@ var Lightbox = {
   initialize: function() {
 
     var settings = Drupal.settings.lightbox2;
-				Lightbox.overlayOpacity = settings.overlay_opacity;
+    Lightbox.overlayOpacity = settings.overlay_opacity;
+    Lightbox.rtl = settings.rtl;
 
     // attach lightbox to any links with rel 'lightbox'
     Lightbox.updateImageList();
@@ -369,7 +371,7 @@ var Lightbox = {
     var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
     var lightboxLeft = arrayPageScroll[0];
     $('#lightbox').css({
-				  zIndex: '10500',
+      zIndex: '10500',
       top: lightboxTop + 'px', 
       left: lightboxLeft + 'px'
     }).show();
@@ -531,6 +533,9 @@ var Lightbox = {
     }
 
     $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
+    if (Lightbox.rtl) {
+      $("#bottomNav").css({float: 'left'});
+    }
     var arrayPageSize = Lightbox.getPageSize();
     $('#overLay').css({height: arrayPageSize[1] + 'px'});
     Lightbox.updateNav();

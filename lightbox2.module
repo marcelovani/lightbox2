@@ -410,8 +410,13 @@ function lightbox2_add_files() {
   }
   $image_node_classes = rtrim($image_node_classes, ",");
 
+  $rtl = false;
+  if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
+    $rtl = true;
+  }
   // load the javascript settings
   $js_settings = array(
+    'rtl' => $rtl,
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', '0.6'),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
