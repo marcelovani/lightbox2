@@ -48,6 +48,14 @@ function lightbox2_image_nodes() {
           }
         }
 
+        // Handle "inline" images.
+        else if ($(child).attr("class").match("inline")) {
+          href = $(this).attr("href");
+          if (settings.group_images) {
+            rel = "lightbox[inline]";
+          }
+        }
+
         // Set the href attribute.
         else {
           href = $(child).attr("src").replace(".thumbnail", ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
