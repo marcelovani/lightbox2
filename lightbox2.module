@@ -483,7 +483,16 @@ function lightbox2_add_files() {
 function lightbox2_field_formatter_info() {
   $formatter = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
-    $rules = _imagecache_get_presets();
+    $rules = array();
+    if (function_exists('imagecache_presets')) {
+      $presets = imagecache_presets();
+      foreach ($presets as $preset_id => $preset_info) {
+        $rules[$preset_id] = $preset_info['presetname'];
+      }
+    }
+    else {
+      $rules = _imagecache_get_presets();
+    }
     foreach ($rules as $ruleid => $view_rule) {
       $formatters['lightbox2][original]['. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
@@ -536,7 +545,16 @@ function lightbox2_field_formatter($field, $item, $formatter) {
         $item['lightbox_filepath'] = file_directory_path() .'/imagecache/'.  $lightbox_preset .'/'. $item['filepath'];
       }
 
-      $rules = _imagecache_get_presets();
+      $rules = array();
+      if (function_exists('imagecache_presets')) {
+        $presets = imagecache_presets();
+        foreach ($presets as $preset_id => $preset_info) {
+          $rules[$preset_id] = $preset_info['presetname'];
+        }
+      }
+      else {
+        $rules = _imagecache_get_presets();
+      }
       if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
         return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item);
       }
