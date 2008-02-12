@@ -29,6 +29,7 @@
  * - updateImageList()
  * - start()
  * - changeImage()
+ * - imgNodeLoadingError()
  * - imgLoadingError()
  * - resizeImageContainer()
  * - showImage()
@@ -340,7 +341,7 @@ var Lightbox = {
     // if image is NOT part of a set..
     if ((imageLink.rel == 'lightbox')) {
       // add single image to imageArray
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));   
+      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
 
     }
     else {
@@ -406,7 +407,7 @@ var Lightbox = {
       $('#bottomNavZoom').hide();
     
       imgPreloader = new Image();
-      imgPreloader.onerror = function() { Lightbox.imgLoadingError(this) };
+      imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
 
       // once image is preloaded, resize image container
       if (zoom == "TRUE") {
@@ -451,6 +452,18 @@ var Lightbox = {
       }
       imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
     }
+  },
+
+  // imgNodeLoadingError()
+  imgNodeLoadingError: function(image) {
+    var settings = Drupal.settings.lightbox2;
+    var original_image = Lightbox.imageArray[Lightbox.activeImage][0];
+    if (settings.display_image_size != "") {
+      original_image = original_image.replace(new RegExp("."+settings.display_image_size), "");
+    }
+    Lightbox.imageArray[Lightbox.activeImage][0] = original_image;
+    image.onerror = function() { Lightbox.imgLoadingError(image) };
+    image.src = original_image;
   },
 
   // imgLoadingError()
