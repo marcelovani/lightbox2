@@ -29,6 +29,7 @@
  * - updateImageList()
  * - start()
  * - changeImage()
+ * - imgLoadingError()
  * - resizeImageContainer()
  * - showImage()
  * - updateDetails()
@@ -362,7 +363,7 @@ var Lightbox = {
           }
         }
       }
-      while(Lightbox.imageArray[imageNum][0] != imageLink.href) {
+      while (Lightbox.imageArray[imageNum][0] != imageLink.href) {
         imageNum++;
       }
     }
@@ -406,6 +407,7 @@ var Lightbox = {
       $('#bottomNavZoom').hide();
     
       imgPreloader = new Image();
+      imgPreloader.onerror = function() { Lightbox.imgLoadingError(this) };
 
       // once image is preloaded, resize image container
       if (zoom == "TRUE") {
@@ -452,8 +454,15 @@ var Lightbox = {
     }
   },
 
+  // imgLoadingError()
+  imgLoadingError: function(image) {
+    var settings = Drupal.settings.lightbox2;
+    Lightbox.imageArray[Lightbox.activeImage][0] = settings.default_image;
+    image.src = settings.default_image;
+  },
+
   // resizeImageContainer()
-  resizeImageContainer: function( imgWidth, imgHeight) {
+  resizeImageContainer: function(imgWidth, imgHeight) {
 
     // get current width and height
     this.widthCurrent = $('#outerImageContainer').width();
