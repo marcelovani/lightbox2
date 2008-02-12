@@ -424,11 +424,13 @@ function lightbox2_add_files() {
     $image_node_classes .= "img.flickr-photo-img,";
   }
   $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
+  $trigger_image_sizes = '';
   foreach ($trigger_sizes as $size => $size_name) {
     $image_node_classes .= "img.$size, img.image-$size,";
+    $trigger_image_sizes .= ".$size|";
   }
-
   $image_node_classes = rtrim($image_node_classes, ",");
+  $trigger_image_sizes = '('. rtrim($trigger_image_sizes, "|") .')';
 
   // Load the javascript settings.
   $js_settings = array(
@@ -440,6 +442,7 @@ function lightbox2_add_files() {
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
     'image_node_classes' => $image_node_classes,
+    'trigger_image_sizes' => $trigger_image_sizes,
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', true),

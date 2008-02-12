@@ -58,7 +58,7 @@ function lightbox2_image_nodes() {
 
         // Set the href attribute.
         else {
-          href = $(child).attr("src").replace(".thumbnail", ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
+          href = $(child).attr("src").replace(new RegExp(settings.trigger_image_sizes), ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
         }
 
         // Modify the image url.
