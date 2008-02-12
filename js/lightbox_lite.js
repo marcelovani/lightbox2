@@ -175,6 +175,7 @@ function showLightbox(objLink) {
 
   // preload image
   imgPreload = new Image();
+  imgPreload.onerror = function() { imgLoadingError(this, objImage, objLink) };
 
   imgPreload.onload = function() {
     objImage.src = objLink.href;
@@ -234,6 +235,12 @@ function showLightbox(objLink) {
 
 
 
+function imgLoadingError(image, objImage, objLink) {
+  var settings = Drupal.settings.lightbox2;
+  image.src = settings.default_image;
+  objImage.src = settings.default_image;
+  objLink.href = settings.default_image;
+}
 
 
 // hideLightbox()
