@@ -42,6 +42,9 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_disable_nested_acidfree_galleries');
 }
 
+/*
+ * One of the variables was renamed from 'lightbox2_plus' to 'lightbox2_lite'.
+ */
 function lightbox2_update_1() {
   $ret = array();
   $ret[] = update_sql('UPDATE {variable} SET name="lightbox2_lite"
