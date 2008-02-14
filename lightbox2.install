@@ -2,6 +2,11 @@
 // $Id$
 
 /**
+ * @file
+ * Installation functions for Lightbox2.
+ */
+
+/**
  * Implementation of hook_install().
  */
 function lightbox2_install() {
@@ -37,6 +42,9 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_disable_nested_acidfree_galleries');
 }
 
+/*
+ * One of the variables was renamed from 'lightbox2_plus' to 'lightbox2_lite'.
+ */
 function lightbox2_update_1() {
   $ret = array();
   switch ($GLOBALS['db_type']) {
