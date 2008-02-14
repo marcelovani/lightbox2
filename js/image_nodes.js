@@ -14,7 +14,7 @@ if (Drupal.jsEnabled) {
     if (!img_assist) {
 
       // Select the enabled image types.
-      var classes = settings.image_node_classes;
+      var classes = settings.trigger_image_classes;
       $("a["+classes+"]").each(function(i) {
 
         if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
@@ -33,12 +33,12 @@ if (Drupal.jsEnabled) {
           // Set the rel attribute.
           var rel = "lightbox";
           if (settings.group_images) {
-            rel = "lightbox[node_thumbnails]";
+            rel = "lightbox[" + $(child).attr("class") + "]";
           }
           
 
           // Handle flickr images.
-          var href = '';
+          var href = $(child).attr("src");
           if ($(child).attr("class").match("flickr-photo-img")) {
             href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
             if (settings.group_images) {
@@ -49,14 +49,14 @@ if (Drupal.jsEnabled) {
           // Handle "inline" images.
           else if ($(child).attr("class").match("inline")) {
             href = $(this).attr("href");
-            if (settings.group_images) {
-              rel = "lightbox[inline]";
-            }
           }
 
           // Set the href attribute.
-          else {
-            href = $(child).attr("src").replace(new RegExp(settings.trigger_image_sizes), ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
+          else if (settings.image_node_sizes != '()') {
+            href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
+            if (settings.group_images) {
+              rel = "lightbox[node_images]";
+            }
           }
 
           // Modify the image url.

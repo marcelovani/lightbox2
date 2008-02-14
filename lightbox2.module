@@ -293,7 +293,23 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_flickr', true),
   );
 
-  // Add text box for link text to node
+  // Add Checkbox for Inline Image support.
+  $form['lightbox2_inline'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable for Inline images'),
+    '#description' => t('Checking this box will enable automatic URL formatting for images displayed by the Inline module.'),
+    '#default_value' => variable_get('lightbox2_inline', true),
+  );
+
+  // Add text box for custom trigger classes.
+  $form['lightbox2_custom_trigger_classes'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Custom image trigger classes'),
+    '#description' => t('List the image classes which should trigger the lightbox when clicked on.  Put each class on a separate line.'),
+    '#default_value' => variable_get('lightbox2_custom_trigger_classes', ''),
+  );
+
+  // Add text box for link text to node.
   $form['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for Node Link'),
@@ -397,26 +413,44 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
 
-  // set the list of image classes to format urls for
-  if (variable_get('lightbox2_image_node', true)) {
-    $image_node_classes = "img.inline,";
+  // Set the list of image classes to format urls for.
+  $image_node_sizes = '';
+  $trigger_image_classes = '';
+  // Inline module images.
+  if (variable_get('lightbox2_inline', true)) {
+    $trigger_image_classes .= "img.inline,";
   }
+  // Flickr images.
   if (variable_get('lightbox2_flickr', true)) {
-    $image_node_classes .= "img.flickr-photo-img,";
+    $trigger_image_classes .= "img.flickr-photo-img,";
   }
-  $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
-  $trigger_image_sizes = '';
-  foreach ($trigger_sizes as $size => $size_name) {
-    $image_node_classes .= "img.$size, img.image-$size,";
-    $trigger_image_sizes .= ".$size|";
+  // Image nodes.
+  if (variable_get('lightbox2_image_node', true)) {
+    $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
+    foreach ($trigger_sizes as $size => $size_name) {
+      $trigger_image_classes .= "img.$size, img.image-$size,";
+      $image_node_sizes .= "\.$size|";
+    }
   }
-  $image_node_classes = rtrim($image_node_classes, ",");
-  $trigger_image_sizes = '('. rtrim($trigger_image_sizes, "|") .')';
+  // Custom images.
+  $custom_triggers = variable_get('lightbox2_custom_trigger_classes', '');
+  if (!empty($custom_triggers)) {
+    $trigger_classes = preg_split("/(\r\n|\n)/", $custom_triggers);
+    foreach ($trigger_classes as $class) {
+      if (!empty($class)) {
+        $trigger_image_classes .= "img.$class,";
+      }
+    }
+  }
+  $trigger_image_classes = rtrim($trigger_image_classes, ",");
+  $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
+  // Find out if we're using a RTL language.
   $rtl = false;
   if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
     $rtl = true;
   }
+
   // load the javascript settings
   $js_settings = array(
     'rtl' => $rtl,
@@ -426,8 +460,8 @@ function lightbox2_add_files() {
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', false),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', false),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', false),
-    'image_node_classes' => $image_node_classes,
-    'trigger_image_sizes' => $trigger_image_sizes,
+    'image_node_sizes' => $image_node_sizes,
+    'trigger_image_classes' => $trigger_image_classes,
     'group_images' => variable_get('lightbox2_image_group', true),
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', true),
@@ -458,13 +492,13 @@ function lightbox2_add_files() {
     }
 
     // Check to see if the Image Node Option is enabled in settings.
-    if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true)) {
+    if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true) || variable_get('lightbox2_inline', true) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
       drupal_add_js($path .'/js/image_nodes.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
   }
-  // Lightbox Lite
+  // Lightbox Lite.
   else {
     $css = $path .'/css/lightbox_lite.css';
     if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
