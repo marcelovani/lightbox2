@@ -152,3 +152,12 @@
   bottom: 25px;
   right: 5px;
 }
+#bottomNavZoomOut {
+  display: block;
+  background: url(../images/contract.gif) no-repeat;
+  width: 34px;
+  height: 34px;
+  position: absolute;
+  bottom: 25px;
+  right: 5px;
+}
