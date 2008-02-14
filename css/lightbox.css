@@ -160,3 +160,12 @@
   left: 30px;
   float: right;
 }
+#bottomNavZoomOut {
+  display: none;
+  background: url(../images/contract.gif) no-repeat;
+  width: 34px;
+  height: 34px;
+  position: relative;
+  left: 30px;
+  float: right;
+}

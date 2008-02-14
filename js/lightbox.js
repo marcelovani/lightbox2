@@ -195,6 +195,11 @@ var Lightbox = {
       BottomNavZoomLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomLink);
 
+      var BottomNavZoomOutLink = document.createElement("a");
+      BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
+      BottomNavZoomOutLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavZoomOutLink);
+
     }
 
     // new layout
@@ -256,6 +261,11 @@ var Lightbox = {
       BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
       BottomNavZoomLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomLink);
+
+      var BottomNavZoomOutLink = document.createElement("a");
+      BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
+      BottomNavZoomOutLink.setAttribute('href', '#');
+      BottomNav.appendChild(BottomNavZoomOutLink);
     }
 
 
@@ -267,6 +277,7 @@ var Lightbox = {
     $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $("#bottomNavClose").click(function() { Lightbox.end(); return false; } );
     $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'TRUE'); return false; } );
+    $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'FALSE'); return false; } );
 
     // Fix positioning of Prev and Next links.
     $('#prevLink').css({ paddingTop: Lightbox.borderSize});
@@ -405,6 +416,7 @@ var Lightbox = {
       $('#imageDataContainer').hide();
       $('#numberDisplay').hide();  
       $('#bottomNavZoom').hide();
+      $('#bottomNavZoomOut').hide();
     
       imgPreloader = new Image();
       imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
@@ -420,6 +432,9 @@ var Lightbox = {
           imgPreloader.onload = function() {}; 
         };
         $('#bottomNavZoom').hide();
+        if (!settings.disable_zoom) {
+          $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
+        }
 
       }
       else {
@@ -434,6 +449,7 @@ var Lightbox = {
           var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (arrayPageSize[3] / 10) };
           var orig = { w:imgPreloader.width, h:imgPreloader.height };
           var ratio = 1.0; // shrink image with the same aspect
+          $('#bottomNavZoomOut').hide();
           $('#bottomNavZoom').hide();
           if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
             ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
