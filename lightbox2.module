@@ -489,12 +489,7 @@ function lightbox2_add_files() {
       // No need for rtl version, everything is centred.
       $css = $path .'/css/lightbox_alt.css';
     }
-    if (function_exists('drupal_add_css')) {
-      drupal_add_css($css);
-    }
-    else {
-      theme('add_style', $css);
-    }
+				drupal_add_css($css);
 
     // Check to see if the Image Node Option is enabled in settings.
     if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true) || variable_get('lightbox2_inline', true) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
@@ -509,12 +504,7 @@ function lightbox2_add_files() {
     if (module_exists('i18n') && module_invoke('i18n', 'language_rtl')) {
       $css = $path .'/css/lightbox_lite-rtl.css';
     }
-    if (function_exists('drupal_add_css')) {
-      drupal_add_css($css);
-    }
-    else {
-      theme('add_style', $css);
-    }
+				drupal_add_css($css);
     drupal_add_js($path .'/js/lightbox_lite.js', 'module', $js_location);
   }
 }
