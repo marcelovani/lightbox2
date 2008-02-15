@@ -39,10 +39,15 @@ if (Drupal.jsEnabled) {
 
           // Handle flickr images.
           var href = $(child).attr("src");
-          if ($(child).attr("class").match("flickr-photo-img")) {
+          if ($(child).attr("class").match("flickr-photo-img")
+            || $(child).attr("class").match("flickr-photoset-img")) {
             href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
             if (settings.group_images) {
               rel = "lightbox[flickr]";
+              if ($(child).parents("div.block-flickr").attr("class")) {
+                var id = $(child).parents("div.block-flickr").attr("id");
+                rel = "lightbox["+ id +"]";
+              }
             }
           }
 
@@ -56,6 +61,10 @@ if (Drupal.jsEnabled) {
             href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
             if (settings.group_images) {
               rel = "lightbox[node_images]";
+              if ($(child).parents("div.block-image").attr("class")) {
+                var id = $(child).parents("div.block-image").attr("id");
+                rel = "lightbox["+ id +"]";
+              }
             }
           }
 
