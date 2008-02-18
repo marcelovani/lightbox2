@@ -318,6 +318,14 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_inline', true),
   );
 
+  // Add Checkbox for Image Assist custom size images.
+  $form['lightbox2_image_assist_custom'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable for Image Assist custom size images'),
+    '#description' => t('Checking this box will enable automatic URL formatting for custom size images displayed by the Image Assist module.'),
+    '#default_value' => variable_get('lightbox2_image_assist_custom', true),
+  );
+
   // Add text box for custom trigger classes.
   $form['lightbox2_custom_trigger_classes'] = array(
     '#type' => 'textarea',
@@ -445,6 +453,10 @@ function lightbox2_add_files() {
   // Flickr images.
   if (variable_get('lightbox2_flickr', true)) {
     $trigger_image_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+  }
+  // Image Assist custom size images.
+  if (variable_get('lightbox2_image_assist_custom', true)) {
+    $trigger_image_classes .= "img.image-img_assist_custom,";
   }
   // Image nodes.
   if (variable_get('lightbox2_image_node', true)) {
