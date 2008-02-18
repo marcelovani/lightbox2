@@ -470,6 +470,7 @@ function lightbox2_add_files() {
   // Load the javascript settings.
   $js_settings = array(
     'rtl' => $language->direction,
+    'file_path' => '^(/\w\w)/'. file_directory_path(),
     'default_image' => base_path() . $path .'/images/brokenimage.jpg',
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', '0.6'),

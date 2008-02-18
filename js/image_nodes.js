@@ -42,8 +42,16 @@ function lightbox2_image_nodes() {
             rel = "lightbox[" + $(child).attr("class") + "]";
           }
 
-          // Handle flickr images.
+          // Set the basic href attribute - need to ensure there's no language
+          // string (e.g. /en) prepended to the URL.
           var href = $(child).attr("src");
+          var orig_href = $(this).attr("href");
+          var pattern = new RegExp(settings.file_path);
+          if (orig_href.match(pattern)) {
+            orig_href = orig_href.replace(/^\/\w\w/, "");
+          }
+
+          // Handle flickr images.
           if ($(child).attr("class").match("flickr-photo-img")
             || $(child).attr("class").match("flickr-photoset-img")) {
             href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
@@ -56,9 +64,17 @@ function lightbox2_image_nodes() {
             }
           }
 
+          // Handle "image-img_assist_custom" images.
+          else if ($(child).attr("class").match("image-img_assist_custom")) {
+            // Image assist uses "+" signs for spaces which doesn't work for
+            // normal links.
+            orig_href = orig_href.replace(/\+/, " ");
+            href = orig_href;
+          }
+
           // Handle "inline" images.
           else if ($(child).attr("class").match("inline")) {
-            href = $(this).attr("href");
+            href = orig_href;
           }
 
           // Set the href attribute.
@@ -75,7 +91,7 @@ function lightbox2_image_nodes() {
 
           // Modify the image url.
           $(this).attr({
-            title: alt + "<br /><a href=\"" + this.href + "\" id=\"node_link_text\">"+ link_text + "</a>",
+            title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\">"+ link_text + "</a>",
             rel: rel,
             href: href
             });
