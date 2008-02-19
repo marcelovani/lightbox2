@@ -363,7 +363,7 @@ function lightbox2_auto_image_handling_settings_form() {
 function lightbox2_filter_tips($delta, $format, $long = false) {
   if ($delta == 0) {
     if (!$long) {
-      return t('Image links with \'rel="lightbox"\' in the <a> tag will appear in a Lightbox when clicked on.');
+      return t('Image links with \'rel="lightbox"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
     }
     else {
       $output = '<p>'. t('To add a lightbox to your images, add rel="lightbox" attribute to any link tag to activate the lightbox. For example:') .'</p>';
@@ -395,7 +395,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
         return t('Turns g2_filter links into Lightbox.V2 appropriate links');
       }
       else {
-        return t('Image links with \'rel="lightbox"\' in the <a> tag will appear in a Lightbox when clicked on.');
+        return t('Image links with \'rel="lightbox"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
 
     case 'process':
