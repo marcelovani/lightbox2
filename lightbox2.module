@@ -77,7 +77,7 @@ function lightbox2_perm() {
 /**
  * Implementation of hook_access().
  */
-function lightbox2_access($op, $node) {
+function lightbox2_access($op, $node, $account) {
   return user_access('administer lightbox2');
 }
 
