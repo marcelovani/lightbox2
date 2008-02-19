@@ -56,7 +56,8 @@ var Lightbox = {
   overlayOpacity : 0.6, // controls transparency of shadow overlay
   fadeInSpeed: 'normal', // controls the speed of the image appearance
   slideDownSpeed: 'slow', // controls the speed of the image resizing animations
-  borderSize : 18, // if you adjust the padding in the CSS, you will need to update this variable
+  borderSize : 10, // if you adjust the padding in the CSS, you will need to update this variable
+  infoHeight : 20,
   imageArray : new Array,
   activeImage : null,
   inprogress : false,
@@ -447,7 +448,7 @@ var Lightbox = {
 
           // resize code
           var arrayPageSize = Lightbox.getPageSize();
-          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (arrayPageSize[3] / 10) };
+          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
           var orig = { w:imgPreloader.width, h:imgPreloader.height };
           var ratio = 1.0; // shrink image with the same aspect
           $('#bottomNavZoom').hide();
