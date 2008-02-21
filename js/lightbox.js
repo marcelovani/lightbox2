@@ -57,11 +57,11 @@ var Lightbox = {
   fadeInSpeed: 'normal', // controls the speed of the image appearance
   slideDownSpeed: 'slow', // controls the speed of the image resizing animations
   borderSize : 10, // if you adjust the padding in the CSS, you will need to update this variable
-  infoHeight : 20,
+  infoHeight: 20,
   imageArray : new Array,
   activeImage : null,
   inprogress : false,
-  rtl : 0,
+  rtl : false,
  
 
 
@@ -434,7 +434,7 @@ var Lightbox = {
           imgPreloader.onload = function() {}; 
         };
         $('#bottomNavZoom').hide();
-        if (settings.disable_zoom) {
+        if (!settings.disable_zoom) {
           $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
         }
 
@@ -451,8 +451,8 @@ var Lightbox = {
           var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
           var orig = { w:imgPreloader.width, h:imgPreloader.height };
           var ratio = 1.0; // shrink image with the same aspect
-          $('#bottomNavZoom').hide();
           $('#bottomNavZoomOut').hide();
+          $('#bottomNavZoom').hide();
           if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
             ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
             $('#bottomNavZoom').css({zIndex: '10500'}).show();
@@ -573,7 +573,7 @@ var Lightbox = {
     }
 
     $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
-    if (Lightbox.rtl == 1) {
+    if (Lightbox.rtl) {
       $("#bottomNav").css({float: 'left'});
     }
     var arrayPageSize = Lightbox.getPageSize();
