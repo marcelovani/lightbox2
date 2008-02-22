@@ -212,7 +212,9 @@ function showLightbox(objLink) {
     // Hide select boxes as they will 'peek' through the image in IE
     selects = document.getElementsByTagName("select");
     for (i = 0; i != selects.length; i++) {
-      selects[i].style.visibility = "hidden";
+      if (selects[i].style.display != "none") {
+        selects[i].style.visibility = "hidden";
+      }
     }
 
     objLightbox.style.display = 'block';
@@ -253,7 +255,9 @@ function hideLightbox() {
   // make select boxes visible
   selects = document.getElementsByTagName("select");
   for (i = 0; i != selects.length; i++) {
-    selects[i].style.visibility = "visible";
+    if (selects[i].style.display != "none") {
+      selects[i].style.visibility = "visible";
+    }
   }
 
   // disable keypress listener
