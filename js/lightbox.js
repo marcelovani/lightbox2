@@ -675,7 +675,7 @@ var Lightbox = {
     $('#lightbox').hide();
     $("#overlay").fadeOut();
     // replaces calls to showSelectBoxes() and showFlash() in original lightbox2
-    $("select, object, embed").css({zIndex: '10500'}).show();
+    $("select[display!='none'], object[display!='none'], embed[display!='none']").show();
   },
 
 
