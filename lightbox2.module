@@ -462,8 +462,13 @@ function lightbox2_add_files() {
   if (variable_get('lightbox2_image_node', true)) {
     $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
     foreach ($trigger_sizes as $size => $size_name) {
-      $trigger_image_classes .= "img.$size, img.image-$size,";
-      $image_node_sizes .= "\.$size|";
+      if (empty($size)) {
+        $trigger_image_classes .= "img._original, img.image-_original,";
+      }
+      else {
+        $trigger_image_classes .= "img.$size, img.image-$size,";
+        $image_node_sizes .= "\.$size|";
+      }
     }
   }
   // Custom images.
