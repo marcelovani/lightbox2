@@ -45,7 +45,8 @@ if (Drupal.jsEnabled) {
             var orig_href = $(this).attr("href");
             var pattern = new RegExp(settings.file_path);
             if (orig_href.match(pattern)) {
-              orig_href = orig_href.replace(/^\/\w\w/, "");
+              var lang_pattern = new RegExp(settings.base_path + "\\w\\w\\/");
+              orig_href = orig_href.replace(lang_pattern, settings.base_path);
             }
 
             // Handle flickr images.
