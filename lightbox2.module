@@ -47,7 +47,7 @@ href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
 supported.  It\'s also possible to configure a custom list of image classes
 which should trigger the lightbox functionality.</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
-<li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
+<li>Image Page Link: a link to the image node can be provided within the lightbox itself.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
 <li>Gallery 2 Support: support for Gallery 2 images via the <a href="http://drupal.org/project/gallery">Gallery</a> module (beta).</li>
 </ul>
@@ -252,8 +252,17 @@ function lightbox2_auto_image_handling_settings_form() {
     '#value' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
 
+  // Define Image Nodes settings fieldset.
+  /* ---------------------------------- */
+  $form['lightbox2_image_node_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Image node settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+
   // Add Checkbox for Image Node.
-  $form['lightbox2_image_node'] = array(
+  $form['lightbox2_image_node_options']['lightbox2_image_node'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Image Nodes'),
     '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
@@ -269,7 +278,7 @@ function lightbox2_auto_image_handling_settings_form() {
       }
       $size_options[$size_key] = $size['label'];
     }
-    $form['lightbox2_display_image_size'] = array(
+    $form['lightbox2_image_node_options']['lightbox2_display_image_size'] = array(
       '#type' => 'select',
       '#title' => t('Lightbox image display size'),
       '#options' => $size_options,
@@ -277,7 +286,7 @@ function lightbox2_auto_image_handling_settings_form() {
       '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
     );
 
-    $form['lightbox2_trigger_image_size'] = array(
+    $form['lightbox2_image_node_options']['lightbox2_trigger_image_size'] = array(
       '#type' => 'select',
       '#multiple' => TRUE,
       '#title' => t('Image trigger size'),
@@ -285,7 +294,16 @@ function lightbox2_auto_image_handling_settings_form() {
       '#default_value' => variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail'))),
       '#description' => t('Select which image size, when clicked on, will automatically trigger the lightbox.  This only applies to images uploaded with the Image module.'),
     );
+
   }
+
+  // Add Checkbox for disabling lightbox for gallery lists.
+  $form['lightbox2_image_node_options']['lightbox2_disable_nested_galleries'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Disable Lightbox for Gallery Lists'),
+    '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
+    '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
+  );
 
   // Add Checkbox for Flickr Image support.
   $form['lightbox2_flickr'] = array(
@@ -322,16 +340,16 @@ function lightbox2_auto_image_handling_settings_form() {
   // Add text box for link text to node.
   $form['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
-    '#title' => t('Text for Node Link'),
-    '#description' => t('This is the text that will appear as the link to the node underneath the image in the lightbox.'),
+    '#title' => t('Text for Image Page Link'),
+    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.'),
     '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
   );
 
   // Add checkbox for node link target.
   $form['lightbox2_node_link_target'] = array(
     '#type' => 'checkbox',
-    '#title' => t('Open Node Link in New Window'),
-    '#description' => t('This controls whether the link to the node underneath the image is opened in a new window or the current window.'),
+    '#title' => t('Open Image Page in New Window'),
+    '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
     '#default_value' => variable_get('lightbox2_node_link_target', false),
     '#return_value' => '_blank',
   );
@@ -340,16 +358,8 @@ function lightbox2_auto_image_handling_settings_form() {
   $form['lightbox2_image_group'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Grouping'),
-    '#description' => t('Checking this box will enable automatic grouping of Image Nodes on a page. Useful for image galleries.'),
+    '#description' => t('Checking this box will enable automatic grouping of images on a page. Useful for image galleries.'),
     '#default_value' => variable_get('lightbox2_image_group', true),
-  );
-
-  // Add Checkbox for disabling lightbox for gallery lists.
-  $form['lightbox2_disable_nested_galleries'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Disable Lightbox for Gallery Lists'),
-    '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
-    '#default_value' => variable_get('lightbox2_disable_nested_galleries', true),
   );
 
   // Add Checkbox for disabling lightbox for acidfree gallery lists.
