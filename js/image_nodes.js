@@ -32,6 +32,10 @@ if (Drupal.jsEnabled) {
 
             // Set the image node link text.
             var link_text = settings.node_link_text;
+            var link_target  = "";
+            if (settings.node_link_target != 0) {
+              link_target = 'target="'+ settings.node_link_target +'"';
+            }
 
             // Set the rel attribute.
             var rel = "lightbox";
@@ -90,7 +94,7 @@ if (Drupal.jsEnabled) {
 
             // Modify the image url.
             $(this).attr({rel: rel,
-              title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\">"+ link_text + "</a>",
+              title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
               href: href
               });
           }
