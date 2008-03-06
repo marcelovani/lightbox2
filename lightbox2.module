@@ -342,6 +342,15 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
   );
 
+  // Add checkbox for node link target.
+  $form['lightbox2_node_link_target'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open Node Link in New Window'),
+   '#description' => t('This controls whether the link to the node underneath the image is opened in a new window or the current window.'),
+    '#default_value' => variable_get('lightbox2_node_link_target', false),
+    '#return_value' => '_blank',
+  );
+
   // Add Checkbox for Image Node Grouping.
   $form['lightbox2_image_group']  = array(
     '#type' => 'checkbox',
@@ -500,6 +509,7 @@ function lightbox2_add_files() {
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', true),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', true),
     'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
+    'node_link_target' => variable_get('lightbox2_node_link_target', false),
     'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return false;"><kbd>x</kbd></a>')),
   );
@@ -649,7 +659,12 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
 
   $node_link = '';
   if (!empty($item['nid'])) {
-    $node_link = '<br /><br />'. l(t(variable_get('lightbox2_node_link_text', 'View Image Details')), 'node/'. $item['nid']);
+    $attributes = array();
+    $target = variable_get('lightbox2_node_link_target', false);
+    if (!empty($target)) {
+      $attributes = array('target' => $target);
+    }
+    $node_link = '<br /><br />'. l(t(variable_get('lightbox2_node_link_text', 'View Image Details')), 'node/'. $item['nid'], $attributes);
   }
 
   $link_attributes = array(

@@ -44,6 +44,7 @@ function lightbox2_lite_auto_handler(event) {
   if ($("input[@name=lightbox2_lite]").val() == 1) {
     $("input[@name=lightbox2_image_node]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_node_link_target]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_group]").attr("disabled", "disabled");
     $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
     $("select[@name='lightbox2_trigger_image_size[]']").attr("disabled", "disabled");
@@ -61,6 +62,7 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_inline]").removeAttr("disabled");
     $("textarea[@name=lightbox2_custom_trigger_classes]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
+    $("input[@name=lightbox2_node_link_target]").removeAttr("disabled");
     $("input[@name=lightbox2_image_group]").removeAttr("disabled");
     $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
     $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
@@ -91,10 +93,12 @@ function image_node_handler(event) {
       || $("textarea[@name=lightbox2_custom_trigger_classes]").val() != ''
       ) {
       $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
+      $("input[@name=lightbox2_node_link_target]").removeAttr("disabled");
       $("input[@name=lightbox2_image_group]").removeAttr("disabled");
     }
     else {
       $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
+      $("input[@name=lightbox2_node_link_target]").attr("disabled", "disabled");
       $("input[@name=lightbox2_image_group]").attr("disabled", "disabled");
     }
 
