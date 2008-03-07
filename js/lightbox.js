@@ -335,7 +335,8 @@ var Lightbox = {
   start: function(imageLink) {
 
     // replaces hideSelectBoxes() and hideFlash() calls in original lightbox2
-    $("select[display!='none'], embed[display!='none'], object[display!='none']").hide();
+    $("select[display!='none'], embed[display!='none'], object[display!='none']").addClass("lightbox_hidden");
+    $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").hide();
     
     // stretch overlay to fill page and fade in
     var arrayPageSize = Lightbox.getPageSize();
@@ -676,7 +677,7 @@ var Lightbox = {
     $('#lightbox').hide();
     $("#overlay").fadeOut();
     // replaces calls to showSelectBoxes() and showFlash() in original lightbox2
-    $("select, object, embed").css({zIndex: '10500'}).show();
+    $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").show();
   },
 
 
