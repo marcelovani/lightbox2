@@ -218,6 +218,20 @@ function showLightbox(objLink) {
       }
     }
 
+    // Hide flash objects as they will 'peek' through the image in IE
+    embed = document.getElementsByTagName("embed");
+    for (i = 0; i != embed.length; i++) {
+      if (embed[i].style.display != "none") {
+        embed[i].style.visibility = "hidden";
+      }
+    }
+    objects = document.getElementsByTagName("object");
+    for (i = 0; i != objects.length; i++) {
+      if (objects[i].style.display != "none") {
+        objects[i].style.visibility = "hidden";
+      }
+    }
+
     objLightbox.style.display = 'block';
 
     // After image is loaded, update the overlay height as the new image might
@@ -260,6 +274,20 @@ function hideLightbox() {
   for (i = 0; i != selects.length; i++) {
     if (selects[i].style.display != "none") {
       selects[i].style.visibility = "visible";
+    }
+  }
+
+  // make flash objects visible
+  embed = document.getElementsByTagName("embed");
+  for (i = 0; i != embed.length; i++) {
+    if (embed[i].style.display != "none") {
+      embed[i].style.visibility = "visible";
+    }
+  }
+  objects = document.getElementsByTagName("object");
+  for (i = 0; i != objects.length; i++) {
+    if (objects[i].style.display != "none") {
+      objects[i].style.visibility = "visible";
     }
   }
 
