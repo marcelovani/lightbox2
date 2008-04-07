@@ -674,7 +674,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
 
   $link_attributes = array(
     'rel' => $rel,
-    'title' => $item['alt'] . $node_link);
+    'title' => $item['title'] . $node_link);
 
   if ($view_preset == 'original') {
     $image = theme('lightbox2_image', $item['filepath'], $item['alt'], $item['title'], $attributes);
