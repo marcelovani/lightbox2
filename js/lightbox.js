@@ -334,7 +334,7 @@ var Lightbox = {
   start: function(imageLink) {
 
     // replaces hideSelectBoxes() and hideFlash() calls in original lightbox2
-    $("select[display!='none'], embed[display!='none'], object[display!='none']").addClass("lightbox_hidden");
+    $("select:visible, embed:visible, object:visible").addClass("lightbox_hidden");
     $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").hide();
     
     // stretch overlay to fill page and fade in
