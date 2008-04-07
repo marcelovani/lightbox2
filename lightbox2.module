@@ -683,11 +683,11 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
   }
   if ($item['lightbox_preset'] == 'original') {
-				$output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+    $output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
   }
   else {
-				$output = l($image, imagecache_create_url($item['lightbox_preset'], $item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
-		}
+    $output = l($image, lightbox2_imagecache_create_url($item['lightbox_preset'], $item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
 
   return $output;
 }
@@ -726,4 +726,14 @@ function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = NULL
   $attributes = drupal_attributes($attributes);
   $image = '<img src="'. file_create_url($path) .'" alt="'.  check_plain($alt) .'" title="'. check_plain($title) .'" '. $attributes .' />';
   return $image;
+}
+
+function lightbox2_imagecache_create_url($preset, $filepath) {
+  if (function_exists('imagecache_create_url')) {
+    return imagecache_create_url($preset, $filepath);
+  }
+  else {
+    $path = _imagecache_strip_file_directory($filepath);
+    return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $path);
+  }
 }
