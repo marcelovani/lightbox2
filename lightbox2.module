@@ -630,13 +630,7 @@ function lightbox2_field_formatter($field, $item, $formatter) {
     $item['filepath'] = $filepath;
     if (strpos($formatter, 'lightbox2][') !== false) {
       list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
-      $item['view_filepath'] = $item['filepath'];
-      if ($lightbox_preset == 'original') {
-        $item['lightbox_filepath'] = $item['filepath'];
-      }
-      else {
-        $item['lightbox_filepath'] = file_directory_path() .'/imagecache/'.  $lightbox_preset .'/'. $item['filepath'];
-      }
+      $item['lightbox_preset'] = $lightbox_preset;
 
       $rules = array();
       if (function_exists('imagecache_presets')) {
@@ -683,12 +677,17 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     'title' => $item['alt'] . $node_link);
 
   if ($view_preset == 'original') {
-    $image = theme('lightbox2_image', $item['view_filepath'], $item['alt'], $item['title'], $attributes);
+    $image = theme('lightbox2_image', $item['filepath'], $item['alt'], $item['title'], $attributes);
   }
   else {
-    $image = theme('imagecache', $view_preset, $item['view_filepath'], $item['alt'], $item['title'], $attributes);
+    $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
   }
-  $output = l($image, file_create_url($item['lightbox_filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+  if ($item['lightbox_preset'] == 'original') {
+				$output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
+  else {
+				$output = l($image, imagecache_create_url($item['lightbox_preset'], $item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
+		}
 
   return $output;
 }
