@@ -169,3 +169,7 @@
   left: 30px;
   float: right;
 }
+
+#lightbox_hide_image {
+  display: none;
+}

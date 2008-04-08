@@ -170,3 +170,7 @@
   left: -30px;
   float: left;
 }
+
+#lightbox_hide_image {
+  display: none;
+}

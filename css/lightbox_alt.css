@@ -161,3 +161,7 @@
   bottom: 25px;
   right: 5px;
 }
+
+#lightbox_hide_image {
+  display: none;
+}
