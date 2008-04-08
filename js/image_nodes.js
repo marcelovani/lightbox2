@@ -82,6 +82,18 @@ function lightbox2_image_nodes() {
             href = orig_href;
           }
 
+          // Handle gallery2 block images.
+          else if ($(child).attr("class").match("ImageFrame_image")) {
+            var thumb_id = parse_url(href, "g2_itemId");
+            var new_id = parse_url(orig_href, "g2_itemId");
+            if (new_id && thumb_id) {
+              var pattern = new RegExp("g2_itemId="+thumb_id);
+              var replacement = "g2_itemId="+ new_id;
+              var href = href.replace(pattern, replacement);
+            }
+          }
+
+
           // Set the href attribute.
           else if (settings.image_node_sizes != '()') {
             href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size == "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size == "")?"$1/_original":"$1/"+ settings.display_image_size));
@@ -107,3 +119,18 @@ function lightbox2_image_nodes() {
 
   }
 }
+
+function parse_url(url, param) {
+  param = param.replace(/[\[]/,"\\\[").replace(/[\]]/,"\\\]");
+  url = url.replace(/&amp;/, "&");
+  var regexS = "[\\?&]"+param+"=([^&#]*)";
+  var regex = new RegExp(regexS);
+  var results = regex.exec(url);
+  if (results == null) {
+    return "";
+  }
+  else {
+    return results[1];
+  }
+}
+
