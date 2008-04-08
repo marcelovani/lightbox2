@@ -11,6 +11,7 @@ if (Drupal.jsEnabled) {
     $("input[@name=lightbox2_use_alt_layout]").bind("click", alt_layout_handler);
     $("input[@name=lightbox2_image_node]").bind("click", image_node_handler);
     $("input[@name=lightbox2_flickr]").bind("click", image_node_handler);
+    $("input[@name=lightbox2_gallery2_blocks]").bind("click", image_node_handler);
     $("input[@name=lightbox2_image_assist_custom]").bind("click", image_node_handler);
     $("input[@name=lightbox2_inline]").bind("click", image_node_handler);
     $("textarea[@name=lightbox2_custom_trigger_classes]").bind("change", image_node_handler);
@@ -52,6 +53,7 @@ function lightbox2_lite_auto_handler(event) {
     $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
     $("select[@name='lightbox2_trigger_image_size[]']").attr("disabled", "disabled");
     $("input[@name=lightbox2_flickr]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_gallery2_blocks]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_assist_custom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_inline]").attr("disabled", "disabled");
     $("textarea[@name=lightbox2_custom_trigger_classes]").attr("disabled", "disabled");
@@ -61,6 +63,7 @@ function lightbox2_lite_auto_handler(event) {
   else {
     $("input[@name=lightbox2_image_node]").removeAttr("disabled");
     $("input[@name=lightbox2_flickr]").removeAttr("disabled");
+    $("input[@name=lightbox2_gallery2_blocks]").removeAttr("disabled");
     $("input[@name=lightbox2_image_assist_custom]").removeAttr("disabled");
     $("input[@name=lightbox2_inline]").removeAttr("disabled");
     $("textarea[@name=lightbox2_custom_trigger_classes]").removeAttr("disabled");
@@ -88,10 +91,11 @@ function alt_layout_handler(event) {
 }
 
 function image_node_handler(event) {
-  // Image node, flickr, inline and custom images stuff.
+  // Image node, flickr, gallery2, inline and custom images stuff.
   if ($("input[@name=lightbox2_lite]").val() != 1) {
     if ($("input[@name=lightbox2_image_node]:checked").val() == 1
       || $("input[@name=lightbox2_flickr]:checked").val() == 1
+      || $("input[@name=lightbox2_gallery2_blocks]:checked").val() == 1
       || $("input[@name=lightbox2_image_assist_custom]:checked").val() == 1
       || $("input[@name=lightbox2_inline]:checked").val() == 1
       || $("textarea[@name=lightbox2_custom_trigger_classes]").val() != ''
