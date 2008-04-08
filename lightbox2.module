@@ -326,6 +326,14 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_flickr', true),
   );
 
+  // Add Checkbox for Gallery2 block image support.
+  $form['lightbox2_gallery2_blocks'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable for Gallery2 block images'),
+    '#description' => t('Checking this box will enable automatic URL formatting for images contained within Gallery2 image blocks.'),
+    '#default_value' => variable_get('lightbox2_gallery2_blocks', true),
+  );
+
   // Add Checkbox for Inline Image support.
   $form['lightbox2_inline'] = array(
     '#type' => 'checkbox',
@@ -490,6 +498,10 @@ function lightbox2_add_files() {
   if (variable_get('lightbox2_flickr', true)) {
     $trigger_image_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
   }
+  // Gallery2 block images.
+  if (variable_get('lightbox2_gallery2_blocks', true)) {
+    $trigger_image_classes .= "img.ImageFrame_image,";
+  }
   // Image Assist custom size images.
   if (variable_get('lightbox2_image_assist_custom', true)) {
     $trigger_image_classes .= "img.image-img_assist_custom,";
@@ -555,7 +567,7 @@ function lightbox2_add_files() {
     drupal_add_css($css);
 
     // Check to see if the Image Node Option is enabled in settings.
-    if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true) || variable_get('lightbox2_inline', true) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
+    if (variable_get('lightbox2_image_node', true) || variable_get('lightbox2_flickr', true) || variable_get('lightbox2_gallery2_blocks', true) || variable_get('lightbox2_inline', true) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
       drupal_add_js($path .'/js/image_nodes.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
