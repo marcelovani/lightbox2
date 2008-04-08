@@ -49,7 +49,17 @@ Optional: Use the title attribute if you want to show a caption.
 
 No limits to the number of image sets per page or how many images are allowed in each set. Go nuts! 
 
-5. If you wish to turn the caption into a link, format your caption in the following way:
+5. If you have a set of images that you would like to group together in a
+lightbox, but only wish for one of these images to be visible on your page, you
+can assign the "lightbox_hidden" class to hide the additional images.  For
+example:
+
+<a href="images/image-1.jpg" rel="lightbox[roadtrip]">image #1</a>
+<a href="images/image-2.jpg" rel="lightbox[roadtrip]" class="lightbox_hidden">image #2</a>
+<a href="images/image-3.jpg" rel="lightbox[roadtrip]" class="lightbox_hidden">image #3</a>
+
+
+6. If you wish to turn the caption into a link, format your caption in the following way:
 
 <a href="images/image-1.jpg" rel="lightbox" title='<a href="http://www.yourlink.com">Clicky Visit Link</a>'>image #1</a>
 
@@ -63,7 +73,10 @@ Lightbox2 Lite option which does not use the JQuery library; it is therefore
 less likely to conflict with anything else. 
 
 Known Issues
--------------
+=============
+
+1. Lightbox Lite in IE
+-----------------------
 There is an issue with Lightbox Lite in IE browsers but only for sites where
 Drupal is installed in a subdirectory.  In such instances, the overlay.png image
 can not be found.  To overcome this issue you will need to edit the
