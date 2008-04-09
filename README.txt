@@ -47,12 +47,12 @@ No limits to the number of image sets per page or how many images are allowed in
 
 5. If you have a set of images that you would like to group together in a
 lightbox, but only wish for one of these images to be visible on your page, you
-can assign the "lightbox_hidden" class to hide the additional images.  For
+can assign the "lightbox_hide_image" class to hide the additional images.  For
 example:
 
 <a href="images/image-1.jpg" rel="lightbox[roadtrip]">image #1</a>
-<a href="images/image-2.jpg" rel="lightbox[roadtrip]" class="lightbox_hidden">image #2</a>
-<a href="images/image-3.jpg" rel="lightbox[roadtrip]" class="lightbox_hidden">image #3</a>
+<a href="images/image-2.jpg" rel="lightbox[roadtrip]" class="lightbox_hide_image">image #2</a>
+<a href="images/image-3.jpg" rel="lightbox[roadtrip]" class="lightbox_hide_image">image #3</a>
 
 
 6. If you wish to turn the caption into a link, format your caption in the following way:
