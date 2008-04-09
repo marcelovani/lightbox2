@@ -162,6 +162,6 @@
   right: 5px;
 }
 
-#lightbox_hide_image {
+.lightbox_hide_image {
   display: none;
 }
