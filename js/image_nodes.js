@@ -83,11 +83,11 @@ if (Drupal.jsEnabled) {
             else if ($(child).attr("class").match("ImageFrame_image")) {
               var thumb_id = parse_url(href, "g2_itemId");
               var new_id = parse_url(orig_href, "g2_itemId");
-														if (new_id && thumb_id) {
-																var pattern = new RegExp("g2_itemId="+thumb_id);
-																var replacement = "g2_itemId="+ new_id;
-																var href = href.replace(pattern, replacement);
-														}
+              if (new_id && thumb_id) {
+                var pattern = new RegExp("g2_itemId="+thumb_id);
+                var replacement = "g2_itemId="+ new_id;
+                var href = href.replace(pattern, replacement);
+              }
             }
 
 
@@ -104,6 +104,11 @@ if (Drupal.jsEnabled) {
             }
 
             // Modify the image url.
+            var img_title = $(child).attr("title");
+            if (!img_title) {
+              img_title = $(this).attr("title");
+              $(child).attr({title: img_title});
+            }
             $(this).attr({rel: rel,
               title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
               href: href
