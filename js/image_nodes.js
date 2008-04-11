@@ -107,6 +107,11 @@ function lightbox2_image_nodes() {
           }
 
           // Modify the image url.
+          var img_title = $(child).attr("title");
+          if (!img_title) {
+            img_title = $(this).attr("title");
+            $(child).attr({title: img_title});
+          }
           $(this).attr({
             title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
             rel: rel,
