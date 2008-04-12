@@ -42,7 +42,7 @@ less likely to conflict with anything else.
 INSTALLATION
 ------------
 1. Copy lightbox2 folder to modules directory.
-2. At admin/modules enable the lightbox2 module.
+2. At admin/build/modules enable the lightbox2 module.
 3. Enable permissions at admin/user/access.
 4. Configure the module at admin/settings/lightbox2.
 5. Modify your image links to open in a lightbox where necessary, see "Adding
