@@ -44,7 +44,7 @@ href="http://drupal.org/project/imagefield">CCK Imagefield</a> modules are all
 supported.  It\'s also possible to configure a custom list of image classes
 which should trigger the lightbox functionality.</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
-<li>Image Node Link: a link to the image node can be provided within the lightbox itself.</li>
+<li>Image Page Link: a link to the image node can be provided within the lightbox itself.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
 <li>Gallery 2 Support: support for Gallery 2 images via the <a href="http://drupal.org/project/gallery">Gallery</a> module (beta).</li>
 </ul>
@@ -160,7 +160,7 @@ function lightbox2_general_settings_form() {
   $form['lightbox2_lite_options']['lightbox2_lite']  = array(
     '#type' => 'checkbox',
     '#title' => t('Use Lightbox2 Lite'),
-    '#description' => t('Checking this box will enable Lightbox2 Lite and will disable all of the automatic image node URL re-formatting features.  It also disables all grouping features.'),
+    '#description' => t('Checking this box will enable Lightbox2 Lite and will disable all of the automatic image URL re-formatting features.  It also disables all grouping features.'),
     '#default_value' => $use_lite,
   );
 
@@ -262,7 +262,7 @@ function lightbox2_auto_image_handling_settings_form() {
 
   // Set Image Node Options help text.
   $form['image_node_options'] = array(
-    '#value' => t('These options allow automatic URL re-formatting of Image Nodes.  This removes the need for you to add \'rel="lightbox"\' to each image node link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
+    '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
 
   // Define Image Nodes settings fieldset.
