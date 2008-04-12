@@ -242,7 +242,7 @@ function showLightbox(objLink) {
     // Check for 'x' keypress
     listenKey();
 
-    return false;
+    return FALSE;
   };
 
   imgPreload.src = objLink.href;
@@ -315,17 +315,17 @@ function initLightbox() {
     var relAttribute = String(anchor.getAttribute("rel"));
 
     if (anchor.getAttribute("href") && relAttribute.toLowerCase().match("lightbox")) {
-      anchor.onclick = function () { showLightbox(this); return false; };
+      anchor.onclick = function () { showLightbox(this); return FALSE; };
     }
   }
 
   // the rest of this code inserts html at the top of the page that looks like 
   // this:
   // <div id="overlay">
-  //  <a href="#" onclick="hideLightbox(); return false;"><img id="loadingImage" /></a>
+  //  <a href="#" onclick="hideLightbox(); return FALSE;"><img id="loadingImage" /></a>
   // </div>
   // <div id="lightbox">
-  //  <a href="#" onclick="hideLightbox(); return false;" title="Click anywhere to close image">
+  //  <a href="#" onclick="hideLightbox(); return FALSE;" title="Click anywhere to close image">
   //   <img id="closeButton" />  
   //   <img id="lightboxImage" />
   //  </a>
@@ -340,7 +340,7 @@ function initLightbox() {
   // create overlay div and hardcode some functional styles (aesthetic styles are in CSS file)
   var objOverlay = document.createElement("div");
   objOverlay.setAttribute('id', 'overlay');
-  objOverlay.onclick = function () { hideLightbox(); return false; };
+  objOverlay.onclick = function () { hideLightbox(); return FALSE; };
   objOverlay.style.display = 'none';
   objOverlay.style.position = 'absolute';
   objOverlay.style.top = '0';
@@ -369,7 +369,7 @@ function initLightbox() {
   var objLink = document.createElement("a");
   objLink.setAttribute('href', '#');
   objLink.setAttribute('title', 'Click to close');
-  objLink.onclick = function () { hideLightbox(); return false; };
+  objLink.onclick = function () { hideLightbox(); return FALSE; };
   objLightbox.appendChild(objLink);
 
   // create close button image
