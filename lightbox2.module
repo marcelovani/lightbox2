@@ -568,7 +568,7 @@ function lightbox2_add_files() {
 
     // Check to see if the Image Node Option is enabled in settings.
     if (variable_get('lightbox2_image_node', TRUE) || variable_get('lightbox2_flickr', TRUE) || variable_get('lightbox2_gallery2_blocks', TRUE) || variable_get('lightbox2_inline', TRUE) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
-      drupal_add_js($path .'/js/image_nodes.js', 'module', $js_location);
+      drupal_add_js($path .'/js/auto_image_handling.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
