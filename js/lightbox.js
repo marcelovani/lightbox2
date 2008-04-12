@@ -60,8 +60,8 @@ var Lightbox = {
   infoHeight: 20,
   imageArray : new Array,
   activeImage : null,
-  inprogress : FALSE,
-  rtl : FALSE,
+  inprogress : false,
+  rtl : false,
  
 
 
@@ -274,12 +274,12 @@ var Lightbox = {
 
     $("#overlay").click(function() { Lightbox.end(); } ).hide();
     $("#lightbox").click(function() { Lightbox.end();} ).hide();
-    $("#loadingLink").click(function() { Lightbox.end(); return FALSE;} );
-    $('#prevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return FALSE; } );
-    $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return FALSE; } );
-    $("#bottomNavClose").click(function() { Lightbox.end(); return FALSE; } );
-    $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'TRUE'); return FALSE; } );
-    $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'FALSE'); return FALSE; } );
+    $("#loadingLink").click(function() { Lightbox.end(); return false;} );
+    $('#prevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
+    $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
+    $("#bottomNavClose").click(function() { Lightbox.end(); return false; } );
+    $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'TRUE'); return false; } );
+    $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'FALSE'); return false; } );
 
     // Fix positioning of Prev and Next links.
     $('#prevLink').css({ paddingTop: Lightbox.borderSize});
@@ -311,7 +311,7 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (anchor.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        anchor.onclick = function() { Lightbox.start(this); return FALSE; };
+        anchor.onclick = function() { Lightbox.start(this); return false; };
       }
     }
 
@@ -324,7 +324,7 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (area.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        area.onclick = function() { Lightbox.start(this); return FALSE; };
+        area.onclick = function() { Lightbox.start(this); return false; };
       }
     }
   },
@@ -400,8 +400,8 @@ var Lightbox = {
   // container.
   changeImage: function(imageNum, zoom) {
 
-    if (this.inprogress === FALSE) {
-      this.inprogress = TRUE;
+    if (this.inprogress === false) {
+      this.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
       if (settings.disable_zoom) {
@@ -549,7 +549,7 @@ var Lightbox = {
     }
     Lightbox.updateDetails();
     this.preloadNeighborImages();
-    this.inprogress = FALSE;
+    this.inprogress = false;
   },
 
   // updateDetails()
@@ -591,7 +591,7 @@ var Lightbox = {
     // if not first image in set, display prev image button
     if (Lightbox.activeImage !== 0) {
       $('#prevLink').css({zIndex: '10500'}).show().click(function() {
-        Lightbox.changeImage(Lightbox.activeImage - 1); return FALSE;
+        Lightbox.changeImage(Lightbox.activeImage - 1); return false;
       });
     }
     // safari browsers need to have hide() called again
@@ -602,7 +602,7 @@ var Lightbox = {
     // if not last image in set, display next image button
     if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
       $('#nextLink').css({zIndex: '10500'}).show().click(function() {
-        Lightbox.changeImage(Lightbox.activeImage + 1); return FALSE;
+        Lightbox.changeImage(Lightbox.activeImage + 1); return false;
       });
     }
     // safari browsers need to have hide() called again
