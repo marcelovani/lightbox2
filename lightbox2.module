@@ -197,6 +197,26 @@ function lightbox2_general_settings_form() {
   );
 
 
+  // Define Imagefield settings fieldset.
+  /* ---------------------------------- */
+  if (module_exists('imagefield') && module_exists('imagecache')) {
+    $form['lightbox2_imagefield_options'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Imagefield settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+
+    // Add checkbox for imagefield grouping.
+    $form['lightbox2_imagefield_options']['lightbox2_imagefield_group_node_id'] = array(
+      '#type' => 'checkbox',
+      '#title' => t('Group Imagefields by Node Id'),
+      '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  Enabling this option allows them to be grouped by field name and node id (where available).'),
+      '#default_value' => variable_get('lightbox2_imagefield_group_node_id', FALSE),
+    );
+  }
+
+
   // Define Advanced settings fieldset.
   /* ---------------------------------- */
   $form['lightbox2_advanced_options'] = array(
@@ -380,26 +400,6 @@ function lightbox2_auto_image_handling_settings_form() {
       '#default_value' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
     );
   }
-
-  // Define Imagefield settings fieldset.
-  /* ---------------------------------- */
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    $form['lightbox2_imagefield_options'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('Imagefield settings'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
-
-    // Add checkbox for imagefield grouping.
-    $form['lightbox2_imagefield_options']['lightbox2_imagefield_group_node_id'] = array(
-      '#type' => 'checkbox',
-      '#title' => t('Group Imagefields by Node Id'),
-      '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  Enabling this option allows them to be grouped by field name and node id (where available).'),
-      '#default_value' => variable_get('lightbox2_imagefield_group_node_id', FALSE),
-    );
-  }
-
 
   return system_settings_form($form);
 }
