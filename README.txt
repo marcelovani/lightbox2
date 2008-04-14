@@ -17,6 +17,8 @@ Maintainers:
   Mark Ashmead (http://drupal.org/user/52392)
   Stella Power (http://drupal.org/user/66894)
 
+Documentation: http://drupal.org/node/144469
+
 Licensed under the GNU/GPL License
 Based on Lightbox v2.03.3 by Lokesh Dhakar
 <http://www.huddletogether.com/projects/lightbox2/>
