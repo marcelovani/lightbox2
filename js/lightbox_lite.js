@@ -1,7 +1,7 @@
 /* $Id$ */
 
 /**
- * Lightbox JS: Fullsize Image Overlays 
+ * Lightbox JS: Fullsize Image Overlays
  * by Lokesh Dhakar - http://www.huddletogether.com
  *
  * For more information on this script, visit:
@@ -10,11 +10,11 @@
  * This script is distributed via Drupal.org with permission from Lokesh Dhakar.
  * Under GPL license.
  *    Mailto: bugzie@gmail.com
- * 
+ *
  * Table of Contents
  * -----------------
  * Configuration
- * 
+ *
  * Functions
  * - getPageScroll()
  * - getPageSize()
@@ -64,10 +64,10 @@ function getPageScroll() {
 // Core code from - quirksmode.org
 // Edit for Firefox by pHaez
 function getPageSize() {
- 
+
   var xScroll, yScroll;
- 
-  if (window.innerHeight && window.scrollMaxY) { 
+
+  if (window.innerHeight && window.scrollMaxY) {
     xScroll = window.innerWidth + window.scrollMaxX;
     yScroll = window.innerHeight + window.scrollMaxY;
   // all but Explorer Mac
@@ -81,7 +81,7 @@ function getPageSize() {
     xScroll = document.body.offsetWidth;
     yScroll = document.body.offsetHeight;
   }
- 
+
   var windowWidth, windowHeight;
   if (self.innerHeight) { // all except Explorer
     if (document.documentElement.clientHeight) {
@@ -99,18 +99,18 @@ function getPageSize() {
   else if (document.body) { // other Explorers
     windowWidth = document.body.clientWidth;
     windowHeight = document.body.clientHeight;
-  } 
- 
+  }
+
   // for small pages with total height less then height of the viewport
   if (yScroll < windowHeight) {
     pageHeight = windowHeight;
   }
-  else { 
+  else {
     pageHeight = yScroll;
   }
 
   // for small pages with total width less then width of the viewport
-  if (xScroll < windowWidth) { 
+  if (xScroll < windowWidth) {
     pageWidth = xScroll;
   }
   else {
@@ -143,14 +143,14 @@ function getKey(e) {
     escapeKey = e.DOM_VK_ESCAPE;
   }
   key = String.fromCharCode(keycode).toLowerCase();
- 
+
   if (key == 'x' || key == 'c' || keycode == escapeKey) { hideLightbox(); }
 }
 
 
 // listenKey()
 function listenKey () { document.onkeypress = getKey; }
- 
+
 
 // showLightbox()
 // Preloads images. Pleaces new image in lightbox then centers and displays.
@@ -179,18 +179,18 @@ function showLightbox(objLink) {
   imgPreload.onload = function() {
     objImage.src = objLink.href;
 
-    // center lightbox and make sure that the top and left values are not 
+    // center lightbox and make sure that the top and left values are not
     // negative and the image placed outside the viewport
     var lightboxTop = arrayPageScroll[1] + ((arrayPageSize[3] - 35 - imgPreload.height) / 2);
     var lightboxLeft = ((arrayPageSize[0] - 20 - imgPreload.width) / 2);
-  
+
     objLightbox.style.top = (lightboxTop < 0) ? "0px" : lightboxTop + "px";
     objLightbox.style.left = (lightboxLeft < 0) ? "0px" : lightboxLeft + "px";
 
 
     //objLightboxDetails.style.width = imgPreload.width + 'px';
     objLightbox.style.width = imgPreload.width + 'px';
-  
+
     if (objLink.getAttribute('title')) {
       objCaption.style.display = 'block';
       //objCaption.style.width = imgPreload.width + 'px';
@@ -199,13 +199,13 @@ function showLightbox(objLink) {
     else {
       objCaption.style.display = 'none';
     }
-  
-    // A small pause between the image loading and displaying is required with 
-    // IE,  this prevents the previous image displaying for a short burst 
+
+    // A small pause between the image loading and displaying is required with
+    // IE,  this prevents the previous image displaying for a short burst
     // causing flicker.
     if (navigator.appVersion.indexOf("MSIE") != -1) {
       pause(250);
-    } 
+    }
 
     if (objLoadingImage) { objLoadingImage.style.display = 'none'; }
 
@@ -245,7 +245,7 @@ function showLightbox(objLink) {
   };
 
   imgPreload.src = objLink.href;
- 
+
 }
 
 function imgLoadingError(image, objImage, objLink) {
@@ -296,13 +296,13 @@ function hideLightbox() {
 
 
 // initLightbox()
-// Function runs on window load, going through link tags looking for 
+// Function runs on window load, going through link tags looking for
 // rel="lightbox".  These links receive onclick events that enable the lightbox
 // display for their targets.  The function also inserts html markup at the top
-// of the page which will be used as a container for the overlay pattern and 
+// of the page which will be used as a container for the overlay pattern and
 // the inline image.
 function initLightbox() {
- 
+
   if (!document.getElementsByTagName) { return; }
   var anchors = document.getElementsByTagName("a");
 
@@ -312,18 +312,18 @@ function initLightbox() {
     var relAttribute = String(anchor.getAttribute("rel"));
 
     if (anchor.getAttribute("href") && relAttribute.toLowerCase().match("lightbox")) {
-      anchor.onclick = function () { showLightbox(this); return false; };
+      $(anchor).click(function(e) { showLightbox(this); if (e.preventDefault) { e.preventDefault(); } return false; });
     }
   }
 
-  // the rest of this code inserts html at the top of the page that looks like 
+  // the rest of this code inserts html at the top of the page that looks like
   // this:
   // <div id="overlay">
   //  <a href="#" onclick="hideLightbox(); return false;"><img id="loadingImage" /></a>
   // </div>
   // <div id="lightbox">
   //  <a href="#" onclick="hideLightbox(); return false;" title="Click anywhere to close image">
-  //   <img id="closeButton" />  
+  //   <img id="closeButton" />
   //   <img id="lightboxImage" />
   //  </a>
   //  <div id="lightboxDetails">
@@ -331,9 +331,9 @@ function initLightbox() {
   //   <div id="keyboardMsg"></div>
   //  </div>
   // </div>
-  
+
   var objBody = document.getElementsByTagName("body").item(0);
- 
+
   // create overlay div and hardcode some functional styles (aesthetic styles are in CSS file)
   var objOverlay = document.createElement("div");
   objOverlay.setAttribute('id', 'overlay');
@@ -345,7 +345,7 @@ function initLightbox() {
   objOverlay.style.zIndex = '90';
   objOverlay.style.width = '100%';
   objBody.insertBefore(objOverlay, objBody.firstChild);
- 
+
   var arrayPageSize = getPageSize();
   var arrayPageScroll = getPageScroll();
 
@@ -359,9 +359,9 @@ function initLightbox() {
   objLightbox.setAttribute('id', 'lightbox');
   objLightbox.style.display = 'none';
   objLightbox.style.position = 'absolute';
-  objLightbox.style.zIndex = '100'; 
+  objLightbox.style.zIndex = '100';
   objBody.insertBefore(objLightbox, objOverlay.nextSibling);
- 
+
   // create link
   var objLink = document.createElement("a");
   objLink.setAttribute('href', '#');
@@ -378,7 +378,7 @@ function initLightbox() {
   var objImage = document.createElement("img");
   objImage.setAttribute('id', 'lightboxImage');
   objLink.appendChild(objImage);
- 
+
   // create details div, a container for the caption and keyboard message
   var objLightboxDetails = document.createElement("div");
   objLightboxDetails.setAttribute('id', 'lightboxDetails');
@@ -400,6 +400,6 @@ function initLightbox() {
 
 }
 
-Drupal.behaviors.initLightbox2 = function (context) { 
+Drupal.behaviors.initLightbox2 = function (context) {
   initLightbox();
 };

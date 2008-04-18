@@ -311,7 +311,7 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (anchor.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        anchor.onclick = function() { Lightbox.start(this); return false; };
+        $(anchor).click(function(e) { Lightbox.start(this); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
     }
 
@@ -324,7 +324,7 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (area.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        area.onclick = function() { Lightbox.start(this); return false; };
+        $(area).click(function(e) { Lightbox.start(this); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
     }
   },
