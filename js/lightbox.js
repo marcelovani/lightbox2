@@ -360,10 +360,10 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (anchor.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        $(anchor).click(function() { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
+        $(anchor).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
       else if (anchor.href && (relAttribute.toLowerCase().match('lightshow'))) {
-        $(anchor).click(function() { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
+        $(anchor).click(function(e) { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
     }
 
@@ -376,10 +376,10 @@ var Lightbox = {
       // use the string.match() method to catch 'lightbox' references in the rel
       // attribute
       if (area.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        $(area).click(function() { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
+        $(area).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
       else if (area.href && (relAttribute.toLowerCase().match('lightshow'))) {
-        $(area).click(function() { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
+        $(area).click(function(e) { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
     }
   },
