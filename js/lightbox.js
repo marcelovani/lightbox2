@@ -3,7 +3,7 @@
 /**
  * jQuery Lightbox
  * @author
- *   Stella Power (snpower), <http://drupal.org/user/66894>
+ *   Stella Power, <http://drupal.org/user/66894>
  *
  * Based on Lightbox v2.03.3 by Lokesh Dhakar
  * <http://www.huddletogether.com/projects/lightbox2/>
