@@ -704,9 +704,21 @@ function lightbox2_field_formatter_info() {
         'label' => 'Lightbox2: '. $view_rule .'->original',
         'field types' => array('image'),
       );
+      $formatters['lightshow2][original]['. $view_rule] = array(
+        'label' => 'Lightbox2 slideshow: original->'. $view_rule,
+        'field types' => array('image'),
+      );
+      $formatters['lightshow2]['. $view_rule .'][original'] = array(
+        'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
+        'field types' => array('image'),
+      );
       foreach ($rules as $rid => $lightbox_rule) {
         $formatters['lightbox2]['. $view_rule .']['. $lightbox_rule] = array(
           'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
+          'field types' => array('image'),
+        );
+        $formatters['lightshow2]['. $view_rule .']['. $lightbox_rule] = array(
+          'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image'),
         );
       }
@@ -738,7 +750,7 @@ function lightbox2_field_formatter($field, $item, $formatter) {
 
     $item['filepath'] = $filepath;
     $item = array_merge($item, (array)$file);
-    if (strpos($formatter, 'lightbox2][') !== FALSE) {
+    If (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE) {
       list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
       $item['lightbox_preset'] = $lightbox_preset;
 
@@ -753,7 +765,11 @@ function lightbox2_field_formatter($field, $item, $formatter) {
         $rules = _imagecache_get_presets();
       }
       if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
-        return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item);
+        $slideshow = FALSE;
+        if (strpos($formatter, 'lightshow2][') !== FALSE) {
+          $slideshow = TRUE;
+        }
+        return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $slideshow);
       }
     }
   }
@@ -770,7 +786,7 @@ function lightbox2_theme() {
     ),
     'lightbox2_image' => array(
       'function' => 'lightbox2_image',
-      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
+      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL, 'slideshow' => FALSE),
     ),
   );
 }
@@ -778,18 +794,21 @@ function lightbox2_theme() {
 /**
  * Implementation of theme_imagefield_image_imagecache_lightbox2().
  */
-function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $attributes = NULL) {
+function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $attributes = NULL, $slideshow = FALSE) {
 
   $rel = 'lightbox';
+  if ($slideshow) {
+    $rel = 'lightshow';
+  }
   $imagefield_grouping = variable_get('lightbox2_imagefield_group_node_id', 1);
   if ($imagefield_grouping == 1) {
-    $rel = 'lightbox['. $field['field_name'] .']';
+    $rel = $rel .'['. $field['field_name'] .']';
   }
   else if ($imagefield_grouping == 2 && !empty($item['nid'])) {
-    $rel = 'lightbox['. $item['nid'] .']';
+    $rel = $rel .'['. $item['nid'] .']';
   }
   else if ($imagefield_grouping == 3 && !empty($item['nid'])) {
-    $rel = 'lightbox['. $field['field_name'] . $item['nid'] .']';
+    $rel = $rel .'['. $field['field_name'] . $item['nid'] .']';
   }
 
   $node_link = '';
