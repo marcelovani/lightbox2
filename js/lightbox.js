@@ -624,11 +624,11 @@ var Lightbox = {
           Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout("Lightbox.changeImage(" + (Lightbox.activeImage + 1) + ")", Lightbox.slideInterval);
         }
       }
-      if (Lightbox.showPlayPause && !Lightbox.isPaused) {
+      if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1 && !Lightbox.isPaused) {
         $('#lightshowPause').show();
         $('#lightshowPlay').hide();
       }
-      else if (Lightbox.showPlayPause) {
+      else if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1) {
         $('#lightshowPause').hide();
         $('#lightshowPlay').show();
       }
