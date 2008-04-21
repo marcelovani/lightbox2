@@ -65,24 +65,15 @@ var Lightbox = {
   rtl : false,
 
   // slideshow options
-  slideInterval : 4000, // milliseconds
-  showNavigation : true, // true to display Next/Prev buttons/text during show
-  showClose : true, // true to display the Close button, false to hide
-  showDetails : true, // true to display image details (caption, count)
+  slideInterval : 5000, // milliseconds
   showPlayPause : true, // true to display pause/play buttons next to close
-  autoEnd : true, // true to automatically close Lightbox after the last image
+  autoExit : true, // true to automatically close Lightbox after the last image
   pauseOnNextClick : false, // true to pause the slideshow when the "Next" button is clicked
   pauseOnPrevClick : true, // true to pause the slideshow when the "Prev" button is clicked
-  resizeSpeed : 5,
-  resizeDuration : 6 * 0.15,
-  resizeTimerCount : 0,
-  resizeTimerArray : new Array,
+  slideIdArray : new Array,
+  slideIdCount : 0,
   isSlideshow : false,
   isPaused : false,
-  slideshowIdArray : new Array,
-  slideshowIdCount : 0,
-  showImageTimerArray : new Array,
-  showImageTimerCount : 0,
 
 
 
@@ -95,8 +86,13 @@ var Lightbox = {
     var settings = Drupal.settings.lightbox2;
     Lightbox.overlayOpacity = settings.overlay_opacity;
     Lightbox.rtl = settings.rtl;
+    Lightbox.slideInterval = settings.slideshow_interval;
+    Lightbox.showPlayPause = settings.show_play_pause;
+    Lightbox.autoExit = settings.slideshow_automatic_exit;
+    Lightbox.pauseOnNextClick = settings.pause_on_next_click;
+    Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
 
-    // attach lightbox to any links with rel 'lightbox'
+    // Attach lightbox to any links with rel 'lightbox' or 'lightshow'.
     Lightbox.updateImageList();
 
     // MAKE THE LIGHTBOX DIVS
@@ -607,9 +603,6 @@ var Lightbox = {
   // showImage()
   // Display image and begin preloading neighbors.
   showImage: function() {
-    for (var i = 0; i < Lightbox.showImageTimerCount; i++) {
-      window.clearTimeout(Lightbox.showImageTimerArray[i]);
-    }
     $('#loading').hide();
     if($.browser.safari) {
       $('#lightboxImage').css({zIndex: '10500'}).show();
@@ -622,20 +615,20 @@ var Lightbox = {
     this.inprogress = false;
     if (Lightbox.isSlideshow) {
       if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
-        if (Lightbox.autoEnd) {
-          Lightbox.slideshowIdArray[Lightbox.slideshowIdCount++] = setTimeout("Lightbox.end('slideshow')", Lightbox.slideInterval);
+        if (Lightbox.autoExit) {
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout("Lightbox.end('slideshow')", Lightbox.slideInterval);
         }
       }
       else {
         if (!Lightbox.isPaused) {
-          Lightbox.slideshowIdArray[Lightbox.slideshowIdCount++] = setTimeout("Lightbox.changeImage(" + (Lightbox.activeImage + 1) + ")", Lightbox.slideInterval);
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout("Lightbox.changeImage(" + (Lightbox.activeImage + 1) + ")", Lightbox.slideInterval);
         }
       }
       if (Lightbox.showPlayPause && !Lightbox.isPaused) {
         $('#lightshowPause').show();
         $('#lightshowPlay').hide();
       }
-      else {
+      else if (Lightbox.showPlayPause) {
         $('#lightshowPause').hide();
         $('#lightshowPlay').show();
       }
@@ -805,8 +798,8 @@ var Lightbox = {
     // replaces calls to showSelectBoxes() and showFlash() in original lightbox2
     Lightbox.toggleSelectsFlash('visible');
     if (Lightbox.isSlideshow) {
-      for (var i = 0; i < Lightbox.slideshowIdCount; i++) {
-        window.clearTimeout(Lightbox.slideshowIdArray[i]);
+      for (var i = 0; i < Lightbox.slideIdCount; i++) {
+        window.clearTimeout(Lightbox.slideIdArray[i]);
       }
       $('#lightshowPause').hide();
       $('#lightshowPlay').hide();
@@ -915,8 +908,8 @@ var Lightbox = {
 
   togglePlayPause: function(hideId, showId) {
     if (Lightbox.isSlideshow && hideId == "lightshowPause") {
-      for (var i = 0; i < Lightbox.slideshowIdCount; i++) {
-        window.clearTimeout(Lightbox.slideshowIdArray[i]);
+      for (var i = 0; i < Lightbox.slideIdCount; i++) {
+        window.clearTimeout(Lightbox.slideIdArray[i]);
       }
     }
     $('#' + hideId).hide();

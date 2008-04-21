@@ -98,6 +98,15 @@ function lightbox2_menu($may_cache) {
       'type' => MENU_DEFAULT_LOCAL_TASK,
       'weight' => 0,
     );
+    $items[] = array('path' => 'admin/settings/lightbox2/slideshow',
+      'title' => t('Slideshow'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('lightbox2_slideshow_settings_form'),
+      'access' => user_access('administer lightbox2'),
+      'description' => t('Allows the user to configure the lightbox2 slideshow functionality.'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 1,
+    );
     $items[] = array('path' => 'admin/settings/lightbox2/automatic',
       'title' => t('Automatic image handling'),
       'callback' => 'drupal_get_form',
@@ -105,7 +114,7 @@ function lightbox2_menu($may_cache) {
       'access' => user_access('administer lightbox2'),
       'description' => t('Allows the user to configure the lightbox2 automatic image handling settings'),
       'type' => MENU_LOCAL_TASK,
-      'weight' => 1,
+      'weight' => 2,
     );
   }
   else {
@@ -147,7 +156,7 @@ function lightbox2_general_settings_form() {
     '#collapsed' => !$use_lite,
   );
 
-  // Add Checkbox for Lightbox2 Lite.
+  // Add checkbox for Lightbox2 Lite.
   $form['lightbox2_lite_options']['lightbox2_lite'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use Lightbox2 Lite'),
@@ -156,7 +165,7 @@ function lightbox2_general_settings_form() {
   );
 
 
-  // Add Checkbox for Alternative Layout.
+  // Add checkbox for alternative layout.
   $form['lightbox2_use_alt_layout'] = array(
     '#type' => 'checkbox',
     '#title' => t('Use Alternative Layout'),
@@ -164,7 +173,7 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_use_alt_layout', FALSE),
   );
 
-  // Add Checkbox for Force Navigation display.
+  // Add checkbox for force navigation display.
   $form['lightbox2_force_show_nav'] = array(
     '#type' => 'checkbox',
     '#title' => t('Force visibility of navigation links'),
@@ -180,7 +189,7 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
   );
 
-  // Add Checkbox for Zoom image.
+  // Add checkbox for zoom image.
   $form['lightbox2_disable_zoom'] = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Zoom Feature'),
@@ -188,7 +197,7 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', FALSE),
   );
 
-  // Add Textarea for urls without lightbox.
+  // Add textarea for urls without lightbox.
   $form['lightbox2_disable_these_urls'] = array(
     '#type' => 'textarea',
     '#title' => t('Disable LightBox for these urls'),
@@ -197,7 +206,7 @@ function lightbox2_general_settings_form() {
   );
 
 
-  // Define Imagefield settings fieldset.
+  // Define imagefield settings fieldset.
   /* ---------------------------------- */
   if (module_exists('imagefield') && module_exists('imagecache')) {
     $form['lightbox2_imagefield_options'] = array(
@@ -224,7 +233,7 @@ function lightbox2_general_settings_form() {
   }
 
 
-  // Define Advanced settings fieldset.
+  // Define advanced settings fieldset.
   /* ---------------------------------- */
   $form['lightbox2_advanced_options'] = array(
     '#type' => 'fieldset',
@@ -233,7 +242,7 @@ function lightbox2_general_settings_form() {
     '#collapsed' => TRUE,
   );
 
-  // Add Checkbox for overlay opacity.
+  // Add checkbox for overlay opacity.
   for ($i = 0; $i < 10; $i++) {
     $opacity_options["0.$i"] = "0.$i";
   }
@@ -264,6 +273,74 @@ function lightbox2_general_settings_form() {
 /**
  * Implementation of hook_settings().
  */
+function lightbox2_slideshow_settings_form() {
+
+  // Add the javascript which disables / enables form elements.
+  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+
+  // Set up a hidden variable.
+  $form['lightbox2_lite'] = array(
+    '#type' => 'hidden',
+    '#value' => variable_get('lightbox2_lite', FALSE),
+  );
+
+
+  // Add text box for slideshow interval.
+  $form['lightbox2_slideshow_interval'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Interval Seconds'),
+    '#description' => t('The slideshow interval is the length of time in seconds an image is visible before the slideshow shows the next image.'),
+    '#default_value' => variable_get('lightbox2_slideshow_interval', 5),
+    '#size' => 20,
+  );
+
+  // Add checkbox for slideshow automatic exit.
+  $form['lightbox2_slideshow_automatic_exit'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically Exit Slideshow'),
+    '#description' => t('Enabling this option will cause the lightbox to automatically close after displaying the last image.'),
+    '#default_value' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
+  );
+
+  // Add checkbox for showing hte play / pause button.
+  $form['lightbox2_slideshow_show_play_pause'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show Play / Pause Button'),
+    '#description' => t('If enabled, a play / pause button will be shown in the slideshow allowing the user more control over their viewing experience.'),
+    '#default_value' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
+  );
+
+  // Add checkbox for "pausing on next click".
+  $form['lightbox2_slideshow_pause_on_next_click'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Pause Slideshow on "Next Image" Click'),
+    '#description' => t('When enabled the slideshow is automatically paused, and the following image shown, when the "Next" button is clicked.'),
+    '#default_value' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
+  );
+
+  // Add checkbox for "pausing on prev click".
+  $form['lightbox2_slideshow_pause_on_prev_click'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Pause Slideshow on "Previous Image" Click'),
+    '#description' => t('When enabled the slideshow is automatically paused, and the previous image shown, when the "Previous" button is clicked.'),
+    '#default_value' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Implementation of hook_settings().
+ */
+function lightbox2_slideshow_settings_form_validate($form_id, $form_values) {
+  if (!is_numeric($form_values['lightbox2_slideshow_interval'])) {
+    form_set_error('lightbox2_slideshow_interval', t('The "interval seconds" value must be numeric.'));
+  }
+}
+
+/**
+ * Implementation of hook_settings().
+ */
 function lightbox2_auto_image_handling_settings_form() {
   // Add the javascript which disables / enables form elements.
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
@@ -279,7 +356,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
 
-  // Define Image Nodes settings fieldset.
+  // Define image nodes settings fieldset.
   /* ------------------------------------- */
   $form['lightbox2_image_node_options'] = array(
     '#type' => 'fieldset',
@@ -288,7 +365,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#collapsed' => FALSE,
   );
 
-  // Add Checkbox for Image Node.
+  // Add checkbox for image nodes.
   $form['lightbox2_image_node_options']['lightbox2_image_node'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Image Nodes'),
@@ -296,7 +373,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_image_node', TRUE),
   );
 
-  // Add DropDown for list of available image sizes.
+  // Add dropDown for list of available image sizes.
   if (module_exists('image')) {
     $sizes = _image_get_sizes();
     foreach ($sizes as $size_key => $size) {
@@ -324,7 +401,7 @@ function lightbox2_auto_image_handling_settings_form() {
 
   }
 
-  // Add Checkbox for disabling lightbox for gallery lists.
+  // Add checkbox for disabling lightbox for gallery lists.
   $form['lightbox2_image_node_options']['lightbox2_disable_nested_galleries'] = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Lightbox for Gallery Lists'),
@@ -332,7 +409,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', TRUE),
   );
 
-  // Add Checkbox for Flickr Image support.
+  // Add checkbox for flickr image support.
   $form['lightbox2_flickr'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Flickr images'),
@@ -340,7 +417,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_flickr', TRUE),
   );
 
-  // Add Checkbox for Gallery2 block image support.
+  // Add checkbox for gallery2 block image support.
   $form['lightbox2_gallery2_blocks'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Gallery2 block images'),
@@ -349,7 +426,7 @@ function lightbox2_auto_image_handling_settings_form() {
   );
 
 
-  // Add Checkbox for Inline Image support.
+  // Add checkbox for inline image support.
   $form['lightbox2_inline'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Inline images'),
@@ -357,7 +434,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_inline', TRUE),
   );
 
-  // Add Checkbox for Image Assist custom size images.
+  // Add checkbox for image assist custom size images.
   $form['lightbox2_image_assist_custom'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable for Image Assist custom size images'),
@@ -390,7 +467,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#return_value' => '_blank',
   );
 
-  // Add Checkbox for Image Node Grouping.
+  // Add checkbox for image node grouping.
   $form['lightbox2_image_group'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable Grouping'),
@@ -398,7 +475,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_image_group', TRUE),
   );
 
-  // Add Checkbox for disabling lightbox for acidfree gallery lists.
+  // Add checkbox for disabling lightbox for acidfree gallery lists.
   if (module_exists("acidfree")) {
     $form['lightbox2_disable_nested_acidfree_galleries'] = array(
       '#type' => 'checkbox',
@@ -551,6 +628,12 @@ function lightbox2_add_files() {
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
+    // Slideshow settings.
+    'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
+    'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
+    'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
+    'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
+    'pause_on_previous_click' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
