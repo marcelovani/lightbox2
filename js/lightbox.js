@@ -3,7 +3,7 @@
 /**
  * jQuery Lightbox
  * @author
- *   Stella Power (snpower), <http://drupal.org/user/66894>
+ *   Stella Power, <http://drupal.org/user/66894>
  *
  * Based on Lightbox v2.03.3 by Lokesh Dhakar
  * <http://www.huddletogether.com/projects/lightbox2/>
@@ -500,7 +500,7 @@ var Lightbox = {
         if (zoom != "TRUE") {
           // resize code
           var arrayPageSize = Lightbox.getPageSize();
-          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4)- (arrayPageSize[3] / 10) };
+          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
           var orig = { w:imgPreloader.width, h:imgPreloader.height };
           var ratio = 1.0; // shrink image with the same aspect
           $('#bottomNavZoomOut').hide();

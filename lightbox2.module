@@ -34,6 +34,7 @@ function lightbox2_help($section) {
 The version 2 module has several benefits over the plain Lightbox module.  Note, not all of these features are available when the "Lightbox2 Lite" option is enabled.
 <ul>
 <li>Image Sets: group related images and navigate through them with ease - ideal for your image galleries.</li>
+<li>Slideshow Capability: automatically transition between grouped images, includes play/pause and previous and next buttons.</li>
 <li>Visual Effects: fancy pre-loader and transition when you click on the image.</li>
 <li>Zoom Capability: larger images are reduced in size so they fit snugly inside the browser window.  A zoom button can then be clicked on to see it in its original size.</li>
 <li>Automatic Image Detection: configurable automatic re-formatting of
@@ -127,7 +128,7 @@ function lightbox2_menu($may_cache) {
 }
 
 
-/*
+/**
  * The default lightbox2 settings page.
  */
 function lightbox2_settings_page($op = NULL) {
@@ -136,7 +137,7 @@ function lightbox2_settings_page($op = NULL) {
 }
 
 /**
- * Implementation of hook_settings().
+ * General configuration form for controlling the lightbox behaviour.
  */
 function lightbox2_general_settings_form() {
 
@@ -271,7 +272,7 @@ function lightbox2_general_settings_form() {
 }
 
 /**
- * Implementation of hook_settings().
+ * Configuration form for controlling the slideshow behaviour.
  */
 function lightbox2_slideshow_settings_form() {
 
@@ -330,7 +331,9 @@ function lightbox2_slideshow_settings_form() {
 }
 
 /**
- * Implementation of hook_settings().
+ * Validation function for the slideshow configuration form.
+ *
+ * Ensure that the slideshow interval submitted is numeric.
  */
 function lightbox2_slideshow_settings_form_validate($form_id, $form_values) {
   if (!is_numeric($form_values['lightbox2_slideshow_interval'])) {
@@ -339,9 +342,10 @@ function lightbox2_slideshow_settings_form_validate($form_id, $form_values) {
 }
 
 /**
- * Implementation of hook_settings().
+ * Configuration form the automatic image handling functionality.
  */
 function lightbox2_auto_image_handling_settings_form() {
+
   // Add the javascript which disables / enables form elements.
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
@@ -351,7 +355,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#value' => variable_get('lightbox2_lite', FALSE),
   );
 
-  // Set Image Node Options help text.
+  // Set image node options help text.
   $form['image_node_options'] = array(
     '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
@@ -373,7 +377,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_image_node', TRUE),
   );
 
-  // Add dropDown for list of available image sizes.
+  // Add drop-down for list of available image sizes.
   if (module_exists('image')) {
     $sizes = _image_get_sizes();
     foreach ($sizes as $size_key => $size) {
@@ -826,7 +830,7 @@ function lightbox2_exclude_these_paths() {
   return 0;
 }
 
-/*
+/**
  * Theme function for displaying the lightbox2 trigger image in an imagefield.
  */
 function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = NULL) {
@@ -835,6 +839,10 @@ function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = NULL
   return $image;
 }
 
+/**
+ * Implementation of the imagecache_create_url() function for integration with
+ * imagecache module versions prior to imagecache 2.
+ */
 function lightbox2_imagecache_create_url($preset, $filepath) {
   if (function_exists('imagecache_create_url')) {
     return imagecache_create_url($preset, $filepath);
