@@ -45,6 +45,14 @@ function lightbox2_lite_general_handler(event) {
 function lightbox2_lite_auto_handler(event) {
   // Enable / disable the image node options.
   if ($("input[@name=lightbox2_lite]").val() == 1) {
+    // Disable slideshow options.
+    $("input[@name=lightbox2_slideshow_interval]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_automatic_exit]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_show_play_pause]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_pause_on_next_click]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_pause_on_prev_click]").attr("disabled", "disabled");
+
+    // Disable automatic image handling options.
     $("input[@name=lightbox2_image_node]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_target]").attr("disabled", "disabled");
@@ -61,6 +69,14 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_disable_nested_acidfree_galleries]").attr("disabled", "disabled");
   }
   else {
+    // Enable slideshow options.
+    $("input[@name=lightbox2_slideshow_interval]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_automatic_exit]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_show_play_pause]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_pause_on_next_click]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_pause_on_prev_click]").removeAttr("disabled");
+
+    // Enable automatic image handling options.
     $("input[@name=lightbox2_image_node]").removeAttr("disabled");
     $("input[@name=lightbox2_flickr]").removeAttr("disabled");
     $("input[@name=lightbox2_gallery2_blocks]").removeAttr("disabled");
