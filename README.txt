@@ -10,7 +10,6 @@ CONTENTS OF THIS FILE
     - Turning the Image Caption into a Link
   * Keyboard Shortcuts
   * Known Issues
-    - Lightbox vs Google Analytics in Firefox
     - Lightbox Lite in IE
     - Keyboard Shortcuts in Opera
 
@@ -122,18 +121,6 @@ Toggle Play / Pause : Spacebar (slideshow only)
 
 KNOWN ISSUES
 ------------
-
-Lightbox vs Google Analytics in Firefox
----------------------------------------
-There is a conflict between Lightbox2 and Google Analytics module in Drupal 6.x
-which happens only in the Firefox browser.  When an image is clicked on, the
-lightbox briefly appears but then the image is opened in a new page.  So far,
-cases have only been reported with Firefox 2 and it's possible that it may be
-fixed in Firefox 3 beta.  This conflict is due to the newer version of jQuery
-(1.2.3) used in Drupal 6.x and doesn't happen with the older version in Drupal
-5.x.  Turning off the download tracker in the Google Analytics module fixes the
-problem.  Alternatively, there is a workaround patch in issue #224442, along
-with details on the problem.
 
 Lightbox Lite in IE
 --------------------
