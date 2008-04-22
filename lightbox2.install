@@ -55,7 +55,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_disable_nested_acidfree_galleries');
 }
 
-/*
+/**
  * One of the variables was renamed from 'lightbox2_plus' to 'lightbox2_lite'.
  */
 function lightbox2_update_1() {
@@ -66,3 +66,36 @@ function lightbox2_update_1() {
   return $ret;
 }
 
+/**
+ * 'lightbox2_image_group' variable has been removed and others need to be
+ * updated accordingly.
+ */
+function lightbox2_update_2() {
+  $image_group = variable_get('lightbox2_image_group', TRUE);
+  $image_node = variable_get('lightbox2_image_node', TRUE);
+  $flickr = variable_get('lightbox2_flickr', TRUE);
+  $gallery2 = variable_get('lightbox2_gallery2_blocks', TRUE);
+  $inline = variable_get('lightbox2_inline', TRUE);
+  $image_assist = variable_get('lightbox2_image_assist_custom', TRUE);
+
+  if ($image_group) {
+    if ($image_node) {
+      variable_set('lightbox2_image_node', 2);
+    }
+    if ($flickr) {
+      variable_set('lightbox2_flickr', 2);
+    }
+    if ($gallery2) {
+      variable_set('lightbox2_gallery2_blocks', 2);
+    }
+    if ($inline) {
+      variable_set('lightbox2_inline', 2);
+    }
+    if ($image_assist) {
+      variable_set('lightbox2_image_assist_custom', 2);
+    }
+  }
+  variable_del('lightbox2_image_group');
+
+  return array();
+}
