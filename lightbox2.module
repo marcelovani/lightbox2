@@ -50,10 +50,12 @@ which should trigger the lightbox functionality.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
 <li>Gallery 2 Support: support for Gallery 2 images via the <a href="http://drupal.org/project/gallery">Gallery</a> module (beta).</li>
 </ul>
-      <p align="justify"><h3>Usage</h3></p>
+<p align="justify"><h3>Usage</h3></p>
+      <h5 style="text-decoration: underline;">Adding a Basic Lightbox</h5>
       <p>Add rel=&quot;lightbox&quot; attribute to any link tag to activate the lightbox. For example: </p>
       <p>&lt;a href=&quot;image-1.jpg&quot; rel=&quot;lightbox&quot; title=&quot;my caption&quot;&gt;image #1&lt;/a&gt;</p>
       <p>Optional: Use the title attribute if you want to show a caption.</p>
+<h5 style="text-decoration: underline;">Grouping Images</h5>
    <p>If you have a set of related images that you would like to group, follow
    step one but additionally include a group name between square brackets in the
    rel attribute. For example:</p><p>&lt;a href="images/image-1.jpg"
@@ -63,7 +65,41 @@ which should trigger the lightbox functionality.</li>
 &lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]"&gt;image
 #3&lt;/a&gt;<br /></p>
 <p>No limits to the number of image sets per page or how many images are allowed
-in each set. Go nuts!</p>');
+in each set.</p>
+
+<p>If you have a set of images that you would like to group together in a lightbox, but only wish for one of these images to be visible on your page, you can assign the "lightbox_hide_image" class to hide the additional images.  For example:</p>
+
+<p>&lt;a href="images/image-1.jpg" rel="lightbox[roadtrip]"&gt;image #1&lt;/a&gt;<br />
+&lt;a href="images/image-2.jpg" rel="lightbox[roadtrip]" class="lightbox_hide_image"&gt;image #2&lt;/a&gt;<br />
+&lt;a href="images/image-3.jpg" rel="lightbox[roadtrip]" class="lightbox_hide_image"&gt;image #3&lt;/a&gt;</p>
+
+<h5 style="text-decoration: underline;">Slideshow</h5>
+<p>This is very similar to the grouping functionality described above.  The only difference is that "rel" attribute should be set to "lightshow" instead of "lightbox".  Using the same example as above, we could launch the images in a slideshow by doing:</p>
+
+<p>&lt;a href="images/image-1.jpg" rel="lightshow[roadtrip]"&gt;image #1&lt;/a&gt;<br />
+&lt;a href="images/image-2.jpg" rel="lightshow[roadtrip]"&gt;image #2&lt;/a&gt;<br />
+&lt;a href="images/image-3.jpg" rel="lightshow[roadtrip]"&gt;image #3&lt;/a&gt;</p>
+
+<h3>Keyboard Shortcuts</h3>
+<table border=0>
+<tr><td>Close Lightbox</td><td>x</td></tr>
+<tr><td></td><td>o</td></tr>
+<tr><td></td><td>c</td></tr>
+<tr><td></td><td>ESC</td></tr>
+
+<tr><td>Previous Image</td><td>p</td></tr>
+<tr><td></td><td>Left Arrow</td></tr>
+
+<tr><td>Next Image</td><td>n</td></tr>
+<tr><td></td><td>Right Arrow</td></tr>
+
+<tr><td>Toggle Zoom</td><td>z (not available in slideshow)</td></tr>
+
+<tr><td>Toggle Play / Pause</td><td>Spacebar (slideshow only)</td></tr>
+</table>
+
+<p>Not all of the keyboard shortcuts work in the Opera browser, for example "z" for toggling the zoom and "spacebar" for toggling play / pause in slideshows.  This can be overcome by updating your shortcut settings in the Opera preferences editor.</p>
+');
       break;
   }
 }
