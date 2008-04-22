@@ -8,9 +8,11 @@ CONTENTS OF THIS FILE
     - With Grouping
     - Slideshow
     - Turning the Image Caption into a Link
+  * Keyboard Shortcuts
   * Known Issues
     - Lightbox vs Google Analytics in Firefox
     - Lightbox Lite in IE
+    - Keyboard Shortcuts in Opera
 
 
 INTRODUCTION
@@ -104,6 +106,20 @@ following way:
 <a href="images/image-1.jpg" rel="lightbox" title='<a href="http://www.yourlink.com">Clicky Visit Link</a>'>image #1</a>
 
 
+KEYBOARD SHORTCUTS
+------------------
+Not all of the keyboard shortcuts work in the Opera browser, for example 'z' for
+toggling the zoom and 'spacebar' for toggling play / pause in slideshows.  This
+can be overcome by updating your shortcut settings in the Opera preferences
+editor.
+
+Close : x, o, c, ESC
+Previous Image : p, Left Arrow
+Next Image : n, Right Arrow
+Toggle Zoom : z (not available in slideshow)
+Toggle Play / Pause : Spacebar (slideshow only)
+
+
 KNOWN ISSUES
 ------------
 
@@ -134,3 +150,10 @@ You will need to change the image path on this line to be the full path, e.g.
 filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/sites/all/modules/lightbox2/images/overlay.png", sizingMethod="scale");
 
 See http://drupal.org/node/185866 for more details.
+
+Keyboard Shortcuts in Opera
+---------------------------
+Not all of the keyboard shortcuts work in the Opera browser, for example 'z' for
+toggling the zoom and 'spacebar' for toggling play / pause in slideshows.  This
+can be overcome by updating your shortcut settings in the Opera preferences
+editor.
