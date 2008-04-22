@@ -36,6 +36,7 @@ The version 2 module has several benefits over the plain Lightbox module.  Note,
 <li>Image Sets: group related images and navigate through them with ease - ideal for your image galleries.</li>
 <li>Slideshow Capability: automatically transition between grouped images, includes play/pause and previous and next buttons.</li>
 <li>Visual Effects: fancy pre-loader and transition when you click on the image.</li>
+<li>Keyboard Shortcuts: useful <a href="http://drupal.org/node/249827">keyboard shortcuts</a> for switching between images, toggling play / pause, etc.</li>
 <li>Zoom Capability: larger images are reduced in size so they fit snugly inside the browser window.  A zoom button can then be clicked on to see it in its original size.</li>
 <li>Automatic Image Detection: configurable automatic re-formatting of
 image thumbnails, so there is no need to add \'rel="lightbox"\' to each
