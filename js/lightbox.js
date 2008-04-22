@@ -57,23 +57,24 @@
 
 
 var Lightbox = {
-  overlayOpacity : 0.6, // controls transparency of shadow overlay
-  fadeInSpeed: 'normal', // controls the speed of the image appearance
-  slideDownSpeed: 'slow', // controls the speed of the image resizing animations
-  borderSize : 10, // if you adjust the padding in the CSS, you will need to update this variable
+  overlayOpacity : 0.6, // Controls transparency of shadow overlay.
+  fadeInSpeed: 'normal', // Controls the speed of the image appearance.
+  slideDownSpeed: 'slow', // Controls the speed of the image resizing animation.
+  borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
   infoHeight: 20,
   imageArray : new Array,
   imageNum : null,
   activeImage : null,
   inprogress : false,
+  isZoomedIn : false,
   rtl : false,
 
-  // slideshow options
-  slideInterval : 5000, // milliseconds
-  showPlayPause : true, // true to display pause/play buttons next to close
-  autoExit : true, // true to automatically close Lightbox after the last image
-  pauseOnNextClick : false, // true to pause the slideshow when the "Next" button is clicked
-  pauseOnPrevClick : true, // true to pause the slideshow when the "Prev" button is clicked
+  // Slideshow options.
+  slideInterval : 5000, // In milliseconds.
+  showPlayPause : true, // True to display pause/play buttons next to close.
+  autoExit : true, // True to automatically close Lightbox after the last image.
+  pauseOnNextClick : false, // True to pause the slideshow when the "Next" button is clicked.
+  pauseOnPrevClick : true, // True to pause the slideshow when the "Prev" button is clicked.
   slideIdArray : new Array,
   slideIdCount : 0,
   isSlideshow : false,
@@ -84,7 +85,7 @@ var Lightbox = {
   // initialize()
   // Constructor runs on completion of the DOM loading. Calls updateImageList
   // and then the function inserts html at the bottom of the page which is used
-  //  to display the shadow overlay and the image container.
+  // to display the shadow overlay and the image container.
   initialize: function() {
 
     var settings = Drupal.settings.lightbox2;
@@ -237,7 +238,7 @@ var Lightbox = {
 
     }
 
-    // new layout
+    // New layout.
     else {
       var Loading = document.createElement("div");
       Loading.setAttribute('id', 'loading');
@@ -325,8 +326,8 @@ var Lightbox = {
     $('#prevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $("#bottomNavClose").click(function() { Lightbox.end(); return false; } );
-    $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'TRUE'); return false; } );
-    $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, 'FALSE'); return false; } );
+    $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, true); return false; } );
+    $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, false); return false; } );
     $("#lightshowPause").click(function() { Lightbox.togglePlayPause("lightshowPause", "lightshowPlay"); return false; } );
     $("#lightshowPlay").click(function() { Lightbox.togglePlayPause("lightshowPlay", "lightshowPause"); return false; } );
 
@@ -348,17 +349,17 @@ var Lightbox = {
   // images w/ajax.
   updateImageList : function() {
 
-    // attach lightbox to any links with rel 'lightbox'
+    // Attach lightbox to any links with rel 'lightbox'.
     var anchors = $('a');
     var areas = $('area');
 
-    // loop through all anchor tags
+    // Loop through all anchor tags.
     for (var i = 0; i < anchors.length; i++) {
       var anchor = anchors[i];
       var relAttribute = String(anchor.rel);
 
-      // use the string.match() method to catch 'lightbox' references in the rel
-      // attribute
+      // Use the string.match() method to catch 'lightbox' references in the rel
+      // attribute.
       if (anchor.href && (relAttribute.toLowerCase().match('lightbox'))) {
         $(anchor).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
@@ -367,14 +368,14 @@ var Lightbox = {
       }
     }
 
-    // loop through all area tags
-    // todo: combine anchor & area tag loops
+    // Loop through all area tags.
+    // todo: combine anchor & area tag loops.
     for (var i = 0; i < areas.length; i++) {
       var area = areas[i];
       var relAttribute = String(area.rel);
 
-      // use the string.match() method to catch 'lightbox' references in the rel
-      // attribute
+      // Use the string.match() method to catch 'lightbox' references in the rel
+      // attribute.
       if (area.href && (relAttribute.toLowerCase().match('lightbox'))) {
         $(area).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
       }
@@ -389,10 +390,10 @@ var Lightbox = {
   // imageArray.
   start: function(imageLink, slideshow) {
 
-    // replaces hideSelectBoxes() and hideFlash() calls in original lightbox2
+    // Replaces hideSelectBoxes() and hideFlash() calls in original lightbox2.
     Lightbox.toggleSelectsFlash('hide');
 
-    // stretch overlay to fill page and fade in
+    // Stretch overlay to fill page and fade in.
     var arrayPageSize = Lightbox.getPageSize();
     $("#overlay").hide().css({
       width: '100%',
@@ -406,18 +407,18 @@ var Lightbox = {
 
     var anchors = $(imageLink.tagName);
 
-    // if image is NOT part of a set..
+    // If image is NOT part of a set.
     if ((imageLink.rel == 'lightbox')) {
-      // add single image to imageArray
+      // Add single image to imageArray.
       Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
 
     }
     else {
-      // if image is part of a set or slideshow
+      // If image is part of a set or slideshow.
       if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1) {
 
-        // loop through anchors, find other images in set, and add them to
-        // imageArray
+        // Loop through anchors, find other images in set, and add them to
+        // imageArray.
         for (var i = 0; i < anchors.length; i++) {
           var anchor = anchors[i];
           if (anchor.href && (anchor.rel == imageLink.rel)) {
@@ -425,7 +426,7 @@ var Lightbox = {
           }
         }
 
-        // remove duplicates
+        // Remove duplicates.
         for (i = 0; i < Lightbox.imageArray.length; i++) {
           for (j = Lightbox.imageArray.length-1; j > i; j--) {
             if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
@@ -445,7 +446,7 @@ var Lightbox = {
       $('#lightshowPause').hide();
     }
 
-    // calculate top and left offset for the lightbox
+    // Calculate top and left offset for the lightbox.
     var arrayPageScroll = Lightbox.getPageScroll();
     var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
     var lightboxLeft = arrayPageScroll[0];
@@ -461,15 +462,21 @@ var Lightbox = {
   // changeImage()
   // Hide most elements and preload image in preparation for resizing image
   // container.
-  changeImage: function(imageNum, zoom) {
+  changeImage: function(imageNum, zoomIn) {
 
     if (this.inprogress === false) {
+      if (Lightbox.isSlideshow) {
+        for (var i = 0; i < Lightbox.slideIdCount; i++) {
+          window.clearTimeout(Lightbox.slideIdArray[i]);
+        }
+      }
       this.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
       if (settings.disable_zoom) {
-        zoom = "TRUE";
+        zoomIn = true;
       }
+      Lightbox.isZoomedIn = zoomIn;
 
       if (this.isSlideshow) {
         for (var i = 0; i < this.slideIdCount; i++) {
@@ -478,7 +485,7 @@ var Lightbox = {
       }
       Lightbox.activeImage = imageNum;
 
-      // hide elements during transition
+      // Hide elements during transition.
       $('#loading').css({zIndex: '10500'}).show();
       $('#lightboxImage').hide();
       $('#hoverNav').hide();
@@ -499,14 +506,15 @@ var Lightbox = {
         var imageWidth = imgPreloader.width;
         var imageHeight = imgPreloader.height;
 
-        // image is very large, so show a smaller version of the larger image
-        // with zoom button
-        if (zoom != "TRUE") {
-          // resize code
-          var arrayPageSize = Lightbox.getPageSize();
-          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
-          var orig = { w:imgPreloader.width, h:imgPreloader.height };
-          var ratio = 1.0; // shrink image with the same aspect
+        // Resize code.
+        var arrayPageSize = Lightbox.getPageSize();
+        var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
+        var orig = { w:imgPreloader.width, h:imgPreloader.height };
+
+        // Image is very large, so show a smaller version of the larger image
+        // with zoom button.
+        if (zoomIn != "TRUE") {
+          var ratio = 1.0; // Shrink image with the same aspect.
           $('#bottomNavZoomOut').hide();
           $('#bottomNavZoom').hide();
           if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
@@ -522,8 +530,13 @@ var Lightbox = {
 
         else {
           $('#bottomNavZoom').hide();
-          if (!settings.disable_zoom && Lightbox.isSlideshow === false) {
-            $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
+          // Only display zoom out button if the image is zoomed in already.
+          if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
+            // Only display zoom out button if not a slideshow and if the
+            // buttons aren't disabled.
+            if (!settings.disable_zoom && Lightbox.isSlideshow === false) {
+              $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
+            }
           }
         }
 
@@ -532,7 +545,7 @@ var Lightbox = {
         Lightbox.resizeImageContainer(imageWidth, imageHeight);
         this.inprogress = false;
 
-        // clear onLoad, IE behaves irratically with animated gifs otherwise
+        // Clear onLoad, IE behaves irratically with animated gifs otherwise.
         imgPreloader.onload = function() {};
       };
 
@@ -562,20 +575,20 @@ var Lightbox = {
   // resizeImageContainer()
   resizeImageContainer: function(imgWidth, imgHeight) {
 
-    // get current width and height
+    // Get current width and height.
     this.widthCurrent = $('#outerImageContainer').width();
     this.heightCurrent = $('#outerImageContainer').height();
 
-    // get new width and height
+    // Get new width and height.
     var widthNew = (imgWidth  + (Lightbox.borderSize * 2));
     var heightNew = (imgHeight  + (Lightbox.borderSize * 2));
 
-    // scalars based on change from old to new
+    // Scalars based on change from old to new.
     this.xScale = ( widthNew / this.widthCurrent) * 100;
     this.yScale = ( heightNew / this.heightCurrent) * 100;
 
-    // calculate size difference between new and old image, and resize if
-    // necessary
+    // Calculate size difference between new and old image, and resize if
+    // necessary.
     wDiff = this.widthCurrent - widthNew;
     hDiff = this.heightCurrent - heightNew;
 
@@ -584,7 +597,7 @@ var Lightbox = {
     });
 
 
-    // if new and old image are same size and no scaling transition is necessary
+    // If new and old image are same size and no scaling transition is necessary
     // do a quick pause to prevent image flicker.
     if ((hDiff === 0) && (wDiff === 0)) {
       if (navigator.appVersion.indexOf("MSIE") != -1) {
@@ -646,7 +659,7 @@ var Lightbox = {
     $("#imageDataContainer").hide();
 
     var caption = Lightbox.imageArray[Lightbox.activeImage][1];
-    // if caption is not null
+    // If caption is not null.
     if (caption) {
       $('#caption').html(caption).css({zIndex: '10500'}).show();
     }
@@ -654,7 +667,7 @@ var Lightbox = {
       $('#caption').hide();
     }
 
-    // if image is part of set display 'Image x of x'
+    // If image is part of set display 'Image x of x'.
     var settings = Drupal.settings.lightbox2;
     var numberDisplay = null;
     if (Lightbox.imageArray.length > 1) {
@@ -690,7 +703,7 @@ var Lightbox = {
         $('#prevLink').hide();
       }
 
-      // if not last image in set, display next image button
+      // If not last image in set, display next image button.
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
         $('#nextLink').css({zIndex: '10500'}).show().click(function() {
           if (Lightbox.pauseOnNextClick) {
@@ -699,31 +712,31 @@ var Lightbox = {
           Lightbox.changeImage(Lightbox.activeImage + 1); return false;
         });
       }
-      // safari browsers need to have hide() called again
+      // Safari browsers need to have hide() called again.
       else {
         $('#nextLink').hide();
       }
     }
     else {
 
-      // if not first image in set, display prev image button
+      // If not first image in set, display prev image button.
       if (Lightbox.activeImage !== 0) {
         $('#prevLink').css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage - 1); return false;
         });
       }
-      // safari browsers need to have hide() called again
+      // Safari browsers need to have hide() called again.
       else {
         $('#prevLink').hide();
       }
 
-      // if not last image in set, display next image button
+      // If not last image in set, display next image button.
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
         $('#nextLink').css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage + 1); return false;
         });
       }
-      // safari browsers need to have hide() called again
+      // Safari browsers need to have hide() called again.
       else {
         $('#nextLink').hide();
       }
@@ -735,46 +748,65 @@ var Lightbox = {
 
   // enableKeyboardNav()
   enableKeyboardNav: function() {
-    document.onkeydown = this.keyboardAction;
+    $(document).bind("keydown", this.keyboardAction);
   },
 
   // disableKeyboardNav()
   disableKeyboardNav: function() {
-    document.onkeydown = '';
+    $(document).unbind("keydown", this.keyboardAction);
   },
 
   // keyboardAction()
   keyboardAction: function(e) {
-    if (e == null) { // ie
+    if (e == null) { // IE.
       keycode = event.keyCode;
       escapeKey = 27;
     }
-    else { // mozilla
+    else { // Mozilla.
       keycode = e.keyCode;
       escapeKey = e.DOM_VK_ESCAPE;
     }
 
     key = String.fromCharCode(keycode).toLowerCase();
 
-    // close lightbox
+    // Close lightbox.
     if (key == 'x' || key == 'o' || key == 'c' || keycode == escapeKey) {
       Lightbox.end();
 
-    // display previous image (p, <-)
+    // Display previous image (p, <-).
     }
     else if (key == 'p' || keycode == 37) {
       if (Lightbox.activeImage !== 0) {
-        Lightbox.disableKeyboardNav();
         Lightbox.changeImage(Lightbox.activeImage - 1);
       }
 
-    // display next image (n, ->, space)
+    // Display next image (n, ->).
     }
-    else if (key == 'n' || keycode == 39 || keycode == 32) {
+    else if (key == 'n' || keycode == 39) {
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
-        Lightbox.disableKeyboardNav();
         Lightbox.changeImage(Lightbox.activeImage + 1);
       }
+    }
+    // Zoom in.
+    else if (key == 'z' && !Lightbox.isSlideshow) {
+      if (Lightbox.isZoomedIn) {
+        Lightbox.changeImage(Lightbox.activeImage, false);
+      }
+      else if (!Lightbox.isZoomedIn) {
+        Lightbox.changeImage(Lightbox.activeImage, true);
+      }
+      return false;
+    }
+    // Toggle play / pause (space).
+    else if (keycode == 32 && Lightbox.isSlideshow) {
+
+      if (Lightbox.isPaused) {
+        Lightbox.togglePlayPause("lightshowPlay", "lightshowPause");
+      }
+      else {
+        Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
+      }
+      return false;
     }
   },
 
@@ -799,7 +831,9 @@ var Lightbox = {
     this.disableKeyboardNav();
     $('#lightbox').hide();
     $("#overlay").fadeOut();
-    // replaces calls to showSelectBoxes() and showFlash() in original lightbox2
+    Lightbox.activeImage = null;
+    // Replaces calls to showSelectBoxes() and showFlash() in original
+    // lightbox2.
     Lightbox.toggleSelectsFlash('visible');
     if (Lightbox.isSlideshow) {
       for (var i = 0; i < Lightbox.slideIdCount; i++) {
@@ -816,7 +850,7 @@ var Lightbox = {
 
   // getPageScroll()
   // Returns array with x,y page scroll values.
-  // Core code from - quirksmode.com
+  // Core code from - quirksmode.com.
   getPageScroll : function() {
 
     var xScroll, yScroll;
@@ -825,11 +859,11 @@ var Lightbox = {
       yScroll = self.pageYOffset;
       xScroll = self.pageXOffset;
     }
-    else if (document.documentElement && document.documentElement.scrollTop) {  // Explorer 6 Strict
+    else if (document.documentElement && document.documentElement.scrollTop) {  // Explorer 6 Strict.
       yScroll = document.documentElement.scrollTop;
       xScroll = document.documentElement.scrollLeft;
     }
-    else if (document.body) {// all other Explorers
+    else if (document.body) {// All other Explorers.
       yScroll = document.body.scrollTop;
       xScroll = document.body.scrollLeft;
     }
@@ -839,9 +873,9 @@ var Lightbox = {
   },
 
   // getPageSize()
-  // Returns array with page width, height and window width, height
-  // Core code from - quirksmode.com
-  // Edit for Firefox by pHaez
+  // Returns array with page width, height and window width, height.
+  // Core code from - quirksmode.com.
+  // Edit for Firefox by pHaez.
   getPageSize : function() {
 
     var xScroll, yScroll;
@@ -854,14 +888,15 @@ var Lightbox = {
       xScroll = document.body.scrollWidth;
       yScroll = document.body.scrollHeight;
     }
-    else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari
+    // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
+    else {
       xScroll = document.body.offsetWidth;
       yScroll = document.body.offsetHeight;
     }
 
     var windowWidth, windowHeight;
 
-    if (self.innerHeight) { // all except Explorer
+    if (self.innerHeight) { // All except Explorer.
       if (document.documentElement.clientWidth) {
         windowWidth = document.documentElement.clientWidth;
       }
@@ -870,16 +905,17 @@ var Lightbox = {
       }
       windowHeight = self.innerHeight;
     }
-    else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode
+    // Explorer 6 Strict Mode.
+    else if (document.documentElement && document.documentElement.clientHeight) {
       windowWidth = document.documentElement.clientWidth;
       windowHeight = document.documentElement.clientHeight;
     }
-    else if (document.body) { // other Explorers
+    else if (document.body) { // Other Explorers.
       windowWidth = document.body.clientWidth;
       windowHeight = document.body.clientHeight;
     }
 
-    // for small pages with total height less then height of the viewport
+    // For small pages with total height less then height of the viewport.
     if (yScroll < windowHeight) {
       pageHeight = windowHeight;
     }
@@ -888,7 +924,7 @@ var Lightbox = {
     }
 
 
-    // for small pages with total width less then width of the viewport
+    // For small pages with total width less then width of the viewport.
     if (xScroll < windowWidth) {
       pageWidth = xScroll;
     }
@@ -910,6 +946,9 @@ var Lightbox = {
   },
 
 
+  // toggleSelectsFlash()
+  // Hide / unhide select lists and flash objects as they appear above the
+  // lightbox in some browsers.
   toggleSelectsFlash: function (state) {
     if (state == 'visible') {
       $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").show();
@@ -921,6 +960,9 @@ var Lightbox = {
   },
 
 
+  // togglePlayPause()
+  // Hide the pause / play button as appropriate.  If pausing the slideshow also
+  // clear the timers, otherwise move onto the next image.
   togglePlayPause: function(hideId, showId) {
     if (Lightbox.isSlideshow && hideId == "lightshowPause") {
       for (var i = 0; i < Lightbox.slideIdCount; i++) {
@@ -946,7 +988,7 @@ var Lightbox = {
 
 };
 
-// initialize the lightbox
+// Initialize the lightbox.
 Drupal.behaviors.initLightbox = function (context) {
   Lightbox.initialize();
 };
