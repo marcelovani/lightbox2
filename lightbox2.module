@@ -355,6 +355,13 @@ function lightbox2_auto_image_handling_settings_form() {
     '#value' => variable_get('lightbox2_lite', FALSE),
   );
 
+  $automatic_options = array(
+    0 => t('Disabled'),
+    1 => t('Lightbox'),
+    2 => t('Lightbox grouped'),
+    3 => t('Slideshow'),
+  );
+
   // Set image node options help text.
   $form['image_node_options'] = array(
     '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
@@ -371,10 +378,11 @@ function lightbox2_auto_image_handling_settings_form() {
 
   // Add checkbox for image nodes.
   $form['lightbox2_image_node_options']['lightbox2_image_node'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable for Image Nodes'),
-    '#description' => t('Checking this box will enable automatic URL formatting for Image Nodes.'),
-    '#default_value' => variable_get('lightbox2_image_node', TRUE),
+    '#type' => 'select',
+    '#title' => t('Automatic handler for Image Nodes'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for image nodes will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_image_node', 2),
   );
 
   // Add drop-down for list of available image sizes.
@@ -415,35 +423,39 @@ function lightbox2_auto_image_handling_settings_form() {
 
   // Add checkbox for flickr image support.
   $form['lightbox2_flickr'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable for Flickr images'),
-    '#description' => t('Checking this box will enable automatic URL formatting for Flickr images.'),
-    '#default_value' => variable_get('lightbox2_flickr', TRUE),
+    '#type' => 'select',
+    '#title' => t('Automatic handler for Flickr images'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for Flickr images will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_flickr', 2),
   );
 
   // Add checkbox for gallery2 block image support.
   $form['lightbox2_gallery2_blocks'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable for Gallery2 block images'),
-    '#description' => t('Checking this box will enable automatic URL formatting for images contained within Gallery2 image blocks.'),
-    '#default_value' => variable_get('lightbox2_gallery2_blocks', TRUE),
+    '#type' => 'select',
+    '#title' => t('Automatic handler for Gallery2 block images'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for images, contained within Gallery2 image blocks, will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_gallery2_blocks', 2),
   );
 
 
   // Add checkbox for inline image support.
   $form['lightbox2_inline'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable for Inline images'),
-    '#description' => t('Checking this box will enable automatic URL formatting for images displayed by the Inline module.'),
-    '#default_value' => variable_get('lightbox2_inline', TRUE),
+    '#type' => 'select',
+    '#title' => t('Automatic handler for Inline images'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for Inline images will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_inline', 2),
   );
 
   // Add checkbox for image assist custom size images.
   $form['lightbox2_image_assist_custom'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable for Image Assist custom size images'),
-    '#description' => t('Checking this box will enable automatic URL formatting for custom size images displayed by the Image Assist module.'),
-    '#default_value' => variable_get('lightbox2_image_assist_custom', TRUE),
+    '#type' => 'select',
+    '#title' => t('Automatic handler for Image Assist custom size images'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for custom size images, displayed by the Image Assist module, will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_image_assist_custom', 2),
   );
 
   // Add text box for custom trigger classes.
@@ -469,14 +481,6 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
     '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
     '#return_value' => '_blank',
-  );
-
-  // Add checkbox for image node grouping.
-  $form['lightbox2_image_group'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Enable Grouping'),
-    '#description' => t('Checking this box will enable automatic grouping of images on a page. Useful for image galleries.'),
-    '#default_value' => variable_get('lightbox2_image_group', TRUE),
   );
 
   // Add checkbox for disabling lightbox for acidfree gallery lists.
@@ -561,49 +565,109 @@ function lightbox2_add_files() {
   // Load required js and css files.
   $path = drupal_get_path('module', 'lightbox2');
 
+  // Initialise some variables.
+  $inline_image_handler = variable_get('lightbox2_inline', 2);
+  $flickr_image_handler = variable_get('lightbox2_flickr', 2);
+  $gallery2_block_handler = variable_get('lightbox2_gallery2_blocks', 2);
+  $image_assist_handler = variable_get('lightbox2_image_assist_custom', 2);
+  $image_node_handler = variable_get('lightbox2_image_node', 2);
+
   // Set the list of image classes to format urls for.
   $image_node_sizes = '';
-  $trigger_image_classes = '';
+  $trigger_lightbox_classes = '';
+  $trigger_lightbox_group_classes = '';
+  $trigger_slideshow_classes = '';
+
   // Inline module images.
-  if (variable_get('lightbox2_inline', TRUE)) {
-    $trigger_image_classes .= "img.inline,";
+  switch ($inline_image_handler) {
+    case 1:
+      $trigger_lightbox_classes .= "img.inline,";
+      break;
+    case 2:
+      $trigger_lightbox_group_classes .= "img.inline,";
+      break;
+    case 3:
+      $trigger_slideshow_classes .= "img.inline,";
+      break;
   }
+
   // Flickr images.
-  if (variable_get('lightbox2_flickr', TRUE)) {
-    $trigger_image_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+  switch ($flickr_image_handler) {
+    case 1:
+      $trigger_lightbox_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      break;
+    case 2:
+      $trigger_lightbox_group_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      break;
+    case 3:
+      $trigger_slideshow_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      break;
   }
+
   // Gallery2 block images.
-  if (variable_get('lightbox2_gallery2_blocks', TRUE)) {
-    $trigger_image_classes .= "img.ImageFrame_image,";
+  switch ($gallery2_block_handler) {
+    case 1:
+      $trigger_lightbox_classes .= "img.ImageFrame_image,";
+      break;
+    case 2:
+      $trigger_lightbox_group_classes .= "img.ImageFrame_image,";
+      break;
+    case 3:
+      $trigger_slideshow_classes .= "img.ImageFrame_image,";
+      break;
   }
+
   // Image Assist custom size images.
-  if (variable_get('lightbox2_image_assist_custom', TRUE)) {
-    $trigger_image_classes .= "img.image-img_assist_custom,";
+  switch ($image_assist_handler) {
+    case 1:
+      $trigger_lightbox_classes .= "img.image-img_assist_custom,";
+      break;
+    case 2:
+      $trigger_lightbox_group_classes .= "img.image-img_assist_custom,";
+      break;
+    case 3:
+      $trigger_slideshow_classes .= "img.image-img_assist_custom,";
+      break;
   }
+
   // Image nodes.
-  if (variable_get('lightbox2_image_node', TRUE)) {
+  if ($image_node_handler) {
     $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail' => t('Thumbnail')));
     foreach ($trigger_sizes as $size => $size_name) {
+      $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
-        $trigger_image_classes .= "img._original, img.image-_original,";
+        $triggers = "img._original, img.image-_original,";
       }
       else {
-        $trigger_image_classes .= "img.$size, img.image-$size,";
         $image_node_sizes .= "\.$size|";
+      }
+      switch ($image_node_handler) {
+        case 1:
+          $trigger_lightbox_classes .= $triggers;
+          break;
+        case 2:
+          $trigger_lightbox_group_classes .= $triggers;
+          break;
+        case 3:
+          $trigger_slideshow_classes .= $triggers;
+          break;
       }
     }
   }
+
   // Custom images.
   $custom_triggers = variable_get('lightbox2_custom_trigger_classes', '');
   if (!empty($custom_triggers)) {
     $trigger_classes = preg_split("/(\r\n|\n)/", $custom_triggers);
     foreach ($trigger_classes as $class) {
       if (!empty($class)) {
-        $trigger_image_classes .= "img.$class,";
+        $trigger_lightbox_classes .= "img.$class,";
       }
     }
   }
-  $trigger_image_classes = rtrim($trigger_image_classes, ",");
+  $trigger_lightbox_classes = rtrim($trigger_lightbox_classes, ",");
+  $trigger_lightbox_group_classes = rtrim($trigger_lightbox_group_classes, ",");
+  $trigger_slideshow_classes = rtrim($trigger_slideshow_classes, ",");
   $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
   // Find out if we're using a RTL language.
@@ -618,20 +682,22 @@ function lightbox2_add_files() {
     'file_path' => base_path() .'(\w\w/)'. file_directory_path(),
     'base_path' => base_path(),
     'default_image' => base_path() . $path .'/images/brokenimage.jpg',
-    'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', '0.6'),
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', FALSE),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', FALSE),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
-    'image_node_sizes' => $image_node_sizes,
-    'trigger_image_classes' => $trigger_image_classes,
-    'group_images' => variable_get('lightbox2_image_group', TRUE),
-    'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
-    'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
     'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
+    // Automatic image handling settings.
+    'display_image_size' => variable_get('lightbox2_display_image_size', ''),
+    'image_node_sizes' => $image_node_sizes,
+    'trigger_lightbox_classes' => $trigger_lightbox_classes,
+    'trigger_lightbox_group_classes' => $trigger_lightbox_group_classes,
+    'trigger_slideshow_classes' => $trigger_slideshow_classes,
+    'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
+    'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
     // Slideshow settings.
     'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
     'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
@@ -656,8 +722,8 @@ function lightbox2_add_files() {
     }
     drupal_add_css($css);
 
-    // Check to see if the Image Node Option is enabled in settings.
-    if (variable_get('lightbox2_image_node', TRUE) || variable_get('lightbox2_flickr', TRUE) || variable_get('lightbox2_gallery2_blocks', TRUE) || variable_get('lightbox2_inline', TRUE) || variable_get('lightbox2_custom_trigger_classes', '') != '') {
+    // Check to see if any automatic image handling options are enabled.
+    if ($image_node_handler || $flickr_image_handler || $gallery2_block_handler || $inline_image_handler || $image_assist_handler || $custom_triggers != '') {
       drupal_add_js($path .'/js/auto_image_handling.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
