@@ -748,12 +748,12 @@ var Lightbox = {
 
   // enableKeyboardNav()
   enableKeyboardNav: function() {
-    document.onkeydown = this.keyboardAction;
+    $(document).bind("keydown", this.keyboardAction);
   },
 
   // disableKeyboardNav()
   disableKeyboardNav: function() {
-    document.onkeydown = '';
+    $(document).unbind("keydown", this.keyboardAction);
   },
 
   // keyboardAction()
@@ -777,7 +777,6 @@ var Lightbox = {
     }
     else if (key == 'p' || keycode == 37) {
       if (Lightbox.activeImage !== 0) {
-        Lightbox.disableKeyboardNav();
         Lightbox.changeImage(Lightbox.activeImage - 1);
       }
 
@@ -785,13 +784,11 @@ var Lightbox = {
     }
     else if (key == 'n' || keycode == 39) {
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
-        Lightbox.disableKeyboardNav();
         Lightbox.changeImage(Lightbox.activeImage + 1);
       }
     }
     // Zoom in.
-    else if (key == 'z') {
-      Lightbox.disableKeyboardNav();
+    else if (key == 'z' && !Lightbox.isSlideshow) {
       if (Lightbox.isZoomedIn) {
         Lightbox.changeImage(Lightbox.activeImage, false);
       }
@@ -800,15 +797,14 @@ var Lightbox = {
       }
     }
     // Toggle play / pause (space).
-    else if (keycode == 32) {
-      Lightbox.disableKeyboardNav();
-
+    else if (keycode == 32 && Lightbox.isSlideshow) {
       if (Lightbox.isPaused) {
         Lightbox.togglePlayPause("lightshowPlay", "lightshowPause");
       }
       else {
         Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
       }
+      return false;
     }
   },
 
