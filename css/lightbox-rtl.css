@@ -20,6 +20,7 @@
   height: 250px;
   margin: 0 auto;
   min-width: 240px;
+  overflow: hidden;
 }
 
 #imageContainer {
