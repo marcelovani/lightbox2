@@ -45,6 +45,10 @@
  * - getPageScroll()
  * - getPageSize()
  * - pause()
+ * - toggleSelectsFlash()
+ *
+ * Slideshow Functions
+ * - togglePlayPause()
  *
  * On load event
  * - initialize()
@@ -906,6 +910,17 @@ var Lightbox = {
   },
 
 
+  toggleSelectsFlash: function (state) {
+    if (state == 'visible') {
+      $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").show();
+    }
+    else if (state == 'hide') {
+      $("select:visible, embed:visible, object:visible").addClass("lightbox_hidden");
+      $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").hide();
+    }
+  },
+
+
   togglePlayPause: function(hideId, showId) {
     if (Lightbox.isSlideshow && hideId == "lightshowPause") {
       for (var i = 0; i < Lightbox.slideIdCount; i++) {
@@ -926,16 +941,6 @@ var Lightbox = {
     }
     else {
       Lightbox.isPaused = true;
-    }
-  },
-
-  toggleSelectsFlash: function (state) {
-    if (state == 'visible') {
-      $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").show();
-    }
-    else if (state == 'hide') {
-      $("select:visible, embed:visible, object:visible").addClass("lightbox_hidden");
-      $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").hide();
     }
   }
 
