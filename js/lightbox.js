@@ -69,6 +69,7 @@ var Lightbox = {
   disableZoom : false,
   isZoomedIn : false,
   rtl : false,
+  isLightframe : false,
 
   // Slideshow options.
   slideInterval : 5000, // In milliseconds.
@@ -99,7 +100,8 @@ var Lightbox = {
     Lightbox.pauseOnNextClick = settings.pause_on_next_click;
     Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
 
-    // Attach lightbox to any links with rel 'lightbox' or 'lightshow'.
+    // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
+    // 'lightframe'.
     Lightbox.updateImageList();
 
     // MAKE THE LIGHTBOX DIVS
@@ -152,6 +154,16 @@ var Lightbox = {
     var OuterImageContainer = document.createElement("div");
     OuterImageContainer.setAttribute('id', 'outerImageContainer');
     LightboxDiv.appendChild(OuterImageContainer);
+
+    var FrameContainer = document.createElement("div");
+    FrameContainer.setAttribute('id', 'frameContainer');
+    FrameContainer.style.display = 'none';
+    OuterImageContainer.appendChild(FrameContainer);
+
+    var LightboxFrame = document.createElement("iframe");
+    LightboxFrame.setAttribute('id', 'lightboxFrame');
+    LightboxFrame.style.display = 'none';
+    FrameContainer.appendChild(LightboxFrame);
 
     var ImageContainer = document.createElement("div");
     ImageContainer.setAttribute('id', 'imageContainer');
@@ -346,12 +358,13 @@ var Lightbox = {
   },
 
   // updateImageList()
-  // Loops through anchor tags looking for 'lightbox' references and applies
-  // onclick events to appropriate links. You can rerun after dynamically adding
-  // images w/ajax.
+  // Loops through anchor tags looking for 'lightbox', 'lightshow' and
+  // 'lightframe' references and applies onclick events to appropriate links.
+  // You can rerun after dynamically adding images w/ajax.
   updateImageList : function() {
 
-    // Attach lightbox to any links with rel 'lightbox'.
+    // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
+    // 'lightframe'.
     var anchors = $('a');
     var areas = $('area');
 
@@ -360,13 +373,18 @@ var Lightbox = {
       var anchor = anchors[i];
       var relAttribute = String(anchor.rel);
 
-      // Use the string.match() method to catch 'lightbox' references in the rel
-      // attribute.
-      if (anchor.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        $(anchor).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
-      }
-      else if (anchor.href && (relAttribute.toLowerCase().match('lightshow'))) {
-        $(anchor).click(function(e) { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
+      // Use the string.match() method to catch 'lightbox', 'lightshow' and
+      // 'lightframe' references in the rel attribute.
+      if (anchor.href) {
+        if (relAttribute.toLowerCase().match('lightbox')) {
+          anchor.onclick = function() { Lightbox.start(this, false, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightshow')) {
+          anchor.onclick = function() { Lightbox.start(this, true, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightframe')) {
+          anchor.onclick = function() { Lightbox.start(this, false, true); return false; };
+        }
       }
     }
 
@@ -376,13 +394,18 @@ var Lightbox = {
       var area = areas[i];
       var relAttribute = String(area.rel);
 
-      // Use the string.match() method to catch 'lightbox' references in the rel
-      // attribute.
-      if (area.href && (relAttribute.toLowerCase().match('lightbox'))) {
-        $(area).click(function(e) { Lightbox.start(this, false); if (e.preventDefault) { e.preventDefault(); } return false; });
-      }
-      else if (area.href && (relAttribute.toLowerCase().match('lightshow'))) {
-        $(area).click(function(e) { Lightbox.start(this, true); if (e.preventDefault) { e.preventDefault(); } return false; });
+      // Use the string.match() method to catch 'lightbox', 'lightshow' and
+      // 'lightframe' references in the rel attribute.
+      if (area.href) {
+        if (relAttribute.toLowerCase().match('lightbox')) {
+          area.onclick = function() { Lightbox.start(this, false, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightshow')) {
+          area.onclick = function() { Lightbox.start(this, true, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightframe')) {
+          area.onclick = function() { Lightbox.start(this, false, true); return false; };
+        }
       }
     }
   },
@@ -390,7 +413,7 @@ var Lightbox = {
   // start()
   // Display overlay and lightbox. If image is part of a set, add siblings to
   // imageArray.
-  start: function(imageLink, slideshow) {
+  start: function(imageLink, slideshow, lightframe) {
 
     // Replaces hideSelectBoxes() and hideFlash() calls in original lightbox2.
     Lightbox.toggleSelectsFlash('hide');
@@ -404,45 +427,50 @@ var Lightbox = {
       opacity : Lightbox.overlayOpacity
     }).fadeIn();
 
+    Lightbox.isSlideshow = slideshow;
+    Lightbox.isLightframe = lightframe;
     Lightbox.imageArray = [];
     Lightbox.imageNum = 0;
 
     var anchors = $(imageLink.tagName);
 
-    // If image is NOT part of a set.
-    if ((imageLink.rel == 'lightbox')) {
-      // Add single image to imageArray.
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
+    if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1 || imageLink.rel.indexOf('lightframe') != -1) {
 
-    }
-    else {
-      // If image is part of a set or slideshow.
-      if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1) {
-
-        // Loop through anchors, find other images in set, and add them to
-        // imageArray.
+      // Loop through anchors, find other images in set, and add them to
+      // imageArray.
+      if (!Lightbox.isLightframe) {
         for (var i = 0; i < anchors.length; i++) {
           var anchor = anchors[i];
           if (anchor.href && (anchor.rel == imageLink.rel)) {
             Lightbox.imageArray.push(new Array(anchor.href, anchor.title));
           }
         }
-
-        // Remove duplicates.
-        for (i = 0; i < Lightbox.imageArray.length; i++) {
-          for (j = Lightbox.imageArray.length-1; j > i; j--) {
-            if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
-              Lightbox.imageArray.splice(j,1);
-            }
+      }
+      // Loop through frame links separately - need to fetch style information.
+      else {
+        for (var i = 0; i < anchors.length; i++) {
+          var anchor = anchors[i];
+          if (anchor.href && (anchor.rel == imageLink.rel)) {
+            var rev = (anchor.rev == null || anchor.rev == '' ? 'width: 400px; height: 400px; scrolling: auto;' : anchor.rev);
+            Lightbox.imageArray.push(new Array(anchor.href, anchor.title, rev));
           }
         }
-        while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
-          Lightbox.imageNum++;
+      }
+
+
+      // Remove duplicates.
+      for (i = 0; i < Lightbox.imageArray.length; i++) {
+        for (j = Lightbox.imageArray.length-1; j > i; j--) {
+          if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
+            Lightbox.imageArray.splice(j,1);
+          }
         }
+      }
+      while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
+        Lightbox.imageNum++;
       }
     }
 
-    Lightbox.isSlideshow = slideshow;
     if (Lightbox.isSlideshow && Lightbox.showPlayPause && Lightbox.isPaused) {
       $('#lightshowPlay').show();
       $('#lightshowPause').hide();
@@ -485,6 +513,8 @@ var Lightbox = {
       // Hide elements during transition.
       $('#loading').css({zIndex: '10500'}).show();
       $('#lightboxImage').hide();
+      $('#lightboxFrame').hide();
+      $('#frameContainer').hide();
       $('#hoverNav').hide();
       $('#prevLink').hide();
       $('#nextLink').hide();
@@ -493,60 +523,86 @@ var Lightbox = {
       $('#bottomNavZoom').hide();
       $('#bottomNavZoomOut').hide();
 
-      imgPreloader = new Image();
-      imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
+      // Preload image content, but not iframe pages.
+      if (!Lightbox.isLightframe) {
+        imgPreloader = new Image();
+        imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
 
-      imgPreloader.onload = function() {
-        var photo = document.getElementById('lightboxImage');
-        photo.src = Lightbox.imageArray[Lightbox.activeImage][0];
+        imgPreloader.onload = function() {
+          var photo = document.getElementById('lightboxImage');
+          photo.src = Lightbox.imageArray[Lightbox.activeImage][0];
 
-        var imageWidth = imgPreloader.width;
-        var imageHeight = imgPreloader.height;
+          var imageWidth = imgPreloader.width;
+          var imageHeight = imgPreloader.height;
 
-        // Resize code.
-        var arrayPageSize = Lightbox.getPageSize();
-        var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
-        var orig = { w:imgPreloader.width, h:imgPreloader.height };
+          // Resize code.
+          var arrayPageSize = Lightbox.getPageSize();
+          var targ = { w:arrayPageSize[2] - (Lightbox.borderSize * 2), h:arrayPageSize[3] - (Lightbox.borderSize * 6) - (Lightbox.infoHeight * 4) - (arrayPageSize[3] / 10) };
+          var orig = { w:imgPreloader.width, h:imgPreloader.height };
 
-        // Image is very large, so show a smaller version of the larger image
-        // with zoom button.
-        if (zoomIn != "TRUE") {
-          var ratio = 1.0; // Shrink image with the same aspect.
-          $('#bottomNavZoomOut').hide();
-          $('#bottomNavZoom').hide();
-          if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
-            ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
-            if (!Lightbox.isSlideshow) {
-              $('#bottomNavZoom').css({zIndex: '10500'}).show();
+          // Image is very large, so show a smaller version of the larger image
+          // with zoom button.
+          if (zoomIn != "TRUE") {
+            var ratio = 1.0; // Shrink image with the same aspect.
+            $('#bottomNavZoomOut').hide();
+            $('#bottomNavZoom').hide();
+            if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
+              ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
+              if (!Lightbox.isSlideshow) {
+                $('#bottomNavZoom').css({zIndex: '10500'}).show();
+              }
+            }
+
+            imageWidth  = Math.floor(orig.w * ratio);
+            imageHeight = Math.floor(orig.h * ratio);
+          }
+
+          else {
+            $('#bottomNavZoom').hide();
+            // Only display zoom out button if the image is zoomed in already.
+            if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
+              // Only display zoom out button if not a slideshow and if the
+              // buttons aren't disabled.
+              if (!Lightbox.disableZoom && Lightbox.isSlideshow === false) {
+                $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
+              }
             }
           }
 
-          imageWidth  = Math.floor(orig.w * ratio);
-          imageHeight = Math.floor(orig.h * ratio);
-        }
+          photo.style.width = (imageWidth) + 'px';
+          photo.style.height = (imageHeight) + 'px';
+          Lightbox.resizeImageContainer(imageWidth, imageHeight);
+          this.inprogress = false;
 
-        else {
-          $('#bottomNavZoom').hide();
-          // Only display zoom out button if the image is zoomed in already.
-          if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
-            // Only display zoom out button if not a slideshow and if the
-            // buttons aren't disabled.
-            if (!Lightbox.disableZoom && Lightbox.isSlideshow === false) {
-              $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
-            }
+          // Clear onLoad, IE behaves irratically with animated gifs otherwise.
+          imgPreloader.onload = function() {};
+        };
+
+        imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
+      }
+
+      // Set up frame size, etc.
+      else {
+        var iframe = document.getElementById('lightboxFrame');
+        var styles = Lightbox.imageArray[Lightbox.activeImage][2];
+        var stylesArray = styles.split(';');
+        for (var i = 0; i< stylesArray.length; i++) {
+          if (stylesArray[i].indexOf('width:') >= 0) {
+            var w = stylesArray[i].replace('width:', '');
+            iframe.width = jQuery.trim(w);
+          }
+          else if (stylesArray[i].indexOf('height:') >= 0) {
+            var h = stylesArray[i].replace('height:', '');
+            iframe.height = jQuery.trim(h);
+          }
+          else if (stylesArray[i].indexOf('scrolling:') >= 0) {
+            var scrolling = stylesArray[i].replace('scrolling:', '');
+            iframe.scrolling = jQuery.trim(scrolling);
           }
         }
+        Lightbox.resizeImageContainer(parseInt(iframe.width), parseInt(iframe.height));
+      }
 
-        photo.style.width = (imageWidth) + 'px';
-        photo.style.height = (imageHeight) + 'px';
-        Lightbox.resizeImageContainer(imageWidth, imageHeight);
-        this.inprogress = false;
-
-        // Clear onLoad, IE behaves irratically with animated gifs otherwise.
-        imgPreloader.onload = function() {};
-      };
-
-      imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
     }
   },
 
@@ -618,15 +674,36 @@ var Lightbox = {
   // Display image and begin preloading neighbors.
   showImage: function() {
     $('#loading').hide();
-    if($.browser.safari) {
-      $('#lightboxImage').css({zIndex: '10500'}).show();
+    // Handle display of iframes.
+    if (Lightbox.isLightframe) {
+      $('#frameContainer').show();
+      if ($.browser.safari) {
+        $('#lightboxFrame').css({zIndex: '10500'}).show();
+      }
+      else {
+        $('#lightboxFrame').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
+      }
+      Lightbox.updateDetails();
+      try {
+        document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
+      } catch(e) {}
     }
+
+    // Handle display of image content.
     else {
-      $('#lightboxImage').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
+      $('#frameContainer').hide();
+      if($.browser.safari) {
+        $('#lightboxImage').css({zIndex: '10500'}).show();
+      }
+      else {
+        $('#lightboxImage').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
+      }
+      Lightbox.updateDetails();
+      this.preloadNeighborImages();
     }
-    Lightbox.updateDetails();
-    this.preloadNeighborImages();
     this.inprogress = false;
+
+    // Slideshow specific stuff.
     if (Lightbox.isSlideshow) {
       if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
         if (Lightbox.autoExit) {
@@ -654,9 +731,6 @@ var Lightbox = {
     var pageHeight = arrayPageSize[1];
     if (Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
       pageHeight = pageHeight + arrayPageScroll[1] + (arrayPageSize[3] / 10);
-    }
-    else if (!Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
-      pageHeight = arrayPageSize[3];
     }
     $('#overlay').css({height: pageHeight + 'px'});
   },
@@ -795,7 +869,7 @@ var Lightbox = {
       }
     }
     // Zoom in.
-    else if (key == 'z' && !Lightbox.isSlideshow && !Lightbox.disableZoom) {
+    else if (key == 'z' && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
       if (Lightbox.isZoomedIn) {
         Lightbox.changeImage(Lightbox.activeImage, false);
       }
@@ -849,10 +923,12 @@ var Lightbox = {
       $('#lightshowPause').hide();
       $('#lightshowPlay').hide();
     }
+    else if (Lightbox.isLightframe) {
+      document.getElementById("lightboxFrame").src = '';
+      $('#lightboxFrame').hide();
+      $('#frameContainer').hide();
+    }
   },
-
-
-
 
 
   // getPageScroll()

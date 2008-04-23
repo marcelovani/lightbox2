@@ -28,7 +28,7 @@
   overflow: hidden;
 }
 
-#imageContainer {
+#imageContainer, #frameContainer {
   padding: 10px;
 }
 
