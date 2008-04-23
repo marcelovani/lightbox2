@@ -434,7 +434,14 @@ var Lightbox = {
 
     var anchors = $(imageLink.tagName);
 
-    if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1 || imageLink.rel.indexOf('lightframe') != -1) {
+    if (imageLink.rel == 'lightbox') {
+      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
+    }
+    else if (imageLink.rel == 'lightframe') {
+      var rev = (imageLink.rev == null || imageLink.rev == '' ? 'width: 400px; height: 400px; scrolling: auto;' : imageLink.rev);
+      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rev));
+    }
+    else if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1 || imageLink.rel.indexOf('lightframe') != -1) {
 
       // Loop through anchors, find other images in set, and add them to
       // imageArray.
@@ -456,19 +463,18 @@ var Lightbox = {
           }
         }
       }
+    }
 
-
-      // Remove duplicates.
-      for (i = 0; i < Lightbox.imageArray.length; i++) {
-        for (j = Lightbox.imageArray.length-1; j > i; j--) {
-          if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
-            Lightbox.imageArray.splice(j,1);
-          }
+    // Remove duplicates.
+    for (i = 0; i < Lightbox.imageArray.length; i++) {
+      for (j = Lightbox.imageArray.length-1; j > i; j--) {
+        if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
+          Lightbox.imageArray.splice(j,1);
         }
       }
-      while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
-        Lightbox.imageNum++;
-      }
+    }
+    while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
+      Lightbox.imageNum++;
     }
 
     if (Lightbox.isSlideshow && Lightbox.showPlayPause && Lightbox.isPaused) {
