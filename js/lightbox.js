@@ -66,6 +66,7 @@ var Lightbox = {
   imageNum : null,
   activeImage : null,
   inprogress : false,
+  disableZoom : false,
   isZoomedIn : false,
   rtl : false,
 
@@ -91,6 +92,7 @@ var Lightbox = {
     var settings = Drupal.settings.lightbox2;
     Lightbox.overlayOpacity = settings.overlay_opacity;
     Lightbox.rtl = settings.rtl;
+    Lightbox.disableZoom = settings.disable_zoom;
     Lightbox.slideInterval = settings.slideshow_interval;
     Lightbox.showPlayPause = settings.show_play_pause;
     Lightbox.autoExit = settings.slideshow_automatic_exit;
@@ -473,16 +475,11 @@ var Lightbox = {
       this.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
-      if (settings.disable_zoom) {
+      if (Lightbox.disableZoom) {
         zoomIn = true;
       }
       Lightbox.isZoomedIn = zoomIn;
 
-      if (this.isSlideshow) {
-        for (var i = 0; i < this.slideshowIdCount; i++) {
-          window.clearTimeout(this.slideshowIdArray[i]);
-        }
-      }
       Lightbox.activeImage = imageNum;
 
       // Hide elements during transition.
@@ -534,7 +531,7 @@ var Lightbox = {
           if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
             // Only display zoom out button if not a slideshow and if the
             // buttons aren't disabled.
-            if (!settings.disable_zoom && Lightbox.isSlideshow === false) {
+            if (!Lightbox.disableZoom && Lightbox.isSlideshow === false) {
               $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
             }
           }
@@ -650,6 +647,18 @@ var Lightbox = {
         $('#lightshowPlay').show();
       }
     }
+
+    // Adjust the page overlay size.
+    var arrayPageSize = Lightbox.getPageSize();
+    var arrayPageScroll = Lightbox.getPageScroll();
+    var pageHeight = arrayPageSize[1];
+    if (Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
+      pageHeight = pageHeight + arrayPageScroll[1] + (arrayPageSize[3] / 10);
+    }
+    else if (!Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
+      pageHeight = arrayPageSize[3];
+    }
+    $('#overlay').css({height: pageHeight + 'px'});
   },
 
   // updateDetails()
@@ -679,8 +688,7 @@ var Lightbox = {
     if (Lightbox.rtl) {
       $("#bottomNav").css({float: 'left'});
     }
-    var arrayPageSize = Lightbox.getPageSize();
-    $('#overLay').css({height: arrayPageSize[1] + 'px'});
+
     Lightbox.updateNav();
   },
 
@@ -788,7 +796,7 @@ var Lightbox = {
       }
     }
     // Zoom in.
-    else if (key == 'z' && !Lightbox.isSlideshow) {
+    else if (key == 'z' && !Lightbox.isSlideshow && !Lightbox.disableZoom) {
       if (Lightbox.isZoomedIn) {
         Lightbox.changeImage(Lightbox.activeImage, false);
       }
