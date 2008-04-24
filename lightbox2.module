@@ -558,6 +558,39 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
   else if ($delta == 1) {
     return t('Image links from G2 are formatted for use with Lightbox2');
   }
+  else if ($delta == 2) {
+    if (!$long) {
+      return t('Image links with \'rel="lightshow"\' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on.');
+    }
+    else {
+      $output = '<p>'. t('To add a lightbox slideshow to your images, add rel="lightshow[slideshowname]" attribute to any link tag to activate the slideshow. For example:') .'</p>';
+      $output .= '<p>'. t('<code>&lt;a href="image-1.jpg" rel="lightshow[show1]"&gt;image #1&lt;/a&gt;<br /> &lt;a href="image-2.jpg" rel="lightshow[show1]"&gt;image #2&lt;/a&gt;<br /> &lt;a href="image-3.jpg" rel="lightshow[show1]"&gt;image #3&lt;/a&gt;<br /> </code>') .'</p>';
+      $output .= '<p>'. t('The title attribute in the link tag is optional. The addition of this attribute enables the display of a caption with the image displayed in the lightbox.') .'</p>';
+      $output .= '<p>'. t('There are no limits to the number of slideshow image sets per page or how many images are allowed in each slideshow.') .'</p>';
+      $output .= '<p>'. t('If you wish to turn the caption into a link, format your caption in the following way:') .'</p>';
+      $output .= '<p>'. t('<code>&lt;a href="image-1.jpg" rel="lightshow[show1]" title=\'&lt;a href="http://www.yourlink.com"&gt;View Image Details&lt;/a&gt;\'&gt;image #1&lt;/a&gt;</code>') .'</p>';
+      return $output;
+    }
+  }
+  else if ($delta == 3) {
+    if (!$long) {
+      return t('Links to HTML content with \'rel="lightframe"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
+    }
+    else {
+      $output = '<p>'. t('It\'s possible to show webpage content in the lightbox, using iframes.  In this case the "rel" attribute should be set to "lightframe".  Again it\'s possible to group the images, (e.g. <code>lightframe[search]</code>) but in addition to that, it\'s possible to control some of the iframe properties.  It\'s possible to set the "width", "height" and "scrolling" properties of the iframe.  The properties are separated from the group name by a <code>|</code>, for example <code>lightframe[search|width:100px;]</code>.  If no grouping is being used, then the <code>|</code> is still used and the format would be <code>lightframe[|width:100px;]</code>.  The properties should all be of the format "property: value;" - note the closing semi-colon.  If no iframe properties are set, then the default width and height of 400px will be used.  See below for more detailed examples.') .'</p>';
+      $output .= '<p>'. t('Basic example:') .'<br />';
+      $output .= t('<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe&quot;&gt;Search google&lt;/a&gt;</code>') .'</p>';
+      $output .= '<p>'. t('Grouped example:') .'<br />';
+      $output .= t('<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe[search]&quot;&gt;Search google&lt;/a&gt;<br />&lt;a href=&quot;http://www.yahoo.com&quot; rel=&quot;lightframe[search]&quot;&gt;Search yahoo&lt;/a&gt;</code>') .'</p>';
+
+      $output .= '<p>'. t('Controlling iframe property example:') .'<br />';
+      $output .= t('<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe[|width:400px; height:300px; scrolling: auto;]&quot;&gt;Search google&lt;/a&gt;</code>') .'</p>';
+      $output .= '<p>'. t('Controlling iframe property when grouped example:') .'<br />';
+      $output .= t('<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe[search|width:400px; height:300px; scrolling: auto;]&quot;&gt;Search google&lt;/a&gt;<br />&lt;a href=&quot;http://www.yahoo.com&quot; rel=&quot;lightframe[search|width:400px; height:300px;]&quot;&gt;Search yahoo&lt;/a&gt;</code>') .'</p>';
+
+      return $output;
+    }
+  }
 }
 
 /**
@@ -566,14 +599,25 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
 function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
   switch ($op) {
     case 'list':
-      return array(0 => t('Lightbox filter'), 1 => t('Lightbox G2 filter'));
+      return array(
+        0 => t('Lightbox filter'),
+        1 => t('Lightbox G2 filter'),
+        2 => t('Lightbox slideshow filter'),
+        3 => t('Lightbox iframe filter')
+      );
 
     case 'description':
-      if ($delta == 1) {
+      if ($delta == 0) {
+        return t('Image links with \'rel="lightbox"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
+      }
+      else if ($delta == 1) {
         return t('Turns g2_filter links into Lightbox2 appropriate links');
       }
-      else {
-        return t('Image links with \'rel="lightbox"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
+      else if ($delta == 2) {
+        return t('Image links with \'rel="lightshow"\' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on.');
+      }
+      else if ($delta == 3) {
+        return t('Links to HTML content with \'rel="lightframe"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
 
     case 'process':
