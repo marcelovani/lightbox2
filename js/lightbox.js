@@ -772,7 +772,12 @@ var Lightbox = {
     var settings = Drupal.settings.lightbox2;
     var numberDisplay = null;
     if (Lightbox.imageArray.length > 1) {
-      numberDisplay = settings.image_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+      if (!Lightbox.isLightframe) {
+        numberDisplay = settings.image_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+      }
+      else {
+        numberDisplay = settings.page_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+      }
       $('#numberDisplay').html(numberDisplay).css({zIndex: '10500'}).show();
     }
 
