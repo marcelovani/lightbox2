@@ -433,15 +433,24 @@ var Lightbox = {
     Lightbox.imageNum = 0;
 
     var anchors = $(imageLink.tagName);
+    var rel = imageLink.rel.match(/\w+/)[0];
+    var rel_info = Lightbox.parseRel(imageLink);
+    var rel_group = rel_info[0];
 
-    if (imageLink.rel == 'lightbox') {
+
+    // Handle lightbox images with no grouping.
+    if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
       Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
     }
-    else if (imageLink.rel == 'lightframe') {
-      var rev = (imageLink.rev == null || imageLink.rev == '' ? 'width: 400px; height: 400px; scrolling: auto;' : imageLink.rev);
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rev));
+
+    // Handle iframes with no grouping.
+    else if (rel == 'lightframe' && !rel_group) {
+      var rel_style = (!rel_info[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_info[1]);
+      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rel_style));
     }
-    else if (imageLink.rel.indexOf('lightbox') != -1 || imageLink.rel.indexOf('lightshow') != -1 || imageLink.rel.indexOf('lightframe') != -1) {
+
+    // Handle iframes and lightbox & slideshow images.
+    else if (rel == 'lightbox' || rel == 'lightshow' || rel == 'lightframe') {
 
       // Loop through anchors, find other images in set, and add them to
       // imageArray.
@@ -457,9 +466,12 @@ var Lightbox = {
       else {
         for (var i = 0; i < anchors.length; i++) {
           var anchor = anchors[i];
-          if (anchor.href && (anchor.rel == imageLink.rel)) {
-            var rev = (anchor.rev == null || anchor.rev == '' ? 'width: 400px; height: 400px; scrolling: auto;' : anchor.rev);
-            Lightbox.imageArray.push(new Array(anchor.href, anchor.title, rev));
+          if (anchor.href) {
+            var rel_data = Lightbox.parseRel(anchor);
+            if (rel_data[0] == rel_group) {
+              var rel_style = (!rel_data[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_data[1]);
+              Lightbox.imageArray.push(new Array(anchor.href, anchor.title, rel_style));
+            }
           }
         }
       }
@@ -509,7 +521,7 @@ var Lightbox = {
       this.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
-      if (Lightbox.disableZoom) {
+      if (Lightbox.disableZoom && !Lightbox.isSlideshow) {
         zoomIn = true;
       }
       Lightbox.isZoomedIn = zoomIn;
@@ -1076,6 +1088,14 @@ var Lightbox = {
     else {
       Lightbox.isPaused = true;
     }
+  },
+
+  parseRel: function (link) {
+    var rel_info = new Array();
+    if (link.rel.match(/\[(.*)\]/)) {
+      rel_info = link.rel.match(/\[(.*)\]/)[1].split('|');
+    }
+    return rel_info;
   }
 
 };
