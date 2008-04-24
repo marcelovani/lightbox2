@@ -7,6 +7,7 @@ CONTENTS OF THIS FILE
     - No Grouping
     - With Grouping
     - Slideshow
+    - HTML Content Support
     - Turning the Image Caption into a Link
   * Keyboard Shortcuts
   * Known Issues
@@ -96,6 +97,35 @@ slideshow by doing:
 <a href="images/image-1.jpg" rel="lightshow[roadtrip]">image #1</a>
 <a href="images/image-2.jpg" rel="lightshow[roadtrip]">image #2</a>
 <a href="images/image-3.jpg" rel="lightshow[roadtrip]">image #3</a>
+
+HTML Content Support
+====================
+It's possible to show webpage content in the lightbox, using iframes.  In this
+case the "rel" attribute should be set to "lightframe".  Again it's possible to
+group the images, (e.g. "lightframe[search]") but in addition to that, it's
+possible to control some of the iframe properties.  It's possible to set the
+'width', 'height' and 'scrolling' properties of the iframe.  The properties are
+separated from the group name by a '|', for example
+"lightframe[search|width:100px;]".  If no grouping is being used, then the '|'
+is still used and the format would be "lightframe[|width:100px;]".  The
+properties should all be of the format "property: value;" - note the closing
+semi-colon.  If no iframe properties are set, then the default width and height
+of 400px will be used. See below for more detailed examples.
+
+Basic example:
+<a href="http://www.google.com" rel="lightframe">Search google</a>
+
+Grouped example:
+<a href="http://www.google.com" rel="lightframe[search]">Search google</a>
+<a href="http://www.yahoo.com" rel="lightframe[search]">Search yahoo</a>
+
+Controlling iframe property example:
+<a href="http://www.google.com" rel="lightframe[|width:400px; height:300px; scrolling: auto;]">Search google</a>
+
+Controlling iframe property when grouped example:
+<a href="http://www.google.com" rel="lightframe[search|width:400px; height:300px; scrolling: auto;]">Search google</a>
+<a href="http://www.yahoo.com" rel="lightframe[search|width:400px; height:300px;]">Search yahoo</a>
+
 
 Turning the Image Caption into a Link
 =====================================
