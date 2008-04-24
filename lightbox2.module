@@ -748,17 +748,19 @@ function lightbox2_add_files() {
 
   // Custom images.
   $custom_triggers = variable_get('lightbox2_custom_trigger_classes', '');
+  $custom_trigger_classes = '';
   if (!empty($custom_triggers)) {
     $trigger_classes = preg_split("/(\r\n|\n)/", $custom_triggers);
     foreach ($trigger_classes as $class) {
       if (!empty($class)) {
-        $trigger_lightbox_classes .= "img.$class,";
+        $custom_trigger_classes .= "img.$class,";
       }
     }
   }
   $trigger_lightbox_classes = rtrim($trigger_lightbox_classes, ",");
   $trigger_lightbox_group_classes = rtrim($trigger_lightbox_group_classes, ",");
   $trigger_slideshow_classes = rtrim($trigger_slideshow_classes, ",");
+  $custom_trigger_classes = rtrim($custom_trigger_classes, ",");
   $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
   // Find out if we're using a RTL language.
@@ -788,6 +790,7 @@ function lightbox2_add_files() {
     'trigger_lightbox_classes' => $trigger_lightbox_classes,
     'trigger_lightbox_group_classes' => $trigger_lightbox_group_classes,
     'trigger_slideshow_classes' => $trigger_slideshow_classes,
+    'custom_trigger_classes' => $custom_trigger_classes,
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
     // Slideshow settings.
