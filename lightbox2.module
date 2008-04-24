@@ -229,6 +229,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
   );
 
+  // Add text box for page count for grouping.
+  $form['lightbox2_page_count_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Page Count Text'),
+    '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".'),
+    '#default_value' => variable_get('lightbox2_page_count_str', 'Page !current of !total'),
+  );
+
   // Add checkbox for zoom image.
   $form['lightbox2_disable_zoom'] = array(
     '#type' => 'checkbox',
@@ -772,6 +780,7 @@ function lightbox2_add_files() {
     'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
+    'page_count' => check_plain(t(variable_get('lightbox2_page_count_str', 'Page !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
