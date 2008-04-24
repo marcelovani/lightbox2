@@ -4,7 +4,7 @@
 // Original version by Steve McKenzie.
 // Altered by Stella Power for jQuery version.
 
-Drupal.behaviors.initAutoLightbox = function (context) { 
+Drupal.behaviors.initAutoLightbox = function (context) {
   lightbox2_image_nodes();
 };
 
@@ -18,13 +18,14 @@ function lightbox2_image_nodes() {
 
     // Select the enabled image types.
     lightbox2_init_triggers(settings.trigger_lightbox_classes, "lightbox_ungrouped");
+    lightbox2_init_triggers(settings.custom_trigger_classes, "lightbox_ungrouped", true);
     lightbox2_init_triggers(settings.trigger_lightbox_group_classes, "lightbox");
     lightbox2_init_triggers(settings.trigger_slideshow_classes, "lightshow");
 
   }
 }
 
-function lightbox2_init_triggers(classes, rel_type) {
+function lightbox2_init_triggers(classes, rel_type, custom_class) {
   var settings = Drupal.settings.lightbox2;
 
   $("a:has("+classes+")").each(function(i) {
@@ -121,11 +122,20 @@ function lightbox2_init_triggers(classes, rel_type) {
           img_title = $(this).attr("title");
           $(child).attr({title: img_title});
         }
-        $(this).attr({
-          title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
-          rel: rel,
-          href: href
+        if (!custom_class) {
+          $(this).attr({
+            title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
+            rel: rel,
+            href: href
           });
+        }
+        else {
+          $(this).attr({
+            title: alt,
+            rel: rel,
+            href: orig_href
+          });
+        }
       }
     }
 
