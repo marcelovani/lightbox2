@@ -560,7 +560,7 @@ var Lightbox = {
 
           // Image is very large, so show a smaller version of the larger image
           // with zoom button.
-          if (zoomIn != "TRUE") {
+          if (zoomIn != true) {
             var ratio = 1.0; // Shrink image with the same aspect.
             $('#bottomNavZoomOut').hide();
             $('#bottomNavZoom').hide();
