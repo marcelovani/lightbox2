@@ -821,6 +821,7 @@ function lightbox2_add_files() {
     if ($image_node_handler || $flickr_image_handler || $gallery2_block_handler || $inline_image_handler || $image_assist_handler || $custom_triggers != '') {
       drupal_add_js($path .'/js/auto_image_handling.js', 'module', $js_location);
     }
+    drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
   }

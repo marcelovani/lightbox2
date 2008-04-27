@@ -28,7 +28,7 @@
   overflow: hidden;
 }
 
-#imageContainer, #frameContainer {
+#imageContainer, #frameContainer, #videoContainer {
   padding: 10px;
 }
 

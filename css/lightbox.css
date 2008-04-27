@@ -23,7 +23,7 @@
   overflow: hidden;
 }
 
-#imageContainer, #frameContainer {
+#imageContainer, #frameContainer, #videoContainer {
   padding: 10px;
 }
 
@@ -51,7 +51,20 @@
   left: 0;
 }
 
-#hoverNav a {
+#frameHoverNav {
+  z-index: 10;
+  margin-left: auto;
+  margin-right: auto;
+  width: 20%;
+  position: relative;
+  top: -60px;
+}
+
+#imageData>#frameHoverNav {
+  left: 0;
+}
+
+#hoverNav a, #frameHoverNav a {
   outline: none;
 }
 
@@ -62,30 +75,41 @@
   display: block;
 }
 
-#prevLink {
+#prevLink, #framePrevLink {
   left: 0;
   float: left;
 }
 
-#nextLink {
+#nextLink, #frameNextLink {
   right: 0;
   float: right;
 }
 
-#prevLink:hover, #prevLink:visited:hover, #prevLink.force_show_nav {
+#prevLink:hover, #prevLink:visited:hover, #prevLink.force_show_nav, #framePrevLink {
   background: url(../images/prev.gif) left 15% no-repeat;
 }
 
-#nextLink:hover, #nextLink:visited:hover, #nextLink.force_show_nav {
+#nextLink:hover, #nextLink:visited:hover, #nextLink.force_show_nav, #frameNextLink {
   background: url(../images/next.gif) right 15% no-repeat;
 }
 
-#prevLink:hover.force_show_nav, #prevLink:visited:hover.force_show_nav {
+#prevLink:hover.force_show_nav, #prevLink:visited:hover.force_show_nav,
+#framePrevLink:hover, #framePrevLink:visited:hover {
   background: url(../images/prev_hover.gif) left 15% no-repeat;
 }
 
-#nextLink:hover.force_show_nav, #nextLink:visited:hover.force_show_nav {
+#nextLink:hover.force_show_nav, #nextLink:visited:hover.force_show_nav,
+#frameNextLink:hover, #frameNextLink:visited:hover {
   background: url(../images/next_hover.gif) right 15% no-repeat;
+}
+
+#framePrevLink, #frameNextLink {
+  width: 45px;
+  height: 45px;
+  display: block;
+  margin-bottom: -60px;
+  position: relative;
+  top: 60px;
 }
 
 #imageDataContainer {
@@ -164,6 +188,7 @@
   background: url(../images/close.gif) right no-repeat;
   position: relative;
   top: 35px;
+  right: 0;
   float: right;
   padding-top: 0.7em;
   height: 26px;

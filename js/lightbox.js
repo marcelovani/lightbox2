@@ -17,6 +17,8 @@
  * maintainers to distribute this file via Drupal.org
  * Under GPL license.
  *
+ * Slideshow, iframe and video functionality added by Stella Power.
+ *
  */
 
 /**
@@ -46,9 +48,13 @@
  * - getPageSize()
  * - pause()
  * - toggleSelectsFlash()
+ * - parseRel()
+ * - setStyles()
  *
  * Slideshow Functions
  * - togglePlayPause()
+ *
+ * Video Functions (requires lightbox_video.js)
  *
  * On load event
  * - initialize()
@@ -82,6 +88,12 @@ var Lightbox = {
   isSlideshow : false,
   isPaused : false,
 
+  // Video options.
+  isVideo : false,
+  videoId : false,
+  videoWidth : 400,
+  videoHeight : 300,
+  videoHTML : null,
 
 
   // initialize()
@@ -111,8 +123,8 @@ var Lightbox = {
     // <div id="overlay"></div>
     // <div id="lightbox">
     //  <div id="outerImageContainer">
-    //   <div id="imageContainer">
-    //    <img id="lightboxImage">
+    //   <div id="imageContainer">  <!-- Or <div id="frameContainer">  Or <div id="videoContainer"> -->
+    //    <img id="lightboxImage">  <!-- Or <iframe id="lightboxFrame">  -->
     //    <div style="" id="hoverNav">
     //     <a href="#" id="prevLink"></a>
     //     <a href="#" id="nextLink"></a>
@@ -154,6 +166,11 @@ var Lightbox = {
     var OuterImageContainer = document.createElement("div");
     OuterImageContainer.setAttribute('id', 'outerImageContainer');
     LightboxDiv.appendChild(OuterImageContainer);
+
+    var VideoContainer = document.createElement("div");
+    VideoContainer.setAttribute('id', 'videoContainer');
+    VideoContainer.style.display = 'none';
+    OuterImageContainer.appendChild(VideoContainer);
 
     var FrameContainer = document.createElement("div");
     FrameContainer.setAttribute('id', 'frameContainer');
@@ -205,6 +222,20 @@ var Lightbox = {
       var ImageData = document.createElement("div");
       ImageData.setAttribute('id', 'imageData');
       ImageDataContainer.appendChild(ImageData);
+
+      var FrameHoverNav = document.createElement("div");
+      FrameHoverNav.setAttribute('id', 'frameHoverNav');
+      ImageData.appendChild(FrameHoverNav);
+
+      var FramePrevLink = document.createElement("a");
+      FramePrevLink.setAttribute('id', 'framePrevLink');
+      FramePrevLink.setAttribute('href', '#');
+      FrameHoverNav.appendChild(FramePrevLink);
+
+      var FrameNextLink = document.createElement("a");
+      FrameNextLink.setAttribute('id', 'frameNextLink');
+      FrameNextLink.setAttribute('href', '#');
+      FrameHoverNav.appendChild(FrameNextLink);
 
       var ImageDetails = document.createElement("div");
       ImageDetails.setAttribute('id', 'imageDetails');
@@ -335,10 +366,12 @@ var Lightbox = {
 
 
     $("#overlay").click(function() { Lightbox.end(); } ).hide();
-    $("#lightbox").click(function() { Lightbox.end();} ).hide();
+    $("#lightbox").click(function() { Lightbox.clickEndAction();} );
     $("#loadingLink").click(function() { Lightbox.end(); return false;} );
     $('#prevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
+    $('#framePrevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
+    $('#frameNextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $("#bottomNavClose").click(function() { Lightbox.end(); return false; } );
     $("#bottomNavZoom").click(function() { Lightbox.changeImage(Lightbox.activeImage, true); return false; } );
     $("#bottomNavZoomOut").click(function() { Lightbox.changeImage(Lightbox.activeImage, false); return false; } );
@@ -348,6 +381,8 @@ var Lightbox = {
     // Fix positioning of Prev and Next links.
     $('#prevLink').css({ paddingTop: Lightbox.borderSize});
     $('#nextLink').css({ paddingTop: Lightbox.borderSize});
+    $('#framePrevLink').css({ paddingTop: Lightbox.borderSize});
+    $('#frameNextLink').css({ paddingTop: Lightbox.borderSize});
 
     // Force navigation links to always be displayed
     if (settings.force_show_nav) {
@@ -377,13 +412,16 @@ var Lightbox = {
       // 'lightframe' references in the rel attribute.
       if (anchor.href) {
         if (relAttribute.toLowerCase().match('lightbox')) {
-          anchor.onclick = function() { Lightbox.start(this, false, false); return false; };
+          anchor.onclick = function() { Lightbox.start(this, false, false, false); return false; };
         }
         else if (relAttribute.toLowerCase().match('lightshow')) {
-          anchor.onclick = function() { Lightbox.start(this, true, false); return false; };
+          anchor.onclick = function() { Lightbox.start(this, true, false, false); return false; };
         }
         else if (relAttribute.toLowerCase().match('lightframe')) {
-          anchor.onclick = function() { Lightbox.start(this, false, true); return false; };
+          anchor.onclick = function() { Lightbox.start(this, false, true, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightvideo')) {
+          anchor.onclick = function() { Lightbox.start(this, false, false, true); return false; };
         }
       }
     }
@@ -398,13 +436,16 @@ var Lightbox = {
       // 'lightframe' references in the rel attribute.
       if (area.href) {
         if (relAttribute.toLowerCase().match('lightbox')) {
-          area.onclick = function() { Lightbox.start(this, false, false); return false; };
+          area.onclick = function() { Lightbox.start(this, false, false, false); return false; };
         }
         else if (relAttribute.toLowerCase().match('lightshow')) {
-          area.onclick = function() { Lightbox.start(this, true, false); return false; };
+          area.onclick = function() { Lightbox.start(this, true, false, false); return false; };
         }
         else if (relAttribute.toLowerCase().match('lightframe')) {
-          area.onclick = function() { Lightbox.start(this, false, true); return false; };
+          area.onclick = function() { Lightbox.start(this, false, true, false); return false; };
+        }
+        else if (relAttribute.toLowerCase().match('lightvideo')) {
+          area.onclick = function() { Lightbox.start(this, false, false, true); return false; };
         }
       }
     }
@@ -413,7 +454,7 @@ var Lightbox = {
   // start()
   // Display overlay and lightbox. If image is part of a set, add siblings to
   // imageArray.
-  start: function(imageLink, slideshow, lightframe) {
+  start: function(imageLink, slideshow, lightframe, lightvideo) {
 
     // Replaces hideSelectBoxes() and hideFlash() calls in original lightbox2.
     Lightbox.toggleSelectsFlash('hide');
@@ -429,6 +470,7 @@ var Lightbox = {
 
     Lightbox.isSlideshow = slideshow;
     Lightbox.isLightframe = lightframe;
+    Lightbox.isVideo = lightvideo;
     Lightbox.imageArray = [];
     Lightbox.imageNum = 0;
 
@@ -446,6 +488,13 @@ var Lightbox = {
     // Handle iframes with no grouping.
     else if (rel == 'lightframe' && !rel_group) {
       var rel_style = (!rel_info[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_info[1]);
+      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rel_style));
+    }
+
+    // Handle video.
+    else if (rel == "lightvideo") {
+      // rel_group contains style information for videos.
+      var rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
       Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rel_style));
     }
 
@@ -475,18 +524,18 @@ var Lightbox = {
           }
         }
       }
-    }
 
-    // Remove duplicates.
-    for (i = 0; i < Lightbox.imageArray.length; i++) {
-      for (j = Lightbox.imageArray.length-1; j > i; j--) {
-        if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
-          Lightbox.imageArray.splice(j,1);
+      // Remove duplicates.
+      for (i = 0; i < Lightbox.imageArray.length; i++) {
+        for (j = Lightbox.imageArray.length-1; j > i; j--) {
+          if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
+            Lightbox.imageArray.splice(j,1);
+          }
         }
       }
-    }
-    while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
-      Lightbox.imageNum++;
+      while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
+        Lightbox.imageNum++;
+      }
     }
 
     if (Lightbox.isSlideshow && Lightbox.showPlayPause && Lightbox.isPaused) {
@@ -530,19 +579,24 @@ var Lightbox = {
 
       // Hide elements during transition.
       $('#loading').css({zIndex: '10500'}).show();
+      $('#imageContainer').hide();
+      $('#frameContainer').hide();
+      $('#videoContainer').hide();
       $('#lightboxImage').hide();
       $('#lightboxFrame').hide();
-      $('#frameContainer').hide();
       $('#hoverNav').hide();
       $('#prevLink').hide();
       $('#nextLink').hide();
+      $('#frameHoverNav').hide();
+      $('#framePrevLink').hide();
+      $('#frameNextLink').hide();
       $('#imageDataContainer').hide();
       $('#numberDisplay').hide();
       $('#bottomNavZoom').hide();
       $('#bottomNavZoomOut').hide();
 
       // Preload image content, but not iframe pages.
-      if (!Lightbox.isLightframe) {
+      if (!Lightbox.isLightframe && !Lightbox.isVideo) {
         imgPreloader = new Image();
         imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
 
@@ -600,26 +654,22 @@ var Lightbox = {
       }
 
       // Set up frame size, etc.
-      else {
+      else if (Lightbox.isLightframe) {
         var iframe = document.getElementById('lightboxFrame');
         var styles = Lightbox.imageArray[Lightbox.activeImage][2];
-        var stylesArray = styles.split(';');
-        for (var i = 0; i< stylesArray.length; i++) {
-          if (stylesArray[i].indexOf('width:') >= 0) {
-            var w = stylesArray[i].replace('width:', '');
-            iframe.width = jQuery.trim(w);
-          }
-          else if (stylesArray[i].indexOf('height:') >= 0) {
-            var h = stylesArray[i].replace('height:', '');
-            iframe.height = jQuery.trim(h);
-          }
-          else if (stylesArray[i].indexOf('scrolling:') >= 0) {
-            var scrolling = stylesArray[i].replace('scrolling:', '');
-            iframe.scrolling = jQuery.trim(scrolling);
-          }
-        }
+        iframe = Lightbox.setStyles(iframe, styles);
         Lightbox.resizeImageContainer(parseInt(iframe.width), parseInt(iframe.height));
       }
+      else if (Lightbox.isVideo) {
+        var container = document.getElementById('videoContainer');
+        var styles = Lightbox.imageArray[Lightbox.activeImage][2];
+        container = Lightbox.setStyles(container, styles);
+        Lightbox.videoHeight =  parseInt(container.height);
+        Lightbox.videoWidth =  parseInt(container.width);
+        Lightvideo.startVideo(Lightbox.imageArray[Lightbox.activeImage][0]);
+        Lightbox.resizeImageContainer(parseInt(container.width), parseInt(container.height));
+      }
+
     }
   },
 
@@ -693,23 +743,29 @@ var Lightbox = {
     $('#loading').hide();
 
     // Handle display of iframes.
-    if (Lightbox.isLightframe) {
-      $('#frameContainer').show();
-      if ($.browser.safari) {
-        $('#lightboxFrame').css({zIndex: '10500'}).show();
+    if (Lightbox.isLightframe || Lightbox.isVideo) {
+      Lightbox.updateDetails();
+      if (Lightbox.isLightframe) {
+        $('#frameContainer').show();
+        if ($.browser.safari) {
+          $('#lightboxFrame').css({zIndex: '10500'}).show();
+        }
+        else {
+          $('#lightboxFrame').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
+        }
+        try {
+          document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
+        } catch(e) {}
       }
       else {
-        $('#lightboxFrame').css({zIndex: '10500'}).fadeIn(Lightbox.fadeInSpeed);
+        $("#videoContainer").html(Lightbox.videoHTML);
+        $('#videoContainer').show();
       }
-      Lightbox.updateDetails();
-      try {
-        document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
-      } catch(e) {}
     }
 
     // Handle display of image content.
     else {
-      $('#frameContainer').hide();
+      $('#imageContainer').show();
       if ($.browser.safari) {
         $('#lightboxImage').css({zIndex: '10500'}).show();
       }
@@ -794,10 +850,13 @@ var Lightbox = {
   updateNav: function() {
 
     $('#hoverNav').css({zIndex: '10500'}).show();
+    var prevLink = '#prevLink';
+    var nextLink = '#nextLink';
 
+    // Slideshow is separated as we need to show play / pause button.
     if (Lightbox.isSlideshow) {
       if (Lightbox.activeImage !== 0) {
-        $('#prevLink').css({zIndex: '10500'}).show().click(function() {
+        $(prevLink).css({zIndex: '10500'}).show().click(function() {
           if (Lightbox.pauseOnPrevClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
           }
@@ -805,12 +864,12 @@ var Lightbox = {
         });
       }
       else {
-        $('#prevLink').hide();
+        $(prevLink).hide();
       }
 
       // If not last image in set, display next image button.
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
-        $('#nextLink').css({zIndex: '10500'}).show().click(function() {
+        $(nextLink).css({zIndex: '10500'}).show().click(function() {
           if (Lightbox.pauseOnNextClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
           }
@@ -819,31 +878,39 @@ var Lightbox = {
       }
       // Safari browsers need to have hide() called again.
       else {
-        $('#nextLink').hide();
+        $(nextLink).hide();
       }
     }
+
+    // All other types of content.
     else {
 
+      if (Lightbox.isLightframe) {
+        $('#frameHoverNav').css({zIndex: '10500'}).show();
+        $('#hoverNav').css({zIndex: '10500'}).hide();
+        prevLink = '#framePrevLink';
+        nextLink = '#frameNextLink';
+      }
       // If not first image in set, display prev image button.
       if (Lightbox.activeImage !== 0) {
-        $('#prevLink').css({zIndex: '10500'}).show().click(function() {
+        $(prevLink).css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage - 1); return false;
         });
       }
       // Safari browsers need to have hide() called again.
       else {
-        $('#prevLink').hide();
+        $(prevLink).hide();
       }
 
       // If not last image in set, display next image button.
       if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
-        $('#nextLink').css({zIndex: '10500'}).show().click(function() {
+        $(nextLink).css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage + 1); return false;
         });
       }
       // Safari browsers need to have hide() called again.
       else {
-        $('#nextLink').hide();
+        $(nextLink).hide();
       }
     }
 
@@ -926,6 +993,13 @@ var Lightbox = {
 
   },
 
+  clickEndAction: function() {
+    if (!Lightbox.isVideo) {
+      Lightbox.end();
+      $("#lightbox").hide();
+    }
+  },
+
   end: function(caller) {
     var closeClick = (caller == 'slideshow' ? false : true);
     if (Lightbox.isSlideshow && Lightbox.isPaused && !closeClick) {
@@ -949,6 +1023,10 @@ var Lightbox = {
       document.getElementById("lightboxFrame").src = '';
       $('#lightboxFrame').hide();
       $('#frameContainer').hide();
+    }
+    else if (Lightbox.isVideo) {
+      $('#videoContainer').hide();
+      $('#videoContainer').html("");
     }
   },
 
@@ -1068,6 +1146,36 @@ var Lightbox = {
     }
   },
 
+  // parseRel()
+  parseRel: function (link) {
+    var rel_info = new Array();
+    if (link.rel.match(/\[(.*)\]/)) {
+      rel_info = link.rel.match(/\[(.*)\]/)[1].split('|');
+    }
+    return rel_info;
+  },
+
+  // setStyles()
+  setStyles: function(item, styles) {
+    var stylesArray = styles.split(';');
+    for (var i = 0; i< stylesArray.length; i++) {
+      if (stylesArray[i].indexOf('width:') >= 0) {
+        var w = stylesArray[i].replace('width:', '');
+        item.width = jQuery.trim(w);
+      }
+      else if (stylesArray[i].indexOf('height:') >= 0) {
+        var h = stylesArray[i].replace('height:', '');
+        item.height = jQuery.trim(h);
+      }
+      else if (stylesArray[i].indexOf('scrolling:') >= 0) {
+        var scrolling = stylesArray[i].replace('scrolling:', '');
+        item.scrolling = jQuery.trim(scrolling);
+      }
+    }
+    return item;
+  },
+
+
 
   // togglePlayPause()
   // Hide the pause / play button as appropriate.  If pausing the slideshow also
@@ -1093,16 +1201,7 @@ var Lightbox = {
     else {
       Lightbox.isPaused = true;
     }
-  },
-
-  parseRel: function (link) {
-    var rel_info = new Array();
-    if (link.rel.match(/\[(.*)\]/)) {
-      rel_info = link.rel.match(/\[(.*)\]/)[1].split('|');
-    }
-    return rel_info;
   }
-
 };
 
 // Initialize the lightbox.
