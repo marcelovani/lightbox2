@@ -7,6 +7,7 @@ CONTENTS OF THIS FILE
     - No Grouping
     - With Grouping
     - Slideshow
+    - Video
     - HTML Content Support
     - Turning the Image Caption into a Link
   * Keyboard Shortcuts
@@ -98,6 +99,32 @@ slideshow by doing:
 <a href="images/image-2.jpg" rel="lightshow[roadtrip]">image #2</a>
 <a href="images/image-3.jpg" rel="lightshow[roadtrip]">image #3</a>
 
+Video
+=====
+It's possible to show video content in the lightbox.  In this case the "rel"
+attribute should be set to "lightvideo".  It's not possible to group
+videos but it is possible to control the size of the lightbox by setting the
+'width' and 'height' properties.  The properties can be configured like
+"lightvideo[width:300px; height: 200px;]".  The properties should all
+be of the format "property: value;" - note the closing semi-colon.  If no
+properties are set, then the default width and height of 400px will be used.
+See below for more detailed examples.
+
+Basic example:
+<a href="http://video.google.com/videoplay?docid=1811233136844420765"
+rel="lightvideo">Google video example - default size</a>
+
+Controlling lightbox size example:
+<a href="http://video.google.com/videoplay?docid=1811233136844420765"
+rel="lightvideo[width:400px; height:300px;]">Google video example - custom
+size</a>
+
+Supported Video Formats
+asx, wmv, mov and swf videos should all be supported.  A number of video
+providers are also supported, for example YouTube and Google Video. For full
+details on how to integrate these with lightbox, please see the online
+documentation.
+
 HTML Content Support
 ====================
 It's possible to show webpage content in the lightbox, using iframes.  In this
@@ -109,7 +136,8 @@ separated from the group name by a '|', for example
 "lightframe[search|width:100px;]".  If no grouping is being used, then the '|'
 is still used and the format would be "lightframe[|width:100px;]".  The
 properties should all be of the format "property: value;" - note the closing
-semi-colon.  See below for more detailed examples.
+semi-colon.  If no iframe properties are set, then the default width and height
+of 400px will be used. See below for more detailed examples.
 
 Basic example:
 <a href="http://www.google.com" rel="lightframe">Search google</a>
