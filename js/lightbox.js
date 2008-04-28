@@ -68,6 +68,7 @@ var Lightbox = {
   slideDownSpeed: 'slow', // Controls the speed of the image resizing animation.
   borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
   infoHeight: 20,
+  alternative_layout : false,
   imageArray : new Array,
   imageNum : null,
   activeImage : null,
@@ -111,6 +112,7 @@ var Lightbox = {
     Lightbox.autoExit = settings.slideshow_automatic_exit;
     Lightbox.pauseOnNextClick = settings.pause_on_next_click;
     Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
+    Lightbox.alternative_layout = settings.use_alt_layout;
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe'.
@@ -884,7 +886,7 @@ var Lightbox = {
     // All other types of content.
     else {
 
-      if (Lightbox.isLightframe) {
+      if (Lightbox.isLightframe && !Lightbox.alternative_layout) {
         $('#frameHoverNav').css({zIndex: '10500'}).show();
         $('#hoverNav').css({zIndex: '10500'}).hide();
         prevLink = '#framePrevLink';
