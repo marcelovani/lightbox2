@@ -102,26 +102,22 @@ slideshow by doing:
 Video
 =====
 It's possible to show video content in the lightbox.  In this case the "rel"
-attribute should be set to <code>lightvideo</code>.  It's not possible to group
+attribute should be set to "lightvideo".  It's not possible to group
 videos but it is possible to control the size of the lightbox by setting the
 'width' and 'height' properties.  The properties can be configured like
-<code>lightvideo[width:300px; height: 200px;]</code>.  The properties should all
+"lightvideo[width:300px; height: 200px;]".  The properties should all
 be of the format "property: value;" - note the closing semi-colon.  If no
 properties are set, then the default width and height of 400px will be used.
 See below for more detailed examples.
 
 Basic example:
-<code>
 <a href="http://video.google.com/videoplay?docid=1811233136844420765"
 rel="lightvideo">Google video example - default size</a>
-</code>
 
 Controlling lightbox size example:
-<code>
 <a href="http://video.google.com/videoplay?docid=1811233136844420765"
 rel="lightvideo[width:400px; height:300px;]">Google video example - custom
 size</a>
-</code>
 
 Supported Video Formats
 asx, wmv, mov and swf videos should all be supported.  A number of video
