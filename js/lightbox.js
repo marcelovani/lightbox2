@@ -93,7 +93,7 @@ var Lightbox = {
   isVideo : false,
   videoId : false,
   videoWidth : 400,
-  videoHeight : 300,
+  videoHeight : 400,
   videoHTML : null,
 
 
