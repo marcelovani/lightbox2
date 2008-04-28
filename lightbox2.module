@@ -184,7 +184,7 @@ function lightbox2_general_settings_form() {
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
   // Enable translation of default strings for potx.
-  $default_strings = array(t('View Image Details'), t('Image !current of !total'));
+  $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'));
 
   // Define Lightbox2 Lite fieldset.
   /* ------------------------------- */
@@ -779,10 +779,10 @@ function lightbox2_add_files() {
     'use_alt_layout' => variable_get('lightbox2_use_alt_layout', FALSE),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', FALSE),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
-    'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
+    'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
-    'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
-    'page_count' => check_plain(t(variable_get('lightbox2_page_count_str', 'Page !current of !total'))),
+    'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
+    'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
@@ -961,7 +961,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     if (!empty($target)) {
       $attributes = array('target' => $target);
     }
-    $node_link = '<br /><br />'. l(t(variable_get('lightbox2_node_link_text', 'View Image Details')), 'node/'. $item['nid'], $attributes);
+    $node_link = '<br /><br />'. l(variable_get('lightbox2_node_link_text', 'View Image Details'), 'node/'. $item['nid'], $attributes);
   }
 
   $link_attributes = array(
