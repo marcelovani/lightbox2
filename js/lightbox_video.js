@@ -180,6 +180,7 @@ var Lightvideo = {
   checkLiveVideo: function(href) {
     var patterns = new Array(
       'livevideo.com/flvplayer/embed/([^"]*)"',
+      'livevideo.com/video/[^/]*?/([^/]*)/',
       'livevideo.com/video/([^/]*)/');
 
     for (var i = 0; i < patterns.length; i++) {
