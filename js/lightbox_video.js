@@ -139,6 +139,8 @@ var Lightvideo = {
   // checkIFilmSpikeVideo()
   checkIFilmSpikeVideo: function(href) {
     var patterns = new Array(
+      'spike.com/video/[^/&"]*?/(\\d+)',
+      'ifilm.com/video/[^/&"]*?/(\\d+)',
       'spike.com/video/([^/&"]*)',
       'ifilm.com/video/([^/&"]*)');
 
@@ -147,7 +149,7 @@ var Lightvideo = {
       var results = pattern.exec(href);
       if (results != null) {
         Lightbox.videoId = results[1];
-        Lightvideo.createEmbed("http://www.ifilm.com/efp", "flvvideo", "#000", "flashvars=\"flvbaseclip="+Lightbox.videoId+"&amp;\"");
+        Lightvideo.createEmbed("http://www.spike.com/efp", "flvvideo", "#000", "flashvars=\"flvbaseclip="+Lightbox.videoId+"&amp;\"");
         return true;
       }
     }
