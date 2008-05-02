@@ -414,16 +414,16 @@ var Lightbox = {
       // 'lightframe' references in the rel attribute.
       if (anchor.href) {
         if (relAttribute.toLowerCase().match('lightbox')) {
-          anchor.onclick = function() { Lightbox.start(this, false, false, false); return false; };
+          $(anchor).click(function(e) { Lightbox.start(this, false, false, false); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
         else if (relAttribute.toLowerCase().match('lightshow')) {
-          anchor.onclick = function() { Lightbox.start(this, true, false, false); return false; };
+          $(anchor).click(function(e) { Lightbox.start(this, true, false, false); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
         else if (relAttribute.toLowerCase().match('lightframe')) {
-          anchor.onclick = function() { Lightbox.start(this, false, true, false); return false; };
+          $(anchor).click(function(e) { Lightbox.start(this, false, true, false); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
         else if (relAttribute.toLowerCase().match('lightvideo')) {
-          anchor.onclick = function() { Lightbox.start(this, false, false, true); return false; };
+          $(anchor).click(function(e) { Lightbox.start(this, false, false, true); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
       }
     }
@@ -438,16 +438,16 @@ var Lightbox = {
       // 'lightframe' references in the rel attribute.
       if (area.href) {
         if (relAttribute.toLowerCase().match('lightbox')) {
-          area.onclick = function() { Lightbox.start(this, false, false, false); return false; };
+          $(area).click(function(e) { Lightbox.start(this, false, false, false); if (e.preventDefault) {e.preventDefault();} return false; });
         }
         else if (relAttribute.toLowerCase().match('lightshow')) {
-          area.onclick = function() { Lightbox.start(this, true, false, false); return false; };
+          $(area).click(function(e) { Lightbox.start(this, true, false, false); if (e.preventDefault) {e.preventDefault();} return false; });
         }
         else if (relAttribute.toLowerCase().match('lightframe')) {
-          area.onclick = function() { Lightbox.start(this, false, true, false); return false; };
+          $(area).click(function(e) { Lightbox.start(this, false, true, false); if (e.preventDefault) {e.preventDefault();} return false; });
         }
         else if (relAttribute.toLowerCase().match('lightvideo')) {
-          area.onclick = function() { Lightbox.start(this, false, false, true); return false; };
+          $(area).click(function(e) { Lightbox.start(this, false, false, true); if (e.preventDefault) {e.preventDefault();} return false; });
         }
       }
     }
