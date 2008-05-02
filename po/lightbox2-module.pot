@@ -3,14 +3,14 @@
 # LANGUAGE translation of Drupal (general)
 # Copyright YEAR NAME <EMAIL@ADDRESS>
 # Generated from files:
-#  lightbox2.module,v 1.16.2.17.2.78 2008/04/28 18:24:58 snpower
+#  lightbox2.module,v 1.16.2.17.2.79 2008/05/02 22:27:22 snpower
 #  lightbox2.info,v 1.1.2.1.2.1 2007/09/26 16:34:54 snpower
 #
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PROJECT VERSION\n"
-"POT-Creation-Date: 2008-05-02 23:02+0100\n"
+"POT-Creation-Date: 2008-05-02 23:29+0100\n"
 "PO-Revision-Date: YYYY-mm-DD HH:MM+ZZZZ\n"
 "Last-Translator: NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <EMAIL@ADDRESS>\n"
@@ -267,7 +267,7 @@ msgstr ""
 msgid "Image trigger size"
 msgstr ""
 
-#: lightbox2.module:500;769
+#: lightbox2.module:500;787
 msgid "Thumbnail"
 msgstr ""
 
@@ -347,7 +347,7 @@ msgstr ""
 msgid "Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the \"acidfree\" module."
 msgstr ""
 
-#: lightbox2.module:595;662
+#: lightbox2.module:595;677
 msgid "Image links with 'rel=\"lightbox\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr ""
 
@@ -387,7 +387,7 @@ msgstr ""
 msgid "Image links from G2 are formatted for use with Lightbox2"
 msgstr ""
 
-#: lightbox2.module:614;668
+#: lightbox2.module:614;683
 msgid "Image links with 'rel=\"lightshow\"' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on."
 msgstr ""
 
@@ -407,7 +407,7 @@ msgstr ""
 msgid "<code>&lt;a href=\"image-1.jpg\" rel=\"lightshow[show1]\" title='&lt;a href=\"http://www.yourlink.com\"&gt;View Image Details&lt;/a&gt;'&gt;image #1&lt;/a&gt;</code>"
 msgstr ""
 
-#: lightbox2.module:628;671
+#: lightbox2.module:628;686
 msgid "Links to HTML content with 'rel=\"lightframe\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr ""
 
@@ -415,7 +415,7 @@ msgstr ""
 msgid "It's possible to show webpage content in the lightbox, using iframes.  In this case the \"rel\" attribute should be set to \"lightframe\".  Again it's possible to group the images, (e.g. <code>lightframe[search]</code>) but in addition to that, it's possible to control some of the iframe properties.  It's possible to set the \"width\", \"height\" and \"scrolling\" properties of the iframe.  The properties are separated from the group name by a <code>|</code>, for example <code>lightframe[search|width:100px;]</code>.  If no grouping is being used, then the <code>|</code> is still used and the format would be <code>lightframe[|width:100px;]</code>.  The properties should all be of the format \"property: value;\" - note the closing semi-colon.  If no iframe properties are set, then the default width and height of 400px will be used.  See below for more detailed examples."
 msgstr ""
 
-#: lightbox2.module:632
+#: lightbox2.module:632;651
 msgid "Basic example:"
 msgstr ""
 
@@ -447,27 +447,55 @@ msgstr ""
 msgid "<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe[search|width:400px; height:300px; scrolling: auto;]&quot;&gt;Search google&lt;/a&gt;<br />&lt;a href=&quot;http://www.yahoo.com&quot; rel=&quot;lightframe[search|width:400px; height:300px;]&quot;&gt;Search yahoo&lt;/a&gt;</code>"
 msgstr ""
 
+#: lightbox2.module:647;689
+msgid "Links to video content with 'rel=\"lightvideo\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
+msgstr ""
+
+#: lightbox2.module:650
+msgid "It's possible to show video content in the lightbox.  In this case the \"rel\" attribute should be set to <code>lightvideo</code>.  It's not possible to group videos but it is possible to control the size of the lightbox by setting the \"width\" and \"height\" properties.  The properties can be configured like <code>lightvideo[width:300px; height: 200px;]</code>.  The properties should all be of the format \"property: value;\" - note the closing semi-colon.  If no properties are set, then the default width and height of 400px will be used.  See below for more detailed examples."
+msgstr ""
+
+#: lightbox2.module:652
+msgid "<code>&lt;a href=&quot;http://video.google.com/videoplay?docid=1811233136844420765&quot; rel=&quot;lightvideo&quot;&gt;Google video example - default size&lt;/a&gt;</code>"
+msgstr ""
+
+#: lightbox2.module:653
+msgid "Controlling lightbox size example:"
+msgstr ""
+
 #: lightbox2.module:654
-msgid "Lightbox filter"
+msgid "<code>&lt;a href=&quot;http://video.google.com/videoplay?docid=1811233136844420765&quot; rel=&quot;lightvideo[width:400px; height:300px;]&quot;&gt;Google video example - custom size&lt;/a&gt;</code>"
 msgstr ""
 
 #: lightbox2.module:655
+msgid "Supported video formats include asx, wmv, mov and swf.  A number of online video providers are also supported, including YouTube and Google Video.  For a full list of the current supported video providers please see the documentation on drupal.org."
+msgstr ""
+
+#: lightbox2.module:668
+msgid "Lightbox filter"
+msgstr ""
+
+#: lightbox2.module:669
 msgid "Lightbox G2 filter"
 msgstr ""
 
-#: lightbox2.module:656
+#: lightbox2.module:670
 msgid "Lightbox slideshow filter"
 msgstr ""
 
-#: lightbox2.module:657
+#: lightbox2.module:671
 msgid "Lightbox iframe filter"
 msgstr ""
 
-#: lightbox2.module:665
+#: lightbox2.module:672
+msgid "Lightbox video filter"
+msgstr ""
+
+#: lightbox2.module:680
 msgid "Turns g2_filter links into Lightbox2 appropriate links"
 msgstr ""
 
-#: lightbox2.module:829
+#: lightbox2.module:847
 msgid "press !x to close"
 msgstr ""
 
