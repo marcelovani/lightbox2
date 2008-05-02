@@ -581,7 +581,9 @@ var Lightbox = {
 
       // Hide elements during transition.
       $('#loading').css({zIndex: '10500'}).show();
-      $('#imageContainer').hide();
+      if (!Lightbox.alternative_layout) {
+        $('#imageContainer').hide();
+      }
       $('#frameContainer').hide();
       $('#videoContainer').hide();
       $('#lightboxImage').hide();
