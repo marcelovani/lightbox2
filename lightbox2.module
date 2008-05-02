@@ -1022,7 +1022,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     if (!empty($target)) {
       $attributes = array('target' => $target);
     }
-    $node_link = '<br /><br />'. l(variable_get('lightbox2_node_link_text', 'View Image Details'), 'node/'. $item['nid'], $attributes);
+    $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
+    if (!empty($node_link_text)) {
+      $node_link = '<br /><br />'. l($node_link_text, 'node/'. $item['nid'], $attributes);
+    }
   }
 
   $link_attributes = array(
