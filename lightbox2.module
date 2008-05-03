@@ -1093,7 +1093,11 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
     return imagecache_create_url($preset, $filepath);
   }
   else {
-    $path = _imagecache_strip_file_directory($filepath);
+    $dirpath = file_directory_path();
+    $dirlen = strlen($dirpath);
+    if (substr($path, 0, $dirlen + 1) == $dirpath .'/') {
+      $path = substr($path, $dirlen + 1);
+    }
     return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $path);
   }
 }
