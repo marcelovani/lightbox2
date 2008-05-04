@@ -1096,8 +1096,8 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
     $dirpath = file_directory_path();
     $dirlen = strlen($dirpath);
     if (substr($path, 0, $dirlen + 1) == $dirpath .'/') {
-      $path = substr($path, $dirlen + 1);
+      $filepath = substr($path, $dirlen + 1);
     }
-    return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $path);
+    return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'.  $filepath);
   }
 }
