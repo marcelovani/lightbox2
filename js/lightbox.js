@@ -125,16 +125,16 @@ var Lightbox = {
     // <div id="overlay"></div>
     // <div id="lightbox">
     //  <div id="outerImageContainer">
+    //    <div id="loading">
+    //     <a href="#" id="loadingLink">
+    //      <img src="images/loading.gif">
+    //     </a>
+    //    </div>
     //   <div id="imageContainer">  <!-- Or <div id="frameContainer">  Or <div id="videoContainer"> -->
     //    <img id="lightboxImage">  <!-- Or <iframe id="lightboxFrame">  -->
     //    <div style="" id="hoverNav">
     //     <a href="#" id="prevLink"></a>
     //     <a href="#" id="nextLink"></a>
-    //    </div>
-    //    <div id="loading">
-    //     <a href="#" id="loadingLink">
-    //      <img src="images/loading.gif">
-    //     </a>
     //    </div>
     //   </div>
     //  </div>
@@ -188,6 +188,15 @@ var Lightbox = {
     ImageContainer.setAttribute('id', 'imageContainer');
     OuterImageContainer.appendChild(ImageContainer);
 
+    var Loading = document.createElement("div");
+    Loading.setAttribute('id', 'loading');
+    OuterImageContainer.appendChild(Loading);
+
+    var LoadingLink = document.createElement("a");
+    LoadingLink.setAttribute('id', 'loadingLink');
+    LoadingLink.setAttribute('href', '#');
+    Loading.appendChild(LoadingLink);
+
     var LightboxImage = document.createElement("img");
     LightboxImage.setAttribute('id', 'lightboxImage');
     ImageContainer.appendChild(LightboxImage);
@@ -206,15 +215,6 @@ var Lightbox = {
       NextLink.setAttribute('id', 'nextLink');
       NextLink.setAttribute('href', '#');
       HoverNav.appendChild(NextLink);
-
-      var Loading = document.createElement("div");
-      Loading.setAttribute('id', 'loading');
-      ImageContainer.appendChild(Loading);
-
-      var LoadingLink = document.createElement("a");
-      LoadingLink.setAttribute('id', 'loadingLink');
-      LoadingLink.setAttribute('href', '#');
-      Loading.appendChild(LoadingLink);
 
       var ImageDataContainer = document.createElement("div");
       ImageDataContainer.setAttribute('id', 'imageDataContainer');
@@ -287,15 +287,6 @@ var Lightbox = {
 
     // New layout.
     else {
-      var Loading = document.createElement("div");
-      Loading.setAttribute('id', 'loading');
-      ImageContainer.appendChild(Loading);
-
-      var LoadingLink = document.createElement("a");
-      LoadingLink.setAttribute('id', 'loadingLink');
-      LoadingLink.setAttribute('href', '#');
-      Loading.appendChild(LoadingLink);
-
       var ImageDataContainer = document.createElement("div");
       ImageDataContainer.setAttribute('id', 'imageDataContainer');
       ImageDataContainer.className = 'clearfix';
