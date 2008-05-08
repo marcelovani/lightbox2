@@ -29,10 +29,10 @@ if (Drupal.jsEnabled) {
 
       if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
 
-        var child = $(this).children();
+        var child = $(this).children(classes);
 
         // Ensure the child has a class attribute we can work with.
-        if ($(child).attr("class").length) {
+        if ($(child).attr("class")) {
 
           // Set the alt text.
           var alt = $(child).attr("alt");
