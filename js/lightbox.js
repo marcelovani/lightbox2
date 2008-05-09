@@ -359,7 +359,7 @@ var Lightbox = {
 
 
     $("#overlay").click(function() { Lightbox.end(); } ).hide();
-    $("#lightbox").click(function() { Lightbox.clickEndAction();} );
+    $("#lightbox").click(function() { Lightbox.end(); } );
     $("#loadingLink").click(function() { Lightbox.end(); return false;} );
     $('#prevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
@@ -754,7 +754,8 @@ var Lightbox = {
       }
       else {
         $("#videoContainer").html(Lightbox.videoHTML);
-        $('#videoContainer').show();
+        $('#videoContainer').css({zIndex: '10500'}).show();
+        $("#videoContainer").click(function() { return false; } );
       }
     }
 
@@ -988,13 +989,6 @@ var Lightbox = {
       preloadPrevImage.src = Lightbox.imageArray[Lightbox.activeImage - 1][0];
     }
 
-  },
-
-  clickEndAction: function() {
-    if (!Lightbox.isVideo) {
-      Lightbox.end();
-      $("#lightbox").hide();
-    }
   },
 
   end: function(caller) {
