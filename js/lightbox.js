@@ -69,7 +69,7 @@ var Lightbox = {
   borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
   infoHeight: 20,
   alternative_layout : false,
-  imageArray : new Array,
+  imageArray : [],
   imageNum : null,
   activeImage : null,
   inprogress : false,
@@ -84,7 +84,7 @@ var Lightbox = {
   autoExit : true, // True to automatically close Lightbox after the last image.
   pauseOnNextClick : false, // True to pause the slideshow when the "Next" button is clicked.
   pauseOnPrevClick : true, // True to pause the slideshow when the "Prev" button is clicked.
-  slideIdArray : new Array,
+  slideIdArray : [],
   slideIdCount : 0,
   isSlideshow : false,
   isPaused : false,
@@ -201,157 +201,115 @@ var Lightbox = {
     LightboxImage.setAttribute('id', 'lightboxImage');
     ImageContainer.appendChild(LightboxImage);
 
+    // Set up elements, then append in correct order depending on layout later.
+    var HoverNav = document.createElement("div");
+    HoverNav.setAttribute('id', 'hoverNav');
+
+    var PrevLink = document.createElement("a");
+    PrevLink.setAttribute('id', 'prevLink');
+    PrevLink.setAttribute('href', '#');
+
+    var NextLink = document.createElement("a");
+    NextLink.setAttribute('id', 'nextLink');
+    NextLink.setAttribute('href', '#');
+
+    var ImageDataContainer = document.createElement("div");
+    ImageDataContainer.setAttribute('id', 'imageDataContainer');
+    ImageDataContainer.className = 'clearfix';
+
+    var ImageData = document.createElement("div");
+    ImageData.setAttribute('id', 'imageData');
+
+    var FrameHoverNav = document.createElement("div");
+    FrameHoverNav.setAttribute('id', 'frameHoverNav');
+
+    var FramePrevLink = document.createElement("a");
+    FramePrevLink.setAttribute('id', 'framePrevLink');
+    FramePrevLink.setAttribute('href', '#');
+
+    var FrameNextLink = document.createElement("a");
+    FrameNextLink.setAttribute('id', 'frameNextLink');
+    FrameNextLink.setAttribute('href', '#');
+
+    var ImageDetails = document.createElement("div");
+    ImageDetails.setAttribute('id', 'imageDetails');
+
+    var Caption = document.createElement("span");
+    Caption.setAttribute('id', 'caption');
+
+    var NumberDisplay = document.createElement("span");
+    NumberDisplay.setAttribute('id', 'numberDisplay');
+
+    var BottomNav = document.createElement("div");
+    BottomNav.setAttribute('id', 'bottomNav');
+
+    var BottomNavCloseLink = document.createElement("a");
+    BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
+    BottomNavCloseLink.setAttribute('href', '#');
+
+    var BottomNavZoomLink = document.createElement("a");
+    BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
+    BottomNavZoomLink.setAttribute('href', '#');
+
+    var BottomNavZoomOutLink = document.createElement("a");
+    BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
+    BottomNavZoomOutLink.setAttribute('href', '#');
+
+    // Slideshow play / pause buttons
+    var LightshowPause = document.createElement("a");
+    LightshowPause.setAttribute('id', 'lightshowPause');
+    LightshowPause.setAttribute('href', '#');
+    LightshowPause.style.display = 'none';
+
+    var LightshowPlay = document.createElement("a");
+    LightshowPlay.setAttribute('id', 'lightshowPlay');
+    LightshowPlay.setAttribute('href', '#');
+    LightshowPlay.style.display = 'none';
+
     if (!settings.use_alt_layout) {
-      var HoverNav = document.createElement("div");
-      HoverNav.setAttribute('id', 'hoverNav');
       ImageContainer.appendChild(HoverNav);
-
-      var PrevLink = document.createElement("a");
-      PrevLink.setAttribute('id', 'prevLink');
-      PrevLink.setAttribute('href', '#');
       HoverNav.appendChild(PrevLink);
-
-      var NextLink = document.createElement("a");
-      NextLink.setAttribute('id', 'nextLink');
-      NextLink.setAttribute('href', '#');
       HoverNav.appendChild(NextLink);
 
-      var ImageDataContainer = document.createElement("div");
-      ImageDataContainer.setAttribute('id', 'imageDataContainer');
-      ImageDataContainer.className = 'clearfix';
       LightboxDiv.appendChild(ImageDataContainer);
-
-      var ImageData = document.createElement("div");
-      ImageData.setAttribute('id', 'imageData');
       ImageDataContainer.appendChild(ImageData);
 
-      var FrameHoverNav = document.createElement("div");
-      FrameHoverNav.setAttribute('id', 'frameHoverNav');
       ImageData.appendChild(FrameHoverNav);
-
-      var FramePrevLink = document.createElement("a");
-      FramePrevLink.setAttribute('id', 'framePrevLink');
-      FramePrevLink.setAttribute('href', '#');
       FrameHoverNav.appendChild(FramePrevLink);
-
-      var FrameNextLink = document.createElement("a");
-      FrameNextLink.setAttribute('id', 'frameNextLink');
-      FrameNextLink.setAttribute('href', '#');
       FrameHoverNav.appendChild(FrameNextLink);
 
-      var ImageDetails = document.createElement("div");
-      ImageDetails.setAttribute('id', 'imageDetails');
       ImageData.appendChild(ImageDetails);
-
-      var Caption = document.createElement("span");
-      Caption.setAttribute('id', 'caption');
       ImageDetails.appendChild(Caption);
-
-      var NumberDisplay = document.createElement("span");
-      NumberDisplay.setAttribute('id', 'numberDisplay');
       ImageDetails.appendChild(NumberDisplay);
 
-      var BottomNav = document.createElement("div");
-      BottomNav.setAttribute('id', 'bottomNav');
       ImageData.appendChild(BottomNav);
-
-      var BottomNavCloseLink = document.createElement("a");
-      BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
-      BottomNavCloseLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavCloseLink);
-
-      var BottomNavZoomLink = document.createElement("a");
-      BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
-      BottomNavZoomLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomLink);
-
-      var BottomNavZoomOutLink = document.createElement("a");
-      BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
-      BottomNavZoomOutLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomOutLink);
-
-      // Slideshow play / pause buttons
-      var LightshowPause = document.createElement("a");
-      LightshowPause.setAttribute('id', 'lightshowPause');
-      LightshowPause.setAttribute('href', '#');
-      LightshowPause.style.display = 'none';
       BottomNav.appendChild(LightshowPause);
-
-      var LightshowPlay = document.createElement("a");
-      LightshowPlay.setAttribute('id', 'lightshowPlay');
-      LightshowPlay.setAttribute('href', '#');
-      LightshowPlay.style.display = 'none';
       BottomNav.appendChild(LightshowPlay);
 
     }
 
     // New layout.
     else {
-      var ImageDataContainer = document.createElement("div");
-      ImageDataContainer.setAttribute('id', 'imageDataContainer');
-      ImageDataContainer.className = 'clearfix';
       LightboxDiv.appendChild(ImageDataContainer);
 
-      var ImageData = document.createElement("div");
-      ImageData.setAttribute('id', 'imageData');
       ImageDataContainer.appendChild(ImageData);
 
-      var HoverNav = document.createElement("div");
-      HoverNav.setAttribute('id', 'hoverNav');
       ImageData.appendChild(HoverNav);
-
-      var PrevLink = document.createElement("a");
-      PrevLink.setAttribute('id', 'prevLink');
-      PrevLink.setAttribute('href', '#');
       HoverNav.appendChild(PrevLink);
-
-      var NextLink = document.createElement("a");
-      NextLink.setAttribute('id', 'nextLink');
-      NextLink.setAttribute('href', '#');
       HoverNav.appendChild(NextLink);
 
-      var ImageDetails = document.createElement("div");
-      ImageDetails.setAttribute('id', 'imageDetails');
       ImageData.appendChild(ImageDetails);
-
-      var Caption = document.createElement("span");
-      Caption.setAttribute('id', 'caption');
       ImageDetails.appendChild(Caption);
-
-      var NumberDisplay = document.createElement("span");
-      NumberDisplay.setAttribute('id', 'numberDisplay');
       ImageDetails.appendChild(NumberDisplay);
-
-      // Slideshow play / pause buttons
-      var LightshowPause = document.createElement("a");
-      LightshowPause.setAttribute('id', 'lightshowPause');
-      LightshowPause.setAttribute('href', '#');
-      LightshowPause.style.display = 'none';
       ImageDetails.appendChild(LightshowPause);
-
-      var LightshowPlay = document.createElement("a");
-      LightshowPlay.setAttribute('id', 'lightshowPlay');
-      LightshowPlay.setAttribute('href', '#');
-      LightshowPlay.style.display = 'none';
       ImageDetails.appendChild(LightshowPlay);
 
-      var BottomNav = document.createElement("div");
-      BottomNav.setAttribute('id', 'bottomNav');
       ImageContainer.appendChild(BottomNav);
-
-      var BottomNavCloseLink = document.createElement("a");
-      BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
-      BottomNavCloseLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavCloseLink);
-
-      var BottomNavZoomLink = document.createElement("a");
-      BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
-      BottomNavZoomLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomLink);
-
-      var BottomNavZoomOutLink = document.createElement("a");
-      BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
-      BottomNavZoomOutLink.setAttribute('href', '#');
       BottomNav.appendChild(BottomNavZoomOutLink);
 
     }
@@ -395,11 +353,13 @@ var Lightbox = {
     // 'lightframe'.
     var anchors = $('a');
     var areas = $('area');
+    var i = 0;
+    var relAttribute = null;
 
     // Loop through all anchor tags.
-    for (var i = 0; i < anchors.length; i++) {
+    for (i = 0; i < anchors.length; i++) {
       var anchor = anchors[i];
-      var relAttribute = String(anchor.rel);
+      relAttribute = String(anchor.rel);
 
       // Use the string.match() method to catch 'lightbox', 'lightshow' and
       // 'lightframe' references in the rel attribute.
@@ -421,9 +381,9 @@ var Lightbox = {
 
     // Loop through all area tags.
     // todo: combine anchor & area tag loops.
-    for (var i = 0; i < areas.length; i++) {
+    for (i = 0; i < areas.length; i++) {
       var area = areas[i];
-      var relAttribute = String(area.rel);
+      relAttribute = String(area.rel);
 
       // Use the string.match() method to catch 'lightbox', 'lightshow' and
       // 'lightframe' references in the rel attribute.
@@ -468,27 +428,30 @@ var Lightbox = {
     Lightbox.imageNum = 0;
 
     var anchors = $(imageLink.tagName);
+    var anchor = null;
     var rel = imageLink.rel.match(/\w+/)[0];
     var rel_info = Lightbox.parseRel(imageLink);
     var rel_group = rel_info[0];
+    var rel_style = null;
+    var i = 0;
 
 
     // Handle lightbox images with no grouping.
     if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title));
+      Lightbox.imageArray.push([imageLink.href, imageLink.title]);
     }
 
     // Handle iframes with no grouping.
     else if (rel == 'lightframe' && !rel_group) {
-      var rel_style = (!rel_info[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_info[1]);
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rel_style));
+      rel_style = (!rel_info[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_info[1]);
+      Lightbox.imageArray.push([imageLink.href, imageLink.title, rel_style]);
     }
 
     // Handle video.
     else if (rel == "lightvideo") {
       // rel_group contains style information for videos.
-      var rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
-      Lightbox.imageArray.push(new Array(imageLink.href, imageLink.title, rel_style));
+      rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
+      Lightbox.imageArray.push([imageLink.href, imageLink.title, rel_style]);
     }
 
     // Handle iframes and lightbox & slideshow images.
@@ -497,22 +460,22 @@ var Lightbox = {
       // Loop through anchors, find other images in set, and add them to
       // imageArray.
       if (!Lightbox.isLightframe) {
-        for (var i = 0; i < anchors.length; i++) {
-          var anchor = anchors[i];
+        for (i = 0; i < anchors.length; i++) {
+          anchor = anchors[i];
           if (anchor.href && (anchor.rel == imageLink.rel)) {
-            Lightbox.imageArray.push(new Array(anchor.href, anchor.title));
+            Lightbox.imageArray.push([anchor.href, anchor.title]);
           }
         }
       }
       // Loop through frame links separately - need to fetch style information.
       else {
-        for (var i = 0; i < anchors.length; i++) {
-          var anchor = anchors[i];
+        for (i = 0; i < anchors.length; i++) {
+          anchor = anchors[i];
           if (anchor.href) {
             var rel_data = Lightbox.parseRel(anchor);
             if (rel_data[0] == rel_group) {
-              var rel_style = (!rel_data[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_data[1]);
-              Lightbox.imageArray.push(new Array(anchor.href, anchor.title, rel_style));
+              rel_style = (!rel_data[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_data[1]);
+              Lightbox.imageArray.push([anchor.href, anchor.title, rel_style]);
             }
           }
         }
@@ -593,7 +556,7 @@ var Lightbox = {
       // Preload image content, but not iframe pages.
       if (!Lightbox.isLightframe && !Lightbox.isVideo) {
         imgPreloader = new Image();
-        imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this) };
+        imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this); };
 
         imgPreloader.onload = function() {
           var photo = document.getElementById('lightboxImage');
@@ -609,7 +572,7 @@ var Lightbox = {
 
           // Image is very large, so show a smaller version of the larger image
           // with zoom button.
-          if (zoomIn != true) {
+          if (zoomIn !== true) {
             var ratio = 1.0; // Shrink image with the same aspect.
             $('#bottomNavZoomOut').hide();
             $('#bottomNavZoom').hide();
@@ -651,18 +614,18 @@ var Lightbox = {
       // Set up frame size, etc.
       else if (Lightbox.isLightframe) {
         var iframe = document.getElementById('lightboxFrame');
-        var styles = Lightbox.imageArray[Lightbox.activeImage][2];
-        iframe = Lightbox.setStyles(iframe, styles);
-        Lightbox.resizeImageContainer(parseInt(iframe.width), parseInt(iframe.height));
+        var iframeStyles = Lightbox.imageArray[Lightbox.activeImage][2];
+        iframe = Lightbox.setStyles(iframe, iframeStyles);
+        Lightbox.resizeImageContainer(parseInt(iframe.width, 10), parseInt(iframe.height, 10));
       }
       else if (Lightbox.isVideo) {
         var container = document.getElementById('videoContainer');
-        var styles = Lightbox.imageArray[Lightbox.activeImage][2];
-        container = Lightbox.setStyles(container, styles);
-        Lightbox.videoHeight =  parseInt(container.height);
-        Lightbox.videoWidth =  parseInt(container.width);
+        var videoStyles = Lightbox.imageArray[Lightbox.activeImage][2];
+        container = Lightbox.setStyles(container, videoStyles);
+        Lightbox.videoHeight =  parseInt(container.height, 10);
+        Lightbox.videoWidth =  parseInt(container.width, 10);
         Lightvideo.startVideo(Lightbox.imageArray[Lightbox.activeImage][0]);
-        Lightbox.resizeImageContainer(parseInt(container.width), parseInt(container.height));
+        Lightbox.resizeImageContainer(parseInt(container.width, 10), parseInt(container.height, 10));
       }
 
     }
@@ -672,11 +635,11 @@ var Lightbox = {
   imgNodeLoadingError: function(image) {
     var settings = Drupal.settings.lightbox2;
     var original_image = Lightbox.imageArray[Lightbox.activeImage][0];
-    if (settings.display_image_size != "") {
+    if (settings.display_image_size !== "") {
       original_image = original_image.replace(new RegExp("."+settings.display_image_size), "");
     }
     Lightbox.imageArray[Lightbox.activeImage][0] = original_image;
-    image.onerror = function() { Lightbox.imgLoadingError(image) };
+    image.onerror = function() { Lightbox.imgLoadingError(image); };
     image.src = original_image;
   },
 
@@ -926,7 +889,7 @@ var Lightbox = {
 
   // keyboardAction()
   keyboardAction: function(e) {
-    if (e == null) { // IE.
+    if (e === null) { // IE.
       keycode = event.keyCode;
       escapeKey = 27;
     }
@@ -1042,7 +1005,7 @@ var Lightbox = {
       xScroll = document.body.scrollLeft;
     }
 
-    arrayPageScroll = new Array(xScroll,yScroll);
+    arrayPageScroll = [xScroll,yScroll];
     return arrayPageScroll;
   },
 
@@ -1106,7 +1069,7 @@ var Lightbox = {
       pageWidth = windowWidth;
     }
 
-    arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
+    arrayPageSize = [pageWidth, pageHeight, windowWidth, windowHeight];
     return arrayPageSize;
   },
 
@@ -1114,8 +1077,8 @@ var Lightbox = {
   // pause(numberMillis)
   pause : function(ms) {
     var date = new Date();
-    curDate = null;
-    do { var curDate = new Date(); }
+    var curDate = null;
+    do { curDate = new Date(); }
     while (curDate - date < ms);
   },
 
@@ -1136,7 +1099,7 @@ var Lightbox = {
 
   // parseRel()
   parseRel: function (link) {
-    var rel_info = new Array();
+    var rel_info = [];
     if (link.rel.match(/\[(.*)\]/)) {
       rel_info = link.rel.match(/\[(.*)\]/)[1].split('|');
     }

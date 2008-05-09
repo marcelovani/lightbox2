@@ -53,7 +53,7 @@ function getPageScroll() {
     xScroll = document.body.scrollLeft;
   }
 
-  arrayPageScroll = new Array(xScroll, yScroll);
+  arrayPageScroll = [xScroll, yScroll];
   return arrayPageScroll;
 }
 
@@ -118,7 +118,7 @@ function getPageSize() {
   }
 
 
-  arrayPageSize = new Array(pageWidth, pageHeight, windowWidth, windowHeight);
+  arrayPageSize = [pageWidth, pageHeight, windowWidth, windowHeight];
   return arrayPageSize;
 }
 
@@ -126,10 +126,47 @@ function getPageSize() {
 // pause(numberMillis)
 function pause(ms) {
   var date = new Date();
-  curDate = null;
-  do { var curDate = new Date(); }
+  var curDate = null;
+  do { curDate = new Date(); }
   while (curDate - date < ms);
 }
+
+// hideLightbox()
+function hideLightbox() {
+  // get objects
+  objOverlay = document.getElementById('overlay');
+  objLightbox = document.getElementById('lightbox');
+
+  // hide lightbox and overlay
+  objOverlay.style.display = 'none';
+  objLightbox.style.display = 'none';
+
+  // make select boxes visible
+  selects = document.getElementsByTagName("select");
+  for (i = 0; i != selects.length; i++) {
+    if (selects[i].style.display != "none") {
+      selects[i].style.visibility = "visible";
+    }
+  }
+
+  // make flash objects visible
+  embed = document.getElementsByTagName("embed");
+  for (i = 0; i != embed.length; i++) {
+    if (embed[i].style.display != "none") {
+      embed[i].style.visibility = "visible";
+    }
+  }
+  objects = document.getElementsByTagName("object");
+  for (i = 0; i != objects.length; i++) {
+    if (objects[i].style.display != "none") {
+      objects[i].style.visibility = "visible";
+    }
+  }
+
+  // disable keypress listener
+  document.onkeypress = '';
+}
+
 
 // getKey(key)
 // Gets keycode. If 'x' is pressed then it hides the lightbox.
@@ -150,6 +187,14 @@ function getKey(e) {
 
 // listenKey()
 function listenKey () { document.onkeypress = getKey; }
+
+
+function imgLoadingError(image, objImage, objLink) {
+  var settings = Drupal.settings.lightbox2;
+  image.src = settings.default_image;
+  objImage.src = settings.default_image;
+  objLink.href = settings.default_image;
+}
 
 
 // showLightbox()
@@ -174,7 +219,7 @@ function showLightbox(objLink) {
 
   // preload image
   imgPreload = new Image();
-  imgPreload.onerror = function() { imgLoadingError(this, objImage, objLink) };
+  imgPreload.onerror = function() { imgLoadingError(this, objImage, objLink); };
 
   imgPreload.onload = function() {
     objImage.src = objLink.href;
@@ -247,51 +292,6 @@ function showLightbox(objLink) {
   imgPreload.src = objLink.href;
 
 }
-
-function imgLoadingError(image, objImage, objLink) {
-  var settings = Drupal.settings.lightbox2;
-  image.src = settings.default_image;
-  objImage.src = settings.default_image;
-  objLink.href = settings.default_image;
-}
-
-
-// hideLightbox()
-function hideLightbox() {
-  // get objects
-  objOverlay = document.getElementById('overlay');
-  objLightbox = document.getElementById('lightbox');
-
-  // hide lightbox and overlay
-  objOverlay.style.display = 'none';
-  objLightbox.style.display = 'none';
-
-  // make select boxes visible
-  selects = document.getElementsByTagName("select");
-  for (i = 0; i != selects.length; i++) {
-    if (selects[i].style.display != "none") {
-      selects[i].style.visibility = "visible";
-    }
-  }
-
-  // make flash objects visible
-  embed = document.getElementsByTagName("embed");
-  for (i = 0; i != embed.length; i++) {
-    if (embed[i].style.display != "none") {
-      embed[i].style.visibility = "visible";
-    }
-  }
-  objects = document.getElementsByTagName("object");
-  for (i = 0; i != objects.length; i++) {
-    if (objects[i].style.display != "none") {
-      objects[i].style.visibility = "visible";
-    }
-  }
-
-  // disable keypress listener
-  document.onkeypress = '';
-}
-
 
 
 

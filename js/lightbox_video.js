@@ -56,22 +56,22 @@ var Lightvideo = {
       flashvars = variables;
     }
 
-    Lightbox.videoHTML = '<embed type="application/x-shockwave-flash" '
-      +'src="' + href + '" '
-      + 'id="' + id + '" name="' + id + '" ' + bgcolor + ' '
-      + 'quality="high" wmode="transparent" ' + flashvars + ' '
-      + 'height="' + Lightbox.videoHeight + '" '
-      + 'width="' + Lightbox.videoWidth + ' '
-      + '">';
+    Lightbox.videoHTML = '<embed type="application/x-shockwave-flash" ' +
+      'src="' + href + '" ' +
+      'id="' + id + '" name="' + id + '" ' + bgcolor + ' ' +
+      'quality="high" wmode="transparent" ' + flashvars + ' ' +
+      'height="' + Lightbox.videoHeight + '" ' +
+      'width="' + Lightbox.videoWidth + ' ' +
+      '">';
   },
 
 
   // checkKnownVideos()
   checkKnownVideos: function(href) {
-    if (Lightvideo.checkYouTubeVideo(href) || Lightvideo.checkGoogleVideo(href)
-      || Lightvideo.checkMySpaceVideo(href) || Lightvideo.checkLiveVideo(href)
-      || Lightvideo.checkMetacafeVideo(href)
-      || Lightvideo.checkIFilmSpikeVideo(href)
+    if (Lightvideo.checkYouTubeVideo(href) || Lightvideo.checkGoogleVideo(href) ||
+      Lightvideo.checkMySpaceVideo(href) || Lightvideo.checkLiveVideo(href) ||
+      Lightvideo.checkMetacafeVideo(href) ||
+      Lightvideo.checkIFilmSpikeVideo(href)
       ) {
       return true;
     }
@@ -81,15 +81,16 @@ var Lightvideo = {
 
   // checkYouTubeVideo()
   checkYouTubeVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'youtube.com/v/([^"&]+)',
       'youtube.com/watch\\?v=([^"&]+)',
-      'youtube.com/\\?v=([^"&]+)');
+      'youtube.com/\\?v=([^"&]+)'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://www.youtube.com/v/"+Lightbox.videoId, "flvvideo", "#ffffff");
         return true;
@@ -100,15 +101,16 @@ var Lightvideo = {
 
   // checkGoogleVideo()
   checkGoogleVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'http://video.google.[a-z]{2,4}/googleplayer.swf\\?docId=(-?\\d*)',
       'http://video.google.[a-z]{2,4}/videoplay\\?docid=([^&]*)&',
-      'http://video.google.[a-z]{2,4}/videoplay\\?docid=(.*)');
+      'http://video.google.[a-z]{2,4}/videoplay\\?docid=(.*)'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://video.google.com/googleplayer.swf?docId="+Lightbox.videoId+"&hl=en", "flvvideo", "#ffffff");
         return true;
@@ -119,15 +121,16 @@ var Lightvideo = {
 
   // checkMetacafeVideo()
   checkMetacafeVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'metacafe.com/watch/(\.[^/]*)/(\.[^/]*)/',
       'metacafe.com/watch/(\.[^/]*)/(\.*)',
-      'metacafe.com/fplayer/(\.[^/]*)/(\.[^.]*).');
+      'metacafe.com/fplayer/(\.[^/]*)/(\.[^.]*).'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://www.metacafe.com/fplayer/"+Lightbox.videoId+"/.swf", "flvvideo", "#ffffff");
         return true;
@@ -138,16 +141,17 @@ var Lightvideo = {
 
   // checkIFilmSpikeVideo()
   checkIFilmSpikeVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'spike.com/video/[^/&"]*?/(\\d+)',
       'ifilm.com/video/[^/&"]*?/(\\d+)',
       'spike.com/video/([^/&"]*)',
-      'ifilm.com/video/([^/&"]*)');
+      'ifilm.com/video/([^/&"]*)'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://www.spike.com/efp", "flvvideo", "#000", "flashvars=\"flvbaseclip="+Lightbox.videoId+"&amp;\"");
         return true;
@@ -158,16 +162,17 @@ var Lightvideo = {
 
   // checkMySpaceVideo()
   checkMySpaceVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'src="myspace.com/index.cfm\\?fuseaction=vids.individual&videoid=([^&"]+)',
       'myspace.com/index.cfm\\?fuseaction=vids.individual&videoid=([^&"]+)',
       'src="myspacetv.com/index.cfm\\?fuseaction=vids.individual&videoid=([^&"]+)"',
-      'myspacetv.com/index.cfm\\?fuseaction=vids.individual&videoid=([^&"]+)');
+      'myspacetv.com/index.cfm\\?fuseaction=vids.individual&videoid=([^&"]+)'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://lads.myspace.com/videos/vplayer.swf", "flvvideo", "#ffffff", "flashvars=\"m="+Lightbox.videoId+"\"");
         return true;
@@ -178,15 +183,16 @@ var Lightvideo = {
 
   // checkLiveVideo()
   checkLiveVideo: function(href) {
-    var patterns = new Array(
+    var patterns = [
       'livevideo.com/flvplayer/embed/([^"]*)"',
       'livevideo.com/video/[^/]*?/([^/]*)/',
-      'livevideo.com/video/([^/]*)/');
+      'livevideo.com/video/([^/]*)/'
+      ];
 
     for (var i = 0; i < patterns.length; i++) {
       var pattern = new RegExp(patterns[i], "i");
       var results = pattern.exec(href);
-      if (results != null) {
+      if (results !== null) {
         Lightbox.videoId = results[1];
         Lightvideo.createEmbed("http://www.livevideo.com/flvplayer/embed/"+Lightbox.videoId, "flvvideo", "#ffffff");
         return true;
