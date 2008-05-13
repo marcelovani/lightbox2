@@ -705,7 +705,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
         $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
         $text = preg_replace('/src="/', 'rel="lightbox" src="', $text);
-        $text = substr($text, 1, -1);
+        $text = drupal_substr($text, 1, -1);
       }
       return $text;
 
@@ -1098,9 +1098,9 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
   }
   else {
     $dirpath = file_directory_path();
-    $dirlen = strlen($dirpath);
-    if (substr($filepath, 0, $dirlen + 1) == $dirpath .'/') {
-      $filepath = substr($filepath, $dirlen + 1);
+    $dirlen = drupal_strlen($dirpath);
+    if (drupal_substr($filepath, 0, $dirlen + 1) == $dirpath .'/') {
+      $filepath = drupal_substr($filepath, $dirlen + 1);
     }
     return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $filepath);
   }
