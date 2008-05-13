@@ -31,7 +31,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
     if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
 
-      var child = $(this).children(classes);
+      var child = $(this).find(classes);
 
       // Ensure the child has a class attribute we can work with.
       if ($(child).attr("class")) {
@@ -119,8 +119,12 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           $(child).attr({title: img_title});
         }
         if (!custom_class) {
+          var title_link = "";
+          if (link_text.length) {
+            title_link = "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
+          }
           $(this).attr({
-            title: alt + "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>",
+            title: alt + title_link,
             rel: rel,
             href: href
           });
