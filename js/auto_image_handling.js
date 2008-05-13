@@ -22,6 +22,11 @@ function parse_url(url, param) {
 function lightbox2_init_triggers(classes, rel_type, custom_class) {
   var settings = Drupal.settings.lightbox2;
 
+  var link_target  = "";
+  if (settings.node_link_target !== 0) {
+    link_target = 'target="'+ settings.node_link_target +'"';
+  }
+
   $("a["+classes+"]").each(function(i) {
 
     if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
@@ -39,10 +44,6 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Set the image node link text.
         var link_text = settings.node_link_text;
-        var link_target  = "";
-        if (settings.node_link_target !== 0) {
-          link_target = 'target="'+ settings.node_link_target +'"';
-        }
 
         // Set the rel attribute.
         var rel = "lightbox";
@@ -88,7 +89,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         }
 
         // Handle gallery2 block images.
-        else if ($(child).attr("class").match("ImageFrame_image")) {
+        else if ($(child).attr("class").match("ImageFrame_image") || $(child).attr("class").match("ImageFrame_none")) {
           var thumb_id = parse_url(href, "g2_itemId");
           var new_id = parse_url(orig_href, "g2_itemId");
           if (new_id && thumb_id) {

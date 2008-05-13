@@ -759,13 +759,13 @@ function lightbox2_add_files() {
   // Gallery2 block images.
   switch ($gallery2_block_handler) {
     case 1:
-      $trigger_lightbox_classes .= "img.ImageFrame_image,";
+      $trigger_lightbox_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
       break;
     case 2:
-      $trigger_lightbox_group_classes .= "img.ImageFrame_image,";
+      $trigger_lightbox_group_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
       break;
     case 3:
-      $trigger_slideshow_classes .= "img.ImageFrame_image,";
+      $trigger_slideshow_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
       break;
   }
 
