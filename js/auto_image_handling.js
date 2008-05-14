@@ -29,7 +29,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
   $("a:has("+classes+")").each(function(i) {
 
-    if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
+    if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents("td.giAlbumCell").attr("class") && !$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
 
       var child = $(this).find(classes);
 
@@ -90,19 +90,17 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Handle gallery2 block images.
         else if ($(child).attr("class").match("ImageFrame_image") || $(child).attr("class").match("ImageFrame_none")) {
-          if (!$(child).parents("td.giAlbumCell").attr("class")) {
-            var thumb_id = parse_url(href, "g2_itemId");
-            var new_id = parse_url(orig_href, "g2_itemId");
-            if (new_id && thumb_id) {
-              var g2pattern = new RegExp("g2_itemId="+thumb_id);
-              var replacement = "g2_itemId="+ new_id;
-              href = href.replace(g2pattern, replacement);
-            }
-            rel = rel_type + "[gallery2]";
-            if ($(child).parents("div.block-gallery").attr("class")) {
-              id = $(child).parents("div.block-gallery").attr("id");
-              rel = rel_type + "["+ id +"]";
-            }
+          var thumb_id = parse_url(href, "g2_itemId");
+          var new_id = parse_url(orig_href, "g2_itemId");
+          if (new_id && thumb_id) {
+            var g2pattern = new RegExp("g2_itemId="+thumb_id);
+            var replacement = "g2_itemId="+ new_id;
+            href = href.replace(g2pattern, replacement);
+          }
+          rel = rel_type + "[gallery2]";
+          if ($(child).parents("div.block-gallery").attr("class")) {
+            id = $(child).parents("div.block-gallery").attr("id");
+            rel = rel_type + "["+ id +"]";
           }
         }
 
