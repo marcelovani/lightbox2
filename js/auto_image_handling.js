@@ -90,12 +90,19 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Handle gallery2 block images.
         else if ($(child).attr("class").match("ImageFrame_image") || $(child).attr("class").match("ImageFrame_none")) {
-          var thumb_id = parse_url(href, "g2_itemId");
-          var new_id = parse_url(orig_href, "g2_itemId");
-          if (new_id && thumb_id) {
-            var g2pattern = new RegExp("g2_itemId="+thumb_id);
-            var replacement = "g2_itemId="+ new_id;
-            href = href.replace(g2pattern, replacement);
+          if (!$(child).parents("td.giAlbumCell").attr("class")) {
+            var thumb_id = parse_url(href, "g2_itemId");
+            var new_id = parse_url(orig_href, "g2_itemId");
+            if (new_id && thumb_id) {
+              var g2pattern = new RegExp("g2_itemId="+thumb_id);
+              var replacement = "g2_itemId="+ new_id;
+              href = href.replace(g2pattern, replacement);
+            }
+            rel = rel_type + "[gallery2]";
+            if ($(child).parents("div.block-gallery").attr("class")) {
+              id = $(child).parents("div.block-gallery").attr("id");
+              rel = rel_type + "["+ id +"]";
+            }
           }
         }
 
@@ -116,6 +123,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         var img_title = $(child).attr("title");
         if (!img_title) {
           img_title = $(this).attr("title");
+          if (!img_title) {
+            img_title = $(child).attr("alt");
+          }
           $(child).attr({title: img_title});
         }
         if (!custom_class) {
