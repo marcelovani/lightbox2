@@ -1123,6 +1123,10 @@ var Lightbox = {
         var scrolling = stylesArray[i].replace('scrolling:', '');
         item.scrolling = jQuery.trim(scrolling);
       }
+      else if (stylesArray[i].indexOf('overflow:') >= 0) {
+        var overflow = stylesArray[i].replace('overflow:', '');
+        item.overflow = jQuery.trim(overflow);
+      }
     }
     return item;
   },
