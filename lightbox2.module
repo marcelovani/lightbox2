@@ -1079,22 +1079,22 @@ function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = 
     $width = $field['widget']['video_width'] + 40;
     $height = $field['widget']['video_height'] + 40;
   }
-  $rel = 'lightframe[|width:'.$width .'px; height:'. $height .'px; overflow:visible;]';
+  $rel = 'lightframe[|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
 
   $output = l($thumbnail, $destination, array('title' => $title, 'rel' => $rel, 'class' => $field['type_name']), NULL, NULL, FALSE, TRUE);
   return $output;
 }
 
 function lightbox2_video_cck($nid, $width, $height, $field_name) {
-    $field = array();
-    $field['widget']['video_width'] = $width;
-    $field['widget']['video_height'] = $height;
-    $field['widget']['video_autoplay'] = 1;
-    $field['field_name'] = $field_name;
-    $node = node_load($nid);
-    $items = $node->$field_name;
-    $item = $items[0];
-    print theme('video_cck_video_video', $field, $item, 'video_video', $node);
+  $field = array();
+  $field['widget']['video_width'] = $width;
+  $field['widget']['video_height'] = $height;
+  $field['widget']['video_autoplay'] = 1;
+  $field['field_name'] = $field_name;
+  $node = node_load($nid);
+  $items = $node->$field_name;
+  $item = $items[0];
+  print theme('video_cck_video_video', $field, $item, 'video_video', $node);
 }
 
 
