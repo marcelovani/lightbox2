@@ -206,6 +206,13 @@ function lightbox2_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 2,
   );
+  if (module_exists('emfield') && module_exists('video_cck')) {
+    $items['video-cck/lightbox2'] = array(
+      'callback' => 'lightbox2_video_cck',
+      'access' => user_access('access content'),
+      'type' => MENU_CALLBACK,
+    );
+  }
 
   return $items;
 }
@@ -944,6 +951,12 @@ function lightbox2_field_formatter_info() {
       }
     }
   }
+  if (module_exists('emfield') && module_exists('video_cck')) {
+    $formatters['lightvideo'] = array(
+      'label' => t('Lightbox2: Image Thumbnail -> Full Size Video'),
+      'field types' => array('video_cck'),
+    );
+  }
 
   return $formatters;
 }
@@ -952,25 +965,31 @@ function lightbox2_field_formatter_info() {
 /**
  * Implementation of hook_field_formatter().
  */
-function lightbox2_field_formatter($field, $item, $formatter) {
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    if (isset($item['filepath'])) {
-      $filepath = &$item['filepath'];
+function lightbox2_field_formatter($field, $item, $formatter, $node) {
+  if ($formatter == 'lightvideo') {
+    if (module_exists('emfield') && module_exists('video_cck') && $formatter == 'lightvideo') {
+      $formatter = 'video_cck';
+      return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
     }
-    else if (!empty($item['fid'])) {
-      $file = _imagefield_file_load($item['fid']);
-      $filepath = &$file['filepath'];
-    }
-    else {
-      return '';
-    }
-    if (lightbox2_exclude_these_paths() != 1) {
-      lightbox2_add_files();
-    }
+  }
+  else if (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE) {
+    if (module_exists('imagefield') && module_exists('imagecache')) {
+      if (isset($item['filepath'])) {
+        $filepath = &$item['filepath'];
+      }
+      else if (!empty($item['fid'])) {
+        $file = _imagefield_file_load($item['fid']);
+        $filepath = &$file['filepath'];
+      }
+      else {
+        return '';
+      }
+      if (lightbox2_exclude_these_paths() != 1) {
+        lightbox2_add_files();
+      }
 
-    $item['filepath'] = $filepath;
-    $item = array_merge($item, (array)$file);
-    If (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE) {
+      $item['filepath'] = $filepath;
+      $item = array_merge($item, (array)$file);
       list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
       $item['lightbox_preset'] = $lightbox_preset;
 
@@ -1062,6 +1081,35 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   }
 
   return $output;
+}
+
+function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = array()) {
+
+  $thumbnail = theme('video_cck_video_thumbnail', $field, $item, 'video_thumbnail', $node, true, $options);
+
+  $destination = 'video-cck/lightbox2/'. $node->nid .'/'. $field['widget']['video_width'] .'/'. $field['widget']['video_height'] .'/'. $field['field_name'];
+  $width = $field['widget']['video_width'] + 20;
+  $height = $field['widget']['video_height'] + 20;
+  if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+    $width = $field['widget']['video_width'] + 40;
+    $height = $field['widget']['video_height'] + 40;
+  }
+  $rel = 'lightframe[|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
+
+  $output = l($thumbnail, $destination, array('title' => $title, 'rel' => $rel, 'class' => $field['type_name'], 'html' => TRUE));
+  return $output;
+}
+
+function lightbox2_video_cck($nid, $width, $height, $field_name) {
+  $field = array();
+  $field['widget']['video_width'] = $width;
+  $field['widget']['video_height'] = $height;
+  $field['widget']['video_autoplay'] = 1;
+  $field['field_name'] = $field_name;
+  $node = node_load($nid);
+  $items = $node->$field_name;
+  $item = $items[0];
+  print theme('video_cck_video_video', $field, $item, 'video_video', $node);
 }
 
 /**
