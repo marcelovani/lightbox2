@@ -516,13 +516,13 @@ var Lightbox = {
   // container.
   changeImage: function(imageNum, zoomIn) {
 
-    if (this.inprogress === false) {
+    if (Lightbox.inprogress === false) {
       if (Lightbox.isSlideshow) {
         for (var i = 0; i < Lightbox.slideIdCount; i++) {
           window.clearTimeout(Lightbox.slideIdArray[i]);
         }
       }
-      this.inprogress = true;
+      Lightbox.inprogress = true;
 
       var settings = Drupal.settings.lightbox2;
       if (Lightbox.disableZoom && !Lightbox.isSlideshow) {
@@ -601,7 +601,7 @@ var Lightbox = {
           photo.style.width = (imageWidth) + 'px';
           photo.style.height = (imageHeight) + 'px';
           Lightbox.resizeImageContainer(imageWidth, imageHeight);
-          this.inprogress = false;
+          Lightbox.inprogress = false;
 
           // Clear onLoad, IE behaves irratically with animated gifs otherwise.
           imgPreloader.onload = function() {};
@@ -739,12 +739,12 @@ var Lightbox = {
     if (Lightbox.isSlideshow) {
       if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
         if (Lightbox.autoExit) {
-          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout("Lightbox.end('slideshow')", Lightbox.slideInterval);
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(Lightbox.end, Lightbox.slideInterval, 'slideshow');
         }
       }
       else {
         if (!Lightbox.isPaused) {
-          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout("Lightbox.changeImage(" + (Lightbox.activeImage + 1) + ")", Lightbox.slideInterval);
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(Lightbox.changeImage, Lightbox.slideInterval, Lightbox.activeImage + 1);
         }
       }
       if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1 && !Lightbox.isPaused) {
@@ -786,11 +786,12 @@ var Lightbox = {
     var settings = Drupal.settings.lightbox2;
     var numberDisplay = null;
     if (Lightbox.imageArray.length > 1) {
+      var currentImage = Lightbox.activeImage + 1;
       if (!Lightbox.isLightframe) {
-        numberDisplay = settings.image_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+        numberDisplay = settings.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.imageArray.length);
       }
       else {
-        numberDisplay = settings.page_count.replace(/\!current/, eval(Lightbox.activeImage + 1)).replace(/\!total/, Lightbox.imageArray.length);
+        numberDisplay = settings.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.imageArray.length);
       }
       $('#numberDisplay').html(numberDisplay).css({zIndex: '10500'}).show();
     }
@@ -956,7 +957,7 @@ var Lightbox = {
     if (Lightbox.isSlideshow && Lightbox.isPaused && !closeClick) {
       return;
     }
-    this.disableKeyboardNav();
+    Lightbox.disableKeyboardNav();
     $('#lightbox').hide();
     $("#overlay").fadeOut();
     Lightbox.activeImage = null;
