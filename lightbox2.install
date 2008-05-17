@@ -41,6 +41,10 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_slideshow_pause_on_next_click');
   variable_del('lightbox2_slideshow_pause_on_previous_click');
 
+  // Remove iframe settings.
+  variable_del('lightbox2_default_frame_width');
+  variable_del('lightbox2_default_frame_height');
+
   // Remove the automatic image handling settings.
   variable_del('lightbox2_image_node');
   variable_del('lightbox2_display_image_size');

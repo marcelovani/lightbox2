@@ -190,6 +190,15 @@ function lightbox2_menu($may_cache) {
       'type' => MENU_LOCAL_TASK,
       'weight' => 1,
     );
+    $items[] = array('path' => 'admin/settings/lightbox2/html_content',
+      'title' => t('HTML Content'),
+      'callback' => 'drupal_get_form',
+      'callback arguments' => array('lightbox2_iframe_settings_form'),
+      'access' => user_access('administer lightbox2'),
+      'description' => t('Allows the user to configure the lightbox2 HTML content functionality.'),
+      'type' => MENU_LOCAL_TASK,
+      'weight' => 2,
+    );
     $items[] = array('path' => 'admin/settings/lightbox2/automatic',
       'title' => t('Automatic image handling'),
       'callback' => 'drupal_get_form',
@@ -197,7 +206,7 @@ function lightbox2_menu($may_cache) {
       'access' => user_access('administer lightbox2'),
       'description' => t('Allows the user to configure the lightbox2 automatic image handling settings'),
       'type' => MENU_LOCAL_TASK,
-      'weight' => 2,
+      'weight' => 3,
     );
     if (module_exists('emfield') && module_exists('video_cck')) {
       $items[] = array(
@@ -454,6 +463,57 @@ function lightbox2_slideshow_settings_form_validate($form_id, $form_values) {
 }
 
 /**
+ * Configuration form for controlling the iframe behaviour.
+ */
+function lightbox2_iframe_settings_form() {
+
+  // Add the javascript which disables / enables form elements.
+  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+
+  // Set up a hidden variable.
+  $form['lightbox2_lite'] = array(
+    '#type' => 'hidden',
+    '#value' => variable_get('lightbox2_lite', FALSE),
+  );
+
+
+  // Add text box for iframe width.
+  $form['lightbox2_default_frame_width'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Width'),
+    '#description' => t('The default width of the iframe in pixels.'),
+    '#default_value' => variable_get('lightbox2_default_frame_width', 600),
+    '#size' => 20,
+  );
+
+  // Add text box for iframe height.
+  $form['lightbox2_default_frame_height'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Default Height'),
+    '#description' => t('The default height of the iframe in pixels.'),
+    '#default_value' => variable_get('lightbox2_default_frame_height', 400),
+    '#size' => 20,
+  );
+
+  return system_settings_form($form);
+}
+
+/**
+ * Validation function for the iframe configuration form.
+ *
+ * Ensure that the iframe width and height submitted are numeric.
+ */
+function lightbox2_iframe_settings_form_validate($form_id, $form_values) {
+  if (!is_numeric($form_values['lightbox2_default_frame_width'])) {
+    form_set_error('lightbox2_slideshow_interval', t('The "default width" value must be numeric.'));
+  }
+  if (!is_numeric($form_values['lightbox2_default_frame_height'])) {
+    form_set_error('lightbox2_slideshow_interval', t('The "default height" value must be numeric.'));
+  }
+}
+
+
+/**
  * Configuration form the automatic image handling functionality.
  */
 function lightbox2_auto_image_handling_settings_form() {
@@ -472,6 +532,8 @@ function lightbox2_auto_image_handling_settings_form() {
     1 => t('Lightbox'),
     2 => t('Lightbox grouped'),
     3 => t('Slideshow'),
+    4 => t('HTML Content'),
+    5 => t('HTML Content grouped'),
   );
 
   // Set image node options help text.
@@ -751,56 +813,82 @@ function lightbox2_add_files() {
   $trigger_lightbox_classes = '';
   $trigger_lightbox_group_classes = '';
   $trigger_slideshow_classes = '';
+  $trigger_lightframe_classes = '';
+  $trigger_lightframe_group_classes = '';
 
   // Inline module images.
   switch ($inline_image_handler) {
     case 1:
-      $trigger_lightbox_classes .= "img.inline,";
+      $trigger_lightbox_classes .= 'img.inline,';
       break;
     case 2:
-      $trigger_lightbox_group_classes .= "img.inline,";
+      $trigger_lightbox_group_classes .= 'img.inline,';
       break;
     case 3:
-      $trigger_slideshow_classes .= "img.inline,";
+      $trigger_slideshow_classes .= 'img.inline,';
+      break;
+    case 4:
+      $trigger_lightframe_classes .= 'img.inline,';
+      break;
+    case 5:
+      $trigger_lightframe_group_classes .= 'img.inline,';
       break;
   }
 
   // Flickr images.
   switch ($flickr_image_handler) {
     case 1:
-      $trigger_lightbox_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      $trigger_lightbox_classes .= 'img.flickr-photo-img,img.flickr-photoset-img,';
       break;
     case 2:
-      $trigger_lightbox_group_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      $trigger_lightbox_group_classes .= 'img.flickr-photo-img,img.flickr-photoset-img,';
       break;
     case 3:
-      $trigger_slideshow_classes .= "img.flickr-photo-img,img.flickr-photoset-img,";
+      $trigger_slideshow_classes .= 'img.flickr-photo-img,img.flickr-photoset-img,';
+      break;
+    case 4:
+      $trigger_lightframe_classes .= 'img.flickr-photo-img,img.flickr-photoset-img,';
+      break;
+    case 5:
+      $trigger_lightframe_group_classes .= 'img.flickr-photo-img,img.flickr-photoset-img,';
       break;
   }
 
   // Gallery2 block images.
   switch ($gallery2_block_handler) {
     case 1:
-      $trigger_lightbox_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
+      $trigger_lightbox_classes .= 'img.ImageFrame_image,img.ImageFrame_none,';
       break;
     case 2:
-      $trigger_lightbox_group_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
+      $trigger_lightbox_group_classes .= 'img.ImageFrame_image,img.ImageFrame_none,';
       break;
     case 3:
-      $trigger_slideshow_classes .= "img.ImageFrame_image,img.ImageFrame_none,";
+      $trigger_slideshow_classes .= 'img.ImageFrame_image,img.ImageFrame_none,';
+      break;
+    case 4:
+      $trigger_lightframe_classes .= 'img.ImageFrame_image,img.ImageFrame_none,';
+      break;
+    case 5:
+      $trigger_lightframe_group_classes .= 'img.ImageFrame_image,img.ImageFrame_none,';
       break;
   }
 
   // Image Assist custom size images.
   switch ($image_assist_handler) {
     case 1:
-      $trigger_lightbox_classes .= "img.image-img_assist_custom,";
+      $trigger_lightbox_classes .= 'img.image-img_assist_custom,';
       break;
     case 2:
-      $trigger_lightbox_group_classes .= "img.image-img_assist_custom,";
+      $trigger_lightbox_group_classes .= 'img.image-img_assist_custom,';
       break;
     case 3:
-      $trigger_slideshow_classes .= "img.image-img_assist_custom,";
+      $trigger_slideshow_classes .= 'img.image-img_assist_custom,';
+      break;
+    case 4:
+      $trigger_lightframe_classes .= 'img.image-img_assist_custom,';
+      break;
+    case 5:
+      $trigger_lightframe_group_classes .= 'img.image-img_assist_custom,';
       break;
   }
 
@@ -825,6 +913,12 @@ function lightbox2_add_files() {
         case 3:
           $trigger_slideshow_classes .= $triggers;
           break;
+        case 4:
+          $trigger_lightframe_classes .= $triggers;
+          break;
+        case 5:
+          $trigger_lightframe_group_classes .= $triggers;
+          break;
       }
     }
   }
@@ -843,6 +937,8 @@ function lightbox2_add_files() {
   $trigger_lightbox_classes = rtrim($trigger_lightbox_classes, ",");
   $trigger_lightbox_group_classes = rtrim($trigger_lightbox_group_classes, ",");
   $trigger_slideshow_classes = rtrim($trigger_slideshow_classes, ",");
+  $trigger_lightframe_classes = rtrim($trigger_lightframe_classes, ",");
+  $trigger_lightframe_group_classes = rtrim($trigger_lightframe_group_classes, ",");
   $custom_trigger_classes = rtrim($custom_trigger_classes, ",");
   $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
@@ -873,6 +969,8 @@ function lightbox2_add_files() {
     'trigger_lightbox_classes' => $trigger_lightbox_classes,
     'trigger_lightbox_group_classes' => $trigger_lightbox_group_classes,
     'trigger_slideshow_classes' => $trigger_slideshow_classes,
+    'trigger_lightframe_classes' => $trigger_lightframe_classes,
+    'trigger_lightframe_group_classes' => $trigger_lightframe_group_classes,
     'custom_trigger_classes' => $custom_trigger_classes,
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
@@ -882,6 +980,9 @@ function lightbox2_add_files() {
     'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
     'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
     'pause_on_previous_click' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+    // Iframe settings.
+    'iframe_width' => variable_get('lightbox2_default_frame_width', 600),
+    'iframe_height' => variable_get('lightbox2_default_frame_height', 400),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
@@ -939,6 +1040,10 @@ function lightbox2_field_formatter_info() {
     else {
       $rules = _imagecache_get_presets();
     }
+    $formatters['lightframe2][original][node'] = array(
+      'label' => 'Lightbox2 iframe: original->node page',
+      'field types' => array('image'),
+    );
     foreach ($rules as $ruleid => $view_rule) {
       $formatters['lightbox2][original]['. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
@@ -965,6 +1070,10 @@ function lightbox2_field_formatter_info() {
           'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image'),
         );
+        $formatters['lightframe2]['. $view_rule .'][node'] = array(
+          'label' => 'Lightbox2 iframe: '. $view_rule .'->node page',
+          'field types' => array('image'),
+        );
       }
     }
   }
@@ -975,6 +1084,10 @@ function lightbox2_field_formatter_info() {
     );
     $formatters['lightshow2][image_ncck'] = array(
       'label' => t('Lightbox2 slideshow: Image Thumbnail -> Original'),
+      'field types' => array('image_ncck'),
+    );
+    $formatters['lightframe2][image_ncck'] = array(
+      'label' => t('Lightbox2 iframe: Image Thumbnail -> Content'),
       'field types' => array('image_ncck'),
     );
   }
@@ -1002,7 +1115,7 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
   }
 
   // Image fields - emfield or imagecache + imagefield.
-  else if (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE) {
+  else if (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE || strpos($formatter, 'lightframe2][') !== FALSE) {
     list($lightbox_type, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
 
     // Emfield image field.
@@ -1021,7 +1134,8 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
 }
 
 /**
- * Function to set up the data needed for theme_imagefield_image_imagecache_lightbox2().
+ * Function to set up the data needed for
+ * theme_imagefield_image_imagecache_lightbox2().
  *
  * @param $field
  *   The field the action is being performed on.
@@ -1066,11 +1180,14 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
     $rules = _imagecache_get_presets();
   }
   if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
-    $slideshow = FALSE;
+    $rel = 'lightbox';
     if (strpos($formatter, 'lightshow2][') !== FALSE) {
-      $slideshow = TRUE;
+      $rel = 'lightshow';
     }
-    return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $slideshow);
+    else if (strpos($formatter, 'lightframe2][') !== FALSE) {
+      $rel = 'lightframe';
+    }
+    return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $node, $rel);
   }
 
 }
@@ -1085,16 +1202,18 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
  *   The field the action is being performed on.
  * @param $item
  *   An array, keyed by column, of the data stored for this item in this field.
- * @param $slideshow
- *   Whether or not a slideshow should be invoked, rather than a normal
- *   lightbox.
+ * @param $node
+ *   The node object.
+ * @param $rel
+ *   The type of lightbox to open: lightbox, lightshow or lightframe.
  */
-function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $slideshow = FALSE) {
+function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $node, $rel = 'lightbox') {
 
-  $rel = 'lightbox';
-  if ($slideshow) {
-    $rel = 'lightshow';
+  if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
+    $rel = 'lightbox';
+    $item['lightbox_preset'] = 'original';
   }
+  $orig_rel = $rel;
   $imagefield_grouping = variable_get('lightbox2_imagefield_group_node_id', 1);
   if ($imagefield_grouping == 1) {
     $rel = $rel .'['. $field['field_name'] .']';
@@ -1115,13 +1234,20 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     }
     $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
     if (!empty($node_link_text)) {
-      $node_link = '<br /><br />'. l($node_link_text, 'node/'. $item['nid'], $attributes);
+      $node_link .= '<br /><br />'. l($node_link_text, 'node/'. $item['nid'], $attributes);
     }
   }
 
+  if ($orig_rel == 'lightframe') {
+    $frame_width = variable_get('lightbox2_default_frame_width', 600);
+    $frame_height = variable_get('lightbox2_default_frame_height', 400);
+    $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
+    $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
+  }
   $link_attributes = array(
     'rel' => $rel,
-    'title' => $item['title'] . $node_link);
+    'title' => $item['title'] . $node_link,
+  );
 
   if ($view_preset == 'original') {
     $image = theme('lightbox2_image', $item['filepath'], $item['alt'], $item['title'], $attributes);
@@ -1129,7 +1255,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   else {
     $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
   }
-  if ($item['lightbox_preset'] == 'original') {
+  if ($item['lightbox_preset'] == 'node') {
+    $output = l($image, 'node/'. $node->nid, $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
+  else if ($item['lightbox_preset'] == 'original') {
     $output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
   }
   else {
@@ -1224,6 +1353,13 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     if ($field['lightbox_type'] == 'lightshow2') {
       $rel = 'lightshow';
     }
+    else if ($field['lightbox_type'] == 'lightframe2') {
+      $rel = 'lightframe';
+    }
+    if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
+      $rel = 'lightbox';
+    }
+    $orig_rel = $rel;
     $image_grouping = variable_get('lightbox2_image_ncck_group_node_id', 1);
     if ($image_grouping == 1) {
       $rel = $rel .'['. $field['field_name'] .']';
@@ -1259,19 +1395,31 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     }
 
     $title = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_title', $code, $item['data']);
-    $link_attributes = array(
-      'rel' => $rel,
-      'title' => $title . $node_link,
-    );
 
     $url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $width, $height, $formatter, $field, $item, $node);
     $image = theme('image', $url, $title, $title, $attributes, false);
 
-    $full_width = $field['widget']['full_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
-    $full_height = $field['widget']['full_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
-    $full_image_url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $full_width, $full_height, $formatter, $field, $item, $node);
-
-    $output = l($image, $full_image_url, $link_attributes, NULL, NULL, FALSE, TRUE);
+    if ($orig_rel != 'lightframe') {
+      $link_attributes = array(
+        'rel' => $rel,
+        'title' => $title . $node_link,
+      );
+      $full_width = $field['widget']['full_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
+      $full_height = $field['widget']['full_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
+      $full_image_url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $full_width, $full_height, $formatter, $field, $item, $node);
+      $output = l($image, $full_image_url, $link_attributes, NULL, NULL, FALSE, TRUE);
+    }
+    else {
+      $frame_width = variable_get('lightbox2_default_frame_width', 600);
+      $frame_height = variable_get('lightbox2_default_frame_height', 400);
+      $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
+      $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
+      $link_attributes = array(
+        'rel' => $rel,
+        'title' => $title . $node_link,
+      );
+      $output = l($image, $link, $link_attributes, NULL, NULL, FALSE, TRUE);
+    }
   }
   return $output;
 

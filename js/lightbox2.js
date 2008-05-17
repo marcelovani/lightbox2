@@ -73,6 +73,10 @@ function image_node_handler(event) {
 function lightbox2_lite_auto_handler(event) {
   // Enable / disable the image node options.
   if ($("input[@name=lightbox2_lite]").val() == 1) {
+    // Disable iframe options.
+    $("input[@name=lightbox2_default_frame_width]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_default_frame_height]").attr("disabled", "disabled");
+
     // Disable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").attr("disabled", "disabled");
@@ -96,6 +100,10 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_disable_nested_acidfree_galleries]").attr("disabled", "disabled");
   }
   else {
+    // Enable iframe options.
+    $("input[@name=lightbox2_default_frame_width]").removeAttr("disabled");
+    $("input[@name=lightbox2_default_frame_height]").removeAttr("disabled");
+
     // Enable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").removeAttr("disabled");
