@@ -76,7 +76,6 @@ var Lightbox = {
   disableZoom : false,
   isZoomedIn : false,
   rtl : false,
-  isLightframe : false,
 
   // Slideshow options.
   slideInterval : 5000, // In milliseconds.
@@ -88,6 +87,11 @@ var Lightbox = {
   slideIdCount : 0,
   isSlideshow : false,
   isPaused : false,
+
+  // Iframe options.
+  isLightframe : false,
+  iframe_width : 600,
+  iframe_height : 400,
 
   // Video options.
   isVideo : false,
@@ -113,6 +117,8 @@ var Lightbox = {
     Lightbox.pauseOnNextClick = settings.pause_on_next_click;
     Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
     Lightbox.alternative_layout = settings.use_alt_layout;
+    Lightbox.iframe_width = settings.iframe_width;
+    Lightbox.iframe_height = settings.iframe_height;
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe'.
@@ -443,7 +449,7 @@ var Lightbox = {
 
     // Handle iframes with no grouping.
     else if (rel == 'lightframe' && !rel_group) {
-      rel_style = (!rel_info[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_info[1]);
+      rel_style = (!rel_info[1] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_info[1]);
       Lightbox.imageArray.push([imageLink.href, imageLink.title, rel_style]);
     }
 
@@ -474,7 +480,7 @@ var Lightbox = {
           if (anchor.href) {
             var rel_data = Lightbox.parseRel(anchor);
             if (rel_data[0] == rel_group) {
-              rel_style = (!rel_data[1] ? 'width: 400px; height: 400px; scrolling: auto;' : rel_data[1]);
+              rel_style = (!rel_data[1] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data[1]);
               Lightbox.imageArray.push([anchor.href, anchor.title, rel_style]);
             }
           }

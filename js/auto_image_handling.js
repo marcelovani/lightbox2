@@ -47,7 +47,15 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Set the rel attribute.
         var rel = "lightbox";
-        if (rel_type != "lightbox_ungrouped") {
+        var lightframe = false;
+        if (rel_type == "lightframe_ungrouped") {
+          rel = "lightframe";
+          lightframe = true;
+        }
+        else if (rel_type == "lightframe") {
+          lightframe = true;
+        }
+        if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
           rel = rel_type + "[" + $(child).attr("class") + "]";
         }
 
@@ -66,7 +74,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         if ($(child).attr("class").match("flickr-photo-img") ||
           $(child).attr("class").match("flickr-photoset-img")) {
           href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
-          if (rel_type != "lightbox_ungrouped") {
+          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
             rel = rel_type + "[flickr]";
             if ($(child).parents("div.block-flickr").attr("class")) {
               id = $(child).parents("div.block-flickr").attr("id");
@@ -108,7 +116,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         // Set the href attribute.
         else if (settings.image_node_sizes != '()') {
           href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size === "")?"$1/_original":"$1/"+ settings.display_image_size));
-          if (rel_type != "lightbox_ungrouped") {
+          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
             rel = rel_type + "[node_images]";
             if ($(child).parents("div.block-image").attr("class")) {
               id = $(child).parents("div.block-image").attr("id");
@@ -125,6 +133,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             img_title = $(child).attr("alt");
           }
           $(child).attr({title: img_title});
+        }
+        if (lightframe) {
+          href = orig_href;
         }
         if (!custom_class) {
           var title_link = "";
@@ -163,6 +174,8 @@ function lightbox2_image_nodes() {
     lightbox2_init_triggers(settings.custom_trigger_classes, "lightbox_ungrouped", true);
     lightbox2_init_triggers(settings.trigger_lightbox_group_classes, "lightbox");
     lightbox2_init_triggers(settings.trigger_slideshow_classes, "lightshow");
+    lightbox2_init_triggers(settings.trigger_lightframe_classes, "lightframe_ungrouped");
+    lightbox2_init_triggers(settings.trigger_lightframe_group_classes, "lightframe");
 
   }
 }

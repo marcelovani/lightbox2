@@ -34,6 +34,10 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_overlay_opacity');
   variable_del('lightbox2_js_location');
 
+  // Remove iframe settings.
+  variable_del('lightbox2_default_frame_width');
+  variable_del('lightbox2_default_frame_height');
+
   // Remove slideshow settings.
   variable_del('lightbox2_slideshow_interval');
   variable_del('lightbox2_slideshow_automatic_exit');
