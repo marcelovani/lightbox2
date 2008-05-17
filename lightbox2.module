@@ -1240,7 +1240,7 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     $height = $field['widget']['thumbnail_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
     $link = $field['widget']['thumbnail_link'] ? $field['widget']['thumbnail_link'] : variable_get('image_ncck_default_thumbnail_link', IMAGE_NCCK_DEFAULT_THUMBNAIL_LINK);
     if ($link == IMAGE_NCCK_LINK_CONTENT) {
-      $link = 'node/' . $node->nid;
+      $link = 'node/'. $node->nid;
     }
     else if ($link == IMAGE_NCCK_LINK_PROVIDER) {
       $link = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'embedded_link', $code, $item['data']);
