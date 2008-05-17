@@ -305,30 +305,44 @@ function lightbox2_general_settings_form() {
   );
 
 
-  // Define imagefield settings fieldset.
+  // Define cck settings fieldset.
   /* ---------------------------------- */
-  if (module_exists('imagefield') && module_exists('imagecache')) {
-    $form['lightbox2_imagefield_options'] = array(
+  if ((module_exists('emfield') && module_exists('image_ncck')) || (module_exists('imagefield') && module_exists('imagecache'))) {
+    $form['lightbox2_cck_options'] = array(
       '#type' => 'fieldset',
-      '#title' => t('Imagefield settings'),
+      '#title' => t('CCK Display Settings'),
       '#collapsible' => TRUE,
       '#collapsed' => TRUE,
     );
 
-    $imagefield_options = array(
+    $cck_options = array(
       0 => t('No Grouping'),
       1 => t('Group by Field Name'),
       2 => t('Group by Node Id'),
       3 => t('Group by Field Name and Node Id'),
     );
+
+    // Add checkbox for emfield image_ncck grouping.
+    if (module_exists('emfield') && module_exists('image_ncck')) {
+      $form['lightbox2_cck_options']['lightbox2_image_ncck_group_node_id'] = array(
+        '#type' => 'select',
+        '#title' => t('Select Emfield Image Grouping in Views'),
+        '#description' => t('By default, emfield images in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
+        '#options' => $cck_options,
+        '#default_value' => variable_get('lightbox2_image_ncck_group_node_id', 1),
+      );
+    }
+
     // Add checkbox for imagefield grouping.
-    $form['lightbox2_imagefield_options']['lightbox2_imagefield_group_node_id'] = array(
-      '#type' => 'select',
-      '#title' => t('Select Imagefield Grouping in Views'),
-      '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
-      '#options' => $imagefield_options,
-      '#default_value' => variable_get('lightbox2_imagefield_group_node_id', 1),
-    );
+    if (module_exists('imagefield') && module_exists('imagecache')) {
+      $form['lightbox2_cck_options']['lightbox2_imagefield_group_node_id'] = array(
+        '#type' => 'select',
+        '#title' => t('Select Imagefield Grouping in Views'),
+        '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
+        '#options' => $cck_options,
+        '#default_value' => variable_get('lightbox2_imagefield_group_node_id', 1),
+      );
+    }
   }
 
 
@@ -909,7 +923,8 @@ function lightbox2_add_files() {
  * Implementation of hook_field_formatter_info().
  *
  * Add certain lightbox+imagecache formatters to CCK image fields if the
- * imagefield.module and the imagecache.module exist.
+ * imagefield.module and the imagecache.module exist.  Add additional formatters
+ * if emfield, image_ncck and/or video_cck modules exist.
  */
 function lightbox2_field_formatter_info() {
   $formatter = array();
@@ -953,6 +968,16 @@ function lightbox2_field_formatter_info() {
       }
     }
   }
+  if (module_exists('emfield') && module_exists('image_ncck')) {
+    $formatters['lightbox2][image_ncck'] = array(
+      'label' => t('Lightbox2: Image Thumbnail -> Original'),
+      'field types' => array('image_ncck'),
+    );
+    $formatters['lightshow2][image_ncck'] = array(
+      'label' => t('Lightbox2 slideshow: Image Thumbnail -> Original'),
+      'field types' => array('image_ncck'),
+    );
+  }
   if (module_exists('emfield') && module_exists('video_cck')) {
     $formatters['lightvideo'] = array(
       'label' => t('Lightbox2: Image Thumbnail -> Full Size Video'),
@@ -967,58 +992,104 @@ function lightbox2_field_formatter_info() {
  * Implementation of hook_field_formatter().
  */
 function lightbox2_field_formatter($field, $item, $formatter, $node) {
+
+  // Emfield video fields.
   if ($formatter == 'lightvideo') {
     if (module_exists('emfield') && module_exists('video_cck') && $formatter == 'lightvideo') {
       $formatter = 'video_cck';
       return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
     }
   }
+
+  // Image fields - emfield or imagecache + imagefield.
   else if (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE) {
-    if (module_exists('imagefield') && module_exists('imagecache')) {
-      if (isset($item['filepath'])) {
-        $filepath = &$item['filepath'];
-      }
-      else if (!empty($item['fid'])) {
-        $file = _imagefield_file_load($item['fid']);
-        $filepath = &$file['filepath'];
-      }
-      else {
-        return '';
-      }
-      if (lightbox2_exclude_these_paths() != 1) {
-        lightbox2_add_files();
-      }
+    list($lightbox_type, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
 
-      $item = array_merge($item, (array)$file);
-      $item['filepath'] = $filepath;
-      list($null, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
-      $item['lightbox_preset'] = $lightbox_preset;
+    // Emfield image field.
+    if ($view_preset == 'image_ncck' && module_exists('emfield') && module_exists('image_ncck')) {
+      $formatter = $view_preset;
+      $field['lightbox_type'] = $lightbox_type;
+      return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
+    }
 
-      $rules = array();
-      if (function_exists('imagecache_presets')) {
-        $presets = imagecache_presets();
-        foreach ($presets as $preset_id => $preset_info) {
-          $rules[$preset_id] = $preset_info['presetname'];
-        }
-      }
-      else {
-        $rules = _imagecache_get_presets();
-      }
-      if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
-        $slideshow = FALSE;
-        if (strpos($formatter, 'lightshow2][') !== FALSE) {
-          $slideshow = TRUE;
-        }
-        return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, NULL, $slideshow);
-      }
+
+    // Imagecache + imagefield image.
+    else if (module_exists('imagefield') && module_exists('imagecache')) {
+      return lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node, $view_preset, $lightbox_preset);
     }
   }
 }
 
 /**
- * Implementation of theme_imagefield_image_imagecache_lightbox2().
+ * Function to set up the data needed for theme_imagefield_image_imagecache_lightbox2().
+ *
+ * @param $field
+ *   The field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ * @param $view_preset
+ *   The imagecache preset to be displayed on the node or in the view.
+ * @param $lightbox_preset
+ *   The imagecache preset to be displayed in the lightbox.
  */
-function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $attributes = NULL, $slideshow = FALSE) {
+function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node, $view_preset, $lightbox_preset) {
+  if (isset($item['filepath'])) {
+    $filepath = &$item['filepath'];
+  }
+  else if (!empty($item['fid'])) {
+    $file = _imagefield_file_load($item['fid']);
+    $filepath = &$file['filepath'];
+  }
+  else {
+    return '';
+  }
+  if (lightbox2_exclude_these_paths() != 1) {
+    lightbox2_add_files();
+  }
+
+  $item = array_merge($item, (array)$file);
+  $item['filepath'] = $filepath;
+  $item['lightbox_preset'] = $lightbox_preset;
+
+  $rules = array();
+  if (function_exists('imagecache_presets')) {
+    $presets = imagecache_presets();
+    foreach ($presets as $preset_id => $preset_info) {
+      $rules[$preset_id] = $preset_info['presetname'];
+    }
+  }
+  else {
+    $rules = _imagecache_get_presets();
+  }
+  if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
+    $slideshow = FALSE;
+    if (strpos($formatter, 'lightshow2][') !== FALSE) {
+      $slideshow = TRUE;
+    }
+    return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $slideshow);
+  }
+
+}
+
+/**
+ * Generate the HTML output for imagefield + imagecache images so they can be
+ * opened in a lightbox by clicking on the image on the node page or in a view.
+ *
+ * @param $view_preset
+ *   The imagecache preset to be displayed on the node or in the view.
+ * @param $field
+ *   The field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $slideshow
+ *   Whether or not a slideshow should be invoked, rather than a normal
+ *   lightbox.
+ */
+function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $slideshow = FALSE) {
 
   $rel = 'lightbox';
   if ($slideshow) {
@@ -1036,8 +1107,8 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   }
 
   $node_link = '';
+  $attributes = array();
   if (!empty($item['nid'])) {
-    $attributes = array();
     $target = variable_get('lightbox2_node_link_target', FALSE);
     if (!empty($target)) {
       $attributes = array('target' => $target);
@@ -1068,6 +1139,21 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   return $output;
 }
 
+/**
+ * Generate the HTML output to open embedded cck videos in a lightbox.
+ *
+ * @param $field
+ *   The field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ * @param $options
+ *   Array of options available, including the width and height of the video
+ *   thumbnail.
+ */
 function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = array()) {
 
   $thumbnail = theme('video_cck_video_thumbnail', $field, $item, 'video_thumbnail', $node, true, $options);
@@ -1085,6 +1171,22 @@ function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = 
   return $output;
 }
 
+/**
+ * Configures settings and outputs the video.
+ *
+ * @param nid
+ *   The node id.
+ * @param width
+ *   The lightbox video width.
+ * @param height
+ *   The lightbox video height.
+ * @param field_name
+ *   The name of the cck field the video is contained in.
+ * @param provider
+ *   The name of the 3rd party video provider.
+ * @param id
+ *   The video id.
+ */
 function lightbox2_video_cck($nid, $width, $height, $field_name, $provider, $id) {
   $field = array();
   $field['widget']['video_width'] = $width;
@@ -1101,6 +1203,79 @@ function lightbox2_video_cck($nid, $width, $height, $field_name, $provider, $id)
   print theme('video_cck_video_video', $field, $item, 'video_video', $node);
 }
 
+/**
+ * Generate the HTML output to open embedded cck images in a lightbox.
+ *
+ * @param $field
+ *   The field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ * @param $options
+ *   Array of options available.  Not used in this theme function but required
+ *   by the invoked emfield function.
+ */
+function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options = array()) {
+  if ($item['value'] && $item['provider']) {
+    $rel = 'lightbox';
+    if ($field['lightbox_type'] == 'lightshow2') {
+      $rel = 'lightshow';
+    }
+    $image_grouping = variable_get('lightbox2_image_ncck_group_node_id', 1);
+    if ($image_grouping == 1) {
+      $rel = $rel .'['. $field['field_name'] .']';
+    }
+    else if ($image_grouping == 2 && !empty($node->nid)) {
+      $rel = $rel .'['. $node->nid .']';
+    }
+    else if ($image_grouping == 3 && !empty($node->nid)) {
+      $rel = $rel .'['. $field['field_name'] . $node->nid .']';
+    }
+
+    $code = $item['value'];
+    $width = $field['widget']['thumbnail_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['thumbnail_width'];
+    $height = $field['widget']['thumbnail_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
+    $link = $field['widget']['thumbnail_link'] ? $field['widget']['thumbnail_link'] : variable_get('image_ncck_default_thumbnail_link', IMAGE_NCCK_DEFAULT_THUMBNAIL_LINK);
+    if ($link == IMAGE_NCCK_LINK_CONTENT) {
+      $link = 'node/' . $node->nid;
+    }
+    else if ($link == IMAGE_NCCK_LINK_PROVIDER) {
+      $link = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'embedded_link', $code, $item['data']);
+    }
+    else {
+      $link = NULL;
+    }
+    $attributes = array();
+    $target = variable_get('lightbox2_node_link_target', FALSE);
+    if (!empty($target)) {
+      $attributes = array('target' => $target);
+    }
+    $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
+    if (!empty($node_link_text) && !empty($link)) {
+      $node_link = '<br /><br />'. l($node_link_text, $link, $attributes);
+    }
+
+    $title = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_title', $code, $item['data']);
+    $link_attributes = array(
+      'rel' => $rel,
+      'title' => $title . $node_link,
+    );
+
+    $url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $width, $height, $formatter, $field, $item, $node);
+    $image = theme('image', $url, $title, $title, $attributes, false);
+
+    $full_width = $field['widget']['full_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
+    $full_height = $field['widget']['full_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
+    $full_image_url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $full_width, $full_height, $formatter, $field, $item, $node);
+
+    $output = l($image, $full_image_url, $link_attributes, NULL, NULL, FALSE, TRUE);
+  }
+  return $output;
+
+}
 
 /**
  * Return TRUE if current path is disabled for lightbox according to
