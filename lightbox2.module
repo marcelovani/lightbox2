@@ -495,6 +495,14 @@ function lightbox2_iframe_settings_form() {
     '#size' => 20,
   );
 
+  // Add option for iframe border.
+  $form['lightbox2_frame_border'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Border'),
+    '#description' => t('Enable iframe border.  You can modify the border style in your theme\'s css file using the iframe\'s id "lightboxFrame".'),
+    '#default_value' => variable_get('lightbox2_frame_border', 1),
+  );
+
   return system_settings_form($form);
 }
 
@@ -983,6 +991,7 @@ function lightbox2_add_files() {
     // Iframe settings.
     'iframe_width' => variable_get('lightbox2_default_frame_width', 600),
     'iframe_height' => variable_get('lightbox2_default_frame_height', 400),
+    'iframe_border' => variable_get('lightbox2_frame_border', 1),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 

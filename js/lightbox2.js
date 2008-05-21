@@ -76,6 +76,7 @@ function lightbox2_lite_auto_handler(event) {
     // Disable iframe options.
     $("input[@name=lightbox2_default_frame_width]").attr("disabled", "disabled");
     $("input[@name=lightbox2_default_frame_height]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_frame_border]").attr("disabled", "disabled");
 
     // Disable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").attr("disabled", "disabled");
@@ -103,6 +104,7 @@ function lightbox2_lite_auto_handler(event) {
     // Enable iframe options.
     $("input[@name=lightbox2_default_frame_width]").removeAttr("disabled");
     $("input[@name=lightbox2_default_frame_height]").removeAttr("disabled");
+    $("input[@name=lightbox2_frame_border]").removeAttr("disabled");
 
     // Enable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").removeAttr("disabled");
