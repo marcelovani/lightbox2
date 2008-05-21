@@ -92,6 +92,7 @@ var Lightbox = {
   isLightframe : false,
   iframe_width : 600,
   iframe_height : 400,
+  iframe_border : 1,
 
   // Video options.
   isVideo : false,
@@ -119,6 +120,7 @@ var Lightbox = {
     Lightbox.alternative_layout = settings.use_alt_layout;
     Lightbox.iframe_width = settings.iframe_width;
     Lightbox.iframe_height = settings.iframe_height;
+    Lightbox.iframe_border = settings.iframe_border;
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe'.
@@ -188,6 +190,9 @@ var Lightbox = {
     var LightboxFrame = document.createElement("iframe");
     LightboxFrame.setAttribute('id', 'lightboxFrame');
     LightboxFrame.style.display = 'none';
+    if (!Lightbox.iframe_border) {
+      LightboxFrame.style.border = 'none';
+    }
     FrameContainer.appendChild(LightboxFrame);
 
     var ImageContainer = document.createElement("div");
