@@ -64,21 +64,21 @@
 #prevLink {
   left: 0;
   float: left;
-  background: url(../images/prev.gif) left 15% no-repeat;
+  background: url(../images/prev_alt.gif) left 15% no-repeat;
 }
 
 #nextLink {
   right: 0;
   float: right;
-  background: url(../images/next.gif) left 15% no-repeat;
+  background: url(../images/next_alt.gif) right 15% no-repeat;
 }
 
 #prevLink:hover, #prevLink:visited:hover {
-  background: url(../images/prev_hover.gif) left 15% no-repeat;
+  background-position: right 15%;
 }
 
 #nextLink:hover, #nextLink:visited:hover {
-  background: url(../images/next_hover.gif) right 15% no-repeat;
+  background-position: left 15%;
 }
 
 #imageDataContainer {
@@ -151,7 +151,7 @@
 #bottomNavClose {
   display: block;
   z-index: 200;
-  background: url(../images/close.gif) right no-repeat;
+  background: url(../images/close.gif) left no-repeat;
   position: absolute;
   top: 5px;
   right: 5px;
@@ -160,7 +160,7 @@
 }
 
 #bottomNavClose:hover {
-  background: url(../images/close_hover.gif) right no-repeat;
+  background-position: right;
 }
 
 #loadingLink {
