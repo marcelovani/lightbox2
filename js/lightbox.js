@@ -613,7 +613,6 @@ var Lightbox = {
           photo.style.width = (imageWidth) + 'px';
           photo.style.height = (imageHeight) + 'px';
           Lightbox.resizeImageContainer(imageWidth, imageHeight);
-          Lightbox.inprogress = false;
 
           // Clear onLoad, IE behaves irratically with animated gifs otherwise.
           imgPreloader.onload = function() {};
@@ -745,18 +744,18 @@ var Lightbox = {
       Lightbox.updateDetails();
       this.preloadNeighborImages();
     }
-    this.inprogress = false;
+    Lightbox.inprogress = false;
 
     // Slideshow specific stuff.
     if (Lightbox.isSlideshow) {
       if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
         if (Lightbox.autoExit) {
-          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(Lightbox.end, Lightbox.slideInterval, 'slideshow');
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.end('slideshow');}, Lightbox.slideInterval);
         }
       }
       else {
         if (!Lightbox.isPaused) {
-          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(Lightbox.changeImage, Lightbox.slideInterval, Lightbox.activeImage + 1);
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.changeImage(Lightbox.activeImage + 1);}, Lightbox.slideInterval);
         }
       }
       if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1 && !Lightbox.isPaused) {
