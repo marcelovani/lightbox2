@@ -33,14 +33,14 @@
 }
 
 #loading {
-  position: absolute;
-  top: 40%;
-  left: 45%;
-  *left: 0%;
   height: 25%;
   width: 100%;
   text-align: center;
   line-height: 0;
+  position: absolute;
+  top: 40%;
+  left: 45%;
+  *left: 0%;
 }
 
 #hoverNav {
