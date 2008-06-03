@@ -1268,6 +1268,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $rel = $rel .'['. $field['field_name'] . $item['nid'] .']';
   }
 
+  $node = node_load($node->nid);
   $node_link = '';
   $attributes = array();
   if (!empty($item['nid'])) {
@@ -1287,9 +1288,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
     $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
   }
+  $image_title = (!empty($item['title']) ? $item['title'] : (!empty($item['alt']) ? $item['alt'] : $node->title));
   $link_attributes = array(
     'rel' => $rel,
-    'title' => $item['title'] . $node_link,
+    'title' => $image_title . $node_link,
   );
 
   if ($view_preset == 'original') {
