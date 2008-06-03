@@ -22,7 +22,10 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_page_count_str]").attr("disabled", "disabled");
     $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
     $("select[@name='lightbox2_trigger_image_size[]']").attr("disabled", "disabled");
-    $("input[@name=lightbox2_overlay_opacity]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_overlay_opacity]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_image_ncck_group_node_id]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_imagefield_group_node_id]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_imagefield_use_node_title]").attr("disabled", "disabled");
   }
   else {
     $("input[@name=lightbox2_use_alt_layout]").removeAttr("disabled");
@@ -33,7 +36,10 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_page_count_str]").removeAttr("disabled");
     $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
     $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
-    $("input[@name=lightbox2_overlay_opacity]").removeAttr("disabled");
+    $("select[@name=lightbox2_overlay_opacity]").removeAttr("disabled");
+    $("select[@name=lightbox2_image_ncck_group_node_id]").removeAttr("disabled");
+    $("select[@name=lightbox2_imagefield_group_node_id]").removeAttr("disabled");
+    $("input[@name=lightbox2_imagefield_use_node_title]").removeAttr("disabled");
     alt_layout_handler();
   }
 }

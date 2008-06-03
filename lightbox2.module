@@ -368,6 +368,12 @@ function lightbox2_general_settings_form() {
         '#options' => $cck_options,
         '#default_value' => variable_get('lightbox2_imagefield_group_node_id', 1),
       );
+      $form['lightbox2_cck_options']['lightbox2_imagefield_use_node_title'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Use Node Title as Caption'),
+        '#description' => t('By default, the caption for imagefields is the image title text configured.  If no title is configured, then the alt text will be used.  This option allows you to override that and always display the node title as the image caption.'),
+        '#default_value' => variable_get('lightbox2_imagefield_use_node_title', FALSE),
+      );
     }
   }
 
@@ -1268,7 +1274,6 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $rel = $rel .'['. $field['field_name'] . $item['nid'] .']';
   }
 
-  $node = node_load($node->nid);
   $node_link = '';
   $attributes = array();
   if (!empty($item['nid'])) {
@@ -1288,7 +1293,11 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
     $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
   }
-  $image_title = (!empty($item['title']) ? $item['title'] : (!empty($item['alt']) ? $item['alt'] : $node->title));
+  $image_title = (!empty($item['title']) ? $item['title'] : $item['alt']);
+  if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
+    $node = node_load($node->nid);
+    $image_title = $node->title;
+  }
   $link_attributes = array(
     'rel' => $rel,
     'title' => $image_title . $node_link,
