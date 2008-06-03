@@ -582,7 +582,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Image Nodes'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for image nodes will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_image_node', 2),
+    '#default_value' => variable_get('lightbox2_image_node', 0),
   );
 
   // Add drop-down for list of available image sizes.
@@ -627,7 +627,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Flickr images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for Flickr images will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_flickr', 2),
+    '#default_value' => variable_get('lightbox2_flickr', 0),
   );
 
   // Add checkbox for gallery2 block image support.
@@ -636,7 +636,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Gallery2 block images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for images, contained within Gallery2 image blocks, will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_gallery2_blocks', 2),
+    '#default_value' => variable_get('lightbox2_gallery2_blocks', 0),
   );
 
   // Add checkbox for inline image support.
@@ -645,7 +645,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Inline images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for Inline images will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_inline', 2),
+    '#default_value' => variable_get('lightbox2_inline', 0),
   );
 
   // Add checkbox for image assist custom size images.
@@ -654,7 +654,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Image Assist custom size images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for custom size images, displayed by the Image Assist module, will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_image_assist_custom', 2),
+    '#default_value' => variable_get('lightbox2_image_assist_custom', 0),
   );
 
   // Add text box for custom trigger classes.
