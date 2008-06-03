@@ -95,6 +95,7 @@ var Lightbox = {
   iframe_border : 1,
 
   // Video options.
+  enableVideo : false,
   isVideo : false,
   videoId : false,
   videoWidth : 400,
@@ -121,6 +122,7 @@ var Lightbox = {
     Lightbox.iframe_width = settings.iframe_width;
     Lightbox.iframe_height = settings.iframe_height;
     Lightbox.iframe_border = settings.iframe_border;
+    Lightbox.enableVideo = settings.enable_video;
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe'.
@@ -384,7 +386,7 @@ var Lightbox = {
         else if (relAttribute.toLowerCase().match('lightframe')) {
           $(anchor).click(function(e) { Lightbox.start(this, false, true, false); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
-        else if (relAttribute.toLowerCase().match('lightvideo')) {
+        else if (Lightbox.enableVideo && relAttribute.toLowerCase().match('lightvideo')) {
           $(anchor).click(function(e) { Lightbox.start(this, false, false, true); if (e.preventDefault) {e.preventDefault(); } return false; });
         }
       }
@@ -408,7 +410,7 @@ var Lightbox = {
         else if (relAttribute.toLowerCase().match('lightframe')) {
           $(area).click(function(e) { Lightbox.start(this, false, true, false); if (e.preventDefault) {e.preventDefault();} return false; });
         }
-        else if (relAttribute.toLowerCase().match('lightvideo')) {
+        else if (Lightbox.enableVideo && relAttribute.toLowerCase().match('lightvideo')) {
           $(area).click(function(e) { Lightbox.start(this, false, false, true); if (e.preventDefault) {e.preventDefault();} return false; });
         }
       }
@@ -572,6 +574,7 @@ var Lightbox = {
         imgPreloader.onload = function() {
           var photo = document.getElementById('lightboxImage');
           photo.src = Lightbox.imageArray[Lightbox.activeImage][0];
+          photo.alt = Lightbox.imageArray[Lightbox.activeImage][1];
 
           var imageWidth = imgPreloader.width;
           var imageHeight = imgPreloader.height;
@@ -619,6 +622,7 @@ var Lightbox = {
         };
 
         imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
+        imgPreloader.alt = Lightbox.imageArray[Lightbox.activeImage][1];
       }
 
       // Set up frame size, etc.
@@ -957,10 +961,12 @@ var Lightbox = {
     if ((Lightbox.imageArray.length - 1) > Lightbox.activeImage) {
       preloadNextImage = new Image();
       preloadNextImage.src = Lightbox.imageArray[Lightbox.activeImage + 1][0];
+      preloadNextImage.alt = Lightbox.imageArray[Lightbox.activeImage + 1][1];
     }
     if (Lightbox.activeImage > 0) {
       preloadPrevImage = new Image();
       preloadPrevImage.src = Lightbox.imageArray[Lightbox.activeImage - 1][0];
+      preloadPrevImage.alt = Lightbox.imageArray[Lightbox.activeImage - 1][1];
     }
 
   },

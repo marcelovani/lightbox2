@@ -315,6 +315,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', FALSE),
   );
 
+  // Add checkbox for video support.
+  $form['lightbox2_enable_video'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Video Support'),
+    '#description' => t('By default, video support is disabled in order to reduce the amount of javascript needed.  Checking this box will enable it.'),
+    '#default_value' => variable_get('lightbox2_enable_video', FALSE),
+  );
+
    // Add textarea for urls without lightbox.
   $form['lightbox2_disable_these_urls']  = array(
     '#type' => 'textarea',
@@ -996,6 +1004,8 @@ function lightbox2_add_files() {
     'iframe_width' => variable_get('lightbox2_default_frame_width', 600),
     'iframe_height' => variable_get('lightbox2_default_frame_height', 400),
     'iframe_border' => variable_get('lightbox2_frame_border', 1),
+    // Video settings.
+    'enable_video' => variable_get('lightbox2_enable_video', FALSE),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
@@ -1015,8 +1025,10 @@ function lightbox2_add_files() {
     if ($image_node_handler || $flickr_image_handler || $gallery2_block_handler || $inline_image_handler || $image_assist_handler || $custom_triggers != '') {
       drupal_add_js($path .'/js/auto_image_handling.js', 'module', $js_location);
     }
+    if (variable_get('lightbox2_enable_video', FALSE)) {
+      drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
+    }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
-    drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
 
   }
   // Lightbox Lite.
@@ -1098,7 +1110,7 @@ function lightbox2_field_formatter_info() {
       'field types' => array('image_ncck'),
     );
   }
-  if (module_exists('emfield') && module_exists('video_cck')) {
+  if (variable_get('lightbox2_enable_video', FALSE) && module_exists('emfield') && module_exists('video_cck')) {
     $formatters['lightvideo'] = array(
       'label' => t('Lightbox2: Image Thumbnail -> Full Size Video'),
       'field types' => array('video_cck'),
@@ -1115,8 +1127,8 @@ function lightbox2_field_formatter_info() {
 function lightbox2_field_formatter($field, $item, $formatter, $node) {
 
   // Emfield video fields.
-  if ($formatter == 'lightvideo') {
-    if (module_exists('emfield') && module_exists('video_cck') && $formatter == 'lightvideo') {
+  if ($formatter == 'lightvideo' && variable_get('lightbox2_enable_video', FALSE)) {
+    if (module_exists('emfield') && module_exists('video_cck')) {
       $formatter = 'video_cck';
       return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
     }
