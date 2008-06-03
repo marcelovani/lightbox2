@@ -33,6 +33,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_image_ncck_group_node_id');
   variable_del('lightbox2_overlay_opacity');
   variable_del('lightbox2_js_location');
+  variable_del('lightbox2_enable_video');
 
   // Remove slideshow settings.
   variable_del('lightbox2_slideshow_interval');
