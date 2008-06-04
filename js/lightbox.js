@@ -248,8 +248,8 @@ var Lightbox = {
     }
 
     // Setup onclick handlers.
-    $('#overlay').click(function() { Lightbox.end(); } ).hide();
-    $('#lightbox, #loadingLink, #bottomNavClose').click(function() { Lightbox.end(); return false;} );
+    $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
+    $('#lightbox, #loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false;} );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $('#bottomNavZoom').click(function() { Lightbox.changeImage(Lightbox.activeImage, true); return false; } );
@@ -306,6 +306,8 @@ var Lightbox = {
   // Display overlay and lightbox. If image is part of a set, add siblings to
   // imageArray.
   start: function(imageLink, slideshow, lightframe, lightvideo) {
+
+    Lightbox.isPaused = false;
 
     // Replaces hideSelectBoxes() and hideFlash() calls in original lightbox2.
     Lightbox.toggleSelectsFlash('hide');
@@ -422,6 +424,7 @@ var Lightbox = {
         }
       }
       Lightbox.inprogress = true;
+      Lightbox.activeImage = imageNum;
 
       var settings = Drupal.settings.lightbox2;
       if (Lightbox.disableZoom && !Lightbox.isSlideshow) {
@@ -429,7 +432,6 @@ var Lightbox = {
       }
       Lightbox.isZoomedIn = zoomIn;
 
-      Lightbox.activeImage = imageNum;
 
       // Hide elements during transition.
       $('#loading').css({zIndex: '10500'}).show();
@@ -789,7 +791,7 @@ var Lightbox = {
 
     // Close lightbox.
     if (key == 'x' || key == 'o' || key == 'c' || keycode == escapeKey) {
-      Lightbox.end();
+      Lightbox.end('forceClose');
 
     // Display previous image (p, <-).
     }
@@ -844,10 +846,15 @@ var Lightbox = {
     if (Lightbox.isSlideshow && Lightbox.isPaused && !closeClick) {
       return;
     }
+    // To prevent double clicks on navigation links.
+    if (Lightbox.inprogress === true && caller != 'forceClose') {
+      return;
+    }
     Lightbox.disableKeyboardNav();
     $('#lightbox').hide();
     $("#overlay").fadeOut();
-    Lightbox.activeImage = null;
+    Lightbox.isPaused = true;
+    Lightbox.inprogress = false;
     // Replaces calls to showSelectBoxes() and showFlash() in original
     // lightbox2.
     Lightbox.toggleSelectsFlash('visible');
@@ -1030,7 +1037,7 @@ var Lightbox = {
     if (hideId == "lightshowPlay") {
       Lightbox.isPaused = false;
       if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
-        Lightbox.end();
+        Lightbox.end('autoEnd');
       }
       else {
         Lightbox.changeImage(Lightbox.activeImage + 1);
