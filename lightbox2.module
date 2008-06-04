@@ -1439,9 +1439,11 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
       $link = NULL;
     }
     $attributes = array();
+    $attributes['width'] = $width;
+    $attributes['height'] = $height;
     $target = variable_get('lightbox2_node_link_target', FALSE);
     if (!empty($target)) {
-      $attributes = array('target' => $target);
+      $attributes['target'] = $target;
     }
     $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
     if (!empty($node_link_text) && !empty($link)) {
