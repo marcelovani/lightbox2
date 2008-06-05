@@ -19,8 +19,9 @@
 
 var Lightbox = {
   overlayOpacity : 0.6, // Controls transparency of shadow overlay.
-  fadeInSpeed: 'normal', // Controls the speed of the image appearance.
-  slideDownSpeed: 'slow', // Controls the speed of the image resizing animation.
+  resizeSpeed: 'normal', // Controls the speed of the lightbox resizing animation.
+  fadeInSpeed: 'normal', // Controls the speed of the image and overlay appearance.
+  slideDownSpeed: 'slow', // Controls the speed of the image details appearance.
   borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
   infoHeight: 20,
   alternative_layout : false,
@@ -319,7 +320,7 @@ var Lightbox = {
       zIndex: '10090',
       height: arrayPageSize[1] + 'px',
       opacity : Lightbox.overlayOpacity
-    }).fadeIn();
+    }).fadeIn(Lightbox.fadeInSpeed);
 
     Lightbox.isSlideshow = slideshow;
     Lightbox.isLightframe = lightframe;
@@ -559,7 +560,7 @@ var Lightbox = {
     wDiff = this.widthCurrent - widthNew;
     hDiff = this.heightCurrent - heightNew;
 
-    $('#outerImageContainer').animate({width: widthNew, height: heightNew}, 'linear', function() {
+    $('#outerImageContainer').animate({width: widthNew, height: heightNew}, Lightbox.resizeSpeed, 'linear', function() {
       Lightbox.showImage();
     });
 
