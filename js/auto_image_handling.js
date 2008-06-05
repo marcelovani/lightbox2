@@ -27,7 +27,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
     link_target = 'target="'+ settings.node_link_target +'"';
   }
 
-  $("a["+classes+"]").each(function(i) {
+  $("a["+classes+"], a:has("+classes+")").each(function(i) {
 
     if ((!settings.disable_for_gallery_lists && !settings.disable_for_acidfree_gallery_lists) || (!$(this).parents("td.giAlbumCell").attr("class") && !$(this).parents(".galleries").length && !$(this).parents(".acidfree-folder").length && !$(this).parents(".acidfree-list").length) || ($(this).parents(".galleries").length && !settings.disable_for_gallery_lists) || (($(this).parents(".acidfree-folder").length || $(this).parents(".acidfree-list").length) && !settings.disable_for_acidfree_gallery_lists)) {
 
