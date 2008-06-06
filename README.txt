@@ -56,7 +56,7 @@ INSTALLATION
    Lightbox Functionality to your Images' section below.
 6. If you want to be able to show node content in the lightbox without the
    sidebars, then copy the page-node-lightbox2.tpl.php file to your theme's
-   directory and ensure it is readable.
+   directory and ensure it is readable.  Customise as appropriate.
 
 
 ADDING LIGHTBOX FUNCTIONALITY TO YOUR IMAGES
