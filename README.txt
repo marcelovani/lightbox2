@@ -54,6 +54,10 @@ INSTALLATION
 4. Configure the module at admin/settings/lightbox2.
 5. Modify your image links to open in a lightbox where necessary, see "Adding
    Lightbox Functionality to your Images' section below.
+6. Lightbox2 can show node content in a lightbox without the sidebars.  However
+   if you want to be able to show node content in the lightbox without the
+   logo and header, copy the page-node-lightbox2.tpl.php file to your theme's
+   directory and ensure it is readable.
 
 
 ADDING LIGHTBOX FUNCTIONALITY TO YOUR IMAGES
