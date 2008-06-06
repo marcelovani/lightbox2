@@ -1069,7 +1069,7 @@ function lightbox2_field_formatter_info() {
       $rules = _imagecache_get_presets();
     }
     $iframe['lightframe2][original][node'] = array(
-      'label' => 'Lightbox2 iframe: original->full node page',
+      'label' => 'Lightbox2 iframe: original->node page',
       'field types' => array('image'),
     );
     foreach ($rules as $ruleid => $view_rule) {
@@ -1239,6 +1239,8 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
  */
 function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $node, $rel = 'lightbox') {
 
+  // Can't show current node page in a lightframe on the node page.
+  // Switch instead to show it in a lightbox.
   if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
     $rel = 'lightbox';
     $item['lightbox_preset'] = 'original';
@@ -1291,7 +1293,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
   }
   if ($item['lightbox_preset'] == 'node') {
-    $output = l($image, 'node/'. $node->nid, $link_attributes, NULL, NULL, FALSE, TRUE);
+    $output = l($image, 'node/'. $node->nid .'/lightbox2', $link_attributes, NULL, NULL, FALSE, TRUE);
   }
   else if ($item['lightbox_preset'] == 'original') {
     $output = l($image, file_create_url($item['filepath']), $link_attributes, NULL, NULL, FALSE, TRUE);
@@ -1455,7 +1457,7 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
         'rel' => $rel,
         'title' => $title . $node_link,
       );
-      $output = l($image, $link, $link_attributes, NULL, NULL, FALSE, TRUE);
+      $output = l($image, $link .'/lightbox2', $link_attributes, NULL, NULL, FALSE, TRUE);
     }
   }
   return $output;

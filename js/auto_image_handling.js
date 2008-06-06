@@ -69,6 +69,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           var lang_pattern = new RegExp(settings.base_path + "\\w\\w\\/");
           orig_href = orig_href.replace(lang_pattern, settings.base_path);
         }
+        var frame_href = orig_href;
 
         // Handle flickr images.
         if ($(child).attr("class").match("flickr-photo-img") ||
@@ -88,6 +89,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           // Image assist uses "+" signs for spaces which doesn't work for
           // normal links.
           orig_href = orig_href.replace(/\+/, " ");
+          frame_href = orig_href;
           href = orig_href;
         }
 
@@ -123,6 +125,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               rel = rel_type + "["+ id +"]";
             }
           }
+          if (lightframe) {
+            frame_href = orig_href + "/lightbox2";
+          }
         }
 
         // Modify the image url.
@@ -135,7 +140,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           $(child).attr({title: img_title});
         }
         if (lightframe) {
-          href = orig_href;
+          href = frame_href;
         }
         if (!custom_class) {
           var title_link = "";
