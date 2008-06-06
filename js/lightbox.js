@@ -250,7 +250,8 @@ var Lightbox = {
 
     // Setup onclick handlers.
     $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
-    $('#lightbox, #loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
+    $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+    $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
     $('#bottomNavZoom').click(function() { Lightbox.changeImage(Lightbox.activeImage, true); return false; } );
