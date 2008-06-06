@@ -57,7 +57,7 @@ INSTALLATION
 6. Lightbox2 can show node content in a lightbox without the sidebars.  However
    if you want to be able to show node content in the lightbox without the
    logo and header, copy the page-node-lightbox2.tpl.php file to your theme's
-   directory and ensure it is readable.
+   directory and ensure it is readable.  Customise the file as appropriate.
 
 
 ADDING LIGHTBOX FUNCTIONALITY TO YOUR IMAGES
