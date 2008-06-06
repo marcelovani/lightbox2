@@ -1055,7 +1055,8 @@ function lightbox2_add_files() {
  * if emfield, image_ncck and/or video_cck modules exist.
  */
 function lightbox2_field_formatter_info() {
-  $formatter = array();
+  $formatters = array();
+  $lightbox = $slideshow = $iframe = array();
   if (module_exists('imagefield') && module_exists('imagecache')) {
     $rules = array();
     if (function_exists('imagecache_presets')) {
@@ -1067,42 +1068,44 @@ function lightbox2_field_formatter_info() {
     else {
       $rules = _imagecache_get_presets();
     }
-    $formatters['lightframe2][original][node'] = array(
-      'label' => 'Lightbox2 iframe: original->node page',
+    $iframe['lightframe2][original][node'] = array(
+      'label' => 'Lightbox2 iframe: original->full node page',
       'field types' => array('image'),
     );
     foreach ($rules as $ruleid => $view_rule) {
-      $formatters['lightbox2][original]['. $view_rule] = array(
+      $lightbox['lightbox2][original]['. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
         'field types' => array('image'),
       );
-      $formatters['lightbox2]['. $view_rule .'][original'] = array(
+      $lightbox['lightbox2]['. $view_rule .'][original'] = array(
         'label' => 'Lightbox2: '. $view_rule .'->original',
         'field types' => array('image'),
       );
-      $formatters['lightshow2][original]['. $view_rule] = array(
+      $slideshow['lightshow2][original]['. $view_rule] = array(
         'label' => 'Lightbox2 slideshow: original->'. $view_rule,
         'field types' => array('image'),
       );
-      $formatters['lightshow2]['. $view_rule .'][original'] = array(
+      $slideshow['lightshow2]['. $view_rule .'][original'] = array(
         'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
         'field types' => array('image'),
       );
       foreach ($rules as $rid => $lightbox_rule) {
-        $formatters['lightbox2]['. $view_rule .']['. $lightbox_rule] = array(
+        $lightbox['lightbox2]['. $view_rule .']['. $lightbox_rule] = array(
           'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image'),
         );
-        $formatters['lightshow2]['. $view_rule .']['. $lightbox_rule] = array(
+        $slideshow['lightshow2]['. $view_rule .']['. $lightbox_rule] = array(
           'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image'),
         );
-        $formatters['lightframe2]['. $view_rule .'][node'] = array(
+        $iframe['lightframe2]['. $view_rule .'][node'] = array(
           'label' => 'Lightbox2 iframe: '. $view_rule .'->node page',
           'field types' => array('image'),
         );
       }
     }
+    // Adding them now so they are in some sort of sensible order.
+    $formatters = array_merge($lightbox, $slideshow, $iframe);
   }
   if (module_exists('emfield') && module_exists('image_ncck')) {
     $formatters['lightbox2][image_ncck'] = array(
