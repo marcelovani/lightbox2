@@ -62,6 +62,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_node_link_target');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_disable_nested_acidfree_galleries');
+  variable_del('lightbox2_acidfree_video');
 }
 
 /**
