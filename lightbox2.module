@@ -222,7 +222,7 @@ function lightbox2_menu($may_cache) {
           'path' => 'node/'. arg(1) .'/lightframevideo',
           'callback' => 'lightbox2_acidfree_video',
           'callback arguments' => array(arg(1)),
-          'access' => user_access('access content'),
+          'access' => user_access('play video'),
           'type' => MENU_CALLBACK,
           );
       }
