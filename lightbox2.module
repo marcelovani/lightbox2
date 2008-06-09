@@ -216,6 +216,17 @@ function lightbox2_menu($may_cache) {
         'type' => MENU_CALLBACK,
         );
     }
+    if (module_exists('acidfree') && module_exists('video')) {
+      if (arg(0) == 'node' && arg(2) == 'lightframevideo' && is_numeric(arg(1))) {
+        $items[] = array(
+          'path' => 'node/'. arg(1) .'/lightframevideo',
+          'callback' => 'lightbox2_acidfree_video',
+          'callback arguments' => array(arg(1)),
+          'access' => user_access('access content'),
+          'type' => MENU_CALLBACK,
+          );
+      }
+    }
   }
   else {
     if (lightbox2_exclude_these_paths() != 1) {
@@ -687,6 +698,15 @@ function lightbox2_auto_image_handling_settings_form() {
       '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "acidfree" module.'),
       '#default_value' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
     );
+    // Add checkbox for enabling lightbox for acidfree videos.
+    if (module_exists("video")) {
+      $form['lightbox2_enable_acidfree_videos'] = array(
+        '#type' => 'checkbox',
+        '#title' => t('Enable Lightbox for Acidfree Videos'),
+        '#description' => t('Checking this box will enable the display of acidfree videos in a lightbox.  This only applies to videos created by the "video" module and which appear in an acidfree gallery.'),
+        '#default_value' => variable_get('lightbox2_enable_acidfree_videos', FALSE),
+      );
+    }
   }
 
   return system_settings_form($form);
@@ -996,6 +1016,7 @@ function lightbox2_add_files() {
     'custom_trigger_classes' => $custom_trigger_classes,
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
+    'enable_acidfree_videos' => variable_get('lightbox2_enable_acidfree_videos', FALSE),
     // Slideshow settings.
     'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
     'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
@@ -1516,4 +1537,19 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
     }
     return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $filepath);
   }
+}
+
+/**
+ * Display the video object.
+ *
+ * Displays the video object for a specified nid.  It is used for * displaying
+ * videos in acidfree lists in a lightbox when the thumbnail is clicked on.  It
+ * is only triggered for the url 'node/%nid/lightframevideo'.
+ *
+ * @param $nid
+ *   Unique identifier of the node.
+ */
+function lightbox2_acidfree_video($nid) {
+  $node = node_load($nid);
+  print theme('video_player', $node);
 }

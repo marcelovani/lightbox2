@@ -107,6 +107,7 @@ function lightbox2_lite_auto_handler(event) {
     $("textarea[@name=lightbox2_custom_trigger_classes]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_nested_galleries]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_nested_acidfree_galleries]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_enable_acidfree_videos]").attr("disabled", "disabled");
   }
   else {
     // Enable iframe options.
@@ -135,6 +136,7 @@ function lightbox2_lite_auto_handler(event) {
     $("select[@name='lightbox2_trigger_image_size[]']").removeAttr("disabled");
     $("input[@name=lightbox2_disable_nested_galleries]").removeAttr("disabled");
     $("input[@name=lightbox2_disable_nested_acidfree_galleries]").removeAttr("disabled");
+    $("input[@name=lightbox2_enable_acidfree_videos]").removeAttr("disabled");
     image_node_handler();
   }
 }
