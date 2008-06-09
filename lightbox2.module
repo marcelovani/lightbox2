@@ -229,7 +229,7 @@ function lightbox2_menu() {
       'page callback' => 'lightbox2_acidfree_video',
       'page arguments' => array(1),
       'access callback' => 'user_access',
-      'access arguments' => array('access content'),
+      'access arguments' => array('play video'),
       'type' => MENU_CALLBACK,
     );
   }
