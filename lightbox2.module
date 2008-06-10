@@ -216,6 +216,11 @@ function lightbox2_menu($may_cache) {
         'type' => MENU_CALLBACK,
         );
     }
+  }
+  else {
+    if (lightbox2_exclude_these_paths() != 1) {
+      lightbox2_add_files();
+    }
     if (module_exists('acidfree') && module_exists('video')) {
       if (arg(0) == 'node' && arg(2) == 'lightframevideo' && is_numeric(arg(1))) {
         $items[] = array(
@@ -226,11 +231,6 @@ function lightbox2_menu($may_cache) {
           'type' => MENU_CALLBACK,
           );
       }
-    }
-  }
-  else {
-    if (lightbox2_exclude_these_paths() != 1) {
-      lightbox2_add_files();
     }
   }
 
@@ -1148,6 +1148,12 @@ function lightbox2_field_formatter_info() {
       'field types' => array('video_cck'),
     );
   }
+  if (module_exists('filefield')) {
+    $formatters['lightframe2][filefield'] = array(
+      'label' => t('Lightbox2 iframe'),
+      'field types' => array('file'),
+    );
+  }
 
   return $formatters;
 }
@@ -1176,6 +1182,10 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
       return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
     }
 
+    // Filefield.
+    else if ($view_preset == 'filefield' && module_exists('filefield')) {
+      return lightbox2_filefield_formatter($field, $item, $formatter, $node);
+    }
 
     // Imagecache + imagefield image.
     else if (module_exists('imagefield') && module_exists('imagecache')) {
@@ -1211,9 +1221,6 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
   }
   else {
     return '';
-  }
-  if (lightbox2_exclude_these_paths() != 1) {
-    lightbox2_add_files();
   }
 
   $item = array_merge($item, (array)$file);
@@ -1552,4 +1559,77 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
 function lightbox2_acidfree_video($nid) {
   $node = node_load($nid);
   print theme('video_player', $node);
+}
+
+/**
+ * Function to display a filefield file in a lightbox.
+ *
+ * @param $field
+ *   The field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ */
+function lightbox2_filefield_formatter($field, $item, $formatter, $node) {
+
+  if (user_access('view filefield uploads') && is_array($item) && is_file($item['filepath']) && $item['list']) {
+    drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
+
+    $path = ($item['fid'] == 'upload')
+            ? file_create_filename($item['filename'], file_create_path($field['widget']['file_path']))
+            : $item['filepath'];
+    $icon = theme('filefield_icon', $item);
+    $description = $item['description'];
+
+    $node_link = '';
+    if (!empty($node_link_text) && !empty($link)) {
+      $target = variable_get('lightbox2_node_link_target', FALSE);
+      if (!empty($target)) {
+        $attributes = array('target' => $target);
+      }
+      $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
+      if (!empty($node_link_text)) {
+        $node_link .= '<br /><br />'. l($node_link_text, $link, $attributes);
+      }
+    }
+
+    $link_attributes = array();
+    $ext = array_pop(explode('.', $item['filename']));
+    if (lightbox2_supported_file_extension($ext)) {
+      $link_attributes = array(
+        'rel' => 'lightframe',
+        'title' => $description . $node_link,
+      );
+    }
+
+    $url = file_create_url($path);
+    return '<div class="filefield-item">'. $icon . l($description, $url, $link_attributes) .'</div>';
+  }
+  return '';
+}
+
+/**
+ * Check whether a given file extension is supported by the lightbox iframe.
+ */
+function lightbox2_supported_file_extension($ext) {
+  $extensions = array(
+    // Image extensions.
+    'png', 'jpg', 'jpeg', 'gif', 'bmp',
+    // Movie extensions.
+    'dv', 'mov', 'moov', 'movie', 'mp4',
+    'asf', 'wm', 'wmv', 'avi', 'mpg', 'mpeg',
+    // Website extensions.
+    'asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4',
+    'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs',
+    // Other extensions.
+    'pdf',
+  );
+  if (in_array(strtolower($ext), $extensions)) {
+    return true;
+  }
+
+  return false;
 }

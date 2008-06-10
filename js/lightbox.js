@@ -565,11 +565,10 @@ var Lightbox = {
       Lightbox.showImage();
     });
 
-
     // If new and old image are same size and no scaling transition is
     // necessary.  Do a quick pause to prevent image flicker.
     if ((hDiff === 0) && (wDiff === 0)) {
-      if (navigator.appVersion.indexOf("MSIE") != -1) {
+      if ($.browser.msie) {
         Lightbox.pause(250);
       }
       else {
@@ -582,7 +581,6 @@ var Lightbox = {
       $('#prevLink, #nextLink').css({height: imgHeight + 'px'});
     }
     $('#imageDataContainer').css({width: widthNew + 'px'});
-
   },
 
   // showImage()
@@ -656,6 +654,16 @@ var Lightbox = {
       pageHeight = pageHeight + arrayPageScroll[1] + (arrayPageSize[3] / 10);
     }
     $('#overlay').css({height: pageHeight + 'px'});
+
+    // Gecko browsers (e.g. Firefox, SeaMonkey, etc) don't handle pdfs as
+    // expected.
+    if ($.browser.mozilla) {
+      if (Lightbox.imageArray[Lightbox.activeImage][0].indexOf(".pdf") != -1) {
+        setTimeout(function () {
+          document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
+        }, 1000);
+      }
+    }
   },
 
   // updateDetails()
@@ -868,6 +876,12 @@ var Lightbox = {
     }
     else if (Lightbox.isLightframe) {
       document.getElementById("lightboxFrame").src = '';
+      if ($.browser.safari) {
+        var iFrame = document.getElementById("lightboxFrame");
+        var parent = iFrame.parentNode;
+        parent.removeChild(iFrame);
+        parent.appendChild(iFrame);
+      }
       $('#lightboxFrame, #frameContainer').hide();
     }
     else if (Lightbox.isVideo) {
