@@ -333,13 +333,33 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_enable_video', FALSE),
   );
 
-   // Add textarea for urls without lightbox.
-  $form['lightbox2_disable_these_urls']  = array(
-    '#type' => 'textarea',
-    '#title' => t('Disable LightBox for these urls'),
-    '#description' => t('List the urls where the lightbox should be disabled, e.g. \"node/add/page\".  Use &lt;front&gt; to match the front page.  Put each url on a separate line. You can use the % character as a wildcard.'),
-    '#default_value' => variable_get('lightbox2_disable_these_urls', ''),
+  // Add fieldset for page specific lightbox2 settings.
+  $form['lightbox2_page_init'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Page Specific Lightbox2 Settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
   );
+  // Add radio buttons for the actions to take for the listed pages, i.e.
+  // disable or enable the lightbox functionality.
+  $page_options = array(
+    'page_enable' => t('Load only on the listed pages.'),
+    'page_disable' => t('Load on every page except the listed pages.'),
+  );
+  $form['lightbox2_page_init']['lightbox2_page_init_action'] = array(
+    '#type' => 'radios',
+    '#options' => $page_options,
+    '#title' => t('Enable Lightbox2 on Specific Pages'),
+    '#default_value' => variable_get('lightbox2_page_init_action', 'page_disable'),
+  );
+  // Add text input for list of pages to take specific action on.
+  $form['lightbox2_page_init']['lightbox2_page_list'] = array(
+    '#type' => 'textarea',
+    '#title' => t('Pages'),
+    '#description' => t('List one page per line as Drupal paths.  The % character is a wildcard.  Example paths are "node/add/page" and "node/add/%".  Use &lt;front&gt; to match the front page.'),
+    '#default_value' => variable_get('lightbox2_page_list', ''),
+  );
+
 
   // Define cck settings fieldset.
   /* ------------------------------------ */
@@ -1516,17 +1536,19 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
 
 /**
  * Return TRUE if current path is disabled for lightbox according to
- * lightbox2_disable_these_urls.
+ * lightbox2_page_list and lightbox2_page_init_action.
  */
 function lightbox2_exclude_these_paths() {
-  // Use lightbox if this url is not excluded.
-  $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
+  $action = variable_get('lightbox2_page_init_action', 'page_disable');
+  $page_list = variable_get('lightbox2_page_list', '');
 
-  if (!empty($disabled_urls)) {
-    return drupal_match_path($_GET['q'], $disabled_urls);
+  if (!empty($page_list)) {
+    if (drupal_match_path($_GET['q'], $page_list)) {
+      return ($action == 'page_disable' ? 1 : 0);
+    }
   }
 
-  return 0;
+  return ($action == 'page_disable' ? 0 : 1);
 }
 
 /**
@@ -1761,7 +1783,7 @@ function lightbox2_supported_file_extension($ext) {
     // Other extensions.
     'pdf',
   );
-  if (in_array(strtolower($ext), $extensions)) {
+  if (in_array(drupal_strtolower($ext), $extensions)) {
     return true;
   }
 

@@ -29,6 +29,8 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_page_count_str');
   variable_del('lightbox2_disable_zoom');
   variable_del('lightbox2_enable_video');
+  variable_del('lightbox2_page_init_action');
+  variable_del('lightbox2_page_list');
   variable_del('lightbox2_disable_these_urls');
   variable_del('lightbox2_imagefield_group_node_id');
   variable_del('lightbox2_imagefield_use_node_title');
@@ -109,3 +111,17 @@ function lightbox2_update_2() {
 
   return array();
 }
+
+/**
+ * 'lightbox2_disable_these_urls' was renamed to 'lightbox2_page_list'.
+ * 'lightbox2_page_init_action' was also added which determines whether the
+ * lightbox functionality should be enabled or disabled for the page list.
+ */
+function lightbox2_update_3() {
+  $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
+  variable_set('lightbox2_page_init_action', 'page_disable');
+  variable_set('lightbox2_page_list', $disabled_urls);
+
+  return array();
+}
+
