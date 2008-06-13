@@ -617,15 +617,15 @@ function lightbox2_general_settings_form_validate($form_id, $form_values) {
     form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
   }
 
-  if (!is_numeric($resize_speed) || $resize_speed < 0 || $resize_speed > 10) {
+  if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {
     form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
   }
 
-  if (!is_numeric($fadein_speed) || $fadein_speed < 0 || $fadein_speed > 10) {
+  if (!is_numeric($fadein_speed) || $fadein_speed <= 0 || $fadein_speed >= 10) {
     form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
   }
 
-  if (!is_numeric($slide_down_speed) || $slide_down_speed < 0 || $slide_down_speed > 10) {
+  if (!is_numeric($slide_down_speed) || $slide_down_speed <= 0 || $slide_down_speed >= 10) {
     form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
   }
 }
