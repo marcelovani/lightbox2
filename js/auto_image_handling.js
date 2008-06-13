@@ -116,7 +116,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
 
         // Set the href attribute.
-        else if (settings.image_node_sizes != '()') {
+        else if (settings.image_node_sizes != '()' && !custom_class) {
           href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/\w*)/, ((settings.display_image_size === "")?"$1/_original":"$1/"+ settings.display_image_size));
           if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
             rel = rel_type + "[node_images]";
@@ -154,6 +154,13 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           });
         }
         else {
+          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
+            rel = rel_type + "[" + $(child).attr("class") + "]";
+            if ($(child).parents("div.block-image").attr("class")) {
+              id = $(child).parents("div.block-image").attr("id");
+              rel = rel_type + "["+ id +"]";
+            }
+          }
           $(this).attr({
             title: alt,
             rel: rel,
@@ -207,7 +214,7 @@ function lightbox2_image_nodes() {
 
     // Select the enabled image types.
     lightbox2_init_triggers(settings.trigger_lightbox_classes, "lightbox_ungrouped");
-    lightbox2_init_triggers(settings.custom_trigger_classes, "lightbox_ungrouped", true);
+    lightbox2_init_triggers(settings.custom_trigger_classes, settings.custom_class_handler, true);
     lightbox2_init_triggers(settings.trigger_lightbox_group_classes, "lightbox");
     lightbox2_init_triggers(settings.trigger_slideshow_classes, "lightshow");
     lightbox2_init_triggers(settings.trigger_lightframe_classes, "lightframe_ungrouped");

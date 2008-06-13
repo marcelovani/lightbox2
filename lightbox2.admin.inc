@@ -320,20 +320,22 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
   $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
   $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
 
-  if (!_lightbox2_validate_hex_color($hex_colour)) {
-    form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
-  }
+  if (!$form_state['values']['lightbox2_lite']) {
+    if (!_lightbox2_validate_hex_color($hex_colour)) {
+      form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
+    }
 
-  if (!is_numeric($resize_speed) || $resize_speed < 0 || $resize_speed > 10) {
-    form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
-  }
+    if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {
+      form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
+    }
 
-  if (!is_numeric($fadein_speed) || $fadein_speed < 0 || $fadein_speed > 10) {
-    form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
-  }
+    if (!is_numeric($fadein_speed) || $fadein_speed <= 0 || $fadein_speed >= 10) {
+      form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
+    }
 
-  if (!is_numeric($slide_down_speed) || $slide_down_speed < 0 || $slide_down_speed > 10) {
-    form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
+    if (!is_numeric($slide_down_speed) || $slide_down_speed <= 0 || $slide_down_speed >= 10) {
+      form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
+    }
   }
 }
 
@@ -494,17 +496,52 @@ function lightbox2_auto_image_handling_settings_form() {
     '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
 
-  // Define image nodes settings fieldset.
-  /* ------------------------------------- */
-  $form['lightbox2_image_node_options'] = array(
+  // Define general settings fieldset.
+  /* --------------------------------- */
+  $form['lightbox2_general_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Image node settings'),
+    '#title' => t('General settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => FALSE,
+  );
+  // Add text box for link text to node.
+  $form['lightbox2_general_options']['lightbox2_node_link_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text for Image Page Link'),
+    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.'),
+    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
+  );
+
+  // Add checkbox for node link target.
+  $form['lightbox2_general_options']['lightbox2_node_link_target'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open Image Page in New Window'),
+    '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
+    '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
+    '#return_value' => '_blank',
+  );
+
+
+  // Define handler settings fieldset.
+  /* --------------------------------- */
+  $form['handler_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Automatic Handlers'),
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
 
+  // Define image nodes settings fieldset.
+  /* ------------------------------------- */
+  $form['handler_options']['image_node_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Image node settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
   // Add checkbox for image nodes.
-  $form['lightbox2_image_node_options']['lightbox2_image_node']  = array(
+  $form['handler_options']['image_node_options']['lightbox2_image_node']  = array(
     '#type' => 'select',
     '#title' => t('Automatic handler for Image Nodes'),
     '#options' => $automatic_options,
@@ -521,7 +558,7 @@ function lightbox2_auto_image_handling_settings_form() {
       }
       $size_options[$size_key] = $size['label'];
     }
-    $form['lightbox2_image_node_options']['lightbox2_display_image_size'] = array(
+    $form['handler_options']['image_node_options']['lightbox2_display_image_size'] = array(
       '#type' => 'select',
       '#title' => t('Lightbox image display size'),
       '#options' => $size_options,
@@ -529,7 +566,7 @@ function lightbox2_auto_image_handling_settings_form() {
       '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
     );
 
-    $form['lightbox2_image_node_options']['lightbox2_trigger_image_size'] = array(
+    $form['handler_options']['image_node_options']['lightbox2_trigger_image_size'] = array(
       '#type' => 'select',
       '#multiple' => TRUE,
       '#title' => t('Image trigger size'),
@@ -541,15 +578,23 @@ function lightbox2_auto_image_handling_settings_form() {
   }
 
   // Add checkbox for disabling lightbox for gallery lists.
-  $form['lightbox2_image_node_options']['lightbox2_disable_nested_galleries']  = array(
+  $form['handler_options']['image_node_options']['lightbox2_disable_nested_galleries']  = array(
     '#type' => 'checkbox',
     '#title' => t('Disable Lightbox for Gallery Lists'),
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
     '#default_value' => variable_get('lightbox2_disable_nested_galleries', TRUE),
   );
 
+  // Define flickr fieldset.
+  /* ----------------------- */
+  $form['handler_options']['flickr_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Flickr Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   // Add checkbox for flickr image support.
-  $form['lightbox2_flickr'] = array(
+  $form['handler_options']['flickr_options']['lightbox2_flickr'] = array(
     '#type' => 'select',
     '#title' => t('Automatic handler for Flickr images'),
     '#options' => $automatic_options,
@@ -557,8 +602,16 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_flickr', 0),
   );
 
+  // Define gallery2 fieldset.
+  /* ------------------------- */
+  $form['handler_options']['gallery2_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Gallery2 Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   // Add checkbox for gallery2 block image support.
-  $form['lightbox2_gallery2_blocks'] = array(
+  $form['handler_options']['gallery2_options']['lightbox2_gallery2_blocks'] = array(
     '#type' => 'select',
     '#title' => t('Automatic handler for Gallery2 block images'),
     '#options' => $automatic_options,
@@ -566,8 +619,16 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_gallery2_blocks', 0),
   );
 
+  // Define inline fieldset.
+  /* ----------------------- */
+  $form['handler_options']['inline_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Inline Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   // Add checkbox for inline image support.
-  $form['lightbox2_inline'] = array(
+  $form['handler_options']['inline_options']['lightbox2_inline'] = array(
     '#type' => 'select',
     '#title' => t('Automatic handler for Inline images'),
     '#options' => $automatic_options,
@@ -575,8 +636,16 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_inline', 0),
   );
 
+  // Define image assist fieldset.
+  /* ----------------------------- */
+  $form['handler_options']['img_assist_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Image Assist Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
   // Add checkbox for image assist custom size images.
-  $form['lightbox2_image_assist_custom'] = array(
+  $form['handler_options']['img_assist_options']['lightbox2_image_assist_custom'] = array(
     '#type' => 'select',
     '#title' => t('Automatic handler for Image Assist custom size images'),
     '#options' => $automatic_options,
@@ -584,34 +653,41 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_image_assist_custom', 0),
   );
 
+  // Define custom fieldset.
+  /* ----------------------- */
+  $form['handler_options']['custom_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Custom Class Images'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Add checkbox for custom class image support.
+  $form['handler_options']['custom_options']['lightbox2_custom_class_handler'] = array(
+    '#type' => 'select',
+    '#title' => t('Automatic handler for custom class images'),
+    '#options' => $automatic_options,
+    '#description' => t('Choose how URLs for custom class images will be automatically handled.'),
+    '#default_value' => variable_get('lightbox2_custom_class_handler', 0),
+  );
   // Add text box for custom trigger classes.
-  $form['lightbox2_custom_trigger_classes'] = array(
+  $form['handler_options']['custom_options']['lightbox2_custom_trigger_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Custom image trigger classes'),
     '#description' => t('List the image classes which should trigger the lightbox when clicked on.  Put each class on a separate line.'),
     '#default_value' => variable_get('lightbox2_custom_trigger_classes', ''),
   );
 
-  // Add text box for link text to node.
-  $form['lightbox2_node_link_text'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Text for Image Page Link'),
-    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox'),
-    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
-  );
-
-  // Add checkbox for node link target.
-  $form['lightbox2_node_link_target'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Open Image Page in New Window'),
-   '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
-    '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
-    '#return_value' => '_blank',
-  );
-
   // Add checkbox for disabling lightbox for acidfree gallery lists.
   if (module_exists("acidfree")) {
-    $form['lightbox2_disable_nested_acidfree_galleries'] = array(
+    // Define acidfree settings fieldset.
+    /* ---------------------------------- */
+    $form['handler_options']['lightbox2_acidfree_options'] = array(
+      '#type' => 'fieldset',
+      '#title' => t('Acidfree settings'),
+      '#collapsible' => TRUE,
+      '#collapsed' => TRUE,
+    );
+    $form['handler_options']['lightbox2_acidfree_options']['lightbox2_disable_nested_acidfree_galleries'] = array(
       '#type' => 'checkbox',
       '#title' => t('Disable Lightbox for Acidfree Gallery Lists'),
       '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "acidfree" module.'),
@@ -619,7 +695,7 @@ function lightbox2_auto_image_handling_settings_form() {
     );
     // Add checkbox for enabling lightbox for acidfree videos.
     if (module_exists("video")) {
-      $form['lightbox2_enable_acidfree_videos'] = array(
+      $form['handler_options']['lightbox2_acidfree_options']['lightbox2_enable_acidfree_videos'] = array(
         '#type' => 'checkbox',
         '#title' => t('Enable Lightbox for Acidfree Videos'),
         '#description' => t('Checking this box will enable the display of acidfree videos in a lightbox.  This only applies to videos created by the "video" module and which appear in an acidfree gallery.'),

@@ -385,11 +385,31 @@ function lightbox2_add_files() {
   $path = drupal_get_path('module', 'lightbox2');
 
   // Initialise some variables.
-  $inline_image_handler = variable_get('lightbox2_inline', 2);
-  $flickr_image_handler = variable_get('lightbox2_flickr', 2);
-  $gallery2_block_handler = variable_get('lightbox2_gallery2_blocks', 2);
-  $image_assist_handler = variable_get('lightbox2_image_assist_custom', 2);
-  $image_node_handler = variable_get('lightbox2_image_node', 2);
+  $inline_image_handler = variable_get('lightbox2_inline', 0);
+  $flickr_image_handler = variable_get('lightbox2_flickr', 0);
+  $gallery2_block_handler = variable_get('lightbox2_gallery2_blocks', 0);
+  $image_assist_handler = variable_get('lightbox2_image_assist_custom', 0);
+  $image_node_handler = variable_get('lightbox2_image_node', 0);
+
+  $custom_class_handler = 0;
+  switch (variable_get('lightbox2_custom_class_handler', 0)) {
+    case 1:
+      $custom_class_handler = 'lightbox_ungrouped';
+      break;
+    case 2:
+      $custom_class_handler = 'lightbox';
+      break;
+    case 3:
+      $custom_class_handler = 'lightshow';
+      break;
+    case 4:
+      $custom_class_handler = 'lightframe_ungrouped';
+      break;
+    case 5:
+      $custom_class_handler = 'lightframe';
+      break;
+  }
+
 
   // Set the list of image classes to format urls for.
   $image_node_sizes = '';
@@ -509,7 +529,7 @@ function lightbox2_add_files() {
   // Custom images.
   $custom_triggers = variable_get('lightbox2_custom_trigger_classes', '');
   $custom_trigger_classes = '';
-  if (!empty($custom_triggers)) {
+  if ($custom_class_handler && !empty($custom_triggers)) {
     $trigger_classes = preg_split("/(\r\n|\n)/", $custom_triggers);
     foreach ($trigger_classes as $class) {
       if (!empty($class)) {
@@ -553,6 +573,7 @@ function lightbox2_add_files() {
     'trigger_slideshow_classes' => $trigger_slideshow_classes,
     'trigger_lightframe_classes' => $trigger_lightframe_classes,
     'trigger_lightframe_group_classes' => $trigger_lightframe_group_classes,
+    'custom_class_handler' => $custom_class_handler,
     'custom_trigger_classes' => $custom_trigger_classes,
     'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
     'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
