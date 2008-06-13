@@ -70,6 +70,7 @@ function image_node_handler(event) {
       $("select[@name=lightbox2_gallery2_blocks]").val() !== 0 ||
       $("select[@name=lightbox2_image_assist_custom]").val() !== 0 ||
       $("select[@name=lightbox2_inline]").val() !== 0 ||
+      $("select[@name=lightbox2_custom_class_handler]").val() !== 0 ||
       $("textarea[@name=lightbox2_custom_trigger_classes]").val() !== '') {
 
       $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
@@ -122,6 +123,7 @@ function lightbox2_lite_auto_handler(event) {
     $("select[@name=lightbox2_gallery2_blocks]").attr("disabled", "disabled");
     $("select[@name=lightbox2_image_assist_custom]").attr("disabled", "disabled");
     $("select[@name=lightbox2_inline]").attr("disabled", "disabled");
+    $("select[@name=lightbox2_custom_class_handler]").attr("disabled", "disabled");
     $("textarea[@name=lightbox2_custom_trigger_classes]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_nested_galleries]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_nested_acidfree_galleries]").attr("disabled", "disabled");
@@ -146,6 +148,7 @@ function lightbox2_lite_auto_handler(event) {
     $("select[@name=lightbox2_gallery2_blocks]").removeAttr("disabled");
     $("select[@name=lightbox2_image_assist_custom]").removeAttr("disabled");
     $("select[@name=lightbox2_inline]").removeAttr("disabled");
+    $("select[@name=lightbox2_custom_class_handler]").removeAttr("disabled");
     $("textarea[@name=lightbox2_custom_trigger_classes]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_target]").removeAttr("disabled");
@@ -174,6 +177,7 @@ if (Drupal.jsEnabled) {
     $("select[@name=lightbox2_gallery2_blocks]").bind("click", image_node_handler);
     $("select[@name=lightbox2_image_assist_custom]").bind("click", image_node_handler);
     $("select[@name=lightbox2_inline]").bind("click", image_node_handler);
+    $("select[@name=lightbox2_custom_class_handler]").bind("change", image_node_handler);
     $("textarea[@name=lightbox2_custom_trigger_classes]").bind("change", image_node_handler);
   });
 }

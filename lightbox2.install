@@ -67,6 +67,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_gallery2_blocks');
   variable_del('lightbox2_inline');
   variable_del('lightbox2_image_assist_custom');
+  variable_del('lightbox2_custom_class_handler');
   variable_del('lightbox2_custom_trigger_classes');
   variable_del('lightbox2_node_link_text');
   variable_del('lightbox2_node_link_target');
