@@ -18,7 +18,10 @@
  */
 
 var Lightbox = {
-  overlayOpacity : 0.6, // Controls transparency of shadow overlay.
+  overlayOpacity : 0.8, // Controls transparency of shadow overlay.
+  overlayColor : '000', // Controls colour of shadow overlay.
+  // Controls the order of the lightbox resizing animation sequence.
+  resizeSequence: 0, // 0: simultaneous, 1: width then height, 2: height then width.
   resizeSpeed: 'normal', // Controls the speed of the lightbox resizing animation.
   fadeInSpeed: 'normal', // Controls the speed of the image and overlay appearance.
   slideDownSpeed: 'slow', // Controls the speed of the image details appearance.
@@ -29,6 +32,7 @@ var Lightbox = {
   imageNum : null,
   activeImage : null,
   inprogress : false,
+  disableResize : false,
   disableZoom : false,
   isZoomedIn : false,
   rtl : false,
@@ -67,7 +71,13 @@ var Lightbox = {
 
     var settings = Drupal.settings.lightbox2;
     Lightbox.overlayOpacity = settings.overlay_opacity;
+    Lightbox.overlayColor = settings.overlay_color;
+    Lightbox.resizeSequence = settings.resize_sequence;
+    Lightbox.resizeSpeed = settings.resize_speed;
+    Lightbox.fadeInSpeed = settings.fade_in_speed;
+    Lightbox.slideDownSpeed = settings.slide_down_speed;
     Lightbox.rtl = settings.rtl;
+    Lightbox.disableResize = settings.disable_resize;
     Lightbox.disableZoom = settings.disable_zoom;
     Lightbox.slideInterval = settings.slideshow_interval;
     Lightbox.showPlayPause = settings.show_play_pause;
@@ -320,6 +330,7 @@ var Lightbox = {
       width: '100%',
       zIndex: '10090',
       height: arrayPageSize[1] + 'px',
+      backgroundColor : '#' + Lightbox.overlayColor,
       opacity : Lightbox.overlayOpacity
     }).fadeIn(Lightbox.fadeInSpeed);
 
@@ -429,7 +440,7 @@ var Lightbox = {
       Lightbox.activeImage = imageNum;
 
       var settings = Drupal.settings.lightbox2;
-      if (Lightbox.disableZoom && !Lightbox.isSlideshow) {
+      if (Lightbox.disableResize && !Lightbox.isSlideshow) {
         zoomIn = true;
       }
       Lightbox.isZoomedIn = zoomIn;
@@ -469,7 +480,7 @@ var Lightbox = {
             $('#bottomNavZoomOut, #bottomNavZoom').hide();
             if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
               ratio = ((targ.w / orig.w) < (targ.h / orig.h)) ? targ.w / orig.w : targ.h / orig.h;
-              if (!Lightbox.isSlideshow) {
+              if (!Lightbox.disableZoom && !Lightbox.isSlideshow) {
                 $('#bottomNavZoom').css({zIndex: '10500'}).show();
               }
             }
@@ -484,7 +495,7 @@ var Lightbox = {
             if ((orig.w >= targ.w || orig.h >= targ.h) && orig.h && orig.w) {
               // Only display zoom out button if not a slideshow and if the
               // buttons aren't disabled.
-              if (!Lightbox.disableZoom && Lightbox.isSlideshow === false) {
+              if (!Lightbox.disableResize && Lightbox.isSlideshow === false && !Lightbox.disableZoom) {
                 $('#bottomNavZoomOut').css({zIndex: '10500'}).show();
               }
             }
@@ -561,9 +572,20 @@ var Lightbox = {
     wDiff = this.widthCurrent - widthNew;
     hDiff = this.heightCurrent - heightNew;
 
-    $('#outerImageContainer').animate({width: widthNew, height: heightNew}, Lightbox.resizeSpeed, 'linear', function() {
-      Lightbox.showImage();
-    });
+    // Detect animation sequence.
+    if (Lightbox.resizeSequence) {
+      var animate1 = {width: widthNew};
+      var animate2 = {height: heightNew};
+      if (Lightbox.resizeSequence == 2) {
+        animate1 = {height: heightNew};
+        animate2 = {width: widthNew};
+      }
+      $('#outerImageContainer').animate(animate1, Lightbox.resizeSpeed).animate(animate2, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showImage(); });
+    }
+    // Simultaneous.
+    else {
+      $('#outerImageContainer').animate({width: widthNew, height: heightNew}, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showImage(); });
+    }
 
     // If new and old image are same size and no scaling transition is
     // necessary.  Do a quick pause to prevent image flicker.
@@ -818,7 +840,7 @@ var Lightbox = {
       }
     }
     // Zoom in.
-    else if (key == 'z' && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
+    else if (key == 'z' && !Lightbox.disableResize && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
       if (Lightbox.isZoomedIn) {
         Lightbox.changeImage(Lightbox.activeImage, false);
       }
