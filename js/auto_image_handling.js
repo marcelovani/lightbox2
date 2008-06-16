@@ -34,7 +34,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
       var child = $(this).find(classes);
 
       // Ensure the child has a class attribute we can work with.
-      if ($(child).attr("class")) {
+      if ($(child).attr("class") && !$(this).parents("div.acidfree-video").length) {
 
         // Set the alt text.
         var alt = $(child).attr("alt");
