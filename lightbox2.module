@@ -1186,6 +1186,7 @@ function lightbox2_add_files() {
   // Image nodes.
   if ($image_node_handler) {
     $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
+    usort($trigger_sizes, "sortByLength");
     foreach ($trigger_sizes as $size) {
       $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
@@ -1869,6 +1870,11 @@ function lightbox2_filefield_formatter($field, $item, $formatter, $node) {
 
 /**
  * Check whether a given file extension is supported by the lightbox iframe.
+ *
+ * @param $ext
+ *   File extension
+ * @return
+ *   TRUE if extension is supported.
  */
 function lightbox2_supported_file_extension($ext) {
   $extensions = array(
@@ -1884,10 +1890,10 @@ function lightbox2_supported_file_extension($ext) {
     'pdf',
   );
   if (in_array(drupal_strtolower($ext), $extensions)) {
-    return true;
+    return TRUE;
   }
 
-  return false;
+  return FALSE;
 }
 
 /**
@@ -1902,3 +1908,20 @@ function _lightbox2_validate_hex_color($hex) {
   return preg_match('!^[a-f0-9]{3}([a-f0-9]{3})?$!i', $hex);
 }
 
+/**
+ * Helper function to compare the string length of two items.  Used when trying
+ * to sort an array by value length.
+ *
+ * @param $a
+ *   String to compare.
+ * @param $b
+ *   String to compare.
+ * @return
+ *   0 if they are the same length, -1 if $a is longer than $b, 1 otherwise.
+ */
+function sortByLength($a, $b){
+  if ($a == $b) {
+    return 0;
+  }
+  return (drupal_strlen($a) > drupal_strlen($b) ? -1 : 1);
+}
