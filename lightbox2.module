@@ -498,6 +498,7 @@ function lightbox2_add_files() {
   // Image nodes.
   if ($image_node_handler) {
     $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
+    usort($trigger_sizes, "sortByLength");
     foreach ($trigger_sizes as $size) {
       $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
@@ -930,12 +931,12 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
  */
 function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = array()) {
 
-  $thumbnail = theme('video_cck_video_thumbnail', $field, $item, 'video_thumbnail', $node, true, $options);
+  $thumbnail = theme('video_cck_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
 
   $destination = 'video-cck/lightbox2/'. $node->nid .'/'. $field['widget']['video_width'] .'/'. $field['widget']['video_height'] .'/'. $field['field_name'] .'/'. $item['provider'] .'/'. $item['value'];
   $width = $field['widget']['video_width'] + 20;
   $height = $field['widget']['video_height'] + 20;
-  if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== false)) {
+  if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)) {
     $width = $field['widget']['video_width'] + 40;
     $height = $field['widget']['video_height'] + 40;
   }
@@ -1044,7 +1045,7 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     $title = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_title', $code, $item['data']);
 
     $url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $width, $height, $formatter, $field, $item, $node);
-    $image = theme('image', $url, $title, $title, $attributes, false);
+    $image = theme('image', $url, $title, $title, $attributes, FALSE);
 
     if ($orig_rel != 'lightframe') {
       $link_attributes = array(
@@ -1118,7 +1119,7 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
 
 function lightbox2_preprocess_page(&$variables) {
   if (arg(0) != 'node' || arg(2) != 'lightbox2') {
-    return;
+				return;
   }
   // Add favicon
   if (theme_get_setting('toggle_favicon')) {
@@ -1307,6 +1308,11 @@ function lightbox2_filefield_formatter($field, $item, $formatter, $node) {
 
 /**
  * Check whether a given file extension is supported by the lightbox iframe.
+ *
+ * @param $ext
+ *   File extension
+ * @return
+ *   TRUE if extension is supported.
  */
 function lightbox2_supported_file_extension($ext) {
   $extensions = array(
@@ -1322,9 +1328,27 @@ function lightbox2_supported_file_extension($ext) {
     'pdf',
   );
   if (in_array(drupal_strtolower($ext), $extensions)) {
-    return true;
+    return TRUE;
   }
 
-  return false;
+  return FALSE;
+}
+
+/**
+ * Helper function to compare the string length of two items.  Used when trying
+ * to sort an array by value length.
+ *
+ * @param $a
+ *   String to compare.
+ * @param $b
+ *   String to compare.
+ * @return
+ *   0 if they are the same length, -1 if $a is longer than $b, 1 otherwise.
+ */
+function sortByLength($a, $b){
+  if ($a == $b) {
+    return 0;
+  }
+  return (drupal_strlen($a) > drupal_strlen($b) ? -1 : 1);
 }
 
