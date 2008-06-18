@@ -91,7 +91,7 @@ var Lightbox = {
     Lightbox.enableVideo = settings.enable_video;
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
-    // 'lightframe'.
+    // 'lightframe', etc.
     Lightbox.updateImageList();
 
     // Make the lightbox divs.
@@ -281,37 +281,32 @@ var Lightbox = {
 
   // updateImageList()
   // Loops through anchor tags looking for 'lightbox', 'lightshow' and
-  // 'lightframe' references and applies onclick events to appropriate links.
-  // You can rerun after dynamically adding images w/ajax.
+  // 'lightframe', etc, references and applies onclick events to appropriate
+  // links. You can rerun after dynamically adding images w/ajax.
   updateImageList : function() {
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
-    // 'lightframe'.
-    var anchors = $('a, area');
-    var relAttribute = null;
-
-    // Loop through all anchor tags.
-    for (var i = 0; i < anchors.length; i++) {
-      var anchor = anchors[i];
-      relAttribute = String(anchor.rel);
-
-      // Use the string.match() method to catch 'lightbox', 'lightshow' and
-      // 'lightframe' references in the rel attribute.
-      if (anchor.href) {
-        if (relAttribute.toLowerCase().match('lightbox')) {
-          $(anchor).click(function(e) { Lightbox.start(this, false, false, false); if (e.preventDefault) {e.preventDefault(); } return false; });
-        }
-        else if (relAttribute.toLowerCase().match('lightshow')) {
-          $(anchor).click(function(e) { Lightbox.start(this, true, false, false); if (e.preventDefault) {e.preventDefault(); } return false; });
-        }
-        else if (relAttribute.toLowerCase().match('lightframe')) {
-          $(anchor).click(function(e) { Lightbox.start(this, false, true, false); if (e.preventDefault) {e.preventDefault(); } return false; });
-        }
-        else if (Lightbox.enableVideo && relAttribute.toLowerCase().match('lightvideo')) {
-          $(anchor).click(function(e) { Lightbox.start(this, false, false, true); if (e.preventDefault) {e.preventDefault(); } return false; });
-        }
-      }
-    }
+    // 'lightframe', etc.
+    $("a[@rel^='lightbox'], area[@rel^='lightbox']").click(function(e) {
+      Lightbox.start(this, false, false, false);
+      if (e.preventDefault) { e.preventDefault(); }
+      return false;
+    });
+    $("a[@rel^='lightshow'], area[@rel^='lightshow']").click(function(e) {
+      Lightbox.start(this, true, false, false);
+      if (e.preventDefault) { e.preventDefault(); }
+      return false;
+    });
+    $("a[@rel^='lightframe'], area[@rel^='lightframe']").click(function(e) {
+      Lightbox.start(this, false, true, false);
+      if (e.preventDefault) { e.preventDefault(); }
+      return false;
+    });
+    $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function(e) {
+      Lightbox.start(this, false, false, true);
+      if (e.preventDefault) { e.preventDefault(); }
+      return false;
+    });
   },
 
   // start()
@@ -342,7 +337,7 @@ var Lightbox = {
 
     var anchors = $(imageLink.tagName);
     var anchor = null;
-    var rel = imageLink.rel.match(/\w+/)[0];
+    var rel = $(imageLink).attr('rel').match(/\w+/)[0];
     var rel_info = Lightbox.parseRel(imageLink);
     var rel_group = rel_info[0];
     var rel_style = null;
@@ -384,7 +379,7 @@ var Lightbox = {
       else {
         for (i = 0; i < anchors.length; i++) {
           anchor = anchors[i];
-          if (anchor.href) {
+          if (anchor.href && $(anchor).attr('rel')) {
             var rel_data = Lightbox.parseRel(anchor);
             if (rel_data[0] == rel_group) {
               rel_style = (!rel_data[1] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data[1]);
@@ -529,7 +524,6 @@ var Lightbox = {
         Lightvideo.startVideo(Lightbox.imageArray[Lightbox.activeImage][0]);
         Lightbox.resizeImageContainer(parseInt(container.width, 10), parseInt(container.height, 10));
       }
-
     }
   },
 
@@ -1030,8 +1024,8 @@ var Lightbox = {
   // parseRel()
   parseRel: function (link) {
     var rel_info = [];
-    if (link.rel.match(/\[(.*)\]/)) {
-      rel_info = link.rel.match(/\[(.*)\]/)[1].split('|');
+    if ($(link).attr('rel').match(/\[(.*)\]/)) {
+      rel_info = $(link).attr('rel').match(/\[(.*)\]/)[1].split('|');
     }
     return rel_info;
   },
