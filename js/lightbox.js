@@ -126,6 +126,7 @@ var Lightbox = {
     LightboxFrame.style.display = 'none';
     if (!Lightbox.iframe_border) {
       LightboxFrame.style.border = 'none';
+      LightboxFrame.setAttribute('frameBorder', 0);
     }
     FrameContainer.appendChild(LightboxFrame);
 
