@@ -23,8 +23,13 @@
   overflow: hidden;
 }
 
-#imageContainer, #frameContainer, #videoContainer {
+#imageContainer, #frameContainer, #modalContainer {
   padding: 10px;
+}
+
+#modalContainer {
+  line-height: 1em;
+		overflow: auto;
 }
 
 #loading {

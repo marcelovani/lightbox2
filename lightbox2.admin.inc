@@ -111,6 +111,23 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', FALSE),
   );
 
+  // Define Lightbox2 login fieldset.
+  /* -------------------------------- */
+  $form['login_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Login Settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  // Add checkbox for login support.
+  $form['login_fieldset']['lightbox2_enable_login'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Login Support'),
+    '#description' => t('Enabling this option will modify all login links so that the login form appears in a lightbox.'),
+    '#default_value' => variable_get('lightbox2_enable_login', FALSE),
+  );
+
   // Define Lightbox2 video fieldset.
   /* -------------------------------- */
   $form['video_fieldset'] = array(

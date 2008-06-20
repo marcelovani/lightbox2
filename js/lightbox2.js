@@ -28,6 +28,7 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_disable_resize]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_zoom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_enable_video]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_enable_login]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_count_str]").attr("disabled", "disabled");
     $("input[@name=lightbox2_page_count_str]").attr("disabled", "disabled");
     $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
@@ -46,6 +47,7 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_disable_resize]").removeAttr("disabled");
     $("input[@name=lightbox2_disable_zoom]").removeAttr("disabled");
     $("input[@name=lightbox2_enable_video]").removeAttr("disabled");
+    $("input[@name=lightbox2_enable_login]").removeAttr("disabled");
     $("input[@name=lightbox2_image_count_str]").removeAttr("disabled");
     $("input[@name=lightbox2_page_count_str]").removeAttr("disabled");
     $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");

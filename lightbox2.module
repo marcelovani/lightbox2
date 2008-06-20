@@ -238,6 +238,12 @@ function lightbox2_menu() {
       'type' => MENU_CALLBACK,
     );
   }
+  $items['user/login/lightbox2'] = array(
+    'title' => 'Login',
+    'page callback' => 'lightbox2_login',
+    'access callback' => 'user_is_anonymous',
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -374,7 +380,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
  * this module.
  */
 function lightbox2_add_files() {
-  global $language;
+  global $language, $user;
   static $already_added = FALSE;
   if ($already_added) {
     return; // Don't add the JavaScript and CSS multiple times.
@@ -612,6 +618,9 @@ function lightbox2_add_files() {
     }
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
+    }
+    if ($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) {
+      drupal_add_js($path .'/js/lightbox_login.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
@@ -1350,5 +1359,36 @@ function sortByLength($a, $b){
     return 0;
   }
   return (drupal_strlen($a) > drupal_strlen($b) ? -1 : 1);
+}
+
+/**
+ * Get the user login form.
+ */
+function lightbox2_login() {
+  print drupal_get_form('user_login');
+  exit;
+}
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Update the page action and input size.
+ *
+ * @param &$form
+ *   General reference used in drupal, defining the structure & the fields of
+ *   a form.
+ * @param $form_state
+ *   General variable, used to control the processing of the form.
+ * @param $form_id
+ *   The default is "user_login"; hold the page where the function is being
+ *   used.
+ * @return
+ *   Return the structure of the form.
+ */
+function lightbox2_form_user_login_alter(&$form, $form_state, $form_id = "user_login") {
+  if ($form_id == 'user_login' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
+    $form['#action'] = url('user/login', array('query' => 'destination='. $_GET['destination']));
+    $form['name']['#size'] = 25;
+    $form['pass']['#size'] = 25;
+  }
 }
 
