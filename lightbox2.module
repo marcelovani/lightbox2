@@ -163,6 +163,7 @@ function lightbox2_perm() {
  * Implementation of hook_menu().
  */
 function lightbox2_menu($may_cache) {
+  global $user;
   $items = array();
 
   if ($may_cache) {
@@ -216,6 +217,12 @@ function lightbox2_menu($may_cache) {
         'type' => MENU_CALLBACK,
         );
     }
+    $items[] = array('path' => 'user/login/lightbox2',
+      'title' => t('Login'),
+      'callback' => 'lightbox2_login',
+      'access' => !$user->uid,
+      'type' => MENU_CALLBACK,
+    );
   }
   else {
     if (lightbox2_exclude_these_paths() != 1) {
@@ -344,6 +351,23 @@ function lightbox2_general_settings_form() {
   );
 
 
+  // Define Lightbox2 login fieldset.
+  /* -------------------------------- */
+  $form['login_fieldset'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Login Settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  // Add checkbox for login support.
+  $form['login_fieldset']['lightbox2_enable_login'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable Login Support'),
+    '#description' => t('Enabling this option will modify all login links so that the login form appears in a lightbox.'),
+    '#default_value' => variable_get('lightbox2_enable_login', FALSE),
+  );
+
   // Define Lightbox2 video fieldset.
   /* -------------------------------- */
   $form['video_fieldset'] = array(
@@ -360,7 +384,6 @@ function lightbox2_general_settings_form() {
     '#description' => t('By default, video support is disabled in order to reduce the amount of javascript needed.  Checking this box will enable it.'),
     '#default_value' => variable_get('lightbox2_enable_video', FALSE),
   );
-
 
   // Add fieldset for page specific lightbox2 settings.
   $form['lightbox2_page_init'] = array(
@@ -1064,6 +1087,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
  * this module.
  */
 function lightbox2_add_files() {
+  global $user;
   static $already_added = FALSE;
   if ($already_added) {
     return; // Don't add the javascript and CSS multiple times.
@@ -1310,6 +1334,9 @@ function lightbox2_add_files() {
     }
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
+    }
+    if ($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) {
+      drupal_add_js($path .'/js/lightbox_login.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
@@ -1925,3 +1952,33 @@ function sortByLength($a, $b){
   }
   return (drupal_strlen($a) > drupal_strlen($b) ? -1 : 1);
 }
+
+/**
+ * Get the user login form.
+ */
+function lightbox2_login() {
+  print drupal_get_form('user_login');
+  exit;
+}
+/**
+ * Implementation of hook_form_alter().
+ *
+ * Update the page action and input size.
+ *
+ * @param $form_id
+ *   We're only interested where the $form_id is "user_login".
+ *   used.
+ * @param &$form
+ *   General reference used in drupal, defining the structure & the fields of
+ *   a form.
+ * @return
+ *   Return the structure of the form.
+ */
+function lightbox2_form_alter($form_id, &$form) {
+  if ($form_id == 'user_login' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
+    $form['#action'] = url('user/login', 'destination='. $_GET['destination']);
+    $form['name']['#size'] = 25;
+    $form['pass']['#size'] = 25;
+  }
+}
+
