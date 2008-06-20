@@ -683,7 +683,7 @@ var Lightbox = {
     if (Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
       pageHeight = pageHeight + arrayPageScroll[1] + (arrayPageSize[3] / 10);
     }
-    $('#overlay').css({height: pageHeight + 'px'});
+    $('#overlay').css({height: pageHeight + 'px', width: arrayPageSize[0] + 'px'});
 
     // Gecko browsers (e.g. Firefox, SeaMonkey, etc) don't handle pdfs as
     // expected.
@@ -957,13 +957,13 @@ var Lightbox = {
 
     var xScroll, yScroll;
 
-    if (window.innerHeight && window.scrollMaxY) {
-      xScroll = window.innerWidth + window.scrollMaxX;
-      yScroll = window.innerHeight + window.scrollMaxY;
-    }
-    else if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac
+    if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac
       xScroll = document.body.scrollWidth;
       yScroll = document.body.scrollHeight;
+    }
+    else if (window.innerHeight && window.scrollMaxY) {
+      xScroll = window.innerWidth + window.scrollMaxX;
+      yScroll = window.innerHeight + window.scrollMaxY;
     }
     // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
     else {
@@ -992,6 +992,7 @@ var Lightbox = {
       windowHeight = document.body.clientHeight;
     }
 
+
     // For small pages with total height less then height of the viewport.
     if (yScroll < windowHeight) {
       pageHeight = windowHeight;
@@ -1003,10 +1004,10 @@ var Lightbox = {
 
     // For small pages with total width less then width of the viewport.
     if (xScroll < windowWidth) {
-      pageWidth = xScroll;
+      pageWidth = windowWidth;
     }
     else {
-      pageWidth = windowWidth;
+      pageWidth = xScroll;
     }
 
     arrayPageSize = [pageWidth, pageHeight, windowWidth, windowHeight];
