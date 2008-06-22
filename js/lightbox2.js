@@ -36,6 +36,9 @@ function lightbox2_lite_general_handler(event) {
     $("select[@name=lightbox2_image_ncck_group_node_id]").attr("disabled", "disabled");
     $("select[@name=lightbox2_imagefield_group_node_id]").attr("disabled", "disabled");
     $("input[@name=lightbox2_imagefield_use_node_title]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_border_size]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_box_color]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_font_color]").attr("disabled", "disabled");
     $("select[@name=lightbox2_resize_sequence]").attr("disabled", "disabled");
     $("input[@name=lightbox2_resize_speed]").attr("disabled", "disabled");
     $("input[@name=lightbox2_fadein_speed]").attr("disabled", "disabled");
@@ -55,6 +58,9 @@ function lightbox2_lite_general_handler(event) {
     $("select[@name=lightbox2_image_ncck_group_node_id]").removeAttr("disabled");
     $("select[@name=lightbox2_imagefield_group_node_id]").removeAttr("disabled");
     $("input[@name=lightbox2_imagefield_use_node_title]").removeAttr("disabled");
+    $("input[@name=lightbox2_border_size]").removeAttr("disabled");
+    $("input[@name=lightbox2_box_color]").removeAttr("disabled");
+    $("input[@name=lightbox2_font_color]").removeAttr("disabled");
     $("select[@name=lightbox2_resize_sequence]").removeAttr("disabled");
     $("input[@name=lightbox2_resize_speed]").removeAttr("disabled");
     $("input[@name=lightbox2_fadein_speed]").removeAttr("disabled");

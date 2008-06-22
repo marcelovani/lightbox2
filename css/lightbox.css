@@ -152,7 +152,6 @@
 
 #imageData #bottomNav {
   height: 66px;
-  width: 29%;
 }
 
 #overlay {
@@ -194,7 +193,7 @@
   display: block;
   background: url(../images/close.gif) left no-repeat;
   position: relative;
-  top: 35px;
+  top: 33px;
   right: 0px;
   float: right;
   padding-top: 0.7em;
