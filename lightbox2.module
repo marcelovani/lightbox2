@@ -560,6 +560,7 @@ function lightbox2_add_files() {
     'border_size' => variable_get('lightbox2_border_size', 10),
     'font_color' => variable_get('lightbox2_font_color', '000'),
     'box_color' => variable_get('lightbox2_box_color', 'fff'),
+    'top_position' => variable_get('lightbox2_top_position', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', 0.8),
     'overlay_color' => variable_get('lightbox2_overlay_color', '000'),
     'resize_sequence' => variable_get('lightbox2_resize_sequence', 0),

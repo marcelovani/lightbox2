@@ -248,7 +248,7 @@ function lightbox2_general_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
-  // Add checkbox for border size.
+
   $form['advanced_options']['skin_settings']['lightbox2_border_size'] = array(
     '#type' => 'textfield',
     '#title' => t('Border Size'),
@@ -276,6 +276,15 @@ function lightbox2_general_settings_form() {
     '#maxlength' => 6,
     '#description' => t('Enter a hexadecimal color value for the font.  For example <code>000</code> or <code>000000</code> for black).'),
     '#default_value' => variable_get('lightbox2_font_color', '000'),
+  );
+
+  $form['advanced_options']['skin_settings']['lightbox2_top_position'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Position from Top'),
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#description' => t('Enter the position of the top of the lightbox in pixels.  Leave blank for automatic calculation.'),
+    '#default_value' => variable_get('lightbox2_top_position', ''),
   );
 
 
@@ -375,6 +384,7 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
   $border_size = $form_state['values']['lightbox2_border_size'];
   $box_hex_colour = $form_state['values']['lightbox2_box_color'];
   $font_hex_colour = $form_state['values']['lightbox2_font_color'];
+  $top_position = $form_state['values']['lightbox2_top_position'];
   $overlay_hex_colour = $form_state['values']['lightbox2_overlay_color'];
   $resize_speed = $form_state['values']['lightbox2_resize_speed'];
   $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
@@ -395,6 +405,10 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
 
     if (!_lightbox2_validate_hex_color($font_hex_colour)) {
       form_set_error('lightbox2_font_color', t('You must enter a properly formed hex value.'));
+    }
+
+    if (!empty($top_position) && (!is_numeric($top_position) || $top_position < 0)) {
+      form_set_error('lightbox2_top_position', t('You must enter a size greater than 0 pixels.  Leave blank for default positioning.'));
     }
 
     if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {
