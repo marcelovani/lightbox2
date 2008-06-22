@@ -25,9 +25,10 @@ var Lightbox = {
   resizeSpeed: 'normal', // Controls the speed of the lightbox resizing animation.
   fadeInSpeed: 'normal', // Controls the speed of the image and overlay appearance.
   slideDownSpeed: 'slow', // Controls the speed of the image details appearance.
-  borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
+  borderSize : 10,
   boxColor : 'fff',
   fontColor : '000',
+  topPosition : '',
   infoHeight: 20,
   alternative_layout : false,
   imageArray : [],
@@ -82,6 +83,7 @@ var Lightbox = {
     Lightbox.borderSize = settings.border_size;
     Lightbox.boxColor = settings.box_color;
     Lightbox.fontColor = settings.font_color;
+    Lightbox.topPosition = settings.top_position;
     Lightbox.rtl = settings.rtl;
     Lightbox.disableResize = settings.disable_resize;
     Lightbox.disableZoom = settings.disable_zoom;
@@ -419,7 +421,7 @@ var Lightbox = {
 
     // Calculate top and left offset for the lightbox.
     var arrayPageScroll = Lightbox.getPageScroll();
-    var lightboxTop = arrayPageScroll[1] + (arrayPageSize[3] / 10);
+    var lightboxTop = arrayPageScroll[1] + (Lightbox.topPosition == '' ? (arrayPageSize[3] / 10) : Lightbox.topPosition) * 1;
     var lightboxLeft = arrayPageScroll[0];
     $('#lightbox').css({
       zIndex: '10500',
@@ -684,7 +686,8 @@ var Lightbox = {
     var arrayPageScroll = Lightbox.getPageScroll();
     var pageHeight = arrayPageSize[1];
     if (Lightbox.isZoomedIn && arrayPageSize[1] > arrayPageSize[3]) {
-      pageHeight = pageHeight + arrayPageScroll[1] + (arrayPageSize[3] / 10);
+      var lightboxTop = (Lightbox.topPosition == '' ? (arrayPageSize[3] / 10) : Lightbox.topPosition) * 1;
+      pageHeight = pageHeight + arrayPageScroll[1] + lightboxTop;
     }
     $('#overlay').css({height: pageHeight + 'px', width: arrayPageSize[0] + 'px'});
 
