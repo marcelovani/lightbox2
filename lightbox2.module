@@ -520,7 +520,7 @@ function lightbox2_general_settings_form() {
 
   $form['advanced_options']['skin_settings']['lightbox2_top_position'] = array(
     '#type' => 'textfield',
-    '#title' => t('Position from top'),
+    '#title' => t('Distance from top'),
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter the position of the top of the lightbox in
