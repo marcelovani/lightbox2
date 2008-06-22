@@ -159,8 +159,8 @@
   z-index: 200;
   background: url(../images/close.gif) left no-repeat;
   position: absolute;
-  top: 5px;
-  right: 5px;
+  top: 0px;
+  right: 0px;
   height: 26px;
   width: 26px;
 }

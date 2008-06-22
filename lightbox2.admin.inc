@@ -240,6 +240,46 @@ function lightbox2_general_settings_form() {
   );
 
 
+  // Define border settings fieldset.
+  /* ---------------------------------- */
+  $form['advanced_options']['skin_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Skin settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+  // Add checkbox for border size.
+  $form['advanced_options']['skin_settings']['lightbox2_border_size'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Border Size'),
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#description' => t('Enter the size of the border in pixels to display around the image.'),
+    '#default_value' => variable_get('lightbox2_border_size', 10),
+  );
+
+  $form['advanced_options']['skin_settings']['lightbox2_box_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Lightbox Color'),
+    '#field_prefix' => '#',
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#description' => t('Enter a hexadecimal color value for the border.  For example <code>fff</code> or <code>ffffff</code> for white).'),
+    '#default_value' => variable_get('lightbox2_box_color', 'fff'),
+  );
+
+  $form['advanced_options']['skin_settings']['lightbox2_font_color'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Font Color'),
+    '#field_prefix' => '#',
+    '#size' => 6,
+    '#maxlength' => 6,
+    '#description' => t('Enter a hexadecimal color value for the font.  For example <code>000</code> or <code>000000</code> for black).'),
+    '#default_value' => variable_get('lightbox2_font_color', '000'),
+  );
+
+
+
   // Define overlay settings fieldset.
   /* ---------------------------------- */
   $form['advanced_options']['overlay_settings'] = array(
@@ -332,14 +372,29 @@ function lightbox2_general_settings_form() {
  * numeric.
  */
 function lightbox2_general_settings_form_validate($form, &$form_state) {
-  $hex_colour = $form_state['values']['lightbox2_overlay_color'];
+  $border_size = $form_state['values']['lightbox2_border_size'];
+  $box_hex_colour = $form_state['values']['lightbox2_box_color'];
+  $font_hex_colour = $form_state['values']['lightbox2_font_color'];
+  $overlay_hex_colour = $form_state['values']['lightbox2_overlay_color'];
   $resize_speed = $form_state['values']['lightbox2_resize_speed'];
   $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
   $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
 
+  if (!_lightbox2_validate_hex_color($overlay_hex_colour)) {
+    form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
+  }
+
   if (!$form_state['values']['lightbox2_lite']) {
-    if (!_lightbox2_validate_hex_color($hex_colour)) {
-      form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
+    if (!is_numeric($border_size) || $border_size < 0) {
+      form_set_error('lightbox2_border_size', t('You must enter a size greater than 0 pixels.'));
+    }
+
+    if (!_lightbox2_validate_hex_color($box_hex_colour)) {
+      form_set_error('lightbox2_border_color', t('You must enter a properly formed hex value.'));
+    }
+
+    if (!_lightbox2_validate_hex_color($font_hex_colour)) {
+      form_set_error('lightbox2_font_color', t('You must enter a properly formed hex value.'));
     }
 
     if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {

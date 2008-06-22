@@ -504,7 +504,7 @@ function lightbox2_add_files() {
   // Image nodes.
   if ($image_node_handler) {
     $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
-    usort($trigger_sizes, "sortByLength");
+    usort($trigger_sizes, "sort_by_length");
     foreach ($trigger_sizes as $size) {
       $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
@@ -557,6 +557,9 @@ function lightbox2_add_files() {
     'rtl' => $language->direction,
     'file_path' => base_path() .'(\w\w/)'. file_directory_path(),
     'default_image' => base_path() . $path .'/images/brokenimage.jpg',
+    'border_size' => variable_get('lightbox2_border_size', 10),
+    'font_color' => variable_get('lightbox2_font_color', '000'),
+    'box_color' => variable_get('lightbox2_box_color', 'fff'),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', 0.8),
     'overlay_color' => variable_get('lightbox2_overlay_color', '000'),
     'resize_sequence' => variable_get('lightbox2_resize_sequence', 0),
@@ -1128,7 +1131,7 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
 
 function lightbox2_preprocess_page(&$variables) {
   if (arg(0) != 'node' || arg(2) != 'lightbox2') {
-				return;
+    return;
   }
   // Add favicon
   if (theme_get_setting('toggle_favicon')) {
@@ -1354,7 +1357,7 @@ function lightbox2_supported_file_extension($ext) {
  * @return
  *   0 if they are the same length, -1 if $a is longer than $b, 1 otherwise.
  */
-function sortByLength($a, $b){
+function sort_by_length($a, $b) {
   if ($a == $b) {
     return 0;
   }

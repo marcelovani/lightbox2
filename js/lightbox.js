@@ -26,6 +26,8 @@ var Lightbox = {
   fadeInSpeed: 'normal', // Controls the speed of the image appearance.
   slideDownSpeed: 'slow', // Controls the speed of the image details appearance.
   borderSize : 10, // If you adjust the padding in the CSS, you will need to update this variable.
+  boxColor : 'fff',
+  fontColor : '000',
   infoHeight: 20,
   alternative_layout : false,
   imageArray : [],
@@ -77,6 +79,9 @@ var Lightbox = {
     Lightbox.resizeSpeed = settings.resize_speed;
     Lightbox.fadeInSpeed = settings.fade_in_speed;
     Lightbox.slideDownSpeed = settings.slide_down_speed;
+    Lightbox.borderSize = settings.border_size;
+    Lightbox.boxColor = settings.box_color;
+    Lightbox.fontColor = settings.font_color;
     Lightbox.rtl = settings.rtl;
     Lightbox.disableResize = settings.disable_resize;
     Lightbox.disableZoom = settings.disable_zoom;
@@ -271,8 +276,10 @@ var Lightbox = {
     $('#lightshowPause').click(function() { Lightbox.togglePlayPause("lightshowPause", "lightshowPlay"); return false; } );
     $('#lightshowPlay').click(function() { Lightbox.togglePlayPause("lightshowPlay", "lightshowPause"); return false; } );
 
-    // Fix positioning of Prev and Next links.
-    $('#prevLink, #nextLink, #framePrevLink, #frameNextLink').css({ paddingTop: Lightbox.borderSize});
+    // Fix positioning.
+    $('#prevLink, #nextLink, #framePrevLink, #frameNextLink').css({ paddingTop: Lightbox.borderSize + 'px'});
+    $('#imageContainer, #frameContainer, #modalContainer').css({ padding: Lightbox.borderSize + 'px'});
+    $('#outerImageContainer, #imageDataContainer, #bottomNavClose').css({backgroundColor: '#' + Lightbox.boxColor, color: '#'+Lightbox.fontColor});
 
     // Force navigation links to always be displayed
     if (settings.force_show_nav) {
