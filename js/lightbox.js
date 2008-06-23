@@ -269,7 +269,6 @@ var Lightbox = {
 
     // Setup onclick handlers.
     $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
-    //$('#lightbox').click(function() { Lightbox.end('forceClose'); } );
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
@@ -299,26 +298,31 @@ var Lightbox = {
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
     $("a[@rel^='lightbox'], area[@rel^='lightbox']").click(function(e) {
+      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, false, false, false);
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
     $("a[@rel^='lightshow'], area[@rel^='lightshow']").click(function(e) {
+      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, true, false, false, false);
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
     $("a[@rel^='lightframe'], area[@rel^='lightframe']").click(function(e) {
+      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, true, false, false);
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
     $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function(e) {
+      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, false, true, false);
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
     $("a[@rel^='lightmodal'], area[@rel^='lightmodal']").click(function(e) {
+      $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
       return false;
@@ -713,13 +717,8 @@ var Lightbox = {
     $("#imageDataContainer").hide();
 
     var caption = Lightbox.imageArray[Lightbox.activeImage][1];
-    // If caption is not null.
-    if (caption) {
-      $('#caption').html(caption).css({zIndex: '10500'}).show();
-    }
-    else {
-      $('#caption').hide();
-    }
+    if (!caption) caption = '&nbsp;';
+    $('#caption').html(caption).css({zIndex: '10500'}).show();
 
     // If image is part of set display 'Image x of x'.
     var settings = Drupal.settings.lightbox2;
