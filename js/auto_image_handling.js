@@ -49,11 +49,14 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         var rel = "lightbox";
         var lightframe = false;
         if (rel_type == "lightframe_ungrouped") {
-          rel = "lightframe";
+          rel = "lightframe[]";
           lightframe = true;
         }
         else if (rel_type == "lightframe") {
           lightframe = true;
+        }
+        else if (rel_type == "lightbox_ungrouped") {
+          lightframe = "lightbox[]";
         }
         if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
           rel = rel_type + "[" + $(child).attr("class") + "]";
@@ -147,9 +150,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           if (link_text.length) {
             title_link = "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
           }
+          rel = rel + "[" + alt + title_link + "]";
           $(this).attr({
             rel: rel,
-            title: alt + title_link,
             href: href
           });
         }
@@ -161,9 +164,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               rel = rel_type + "["+ id +"]";
             }
           }
+          rel = rel + "[" + alt + "]";
           $(this).attr({
             rel: rel,
-            title: alt,
             href: orig_href
           });
         }

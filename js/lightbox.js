@@ -353,57 +353,52 @@ var Lightbox = {
 
     var anchors = $(imageLink.tagName);
     var anchor = null;
-    var rel = $(imageLink).attr('rel').match(/\w+/)[0];
-    var rel_info = Lightbox.parseRel(imageLink);
-    var rel_group = rel_info[0];
+    var rel_parts = Lightbox.parseRel(imageLink);
+    var rel = rel_parts["rel"];
+    var rel_group = rel_parts["group"];
+    var title = (rel_parts["title"] ? rel_parts["title"] : imageLink.title);
     var rel_style = null;
     var i = 0;
 
 
     // Handle lightbox images with no grouping.
     if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
-      Lightbox.imageArray.push([imageLink.href, imageLink.title]);
+      Lightbox.imageArray.push([imageLink.href, title]);
     }
 
     // Handle iframes with no grouping.
     else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
-      rel_style = (!rel_info[1] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_info[1]);
-      Lightbox.imageArray.push([imageLink.href, imageLink.title, rel_style]);
+      rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
+      Lightbox.imageArray.push([imageLink.href, title, rel_style]);
     }
 
     // Handle video.
     else if (rel == "lightvideo") {
       // rel_group contains style information for videos.
       rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
-      Lightbox.imageArray.push([imageLink.href, imageLink.title, rel_style]);
+      Lightbox.imageArray.push([imageLink.href, title, rel_style]);
     }
 
     // Handle iframes and lightbox & slideshow images.
     else if (rel == 'lightbox' || rel == 'lightshow' || rel == 'lightframe' || rel == 'lightmodal') {
 
-      // Loop through anchors, find other images in set, and add them to
-      // imageArray.
-      if (!Lightbox.isLightframe && !Lightbox.isModal) {
-        for (i = 0; i < anchors.length; i++) {
-          anchor = anchors[i];
-          if (anchor.href && (anchor.rel == imageLink.rel)) {
-            Lightbox.imageArray.push([anchor.href, anchor.title]);
-          }
-        }
-      }
-      // Loop through frame links separately - need to fetch style information.
-      else {
-        for (i = 0; i < anchors.length; i++) {
-          anchor = anchors[i];
-          if (anchor.href && $(anchor).attr('rel')) {
-            var rel_data = Lightbox.parseRel(anchor);
-            if (rel_data[0] == rel_group) {
-              rel_style = (!rel_data[1] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data[1]);
-              Lightbox.imageArray.push([anchor.href, anchor.title, rel_style]);
+      // Loop through anchors and add them to imageArray.
+      for (i = 0; i < anchors.length; i++) {
+        anchor = anchors[i];
+        if (anchor.href && $(anchor).attr('rel')) {
+          var rel_data = Lightbox.parseRel(anchor);
+          var anchor_title = (rel_data["title"] ? rel_data["title"] : anchor.title);
+          if (rel_data["rel"] == rel) {
+            if (rel_data["group"] == rel_group) {
+              if (Lightbox.isLightframe || Lightbox.isModal) {
+                rel_style = (!rel_data["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data["style"]);
+              }
+              Lightbox.imageArray.push([anchor.href, anchor_title, rel_style]);
             }
           }
         }
       }
+
 
       // Remove duplicates.
       for (i = 0; i < Lightbox.imageArray.length; i++) {
@@ -1042,11 +1037,19 @@ var Lightbox = {
 
   // parseRel()
   parseRel: function (link) {
-    var rel_info = [];
+    var parts = [];
+    parts["rel"] = $(link).attr('rel').match(/\w+/)[0];
+    parts["title"] = parts["group"] = parts["style"] = null;
+
     if ($(link).attr('rel').match(/\[(.*)\]/)) {
-      rel_info = $(link).attr('rel').match(/\[(.*)\]/)[1].split('|');
+      var info = $(link).attr('rel').match(/\[(.*?)\]/)[1].split('|');
+      parts["group"] = info[0];
+      parts["style"] = info[1];
     }
-    return rel_info;
+    if ($(link).attr('rel').match(/\[.*\]\[(.*)\]/)) {
+      parts["title"] = $(link).attr('rel').match(/\[.*\]\[(.*)\]/)[1];
+    }
+    return parts;
   },
 
   // setStyles()
