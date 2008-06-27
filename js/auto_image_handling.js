@@ -123,8 +123,8 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/[\w\-]*)/, ((settings.display_image_size === "")?"$1/_original":"$1/"+ settings.display_image_size));
           if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
             rel = rel_type + "[node_images]";
-            if ($(child).parents("div.block-image").attr("class")) {
-              id = $(child).parents("div.block-image").attr("id");
+            if ($(child).parents("div.block-multiblock,div.block-image").attr("class")) {
+              id = $(child).parents("div.block-multiblock,div.block-image").attr("id");
               rel = rel_type + "["+ id +"]";
             }
           }
