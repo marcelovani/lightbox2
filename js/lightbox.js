@@ -33,12 +33,14 @@ var Lightbox = {
   alternative_layout : false,
   imageArray : [],
   imageNum : null,
+  total : 0,
   activeImage : null,
   inprogress : false,
   disableResize : false,
   disableZoom : false,
   isZoomedIn : false,
   rtl : false,
+  loopItems : false,
 
   // Slideshow options.
   slideInterval : 5000, // In milliseconds.
@@ -50,6 +52,7 @@ var Lightbox = {
   slideIdCount : 0,
   isSlideshow : false,
   isPaused : false,
+  loopSlides : false,
 
   // Iframe options.
   isLightframe : false,
@@ -85,6 +88,7 @@ var Lightbox = {
     Lightbox.fontColor = settings.font_color;
     Lightbox.topPosition = settings.top_position;
     Lightbox.rtl = settings.rtl;
+    Lightbox.loopItems = settings.loop_items;
     Lightbox.disableResize = settings.disable_resize;
     Lightbox.disableZoom = settings.disable_zoom;
     Lightbox.slideInterval = settings.slideshow_interval;
@@ -92,6 +96,7 @@ var Lightbox = {
     Lightbox.autoExit = settings.slideshow_automatic_exit;
     Lightbox.pauseOnNextClick = settings.pause_on_next_click;
     Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
+    Lightbox.loopSlides = settings.loop_slides;
     Lightbox.alternative_layout = settings.use_alt_layout;
     Lightbox.iframe_width = settings.iframe_width;
     Lightbox.iframe_height = settings.iframe_height;
@@ -431,6 +436,7 @@ var Lightbox = {
       left: lightboxLeft + 'px'
     }).show();
 
+    Lightbox.total = Lightbox.imageArray.length;
     Lightbox.changeImage(Lightbox.imageNum);
   },
 
@@ -440,6 +446,11 @@ var Lightbox = {
   changeImage: function(imageNum, zoomIn) {
 
     if (Lightbox.inprogress === false) {
+      if (Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) {
+        if (imageNum >= Lightbox.total) imageNum = 0;
+        if (imageNum < 0) imageNum = Lightbox.total - 1;
+      }
+
       if (Lightbox.isSlideshow) {
         for (var i = 0; i < Lightbox.slideIdCount; i++) {
           window.clearTimeout(Lightbox.slideIdArray[i]);
@@ -662,7 +673,7 @@ var Lightbox = {
 
     // Slideshow specific stuff.
     if (Lightbox.isSlideshow) {
-      if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
+      if (!Lightbox.loopSlides && Lightbox.activeImage == (Lightbox.total - 1)) {
         if (Lightbox.autoExit) {
           Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.end('slideshow');}, Lightbox.slideInterval);
         }
@@ -672,11 +683,11 @@ var Lightbox = {
           Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.changeImage(Lightbox.activeImage + 1);}, Lightbox.slideInterval);
         }
       }
-      if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1 && !Lightbox.isPaused) {
+      if (Lightbox.showPlayPause && Lightbox.total > 1 && !Lightbox.isPaused) {
         $('#lightshowPause').show();
         $('#lightshowPlay').hide();
       }
-      else if (Lightbox.showPlayPause && Lightbox.imageArray.length > 1) {
+      else if (Lightbox.showPlayPause && Lightbox.total > 1) {
         $('#lightshowPause').hide();
         $('#lightshowPlay').show();
       }
@@ -716,13 +727,13 @@ var Lightbox = {
     // If image is part of set display 'Image x of x'.
     var settings = Drupal.settings.lightbox2;
     var numberDisplay = null;
-    if (Lightbox.imageArray.length > 1) {
+    if (Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;
       if (!Lightbox.isLightframe) {
-        numberDisplay = settings.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.imageArray.length);
+        numberDisplay = settings.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       else {
-        numberDisplay = settings.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.imageArray.length);
+        numberDisplay = settings.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       $('#numberDisplay').html(numberDisplay).css({zIndex: '10500'}).show();
     }
@@ -744,7 +755,7 @@ var Lightbox = {
 
     // Slideshow is separated as we need to show play / pause button.
     if (Lightbox.isSlideshow) {
-      if (Lightbox.activeImage !== 0) {
+      if ((Lightbox.total > 1 && Lightbox.loopSlides) || Lightbox.activeImage !== 0) {
         $(prevLink).css({zIndex: '10500'}).show().click(function() {
           if (Lightbox.pauseOnPrevClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
@@ -757,7 +768,7 @@ var Lightbox = {
       }
 
       // If not last image in set, display next image button.
-      if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
+      if ((Lightbox.total > 1 && Lightbox.loopSlides) || Lightbox.activeImage != (Lightbox.total - 1)) {
         $(nextLink).css({zIndex: '10500'}).show().click(function() {
           if (Lightbox.pauseOnNextClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
@@ -782,7 +793,7 @@ var Lightbox = {
       }
 
       // If not first image in set, display prev image button.
-      if (Lightbox.activeImage !== 0) {
+      if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage !== 0) {
         $(prevLink).css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage - 1); return false;
         });
@@ -793,7 +804,7 @@ var Lightbox = {
       }
 
       // If not last image in set, display next image button.
-      if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
+      if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage != (Lightbox.total - 1)) {
         $(nextLink).css({zIndex: '10500'}).show().click(function() {
           Lightbox.changeImage(Lightbox.activeImage + 1); return false;
         });
@@ -840,14 +851,14 @@ var Lightbox = {
     // Display previous image (p, <-).
     }
     else if (key == 'p' || keycode == 37) {
-      if (Lightbox.activeImage !== 0) {
+      if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage !== 0) {
         Lightbox.changeImage(Lightbox.activeImage - 1);
       }
 
     // Display next image (n, ->).
     }
     else if (key == 'n' || keycode == 39) {
-      if (Lightbox.activeImage != (Lightbox.imageArray.length - 1)) {
+      if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage != (Lightbox.total - 1)) {
         Lightbox.changeImage(Lightbox.activeImage + 1);
       }
     }
@@ -876,7 +887,7 @@ var Lightbox = {
 
   preloadNeighborImages: function() {
 
-    if ((Lightbox.imageArray.length - 1) > Lightbox.activeImage) {
+    if ((Lightbox.total - 1) > Lightbox.activeImage) {
       preloadNextImage = new Image();
       preloadNextImage.src = Lightbox.imageArray[Lightbox.activeImage + 1][0];
     }
@@ -1096,7 +1107,7 @@ var Lightbox = {
 
     if (hideId == "lightshowPlay") {
       Lightbox.isPaused = false;
-      if (Lightbox.activeImage == (Lightbox.imageArray.length - 1)) {
+      if (!Lightbox.loopSlides && Lightbox.activeImage == (Lightbox.total - 1)) {
         Lightbox.end('autoEnd');
       }
       else {

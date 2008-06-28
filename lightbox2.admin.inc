@@ -69,6 +69,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_force_show_nav', FALSE),
   );
 
+  // Add checkbox for "looping through images'.
+  $form['layout_fieldset']['lightbox2_loop_items'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Continuous Galleries'),
+    '#description' => t('When viewing grouped images, the Next button on the last image will display the first image, while the Previous button on the first image will display the last image.'),
+    '#default_value' => variable_get('lightbox2_loop_items', FALSE),
+  );
+
 
   // Add text box for image count for grouping.
   $form['layout_fieldset']['lightbox2_image_count_str'] = array(
@@ -479,6 +487,14 @@ function lightbox2_slideshow_settings_form() {
     '#title' => t('Pause Slideshow on "Previous Image" Click'),
     '#description' => t('When enabled the slideshow is automatically paused, and the previous image shown, when the "Previous" button is clicked.'),
     '#default_value' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+  );
+
+  // Add checkbox for "looping through slides'.
+  $form['lightbox2_loop_slides'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Continuous Loop'),
+    '#description' => t('When enabled the slideshow will automatically start over after displaying the last slide.  This prevents the slideshow from automatically exiting when enabled.'),
+    '#default_value' => variable_get('lightbox2_loop_slides', FALSE),
   );
 
   return system_settings_form($form);

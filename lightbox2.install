@@ -25,6 +25,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_lite');
   variable_del('lightbox2_use_alt_layout');
   variable_del('lightbox2_force_show_nav');
+  variable_del('lightbox2_loop_items');
   variable_del('lightbox2_image_count_str');
   variable_del('lightbox2_page_count_str');
   variable_del('lightbox2_disable_resize');
@@ -61,6 +62,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_slideshow_show_play_pause');
   variable_del('lightbox2_slideshow_pause_on_next_click');
   variable_del('lightbox2_slideshow_pause_on_previous_click');
+  variable_del('lightbox2_loop_slides');
 
   // Remove the automatic image handling settings.
   variable_del('lightbox2_image_node');
