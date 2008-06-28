@@ -344,6 +344,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_force_show_nav', FALSE),
   );
 
+  // Add checkbox for "looping through images'.
+  $form['layout_fieldset']['lightbox2_loop_items'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Continuous Galleries'),
+    '#description' => t('When viewing grouped images, the Next button on the last image will display the first image, while the Previous button on the first image will display the last image.'),
+    '#default_value' => variable_get('lightbox2_loop_items', FALSE),
+  );
+
   // Add text box for image count for grouping.
   $form['layout_fieldset']['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
@@ -703,6 +711,14 @@ function lightbox2_slideshow_settings_form() {
     '#title' => t('Pause Slideshow on "Previous Image" Click'),
     '#description' => t('When enabled the slideshow is automatically paused, and the previous image shown, when the "Previous" button is clicked.'),
     '#default_value' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+  );
+
+  // Add checkbox for "looping through slides'.
+  $form['lightbox2_loop_slides'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Continuous Loop'),
+    '#description' => t('When enabled the slideshow will automatically start over after displaying the last slide.  This prevents the slideshow from automatically exiting when enabled.'),
+    '#default_value' => variable_get('lightbox2_loop_slides', FALSE),
   );
 
   return system_settings_form($form);
@@ -1421,6 +1437,7 @@ function lightbox2_add_files() {
     'disable_resize' => variable_get('lightbox2_disable_resize', FALSE),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', FALSE),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
+    'loop_items' => variable_get('lightbox2_loop_items', FALSE),
     'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
@@ -1445,6 +1462,7 @@ function lightbox2_add_files() {
     'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
     'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
     'pause_on_previous_click' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+    'loop_slides' => variable_get('lightbox2_loop_slides', FALSE),
     // Iframe settings.
     'iframe_width' => variable_get('lightbox2_default_frame_width', 600),
     'iframe_height' => variable_get('lightbox2_default_frame_height', 400),

@@ -25,6 +25,7 @@ function lightbox2_lite_general_handler(event) {
   if ($("input[@name=lightbox2_lite]:checked").val() == 1) {
     $("input[@name=lightbox2_use_alt_layout]").attr("disabled", "disabled");
     $("input[@name=lightbox2_force_show_nav]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_loop_items]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_resize]").attr("disabled", "disabled");
     $("input[@name=lightbox2_disable_zoom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_enable_video]").attr("disabled", "disabled");
@@ -48,6 +49,7 @@ function lightbox2_lite_general_handler(event) {
   else {
     $("input[@name=lightbox2_use_alt_layout]").removeAttr("disabled");
     $("input[@name=lightbox2_force_show_nav]").removeAttr("disabled");
+    $("input[@name=lightbox2_loop_items]").removeAttr("disabled");
     $("input[@name=lightbox2_disable_resize]").removeAttr("disabled");
     $("input[@name=lightbox2_disable_zoom]").removeAttr("disabled");
     $("input[@name=lightbox2_enable_video]").removeAttr("disabled");
@@ -121,6 +123,7 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_slideshow_show_play_pause]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_pause_on_prev_click]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_loop_slides]").attr("disabled", "disabled");
 
     // Disable automatic image handling options.
     $("select[@name=lightbox2_image_node]").attr("disabled", "disabled");
@@ -151,6 +154,7 @@ function lightbox2_lite_auto_handler(event) {
     $("input[@name=lightbox2_slideshow_show_play_pause]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_pause_on_prev_click]").removeAttr("disabled");
+    $("input[@name=lightbox2_loop_slides]").removeAttr("disabled");
 
     // Enable automatic image handling options.
     $("select[@name=lightbox2_image_node]").removeAttr("disabled");
