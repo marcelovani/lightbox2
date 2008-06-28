@@ -71,214 +71,88 @@ var Lightbox = {
 
 
   // initialize()
-  // Constructor runs on completion of the DOM loading. Calls updateImageList
+  // Constructor runs on completion of the DOM loading. Calls initList
   // and then the function inserts html at the bottom of the page which is used
   // to display the shadow overlay and the image container.
   initialize: function() {
 
-    var settings = Drupal.settings.lightbox2;
-    Lightbox.overlayOpacity = settings.overlay_opacity;
-    Lightbox.overlayColor = settings.overlay_color;
-    Lightbox.resizeSequence = settings.resize_sequence;
-    Lightbox.resizeSpeed = settings.resize_speed;
-    Lightbox.fadeInSpeed = settings.fade_in_speed;
-    Lightbox.slideDownSpeed = settings.slide_down_speed;
-    Lightbox.borderSize = settings.border_size;
-    Lightbox.boxColor = settings.box_color;
-    Lightbox.fontColor = settings.font_color;
-    Lightbox.topPosition = settings.top_position;
-    Lightbox.rtl = settings.rtl;
-    Lightbox.loopItems = settings.loop_items;
-    Lightbox.disableResize = settings.disable_resize;
-    Lightbox.disableZoom = settings.disable_zoom;
-    Lightbox.slideInterval = settings.slideshow_interval;
-    Lightbox.showPlayPause = settings.show_play_pause;
-    Lightbox.autoExit = settings.slideshow_automatic_exit;
-    Lightbox.pauseOnNextClick = settings.pause_on_next_click;
-    Lightbox.pauseOnPrevClick = settings.pause_on_previous_click;
-    Lightbox.loopSlides = settings.loop_slides;
-    Lightbox.alternative_layout = settings.use_alt_layout;
-    Lightbox.iframe_width = settings.iframe_width;
-    Lightbox.iframe_height = settings.iframe_height;
-    Lightbox.iframe_border = settings.iframe_border;
-    Lightbox.enableVideo = settings.enable_video;
+    var s = Drupal.settings.lightbox2;
+    Lightbox.overlayOpacity = s.overlay_opacity;
+    Lightbox.overlayColor = s.overlay_color;
+    Lightbox.resizeSequence = s.resize_sequence;
+    Lightbox.resizeSpeed = s.resize_speed;
+    Lightbox.fadeInSpeed = s.fade_in_speed;
+    Lightbox.slideDownSpeed = s.slide_down_speed;
+    Lightbox.borderSize = s.border_size;
+    Lightbox.boxColor = s.box_color;
+    Lightbox.fontColor = s.font_color;
+    Lightbox.topPosition = s.top_position;
+    Lightbox.rtl = s.rtl;
+    Lightbox.loopItems = s.loop_items;
+    Lightbox.disableResize = s.disable_resize;
+    Lightbox.disableZoom = s.disable_zoom;
+    Lightbox.slideInterval = s.slideshow_interval;
+    Lightbox.showPlayPause = s.show_play_pause;
+    Lightbox.autoExit = s.slideshow_automatic_exit;
+    Lightbox.pauseOnNextClick = s.pause_on_next_click;
+    Lightbox.pauseOnPrevClick = s.pause_on_previous_click;
+    Lightbox.loopSlides = s.loop_slides;
+    Lightbox.alternative_layout = s.use_alt_layout;
+    Lightbox.iframe_width = s.iframe_width;
+    Lightbox.iframe_height = s.iframe_height;
+    Lightbox.iframe_border = s.iframe_border;
+    Lightbox.enableVideo = s.enable_video;
 
-    // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
-    // 'lightframe', etc.
-    Lightbox.updateImageList();
+    // Attach lightbox to any links with lightbox rels.
+    Lightbox.initList();
 
     // Make the lightbox divs.
-    var Body = document.getElementsByTagName("body").item(0);
+    var output = '<div id="overlay" style="display: none;"></div>\
+      <div id="lightbox" style="display: none;">\
+        <div id="outerImageContainer"></div>\
+        <div id="imageDataContainer" class="clearfix">\
+          <div id="imageData"></div>\
+        </div>\
+      </div>';
+    var loading = '<div id="loading"><a href="#" id="loadingLink"></a></div>';
+    var modal = '<div id="modalContainer" style="display: none;"></div>';
+    var frame = '<div id="frameContainer" style="display: none;"><iframe id="lightboxFrame" style="display: none;"></iframe></div>';
+    var imageContainer = '<div id="imageContainer" style="display: none;"></div>';
+    var details = '<div id="imageDetails"></div>';
+    var bottomNav = '<div id="bottomNav"></div>';
+    var image = '<img id="lightboxImage" />';
+    var hoverNav = '<div id="hoverNav"><a id="prevLink" href="#"></a><a id="nextLink" href="#"></a></div>';
+    var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" href="#"></a><a id="frameNextLink" href="#"></a></div>';
+    var caption = '<span id="caption"></span>';
+    var numberDisplay = '<span id="numberDisplay"></span>';
+    var close = '<a id="bottomNavClose" href="#"></a>';
+    var zoom = '<a id="bottomNavZoom" href="#"></a>';
+    var zoomOut = '<a id="bottomNavZoomOut" href="#"></a>';
+    var pause = '<a id="lightshowPause" href="#" style="display: none;"></a>';
+    var play = '<a id="lightshowPlay" href="#" style="display: none;"></a>';
 
-    var Overlay = document.createElement("div");
-    Overlay.setAttribute('id', 'overlay');
-    Overlay.style.display = 'none';
-    Body.appendChild(Overlay);
-
-    var LightboxDiv = document.createElement("div");
-    LightboxDiv.setAttribute('id', 'lightbox');
-    LightboxDiv.style.display = 'none';
-    Body.appendChild(LightboxDiv);
-
-    var OuterImageContainer = document.createElement("div");
-    OuterImageContainer.setAttribute('id', 'outerImageContainer');
-    LightboxDiv.appendChild(OuterImageContainer);
-
-    var ModalContainer = document.createElement("div");
-    ModalContainer.setAttribute('id', 'modalContainer');
-    ModalContainer.style.display = 'none';
-    OuterImageContainer.appendChild(ModalContainer);
-
-    var FrameContainer = document.createElement("div");
-    FrameContainer.setAttribute('id', 'frameContainer');
-    FrameContainer.style.display = 'none';
-    OuterImageContainer.appendChild(FrameContainer);
-
-    var LightboxFrame = document.createElement("iframe");
-    LightboxFrame.setAttribute('id', 'lightboxFrame');
-    LightboxFrame.style.display = 'none';
-    if (!Lightbox.iframe_border) {
-      LightboxFrame.style.border = 'none';
-      LightboxFrame.setAttribute('frameBorder', 0);
+    $("body").append(output);
+    $('#outerImageContainer').append(modal + frame + imageContainer + loading);
+    if (!s.use_alt_layout) {
+      $('#imageContainer').append(image + hoverNav);
+      $('#imageData').append(frameNav + details + bottomNav);
+      $('#imageDetails').append(caption + numberDisplay);
+      $('#bottomNav').append(close + zoom + zoomOut + pause + play);
     }
-    FrameContainer.appendChild(LightboxFrame);
-
-    var ImageContainer = document.createElement("div");
-    ImageContainer.setAttribute('id', 'imageContainer');
-    OuterImageContainer.appendChild(ImageContainer);
-
-    var Loading = document.createElement("div");
-    Loading.setAttribute('id', 'loading');
-    OuterImageContainer.appendChild(Loading);
-
-    var LoadingLink = document.createElement("a");
-    LoadingLink.setAttribute('id', 'loadingLink');
-    LoadingLink.setAttribute('href', '#');
-    Loading.appendChild(LoadingLink);
-
-    var LightboxImage = document.createElement("img");
-    LightboxImage.setAttribute('id', 'lightboxImage');
-    ImageContainer.appendChild(LightboxImage);
-
-    // Set up elements, then append in correct order depending on layout later.
-    var HoverNav = document.createElement("div");
-    HoverNav.setAttribute('id', 'hoverNav');
-
-    var PrevLink = document.createElement("a");
-    PrevLink.setAttribute('id', 'prevLink');
-    PrevLink.setAttribute('href', '#');
-
-    var NextLink = document.createElement("a");
-    NextLink.setAttribute('id', 'nextLink');
-    NextLink.setAttribute('href', '#');
-
-    var ImageDataContainer = document.createElement("div");
-    ImageDataContainer.setAttribute('id', 'imageDataContainer');
-    ImageDataContainer.className = 'clearfix';
-
-    var ImageData = document.createElement("div");
-    ImageData.setAttribute('id', 'imageData');
-
-    var FrameHoverNav = document.createElement("div");
-    FrameHoverNav.setAttribute('id', 'frameHoverNav');
-
-    var FramePrevLink = document.createElement("a");
-    FramePrevLink.setAttribute('id', 'framePrevLink');
-    FramePrevLink.setAttribute('href', '#');
-
-    var FrameNextLink = document.createElement("a");
-    FrameNextLink.setAttribute('id', 'frameNextLink');
-    FrameNextLink.setAttribute('href', '#');
-
-    var ImageDetails = document.createElement("div");
-    ImageDetails.setAttribute('id', 'imageDetails');
-
-    var Caption = document.createElement("span");
-    Caption.setAttribute('id', 'caption');
-
-    var NumberDisplay = document.createElement("span");
-    NumberDisplay.setAttribute('id', 'numberDisplay');
-
-    var BottomNav = document.createElement("div");
-    BottomNav.setAttribute('id', 'bottomNav');
-
-    var BottomNavCloseLink = document.createElement("a");
-    BottomNavCloseLink.setAttribute('id', 'bottomNavClose');
-    BottomNavCloseLink.setAttribute('href', '#');
-
-    var BottomNavZoomLink = document.createElement("a");
-    BottomNavZoomLink.setAttribute('id', 'bottomNavZoom');
-    BottomNavZoomLink.setAttribute('href', '#');
-
-    var BottomNavZoomOutLink = document.createElement("a");
-    BottomNavZoomOutLink.setAttribute('id', 'bottomNavZoomOut');
-    BottomNavZoomOutLink.setAttribute('href', '#');
-
-    // Slideshow play / pause buttons
-    var LightshowPause = document.createElement("a");
-    LightshowPause.setAttribute('id', 'lightshowPause');
-    LightshowPause.setAttribute('href', '#');
-    LightshowPause.style.display = 'none';
-
-    var LightshowPlay = document.createElement("a");
-    LightshowPlay.setAttribute('id', 'lightshowPlay');
-    LightshowPlay.setAttribute('href', '#');
-    LightshowPlay.style.display = 'none';
-
-    if (!settings.use_alt_layout) {
-      ImageContainer.appendChild(HoverNav);
-      HoverNav.appendChild(PrevLink);
-      HoverNav.appendChild(NextLink);
-
-      LightboxDiv.appendChild(ImageDataContainer);
-      ImageDataContainer.appendChild(ImageData);
-
-      ImageData.appendChild(FrameHoverNav);
-      FrameHoverNav.appendChild(FramePrevLink);
-      FrameHoverNav.appendChild(FrameNextLink);
-
-      ImageData.appendChild(ImageDetails);
-      ImageDetails.appendChild(Caption);
-      ImageDetails.appendChild(NumberDisplay);
-
-      ImageData.appendChild(BottomNav);
-      BottomNav.appendChild(BottomNavCloseLink);
-      BottomNav.appendChild(BottomNavZoomLink);
-      BottomNav.appendChild(BottomNavZoomOutLink);
-      BottomNav.appendChild(LightshowPause);
-      BottomNav.appendChild(LightshowPlay);
-
-    }
-
-    // New layout.
     else {
-      LightboxDiv.appendChild(ImageDataContainer);
-      ImageDataContainer.appendChild(ImageData);
-
-      ImageData.appendChild(HoverNav);
-      HoverNav.appendChild(PrevLink);
-      HoverNav.appendChild(NextLink);
-
-      ImageData.appendChild(ImageDetails);
-      ImageDetails.appendChild(Caption);
-      ImageDetails.appendChild(NumberDisplay);
-      ImageDetails.appendChild(LightshowPause);
-      ImageDetails.appendChild(LightshowPlay);
-
-      ImageContainer.appendChild(BottomNav);
-      BottomNav.appendChild(BottomNavCloseLink);
-      BottomNav.appendChild(BottomNavZoomLink);
-      BottomNav.appendChild(BottomNavZoomOutLink);
-
+      $('#imageContainer').append(image + bottomNav);
+      $('#bottomNav').append(close + zoom + zoomOut);
+      $('#imageData').append(hoverNav + details);
+      $('#imageDetails').append(caption + numberDisplay + pause + play);
     }
 
     // Setup onclick handlers.
     $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
-    $('#prevLink, #framePrevLink').click(function() { Lightbox.changeImage(Lightbox.activeImage - 1); return false; } );
-    $('#nextLink, #frameNextLink').click(function() { Lightbox.changeImage(Lightbox.activeImage + 1); return false; } );
-    $('#bottomNavZoom').click(function() { Lightbox.changeImage(Lightbox.activeImage, true); return false; } );
-    $('#bottomNavZoomOut').click(function() { Lightbox.changeImage(Lightbox.activeImage, false); return false; } );
+    $('#prevLink, #framePrevLink').click(function() { Lightbox.changeData(Lightbox.activeImage - 1); return false; } );
+    $('#nextLink, #frameNextLink').click(function() { Lightbox.changeData(Lightbox.activeImage + 1); return false; } );
+    $('#bottomNavZoom').click(function() { Lightbox.changeData(Lightbox.activeImage, true); return false; } );
+    $('#bottomNavZoomOut').click(function() { Lightbox.changeData(Lightbox.activeImage, false); return false; } );
     $('#lightshowPause').click(function() { Lightbox.togglePlayPause("lightshowPause", "lightshowPlay"); return false; } );
     $('#lightshowPlay').click(function() { Lightbox.togglePlayPause("lightshowPlay", "lightshowPause"); return false; } );
 
@@ -287,18 +161,23 @@ var Lightbox = {
     $('#imageContainer, #frameContainer, #modalContainer').css({ padding: Lightbox.borderSize + 'px'});
     $('#outerImageContainer, #imageDataContainer, #bottomNavClose').css({backgroundColor: '#' + Lightbox.boxColor, color: '#'+Lightbox.fontColor});
 
+    if (!Lightbox.iframe_border) {
+      $('#lightboxFrame').css({border: 'none'});
+      $('#lightboxFrame').attr("frameborder", '0');
+    }
+
     // Force navigation links to always be displayed
-    if (settings.force_show_nav) {
+    if (s.force_show_nav) {
       $('#prevLink, #nextLink').addClass("force_show_nav");
     }
 
   },
 
-  // updateImageList()
+  // initList()
   // Loops through anchor tags looking for 'lightbox', 'lightshow' and
   // 'lightframe', etc, references and applies onclick events to appropriate
   // links. You can rerun after dynamically adding images w/ajax.
-  updateImageList : function() {
+  initList : function() {
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
@@ -437,13 +316,13 @@ var Lightbox = {
     }).show();
 
     Lightbox.total = Lightbox.imageArray.length;
-    Lightbox.changeImage(Lightbox.imageNum);
+    Lightbox.changeData(Lightbox.imageNum);
   },
 
-  // changeImage()
+  // changeData()
   // Hide most elements and preload image in preparation for resizing image
   // container.
-  changeImage: function(imageNum, zoomIn) {
+  changeData: function(imageNum, zoomIn) {
 
     if (Lightbox.inprogress === false) {
       if (Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) {
@@ -459,7 +338,6 @@ var Lightbox = {
       Lightbox.inprogress = true;
       Lightbox.activeImage = imageNum;
 
-      var settings = Drupal.settings.lightbox2;
       if (Lightbox.disableResize && !Lightbox.isSlideshow) {
         zoomIn = true;
       }
@@ -523,7 +401,7 @@ var Lightbox = {
 
           photo.style.width = (imageWidth) + 'px';
           photo.style.height = (imageHeight) + 'px';
-          Lightbox.resizeImageContainer(imageWidth, imageHeight);
+          Lightbox.resizeContainer(imageWidth, imageHeight);
 
           // Clear onLoad, IE behaves irratically with animated gifs otherwise.
           imgPreloader.onload = function() {};
@@ -538,7 +416,7 @@ var Lightbox = {
         var iframe = document.getElementById('lightboxFrame');
         var iframeStyles = Lightbox.imageArray[Lightbox.activeImage][2];
         iframe = Lightbox.setStyles(iframe, iframeStyles);
-        Lightbox.resizeImageContainer(parseInt(iframe.width, 10), parseInt(iframe.height, 10));
+        Lightbox.resizeContainer(parseInt(iframe.width, 10), parseInt(iframe.height, 10));
       }
       else if (Lightbox.isVideo || Lightbox.isModal) {
         var container = document.getElementById('modalContainer');
@@ -549,17 +427,17 @@ var Lightbox = {
           Lightbox.modalWidth =  parseInt(container.width, 10);
           Lightvideo.startVideo(Lightbox.imageArray[Lightbox.activeImage][0]);
         }
-        Lightbox.resizeImageContainer(parseInt(container.width, 10), parseInt(container.height, 10));
+        Lightbox.resizeContainer(parseInt(container.width, 10), parseInt(container.height, 10));
       }
     }
   },
 
   // imgNodeLoadingError()
   imgNodeLoadingError: function(image) {
-    var settings = Drupal.settings.lightbox2;
+    var s = Drupal.settings.lightbox2;
     var original_image = Lightbox.imageArray[Lightbox.activeImage][0];
-    if (settings.display_image_size !== "") {
-      original_image = original_image.replace(new RegExp("."+settings.display_image_size), "");
+    if (s.display_image_size !== "") {
+      original_image = original_image.replace(new RegExp("."+s.display_image_size), "");
     }
     Lightbox.imageArray[Lightbox.activeImage][0] = original_image;
     image.onerror = function() { Lightbox.imgLoadingError(image); };
@@ -568,19 +446,17 @@ var Lightbox = {
 
   // imgLoadingError()
   imgLoadingError: function(image) {
-    var settings = Drupal.settings.lightbox2;
-    Lightbox.imageArray[Lightbox.activeImage][0] = settings.default_image;
-    image.src = settings.default_image;
+    var s = Drupal.settings.lightbox2;
+    Lightbox.imageArray[Lightbox.activeImage][0] = s.default_image;
+    image.src = s.default_image;
   },
 
-  // resizeImageContainer()
-  resizeImageContainer: function(imgWidth, imgHeight) {
+  // resizeContainer()
+  resizeContainer: function(imgWidth, imgHeight) {
 
-    // Get current width and height.
     this.widthCurrent = $('#outerImageContainer').width();
     this.heightCurrent = $('#outerImageContainer').height();
 
-    // Get new width and height.
     var widthNew = (imgWidth  + (Lightbox.borderSize * 2));
     var heightNew = (imgHeight  + (Lightbox.borderSize * 2));
 
@@ -601,11 +477,11 @@ var Lightbox = {
         animate1 = {height: heightNew};
         animate2 = {width: widthNew};
       }
-      $('#outerImageContainer').animate(animate1, Lightbox.resizeSpeed).animate(animate2, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showImage(); });
+      $('#outerImageContainer').animate(animate1, Lightbox.resizeSpeed).animate(animate2, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showData(); });
     }
     // Simultaneous.
     else {
-      $('#outerImageContainer').animate({width: widthNew, height: heightNew}, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showImage(); });
+      $('#outerImageContainer').animate({width: widthNew, height: heightNew}, Lightbox.resizeSpeed, 'linear', function() { Lightbox.showData(); });
     }
 
     // If new and old image are same size and no scaling transition is necessary
@@ -619,19 +495,18 @@ var Lightbox = {
       }
     }
 
-    var settings = Drupal.settings.lightbox2;
-    if (!settings.use_alt_layout) {
+    var s = Drupal.settings.lightbox2;
+    if (!s.use_alt_layout) {
       $('#prevLink, #nextLink').css({height: imgHeight + 'px'});
     }
     $('#imageDataContainer').css({width: widthNew + 'px'});
   },
 
-  // showImage()
+  // showData()
   // Display image and begin preloading neighbors.
-  showImage: function() {
+  showData: function() {
     $('#loading').hide();
 
-    // Handle display of iframes.
     if (Lightbox.isLightframe || Lightbox.isVideo || Lightbox.isModal) {
       Lightbox.updateDetails();
       if (Lightbox.isLightframe) {
@@ -680,7 +555,7 @@ var Lightbox = {
       }
       else {
         if (!Lightbox.isPaused) {
-          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.changeImage(Lightbox.activeImage + 1);}, Lightbox.slideInterval);
+          Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.changeData(Lightbox.activeImage + 1);}, Lightbox.slideInterval);
         }
       }
       if (Lightbox.showPlayPause && Lightbox.total > 1 && !Lightbox.isPaused) {
@@ -725,15 +600,15 @@ var Lightbox = {
     $('#caption').html(caption).css({zIndex: '10500'}).show();
 
     // If image is part of set display 'Image x of x'.
-    var settings = Drupal.settings.lightbox2;
+    var s = Drupal.settings.lightbox2;
     var numberDisplay = null;
     if (Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;
       if (!Lightbox.isLightframe) {
-        numberDisplay = settings.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
+        numberDisplay = s.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       else {
-        numberDisplay = settings.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
+        numberDisplay = s.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       $('#numberDisplay').html(numberDisplay).css({zIndex: '10500'}).show();
     }
@@ -760,7 +635,7 @@ var Lightbox = {
           if (Lightbox.pauseOnPrevClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
           }
-          Lightbox.changeImage(Lightbox.activeImage - 1); return false;
+          Lightbox.changeData(Lightbox.activeImage - 1); return false;
         });
       }
       else {
@@ -773,7 +648,7 @@ var Lightbox = {
           if (Lightbox.pauseOnNextClick) {
             Lightbox.togglePlayPause("lightshowPause", "lightshowPlay");
           }
-          Lightbox.changeImage(Lightbox.activeImage + 1); return false;
+          Lightbox.changeData(Lightbox.activeImage + 1); return false;
         });
       }
       // Safari browsers need to have hide() called again.
@@ -795,7 +670,7 @@ var Lightbox = {
       // If not first image in set, display prev image button.
       if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage !== 0) {
         $(prevLink).css({zIndex: '10500'}).show().click(function() {
-          Lightbox.changeImage(Lightbox.activeImage - 1); return false;
+          Lightbox.changeData(Lightbox.activeImage - 1); return false;
         });
       }
       // Safari browsers need to have hide() called again.
@@ -806,7 +681,7 @@ var Lightbox = {
       // If not last image in set, display next image button.
       if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage != (Lightbox.total - 1)) {
         $(nextLink).css({zIndex: '10500'}).show().click(function() {
-          Lightbox.changeImage(Lightbox.activeImage + 1); return false;
+          Lightbox.changeData(Lightbox.activeImage + 1); return false;
         });
       }
       // Safari browsers need to have hide() called again.
@@ -852,23 +727,23 @@ var Lightbox = {
     }
     else if (key == 'p' || keycode == 37) {
       if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage !== 0) {
-        Lightbox.changeImage(Lightbox.activeImage - 1);
+        Lightbox.changeData(Lightbox.activeImage - 1);
       }
 
     // Display next image (n, ->).
     }
     else if (key == 'n' || keycode == 39) {
       if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage != (Lightbox.total - 1)) {
-        Lightbox.changeImage(Lightbox.activeImage + 1);
+        Lightbox.changeData(Lightbox.activeImage + 1);
       }
     }
     // Zoom in.
     else if (key == 'z' && !Lightbox.disableResize && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
       if (Lightbox.isZoomedIn) {
-        Lightbox.changeImage(Lightbox.activeImage, false);
+        Lightbox.changeData(Lightbox.activeImage, false);
       }
       else if (!Lightbox.isZoomedIn) {
-        Lightbox.changeImage(Lightbox.activeImage, true);
+        Lightbox.changeData(Lightbox.activeImage, true);
       }
       return false;
     }
@@ -1108,10 +983,10 @@ var Lightbox = {
     if (hideId == "lightshowPlay") {
       Lightbox.isPaused = false;
       if (!Lightbox.loopSlides && Lightbox.activeImage == (Lightbox.total - 1)) {
-        Lightbox.end('autoEnd');
+        Lightbox.end();
       }
       else {
-        Lightbox.changeImage(Lightbox.activeImage + 1);
+        Lightbox.changeData(Lightbox.activeImage + 1);
       }
     }
     else {
