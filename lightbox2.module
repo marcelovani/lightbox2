@@ -50,6 +50,8 @@ which should trigger the lightbox functionality.</li>
 <li><a href="http://drupal.org/project/imagecache">Imagecache</a> Support: adds a Lightbox2 field formatter for <a href="http://drupal.org/project/imagefield">CCK imagefields</a> for your custom <a href="http://drupal.org/project/views">views</a>.</li>
 <li>Image Page Link: a link to the image node can be provided within the lightbox itself.</li>
 <li>Page Exclusion Capability: exclude certain pages on your site from having the lightbox2 functionality.</li>
+<li>Login Support: ability to modify all user/login links so the login form appears in a lightbox.</li>
+<li>Skin and Animation Configuration: configure the order and speed of the lightbox animations, along with the lightbox colors, border size and overlay opacity.</li>
 <li>Gallery 2 Support: support for Gallery 2 images via the <a href="http://drupal.org/project/gallery">Gallery</a> module (beta).</li>
 </ul>
 <p align="justify"><h3>Usage</h3></p>
