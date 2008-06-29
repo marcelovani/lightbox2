@@ -521,9 +521,11 @@ var Lightbox = {
       else {
         if (Lightbox.isVideo) {
           $("#modalContainer").html(Lightbox.modalHTML);
+          $("#modalContainer").click(function() { return false; } );
         }
         else {
           $('#modalContainer').load(Lightbox.imageArray[Lightbox.activeImage][0]);
+          $('#modalContainer').unbind('click');
         }
         $('#modalContainer').css({zIndex: '10500'}).show();
       }
