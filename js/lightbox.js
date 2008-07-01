@@ -852,8 +852,14 @@ var Lightbox = {
       yScroll = document.body.scrollHeight;
     }
     else if (window.innerHeight && window.scrollMaxY) {
-      xScroll = window.innerWidth + window.scrollMaxX;
-      yScroll = window.innerHeight + window.scrollMaxY;
+      if (document.body.clientWidth) {
+        xScroll = document.body.clientWidth;
+        yScroll = document.body.clientHeight;
+      }
+      else {
+        xScroll = window.innerWidth + window.scrollMaxX;
+        yScroll = window.innerHeight + window.scrollMaxY;
+      }
     }
     // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
     else {
