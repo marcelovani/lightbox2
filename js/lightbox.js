@@ -613,7 +613,7 @@ var Lightbox = {
     }
 
     $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
-    if (Lightbox.rtl) {
+    if (Lightbox.rtl == 1) {
       $("#bottomNav").css({float: 'left'});
     }
 
