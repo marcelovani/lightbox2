@@ -56,7 +56,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           lightframe = true;
         }
         else if (rel_type == "lightbox_ungrouped") {
-          lightframe = "lightbox[]";
+          rel = "lightbox[]";
         }
         if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
           rel = rel_type + "[" + $(child).attr("class") + "]";
