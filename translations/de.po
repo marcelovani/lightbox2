@@ -1,21 +1,21 @@
-# German translation of lightbox2 (6.x-1.x-dev)
+# German translation of lightbox2 (6.x-1.8)
 # Copyright (c) 2008 by the German translation team
 # Generated from files:
-#  lightbox2.admin.inc,v 1.1.2.6 2008/06/22 21:15:33 snpower
-#  lightbox2.module,v 1.16.2.16.2.118 2008/06/25 16:14:53 snpower
+#  lightbox2.admin.inc,v 1.1.2.7 2008/06/28 14:30:09 snpower
+#  lightbox2.module,v 1.16.2.16.2.120 2008/06/29 16:41:55 snpower
 #  lightbox2.info,v 1.1.6.3 2008/04/12 14:21:41 snpower
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: lightbox2 (6.x-1.x-dev)\n"
-"POT-Creation-Date: 2008-07-02 21:26+0200\n"
-"PO-Revision-Date: 2008-07-02 21:32+0100\n"
-"Last-Translator: Alexander Hass\n"
+"Project-Id-Version: lightbox2 (6.x-1.8)\n"
+"POT-Creation-Date: 2008-07-03 23:52+0200\n"
+"PO-Revision-Date: 2008-07-03 23:53+0100\n"
 "Language-Team: German\n"
 "MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Type: text/plain; charset=utf-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n!=1);\n"
+"Last-Translator: Tobias Bähr <admin@tobiasbaehr.de>\n"
 "X-Poedit-Language: German\n"
 
 #: lightbox2.admin.inc:26
@@ -64,12 +64,11 @@ msgstr "Beim Betrachten gruppierter Bilder wird die Navigation, welche zum vorhe
 
 #: lightbox2.admin.inc:75
 msgid "Continuous Galleries"
-msgstr ""
+msgstr "Fortlaufende Gallerien"
 
 #: lightbox2.admin.inc:76
-#, fuzzy
 msgid "When viewing grouped images, the Next button on the last image will display the first image, while the Previous button on the first image will display the last image."
-msgstr "Beim Betrachten gruppierter Bilder wird die Navigation, welche zum vorherigen und nächsten Bild führt, nur angezeigt, wenn man mit Maus darüberfährt (Hovereffekt). Durch Aktivierung dieser Box wird die Navigation immer angezeigt."
+msgstr "Wenn beim Betrachten gruppierter Bilder das letzte Bild erreicht wurde, führt der „Nächtes”-Button (Pfeil) zum ersten Bild. Während der „Vorheriges”- Button beim ersten Bild zum letzten Bild führt."
 
 #: lightbox2.admin.inc:84
 msgid "Image Count Text"
@@ -89,7 +88,7 @@ msgstr "Dieser Text wird verwendet, um die Seitenanzahl unterhalb des HTML-Inhal
 
 #: lightbox2.admin.inc:101
 msgid "Image Resize Settings"
-msgstr "Bildgrößenanpassungs-Einstellungen"
+msgstr "Bildgrößenanpassungs Einstellungen"
 
 #: lightbox2.admin.inc:109
 msgid "Disable Resizing Feature"
@@ -221,7 +220,7 @@ msgstr "Standardmäßig werden die JavaScript Dateien von Lightbox im HTML-Heade
 
 #: lightbox2.admin.inc:255
 msgid "Skin settings"
-msgstr "Skin-Einstellungen"
+msgstr "Skineinstellungen"
 
 #: lightbox2.admin.inc:262
 msgid "Border Size"
@@ -327,7 +326,7 @@ msgstr "Erscheinungsdauer der Beschriftung"
 msgid "The duration (in seconds) of the caption sliding-down animation.  Enter a value between 0 and 10."
 msgstr "Die Dauer (in Sekunden) bis die Beschriftung vollständig zu sehen ist. Geben Sie ein Wert zwischen 0 und 10 ein."
 
-#: lightbox2.admin.inc:402;411;415
+#: lightbox2.admin.inc:402,411,415
 msgid "You must enter a properly formed hex value."
 msgstr "Bitte ein gültigen vollständigen Hexwert eingeben."
 
@@ -339,7 +338,7 @@ msgstr "Bitte eine Größe größer als 0 Pixel eingeben."
 msgid "You must enter a size greater than 0 pixels.  Leave blank for default positioning."
 msgstr "Eine Größe größer als 0 Pixel eingeben. Leer belassen für die Standardpositionierung."
 
-#: lightbox2.admin.inc:423;427;431
+#: lightbox2.admin.inc:423,427,431
 msgid "You must enter a duration between 0 and 10 seconds."
 msgstr "Bitte eine Dauer zwischen 0 und 10 Sekunden eingeben."
 
@@ -385,12 +384,11 @@ msgstr "Wenn aktiviert, wird die Slideshow automatisch pausiert und die vorherig
 
 #: lightbox2.admin.inc:495
 msgid "Continuous Loop"
-msgstr ""
+msgstr "Fortlaufende Schleife"
 
 #: lightbox2.admin.inc:496
-#, fuzzy
 msgid "When enabled the slideshow will automatically start over after displaying the last slide.  This prevents the slideshow from automatically exiting when enabled."
-msgstr "Wenn aktiviert wird Lightbox automatisch geschlossen nachdem das letzte Bild angezeigt wurde."
+msgstr "Wenn aktiviert, wird die Slideshow automatisch von vorn beginnen, wenn das letzte Bild erreicht wurde. Dadurch wird jedoch verhindert, dass sich die Slideshow automatisch schließt."
 
 #: lightbox2.admin.inc:510
 msgid "The \"interval seconds\" value must be numeric."
@@ -440,12 +438,12 @@ msgstr "Lightbox"
 msgid "Lightbox grouped"
 msgstr "Lightbox gruppiert"
 
-#: lightbox2.admin.inc:591
+#: lightbox2.admin.inc:591;
 #: lightbox2.module:232
 msgid "Slideshow"
 msgstr "Slideshow"
 
-#: lightbox2.admin.inc:592
+#: lightbox2.admin.inc:592;
 #: lightbox2.module:243
 msgid "HTML Content"
 msgstr "HTML Inhalt"
@@ -606,13 +604,12 @@ msgstr "Lightbox für Acidfree aktivieren"
 msgid "Checking this box will enable the display of acidfree videos in a lightbox.  This only applies to videos created by the \"video\" module and which appear in an acidfree gallery."
 msgstr "Durch Aktivierung dieser Box werden Acidfree Videos in einer Lightbox angezeigt. Dieses trifft nur auf die Videos zu, die durch das „Video“ Modul erstellt wurden und die in einer Acidfree-Galerie erscheinen."
 
-#: lightbox2.module:25
+#: lightbox2.module:25;
 #: lightbox2.info:0
 msgid "Enables Lightbox2 for Drupal"
 msgstr "Aktiviert Lightbox 2 in Drupal"
 
 #: lightbox2.module:27
-#, fuzzy
 msgid ""
 "<h3>Overview</h3>\n"
 "      <p align=\"justify\">Lightbox2 JS is a simple, unobtrusive script used to overlay images on the current page. It's a snap to setup and works on all modern browsers. The module comes with a Lightbox2 Lite option which does not use the JQuery libraries; it is therefore less likely to conflict with anything else.</p>\n"
@@ -797,6 +794,7 @@ msgstr ""
 "<a href=\"http://drupal.org/project/imagecache\">Imagecache</a> Unterstützung: fügt ein Lightbox2 Feld-Formatierer in <a href=\"http://drupal.org/project/imagefield\">CCK imagefields</a> für ihre benutzerdefinierten <a href=\"http://drupal.org/project/views\">Ansichten</a> hinzu.</li>\n"
 "<li>Link zur Bildseite: ein Link zum Bildbeitrag kann innerhalb der Lightbox selbst zur Verfügung gestellt werden.</li>\n"
 "<li>Seitenausschluss-Funktion: bestimmte Seiten ihrer Website von der Lightbox Funktion ausschließen.</li>\n"
+"<li>Anmelde-Unterstützung: ermöglicht es, dass Benutzer/Anmelde-Links in der Lightbox erscheinen.</li>\n"
 "<li>Gallery 2 Unterstützung: für Gallery 2 Bilder vom  <a href=\"http://drupal.org/project/gallery\">Gallery</a>-Modul (beta).</li>\n"
 "</ul>\n"
 "<p align=\"justify\"><h3>Anwendung</h3></p>\n"
@@ -903,7 +901,7 @@ msgstr ""
 "\n"
 "<p>Nicht alle Tastaturkürzel funktionieren im Opera Browser, z.B. das \"z\" beim Umschalten zum zoomen und die \"Leerzeichen\" Taste beim Umschalten von Play/Pause in den Slideshows. Dies könnte aber überwältigt werden, wenn Sie die Tastaturkürzel-Einstellung in dem Opera Präferenzen-Editor ändern.</p>"
 
-#: lightbox2.module:307;411
+#: lightbox2.module:307,411
 msgid "Image links with 'rel=\"lightbox\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr "Verlinkte Bilder mit dem 'rel=\"lightbox\"' in &lt;a&gt; Tags wird die Lighbox aufrufen, wenn darauf geklickt wurde."
 
@@ -935,7 +933,7 @@ msgstr "<code>&lt;a href=\"bild-1.jpg\" rel=\"lightbox[rundreise]\"&gt;bild #1&l
 msgid "There are no limits to the number of image sets per page or how many images are allowed in each set."
 msgstr "Es gibt keine Begrenzung für die Anzahl der Bilder pro Seite oder wie viele Bilder in einem Set zulässig sind."
 
-#: lightbox2.module:317;334
+#: lightbox2.module:317,334
 msgid "If you wish to turn the caption into a link, format your caption in the following way:"
 msgstr "Wenn Sie die Beschriftung in einen Hyperlink umwandeln möchten, formatieren Sie ihre Beschriftung in folgender Weise:"
 
@@ -947,7 +945,7 @@ msgstr "<code>&lt;a href=\"bild-1.jpg\" rel='lightbox[][&lt;a href=\"http://www.
 msgid "Image links from G2 are formatted for use with Lightbox2"
 msgstr "Verlinkte Bilder von G2 werden für den Gebrauch mit Lightbox2 formatiert"
 
-#: lightbox2.module:327;417
+#: lightbox2.module:327,417
 msgid "Image links with 'rel=\"lightshow\"' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on."
 msgstr "Verlinkte Bilder mit dem 'rel=\"lightshow\"' in den &lt;a&gt; Tags wird die Lightbox-Slideshow aufrufen, wenn darauf geklickt wurde."
 
@@ -971,7 +969,7 @@ msgstr "Es gibt keine Begrenzung für die Anzahl der Bilder einer Slideshow oder
 msgid "<code>&lt;a href=\"image-1.jpg\" rel='lightshow[show1][&lt;a href=\"http://www.yourlink.com\"&gt;View Image Details&lt;/a&gt;]'&gt;image #1&lt;/a&gt;</code>"
 msgstr "<code>&lt;a href=\"bild-1.jpg\" rel='lightshow[show1][&lt;a href=\"http://www.ihrlink.de\"&gt;Bilddetails anschauen&lt;/a&gt;]'&gt;bild #1&lt;/a&gt;</code>"
 
-#: lightbox2.module:341;420
+#: lightbox2.module:341,420
 msgid "Links to HTML content with 'rel=\"lightframe\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr "Links zu HTML-Inhalt mit dem 'rel=\"lightframe\"' in den &lt;a&gt; Tag wird die Lightbox aufrufen, wenn darauf geklickt wurde."
 
@@ -979,7 +977,7 @@ msgstr "Links zu HTML-Inhalt mit dem 'rel=\"lightframe\"' in den &lt;a&gt; Tag w
 msgid "It's possible to show webpage content in the lightbox, using iframes.  In this case the \"rel\" attribute should be set to \"lightframe\".  Again it's possible to group the content, (e.g. <code>lightframe[search][caption]</code>) but in addition to that, it's possible to control some of the iframe properties.  It's possible to set the \"width\", \"height\" and \"scrolling\" properties of the iframe.  The properties are separated from the group name by a <code>|</code>, for example <code>lightframe[search|width:100px;][caption]</code>.  If no grouping is being used, then the <code>|</code> is still used and the format would be <code>lightframe[|width:100px;]</code>.  The properties should all be of the format \"property: value;\" - note the closing semi-colon.  If no iframe properties are set, then the default width and height of 400px will be used.  See below for more detailed examples."
 msgstr "Es ist möglich Websites durch IFrames in der Lightbox anzuzeigen. In diesem Fall muss das rel-Attribute auf \"lightframe\" gesetzt sein. Es ist auch möglich diese Websites zu gruppieren, (z.B. <code>lightframe[suche][beschriftung]</code>) und zusätzlich ist es möglich einige der IFrame-Eigenschaften zu kontrollieren. Unter anderen kann die 'Breite', 'Höhe' und die 'Scroll' Eigenschaft von dem IFrame gesetzt werden. Diese Eigenschaften werden von dem Gruppenname mit ein <code>|</code> getrennt, z.B. <code>lightframe[suche|width:100px;][beschriftung]</code>. Wenn keine Gruppierung benutzt wird, dann wird die <code>|</code> trotzdem verwendet und das Format würde wie folgend sein <code>lightframe[|width:100px;]</code>. Diese Eigenschaften sollten im folgenden Format sein \"Eigenschaft: Wert;\" - vergessen Sie das schließende Semikolon nicht. Wenn keine IFrame-Eigenschaft gesetzt wurde, dann wird die Standard Breite und Höhe von 400px verwendet. Für detailliertere Beispiele siehe unten."
 
-#: lightbox2.module:345;364;378
+#: lightbox2.module:345,364,378
 msgid "Basic example:"
 msgstr "Einfaches Beispiel:"
 
@@ -987,7 +985,7 @@ msgstr "Einfaches Beispiel:"
 msgid "<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe&quot;&gt;Search google&lt;/a&gt;</code>"
 msgstr "<code>&lt;a href=&quot;http://www.google.de&quot; rel=&quot;lightframe&quot;&gt;Google Suche&lt;/a&gt;</code>"
 
-#: lightbox2.module:347;380
+#: lightbox2.module:347,380
 msgid "Grouped example:"
 msgstr "Beispiel für das Gruppieren:"
 
@@ -1011,7 +1009,7 @@ msgstr "Beispiel mit Kontrolle über die IFrame Eigenschaften, wenn gruppiert:"
 msgid "<code>&lt;a href=&quot;http://www.google.com&quot; rel=&quot;lightframe[search|width:400px; height:300px; scrolling: auto;]&quot;&gt;Search google&lt;/a&gt;<br />&lt;a href=&quot;http://www.yahoo.com&quot; rel=&quot;lightframe[search|width:400px; height:300px;]&quot;&gt;Search yahoo&lt;/a&gt;</code>"
 msgstr "<code>&lt;a href=&quot;http://www.google.de&quot; rel=&quot;lightframe[suche|width:400px; height:300px; scrolling: auto;]&quot;&gt;Google Suche&lt;/a&gt;<br />&lt;a href=&quot;http://de.yahoo.com&quot; rel=&quot;lightframe[suche|width:400px; height:300px;]&quot;&gt;Yahoo Suche&lt;/a&gt;</code>"
 
-#: lightbox2.module:360;423
+#: lightbox2.module:360,423
 msgid "Links to video content with 'rel=\"lightvideo\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr "Links zu Video-Inhalte mit 'rel=\"lightvideo\"' in den &lt;a&gt; Tags wird die Lightbox aufrufen, wenn darauf geklickt wurde."
 
@@ -1035,7 +1033,7 @@ msgstr "<code>&lt;a href=&quot;http://video.google.de/videoplay?docid=1659812406
 msgid "Supported video formats include asx, wmv, mov and swf.  A number of online video providers are also supported, including YouTube and Google Video.  For a full list of the current supported video providers please see the documentation on drupal.org."
 msgstr "Unterstützte Video Formate sind asx, wmv, mov und swf. Ebenso werden einige Video-Hoster unterstützt, z.B. YouTube und Google Video. Für eine ausführliche Liste der unterstützten Video-Hoster, schauen Sie bitte in die Online Dokumentation."
 
-#: lightbox2.module:374;426
+#: lightbox2.module:374,426
 msgid "Links to inline or modal content with 'rel=\"lightmodal\"' in the &lt;a&gt; tag will appear in a Lightbox when clicked on."
 msgstr "Links zu Inline oder modalen Inhalt mit 'rel=\"lightmodal\"' in den &lt;a&gt; Tag wird die Lightbox aufrufen, wenn darauf geklickt wurde."
 
@@ -1131,12 +1129,12 @@ msgstr "Lightbox2 IFrame"
 msgid "administer lightbox2"
 msgstr "Lightbox 2 verwalten"
 
-#: lightbox2.module:213
+#: lightbox2.module:213;
 #: lightbox2.info:0
 msgid "Lightbox2"
 msgstr "Lightbox 2"
 
-#: lightbox2.module:214;222
+#: lightbox2.module:214,222
 msgid "Allows the user to configure the lightbox2 settings"
 msgstr "Erlaubt dem Benutzer die Einstellungen von Lightbox 2 zu ändern"
 
@@ -1167,8 +1165,4 @@ msgstr "Anmelden"
 #: lightbox2.module:0
 msgid "lightbox2"
 msgstr "lightbox2"
-
-#: lightbox2.info:0
-msgid "Javascript tools"
-msgstr "JavaScript Tools"
 
