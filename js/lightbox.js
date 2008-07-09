@@ -182,21 +182,25 @@ var Lightbox = {
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
     $("a[@rel^='lightbox'], area[@rel^='lightbox']").click(function() {
+      $('#lightbox').unbind('click');
       $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, false, false, false);
       return false;
     });
     $("a[@rel^='lightshow'], area[@rel^='lightshow']").click(function() {
+      $('#lightbox').unbind('click');
       $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, true, false, false, false);
       return false;
     });
     $("a[@rel^='lightframe'], area[@rel^='lightframe']").click(function() {
+      $('#lightbox').unbind('click');
       $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, true, false, false);
       return false;
     });
     $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function() {
+      $('#lightbox').unbind('click');
       $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
       Lightbox.start(this, false, false, true, false);
       return false;
@@ -224,9 +228,20 @@ var Lightbox = {
       width: '100%',
       zIndex: '10090',
       height: arrayPageSize[1] + 'px',
-      backgroundColor : '#' + Lightbox.overlayColor,
-      opacity : Lightbox.overlayOpacity
-    }).fadeIn(Lightbox.fadeInSpeed);
+      backgroundColor : '#' + Lightbox.overlayColor
+    });
+    // Detect OS X FF2 opacity + flash issue.
+    if (lightvideo && this.detectMacFF2()) {
+      $("#overlay").removeClass("overlay_default");
+      $("#overlay").addClass("overlay_macff2");
+      $("#overlay").css({opacity : null});
+    }
+    else {
+      $("#overlay").removeClass("overlay_macff2");
+      $("#overlay").addClass("overlay_default");
+      $("#overlay").css({opacity : Lightbox.overlayOpacity});
+    }
+    $("#overlay").fadeIn(Lightbox.fadeInSpeed);
 
     Lightbox.isSlideshow = slideshow;
     Lightbox.isLightframe = lightframe;
@@ -849,14 +864,8 @@ var Lightbox = {
       yScroll = document.body.scrollHeight;
     }
     else if (window.innerHeight && window.scrollMaxY) {
-      if (document.body.clientHeight) {
-        xScroll = document.body.clientWidth;
-        yScroll = document.body.clientHeight;
-      }
-      else {
-        xScroll = window.innerWidth + window.scrollMaxX;
-        yScroll = window.innerHeight + window.scrollMaxY;
-      }
+      xScroll = window.innerWidth + window.scrollMaxX;
+      yScroll = window.innerHeight + window.scrollMaxY;
     }
     // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
     else {
@@ -996,6 +1005,17 @@ var Lightbox = {
     else {
       Lightbox.isPaused = true;
     }
+  },
+
+  detectMacFF2: function() {
+    var ua = navigator.userAgent.toLowerCase();
+    if (/firefox[\/\s](\d+\.\d+)/.test(ua)) {
+      var ffversion = new Number(RegExp.$1);
+      if (ffversion < 3 && ua.indexOf('mac') != -1) {
+        return true;
+      }
+    }
+    return false;
   }
 };
 
