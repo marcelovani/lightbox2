@@ -1880,8 +1880,8 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     $orig_rel = $rel;
 
     $code = $item['value'];
-    $width = $field['widget']['thumbnail_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['thumbnail_width'];
-    $height = $field['widget']['thumbnail_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
+    $width = $field['widget']['thumbnail_width'] == '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['thumbnail_width'];
+    $height = $field['widget']['thumbnail_height'] == '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
     $link = $field['widget']['thumbnail_link'] ? $field['widget']['thumbnail_link'] : variable_get('image_ncck_default_thumbnail_link', IMAGE_NCCK_DEFAULT_THUMBNAIL_LINK);
     if ($link == IMAGE_NCCK_LINK_CONTENT) {
       $link = 'node/'. $node->nid;
@@ -1893,8 +1893,12 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
       $link = NULL;
     }
     $attributes = array();
-    $attributes['width'] = $width;
-    $attributes['height'] = $height;
+    if ($width) {
+      $attributes['width'] = $width;
+    }
+    if ($height) {
+      $attributes['height'] = $height;
+    }
     $target = variable_get('lightbox2_node_link_target', FALSE);
     if (!empty($target)) {
       $attributes['target'] = $target;
@@ -1930,8 +1934,8 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
 
     if ($orig_rel != 'lightframe') {
       $link_attributes = array('rel' => $rel);
-      $full_width = $field['widget']['full_width'] === '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
-      $full_height = $field['widget']['full_height'] === '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
+      $full_width = $field['widget']['full_width'] == '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
+      $full_height = $field['widget']['full_height'] == '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
       $full_image_url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $full_width, $full_height, $formatter, $field, $item, $node);
       $output = l($image, $full_image_url, $link_attributes, NULL, NULL, FALSE, TRUE);
     }
