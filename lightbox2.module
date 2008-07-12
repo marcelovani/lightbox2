@@ -791,14 +791,16 @@ function lightbox2_field_formatter_info() {
     );
   }
   if (module_exists('filefield')) {
-    $formatters['lightframe2][filefield'] = array(
+    $formatters['filefield_lightframe'] = array(
       'label' => t('Lightbox2 iframe'),
       'field types' => array('file'),
+      'theme' => 'lightbox2_file_formatter_lightbox2_iframe',
     );
   }
 
   return $formatters;
 }
+
 
 
 /**
@@ -823,11 +825,6 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
       $formatter = $view_preset;
       $field['lightbox_type'] = $lightbox_type;
       return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
-    }
-
-    // Filefield.
-    else if ($view_preset == 'filefield' && module_exists('filefield')) {
-      return lightbox2_filefield_formatter($field, $item, $formatter, $node);
     }
 
     // Imagecache + imagefield image.
@@ -913,6 +910,12 @@ function lightbox2_theme() {
     'lightbox2_image' => array(
       'function' => 'lightbox2_image',
       'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
+    ),
+    'lightbox2_formatter_filefield_lightframe' => array(
+      'arguments' => array('element' => NULL),
+    ),
+    'lightbox2_file_formatter_lightbox2_iframe' => array(
+      'arguments' => array('file' => NULL, 'field' => NULL, 'file_formatter_settings' => NULL),
     ),
   );
 }
@@ -1358,50 +1361,77 @@ function lightbox2_acidfree_video($nid) {
 }
 
 /**
- * Function to display a filefield file in a lightbox.
- *
- * @param $field
- *   The field the action is being performed on.
- * @param $item
- *   An array, keyed by column, of the data stored for this item in this field.
- * @param $formatter
- *   The formatter to use for the field.
- * @param $node
- *   The node object.
+ * Implementation of filefield's hook_file_formatter_info().
  */
-function lightbox2_filefield_formatter($field, $item, $formatter, $node) {
+function lightbox2_file_formatter_info() {
+  return array(
+    'lightbox2_iframe' => array(
+      'suitability callback' => 'lightbox2_check_filefield_extension',
+      'title' => t('Lightbox2 iframe'),
+      'description' => t('Displays all kinds of files in a popup lightbox in an iframe.'),
+    ),
+  );
+}
 
-  if (user_access('view filefield uploads') && is_array($item) && is_file($item['filepath']) && $item['list']) {
-    drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
-
-    $path = ($item['fid'] == 'upload')
-            ? file_create_filename($item['filename'], file_create_path($field['widget']['file_path']))
-            : $item['filepath'];
-    $icon = theme('filefield_icon', $item);
-    $description = $item['description'];
-
-    $node_link = '';
-    if (!empty($node_link_text) && !empty($link)) {
-      $target = variable_get('lightbox2_node_link_target', FALSE);
-      if (!empty($target)) {
-        $attributes = array('target' => $target);
-      }
-      $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
-      if (!empty($node_link_text)) {
-        $node_link .= '<br /><br />'. l($node_link_text, $link, array('attributes' => $attributes));
-      }
-    }
-
-    $link_attributes = array();
-    $ext = array_pop(explode('.', $item['filename']));
-    if (lightbox2_supported_file_extension($ext)) {
-      $link_attributes = array('rel' => 'lightframe[]['. $description . $node_link .']');
-    }
-
-    $url = file_create_url($path);
-    return '<div class="filefield-item">'. $icon . l($description, $url, array('attributes' => $link_attributes)) .'</div>';
+/**
+ * Theme function for the lightbox iframe filefield formatter.
+ */
+function theme_lightbox2_formatter_filefield_lightframe($element) {
+  $file = $element['#item'];
+  $field = content_fields($element['#field_name']);
+  if (!filefield_view_access($field['field_name']) || empty($file['list'])) {
+    return '';
   }
-  return '';
+  if (empty($file['fid']) || !is_file($file['filepath'])) {
+    return '';
+  }
+  $file = (object)$file;
+  if (!lightbox2_check_filefield_extension($file, $field)) {
+    return '';
+  }
+  drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
+  return '<div class="filefield-item">'. theme('lightbox2_file_formatter_lightbox2_iframe', $file, $field, NULL) .'</div>';
+}
+
+/**
+ * Theme function for the lightbox iframe filefield formatter.
+ */
+function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_formatter_settings) {
+  $path = $file->filepath;
+  $url = file_create_url($path);
+  $icon = theme('filefield_icon', $file);
+  $description = $file->description;
+
+  $target = variable_get('lightbox2_node_link_target', FALSE);
+  if (!empty($target)) {
+    $attributes = array('target' => $target);
+  }
+  $node_link = '';
+  $node_link_text = check_plain(variable_get('lightbox2_node_link_text', 'View Image Details'));
+  if (!empty($node_link_text)) {
+    $node_link .= '<br /><br />'. l($node_link_text, $url, array('attributes' => $attributes));
+  }
+
+  // Only files with supported extensions make it this far, so no need to check here.
+  $link_attributes = array('rel' => 'lightframe[]['. $description . $node_link .']');
+
+  return '<div class="filefield-formatter-lightbox2-iframe">'. $icon . l($description, $url, array('attributes' => $link_attributes)) .'</div>';
+}
+
+
+/**
+ * Suitability callback function for the filefield formatter.
+ *
+ * @param $file
+ *   The file object, containing filepath, mime type, etc.
+ * @param $field
+ *   CCK field information.
+ * @return
+ *   True if file extension is supported.
+ */
+function lightbox2_check_filefield_extension($file, $field) {
+  $ext = array_pop(explode('.', $file->filename));
+  return lightbox2_supported_file_extension($ext);
 }
 
 /**
