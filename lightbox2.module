@@ -319,10 +319,10 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
       return $output;
     }
   }
-  else if ($delta == 1) {
+  elseif ($delta == 1) {
     return t('Image links from G2 are formatted for use with Lightbox2');
   }
-  else if ($delta == 2) {
+  elseif ($delta == 2) {
     if (!$long) {
       return t('Image links with \'rel="lightshow"\' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on.');
     }
@@ -336,7 +336,7 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
       return $output;
     }
   }
-  else if ($delta == 3) {
+  elseif ($delta == 3) {
     if (!$long) {
       return t('Links to HTML content with \'rel="lightframe"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
     }
@@ -355,7 +355,7 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
       return $output;
     }
   }
-  else if ($delta == 4) {
+  elseif ($delta == 4) {
     if (!$long) {
       return t('Links to video content with \'rel="lightvideo"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
     }
@@ -369,7 +369,7 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
       return $output;
     }
   }
-  else if ($delta == 5) {
+  elseif ($delta == 5) {
     if (!$long) {
       return t('Links to inline or modal content with \'rel="lightmodal"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
     }
@@ -410,22 +410,22 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
       if ($delta == 0) {
         return t('Image links with \'rel="lightbox"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
-      else if ($delta == 1) {
+      elseif ($delta == 1) {
         return t('Turns g2_filter links into Lightbox2 appropriate links');
       }
-      else if ($delta == 2) {
+      elseif ($delta == 2) {
         return t('Image links with \'rel="lightshow"\' in the &lt;a&gt; tag will appear in a Lightbox slideshow when clicked on.');
       }
-      else if ($delta == 3) {
+      elseif ($delta == 3) {
         return t('Links to HTML content with \'rel="lightframe"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
-      else if ($delta == 4) {
+      elseif ($delta == 4) {
         return t('Links to video content with \'rel="lightvideo"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
-      else if ($delta == 5) {
+      elseif ($delta == 5) {
         return t('Links to inline or modal content with \'rel="lightmodal"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
-      else if ($delta == 6) {
+      elseif ($delta == 6) {
         return t('It\'s possible to show webpage content in the lightbox, using iframes.  In this case the "rel" attribute should be set to "lightframe".  However, users can do this without any filters to be enabled.  To prevent users from adding iframes to the site in this manner, then please enable this option.') .'</p>';
       }
 
@@ -436,7 +436,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
         $text = preg_replace('/src="/', 'rel="lightbox" src="', $text);
         $text = drupal_substr($text, 1, -1);
       }
-      else if ($delta == 6) {
+      elseif ($delta == 6) {
         $text = preg_replace('/<a([^>]*?)(rel=[\'"]*lightframe[\'"]*)([^>]*?)>/i', '<a\1\3>', $text);
       }
       return $text;
@@ -817,7 +817,7 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
   }
 
   // Image fields - emfield or imagecache + imagefield.
-  else if (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE || strpos($formatter, 'lightframe2][') !== FALSE) {
+  elseif (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE || strpos($formatter, 'lightframe2][') !== FALSE) {
     list($lightbox_type, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
 
     // Emfield image field.
@@ -828,7 +828,7 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
     }
 
     // Imagecache + imagefield image.
-    else if (module_exists('imagefield') && module_exists('imagecache')) {
+    elseif (module_exists('imagefield') && module_exists('imagecache')) {
       return lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node, $view_preset, $lightbox_preset);
     }
   }
@@ -855,7 +855,7 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
   if (isset($item['filepath'])) {
     $filepath = &$item['filepath'];
   }
-  else if (!empty($item['fid'])) {
+  elseif (!empty($item['fid'])) {
     $file = _imagefield_file_load($item['fid']);
     $filepath = &$file['filepath'];
   }
@@ -882,7 +882,7 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
     if (strpos($formatter, 'lightshow2][') !== FALSE) {
       $rel = 'lightshow';
     }
-    else if (strpos($formatter, 'lightframe2][') !== FALSE) {
+    elseif (strpos($formatter, 'lightframe2][') !== FALSE) {
       $rel = 'lightframe';
     }
     return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $node, $rel);
@@ -978,10 +978,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   if ($imagefield_grouping == 1) {
     $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
   }
-  else if ($imagefield_grouping == 2 && !empty($item['nid'])) {
+  elseif ($imagefield_grouping == 2 && !empty($item['nid'])) {
     $rel = $rel .'['. $item['nid'] .']['. $caption .']';
   }
-  else if ($imagefield_grouping == 3 && !empty($item['nid'])) {
+  elseif ($imagefield_grouping == 3 && !empty($item['nid'])) {
     $rel = $rel .'['. $field['field_name'] . $item['nid'] .']['. $caption .']';
   }
   else {
@@ -1002,7 +1002,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   if ($item['lightbox_preset'] == 'node') {
     $output = l($image, 'node/'. $node->nid .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
   }
-  else if ($item['lightbox_preset'] == 'original') {
+  elseif ($item['lightbox_preset'] == 'original') {
     $output = l($image, file_create_url($item['filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
   }
   else {
@@ -1097,7 +1097,7 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     if ($field['lightbox_type'] == 'lightshow2') {
       $rel = 'lightshow';
     }
-    else if ($field['lightbox_type'] == 'lightframe2') {
+    elseif ($field['lightbox_type'] == 'lightframe2') {
       $rel = 'lightframe';
     }
     if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
@@ -1112,7 +1112,7 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     if ($link == IMAGE_NCCK_LINK_CONTENT) {
       $link = 'node/'. $node->nid;
     }
-    else if ($link == IMAGE_NCCK_LINK_PROVIDER) {
+    elseif ($link == IMAGE_NCCK_LINK_PROVIDER) {
       $link = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'embedded_link', $code, $item['data']);
     }
     else {
@@ -1147,10 +1147,10 @@ function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options =
     if ($image_grouping == 1) {
       $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
     }
-    else if ($image_grouping == 2 && !empty($node->nid)) {
+    elseif ($image_grouping == 2 && !empty($node->nid)) {
       $rel = $rel .'['. $node->nid .']['. $caption .']';
     }
-    else if ($image_grouping == 3 && !empty($node->nid)) {
+    elseif ($image_grouping == 3 && !empty($node->nid)) {
       $rel = $rel .'['. $field['field_name'] . $node->nid .']['. $caption .']';
     }
     else {
