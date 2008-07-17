@@ -176,7 +176,7 @@ function lightbox2_general_settings_form() {
   $form['lightbox2_page_init']['lightbox2_page_list'] = array(
     '#type' => 'textarea',
     '#title' => t('Pages'),
-    '#description' => t('List one page per line as Drupal paths.  The % character is a wildcard.  Example paths are "node/add/page" and "node/add/%".  Use &lt;front&gt; to match the front page.'),
+    '#description' => t('List one page per line as Drupal paths.  The * character is a wildcard.  Example paths are "node/add/page" and "node/add/*".  Use &lt;front&gt; to match the front page.'),
     '#default_value' => variable_get('lightbox2_page_list', ''),
   );
 
