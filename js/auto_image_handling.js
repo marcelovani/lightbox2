@@ -92,8 +92,13 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           // Image assist uses "+" signs for spaces which doesn't work for
           // normal links.
           orig_href = orig_href.replace(/\+/, " ");
-          frame_href = orig_href;
-          href = orig_href;
+          href = $(child).attr("src").replace(new RegExp("\\.img_assist_custom"), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size));
+          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
+            rel = rel_type + "[img_assist_images]";
+          }
+          if (lightframe) {
+            frame_href = orig_href + "/lightbox2";
+          }
         }
 
         // Handle "inline" images.
