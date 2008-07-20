@@ -84,6 +84,9 @@ function lightbox2_uninstall() {
 
 /**
  * One of the variables was renamed from 'lightbox2_plus' to 'lightbox2_lite'.
+ *
+ * Should have been created with lightbox2_update_600x() naming convention, but
+ * too late now.
  */
 function lightbox2_update_1() {
   $ret = array();
@@ -96,6 +99,9 @@ function lightbox2_update_1() {
 /**
  * 'lightbox2_image_group' variable has been removed and others need to be
  * updated accordingly.
+ *
+ * Should have been created with lightbox2_update_600x() naming convention, but
+ * too late now.
  */
 function lightbox2_update_2() {
   $image_group = variable_get('lightbox2_image_group', TRUE);
@@ -133,6 +139,9 @@ function lightbox2_update_2() {
  * lightbox functionality should be enabled or disabled for the page list.
  * 'lightbox2_disable_zoom' has been replaced by 'lightbox2_disable_resize'.
  * 'lightbox2_disable_zoom' still exists but has a different meaning.
+ *
+ * Should have been created with lightbox2_update_600x() naming convention, but
+ * too late now.
  */
 function lightbox2_update_3() {
   $disabled_urls = variable_get('lightbox2_disable_these_urls', '');
