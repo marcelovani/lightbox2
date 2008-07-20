@@ -485,6 +485,7 @@ var Lightbox = {
     wDiff = this.widthCurrent - widthNew;
     hDiff = this.heightCurrent - heightNew;
 
+    $('#modalContainer').css({'width': imgWidth, 'height': imgHeight});
     // Detect animation sequence.
     if (Lightbox.resizeSequence) {
       var animate1 = {width: widthNew};
