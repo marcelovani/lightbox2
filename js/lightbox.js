@@ -116,7 +116,7 @@ var Lightbox = {
       </div>';
     var loading = '<div id="loading"><a href="#" id="loadingLink"></a></div>';
     var modal = '<div id="modalContainer" style="display: none;"></div>';
-    var frame = '<div id="frameContainer" style="display: none;"><iframe id="lightboxFrame" style="display: none;"></iframe></div>';
+    var frame = '<div id="frameContainer" style="display: none;"><iframe id="lightboxFrame" style="display: none;" src="/"></iframe></div>';
     var imageContainer = '<div id="imageContainer" style="display: none;"></div>';
     var details = '<div id="imageDetails"></div>';
     var bottomNav = '<div id="bottomNav"></div>';
