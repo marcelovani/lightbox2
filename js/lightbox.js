@@ -148,6 +148,7 @@ var Lightbox = {
 
     // Setup onclick handlers.
     $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
+    $('#imageData').click(function() { return false; } );
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeData(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeData(Lightbox.activeImage + 1); return false; } );
