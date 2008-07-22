@@ -77,7 +77,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         // Handle flickr images.
         if ($(child).attr("class").match("flickr-photo-img") ||
           $(child).attr("class").match("flickr-photoset-img")) {
-          href = $(child).attr("src").replace("_s", "").replace("_t", "").replace("_m", "").replace("_b", "");
+          href = $(child).attr("src").replace("_s.", ".").replace("_t.", ".").replace("_m.", ".").replace("_b.", ".");
           if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
             rel = rel_type + "[flickr]";
             if ($(child).parents("div.block-flickr").attr("class")) {
