@@ -526,6 +526,49 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_js_location', 'header'),
   );
 
+  // Define keyboard shortcuts fieldset.
+  /* ---------------------------------- */
+  $form['advanced_options']['keyboard_shortcuts'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Keyboard Shortcuts'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
+
+  $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_close'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Close keys'),
+    '#description' => t("A list of keys (or key codes) that a user may use to close the lightbox. Values should be separated by a space. Defaults to 'c x 27' (c, x, or esc)."),
+    '#default_value' => variable_get('lightbox2_keys_close', 'c x 27'),
+  );
+
+  $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_previous'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Previous keys'),
+    '#description' => t("A list of keys (or key codes) that a user may use to navigate to the previous item in the lightbox. Values should be separated by a space. Defaults to 'p 37' (p or left arrow)."),
+    '#default_value' => variable_get('lightbox2_keys_previous', 'p 37'),
+  );
+
+  $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_next'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Next keys'),
+    '#description' => t("A list of keys (or key codes) that a user may use to navigate to the next item in the lightbox. Values should be separated by a space. Defaults to 'n 39' (n or right arrow)."),
+    '#default_value' => variable_get('lightbox2_keys_next', 'n 39'),
+  );
+
+  $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_zoom'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Zoom keys'),
+    '#description' => t("A list of keys (or key codes) that a user may use to zoom in / out of images in the lightbox. Values should be separated by a space. Defaults to 'z'."),
+    '#default_value' => variable_get('lightbox2_keys_zoom', 'z'),
+  );
+
+  $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_play_pause'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Pause / Play keys'),
+    '#description' => t("A list of keys (or key codes) that a user may use to pause / play the lightbox. Values should be separated by a space. Defaults to '32' (spacebar)."),
+    '#default_value' => variable_get('lightbox2_keys_play_pause', '32'),
+  );
 
   // Define border settings fieldset.
   /* ---------------------------------- */
@@ -1446,6 +1489,11 @@ function lightbox2_add_files() {
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
+    'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
+    'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
+    'keys_next' => variable_get('lightbox2_keys_next', 'n 39'),
+    'keys_zoom' => variable_get('lightbox2_keys_zoom', 'z'),
+    'keys_play_pause' => variable_get('lightbox2_keys_play_pause', '32'),
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'image_node_sizes' => $image_node_sizes,
     'trigger_lightbox_classes' => $trigger_lightbox_classes,

@@ -41,6 +41,11 @@ var Lightbox = {
   isZoomedIn : false,
   rtl : false,
   loopItems : false,
+  keysClose : ['c', 'x', 27],
+  keysPrevious : ['p', 37],
+  keysNext : ['n', 39],
+  keysZoom : ['z'],
+  keysPlayPause : [32],
 
   // Slideshow options.
   slideInterval : 5000, // In milliseconds.
@@ -89,6 +94,11 @@ var Lightbox = {
     Lightbox.topPosition = s.top_position;
     Lightbox.rtl = s.rtl;
     Lightbox.loopItems = s.loop_items;
+    Lightbox.keysClose = s.keys_close.split(" ");
+    Lightbox.keysPrevious = s.keys_previous.split(" ");
+    Lightbox.keysNext = s.keys_next.split(" ");
+    Lightbox.keysZoom = s.keys_zoom.split(" ");
+    Lightbox.keysPlayPause = s.keys_play_pause.split(" ");
     Lightbox.disableResize = s.disable_resize;
     Lightbox.disableZoom = s.disable_zoom;
     Lightbox.slideInterval = s.slideshow_interval;
@@ -148,7 +158,6 @@ var Lightbox = {
 
     // Setup onclick handlers.
     $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
-    $('#imageData').click(function() { return false; } );
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeData(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeData(Lightbox.activeImage + 1); return false; } );
@@ -739,26 +748,24 @@ var Lightbox = {
     key = String.fromCharCode(keycode).toLowerCase();
 
     // Close lightbox.
-    if (key == 'x' || key == 'o' || key == 'c' || keycode == escapeKey) {
+    if (Lightbox.checkKey(Lightbox.keysClose, key, keycode)) {
       Lightbox.end('forceClose');
-
-    // Display previous image (p, <-).
     }
-    else if (key == 'p' || keycode == 37) {
+    // Display previous image (p, <-).
+    else if (Lightbox.checkKey(Lightbox.keysPrevious, key, keycode)) {
       if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage !== 0) {
 
         Lightbox.changeData(Lightbox.activeImage - 1);
       }
-
-    // Display next image (n, ->).
     }
-    else if (key == 'n' || keycode == 39) {
+    // Display next image (n, ->).
+    else if (Lightbox.checkKey(Lightbox.keysNext, key, keycode)) {
       if ((Lightbox.total > 1 && ((Lightbox.isSlideshow && Lightbox.loopSlides) || (!Lightbox.isSlideshow && Lightbox.loopItems))) || Lightbox.activeImage != (Lightbox.total - 1)) {
         Lightbox.changeData(Lightbox.activeImage + 1);
       }
     }
     // Zoom in.
-    else if (key == 'z' && !Lightbox.disableResize && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
+    else if (Lightbox.checkKey(Lightbox.keysZoom, key, keycode) && !Lightbox.disableResize && !Lightbox.disableZoom && !Lightbox.isSlideshow && !Lightbox.isLightframe) {
       if (Lightbox.isZoomedIn) {
         Lightbox.changeData(Lightbox.activeImage, false);
       }
@@ -767,7 +774,7 @@ var Lightbox = {
       }
     }
     // Toggle play / pause (space).
-    else if (keycode == 32 && Lightbox.isSlideshow) {
+    else if (Lightbox.checkKey(Lightbox.keysPlayPause, key, keycode) && Lightbox.isSlideshow) {
       if (Lightbox.isPaused) {
         Lightbox.togglePlayPause("lightshowPlay", "lightshowPause");
       }
@@ -1021,7 +1028,12 @@ var Lightbox = {
       }
     }
     return false;
+  },
+
+  checkKey: function(keys, key, code) {
+    return (keys.indexOf(key) != -1 || keys.indexOf(code) != -1);
   }
+
 };
 
 // Initialize the lightbox.

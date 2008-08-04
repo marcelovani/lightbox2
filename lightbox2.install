@@ -43,6 +43,11 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_border_size');
   variable_del('lightbox2_box_color');
   variable_del('lightbox2_font_color');
+  variable_del('lightbox2_keys_close');
+  variable_del('lightbox2_keys_previous');
+  variable_del('lightbox2_keys_next');
+  variable_del('lightbox2_keys_zoom');
+  variable_del('lightbox2_keys_play_pause');
   variable_del('lightbox2_top_position');
   variable_del('lightbox2_overlay_opacity');
   variable_del('lightbox2_overlay_color');
