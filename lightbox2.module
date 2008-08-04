@@ -649,6 +649,11 @@ function lightbox2_add_files() {
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
+    'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
+    'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
+    'keys_next' => variable_get('lightbox2_keys_next', 'n 39'),
+    'keys_zoom' => variable_get('lightbox2_keys_zoom', 'z'),
+    'keys_play_pause' => variable_get('lightbox2_keys_play_pause', '32'),
     'display_image_size' => variable_get('lightbox2_display_image_size', ''),
     'image_node_sizes' => $image_node_sizes,
     'trigger_lightbox_classes' => $trigger_lightbox_classes,

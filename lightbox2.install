@@ -40,6 +40,11 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_image_ncck_group_node_id');
   // Advanced settings.
   variable_del('lightbox2_js_location');
+  variable_del('lightbox2_keys_close');
+  variable_del('lightbox2_keys_previous');
+  variable_del('lightbox2_keys_next');
+  variable_del('lightbox2_keys_zoom');
+  variable_del('lightbox2_keys_play_pause');
   variable_del('lightbox2_top_position');
   variable_del('lightbox2_border_size');
   variable_del('lightbox2_box_color');
