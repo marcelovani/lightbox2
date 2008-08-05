@@ -42,6 +42,9 @@ var Lightvideo = {
     else if (href.match(/\.wmv/i) || href.match(/\.asx/i)) {
       Lightbox.modalHTML = '<object NAME="Player" WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" type="application/x-oleobject" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6"><param NAME="URL" VALUE="'+href+'"></param><param NAME="AUTOSTART" VALUE="false"></param><param name="showControls" value="true"></param><embed WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" SRC="'+href+'" TYPE="application/x-oleobject" AUTOSTART="false"></embed></object>';
     }
+    else if (href.match(/\.divx/i) || href.match(/divx\.avi/i)) {
+      Lightbox.modalHTML = '<object WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" codebase="http://go.divx.com/plugin/DivXBrowserPlugin.cab" align="left" hspace="0" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6"><param NAME="src" VALUE="'+href+'"></param><param NAME="custommode" VALUE="none"></param><param name="mode" value="large"></param><param name="minVersion" value="1.4.0"></param><embed WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" SRC="'+href+'" TYPE="video/divx" custommode="none" mode="large" pluginspage="http://go.divx.com/plugin/download/"></embed></object>';
+    }
     else {
       Lightbox.videoId = href;
       Lightvideo.createEmbed(href, "flvvideo", "#ffffff");
