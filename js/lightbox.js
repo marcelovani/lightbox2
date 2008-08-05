@@ -212,12 +212,14 @@ var Lightbox = {
       Lightbox.start(this, false, true, false, false);
       return false;
     });
-    $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function() {
-      $('#lightbox').unbind('click');
-      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
-      Lightbox.start(this, false, false, true, false);
-      return false;
-    });
+    if (Lightbox.enableVideo) {
+      $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function() {
+        $('#lightbox').unbind('click');
+        $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+        Lightbox.start(this, false, false, true, false);
+        return false;
+      });
+    }
     $("a[@rel^='lightmodal'], area[@rel^='lightmodal']").click(function() {
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
