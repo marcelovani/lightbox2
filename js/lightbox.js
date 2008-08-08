@@ -588,7 +588,7 @@ var Lightbox = {
         }
       }
       else {
-        if (!Lightbox.isPaused) {
+        if (!Lightbox.isPaused && Lightbox.total > 1) {
           Lightbox.slideIdArray[Lightbox.slideIdCount++] = setTimeout(function () {Lightbox.changeData(Lightbox.activeImage + 1);}, Lightbox.slideInterval);
         }
       }
@@ -1018,7 +1018,7 @@ var Lightbox = {
       if (!Lightbox.loopSlides && Lightbox.activeImage == (Lightbox.total - 1)) {
         Lightbox.end();
       }
-      else {
+      else if (Lightbox.total > 1) {
         Lightbox.changeData(Lightbox.activeImage + 1);
       }
     }
