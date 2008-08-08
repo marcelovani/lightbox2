@@ -736,38 +736,38 @@ function lightbox2_field_formatter_info() {
     else {
       $rules = _imagecache_get_presets();
     }
-    $iframe['lightframe2][original][node'] = array(
+    $iframe['imagefield__lightframe2__original__node'] = array(
       'label' => 'Lightbox2 iframe: original->node page',
       'field types' => array('image'),
     );
     foreach ($rules as $ruleid => $view_rule) {
-      $lightbox['lightbox2][original]['. $view_rule] = array(
+      $lightbox['imagefield__lightbox2__original__'. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
         'field types' => array('image'),
       );
-      $lightbox['lightbox2]['. $view_rule .'][original'] = array(
+      $lightbox['imagefield__lightbox2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2: '. $view_rule .'->original',
         'field types' => array('image'),
       );
-      $slideshow['lightshow2][original]['. $view_rule] = array(
+      $slideshow['imagefield__lightshow2__original__'. $view_rule] = array(
         'label' => 'Lightbox2 slideshow: original->'. $view_rule,
         'field types' => array('image'),
       );
-      $slideshow['lightshow2]['. $view_rule .'][original'] = array(
+      $slideshow['imagefield__lightshow2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
         'field types' => array('image'),
       );
+      $iframe['imagefield__lightframe2__'. $view_rule .'__node'] = array(
+        'label' => 'Lightbox2 iframe: '. $view_rule .'->node page',
+        'field types' => array('image'),
+      );
       foreach ($rules as $rid => $lightbox_rule) {
-        $lightbox['lightbox2]['. $view_rule .']['. $lightbox_rule] = array(
+        $lightbox['imagefield__lightbox2__'. $view_rule .'__'. $lightbox_rule] = array(
           'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image'),
         );
-        $slideshow['lightshow2]['. $view_rule .']['. $lightbox_rule] = array(
+        $slideshow['imagefield__lightshow2__'. $view_rule .'__'. $lightbox_rule] = array(
           'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
-          'field types' => array('image'),
-        );
-        $iframe['lightframe2]['. $view_rule .'][node'] = array(
-          'label' => 'Lightbox2 iframe: '. $view_rule .'->node page',
           'field types' => array('image'),
         );
       }
@@ -799,13 +799,11 @@ function lightbox2_field_formatter_info() {
     $formatters['filefield_lightframe'] = array(
       'label' => t('Lightbox2 iframe'),
       'field types' => array('file'),
-      'theme' => 'lightbox2_file_formatter_lightbox2_iframe',
     );
   }
 
   return $formatters;
 }
-
 
 
 /**
@@ -821,7 +819,7 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
     }
   }
 
-  // Image fields - emfield or imagecache + imagefield.
+  // Image fields - emfield.
   elseif (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE || strpos($formatter, 'lightframe2][') !== FALSE) {
     list($lightbox_type, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
 
@@ -831,190 +829,97 @@ function lightbox2_field_formatter($field, $item, $formatter, $node) {
       $field['lightbox_type'] = $lightbox_type;
       return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
     }
-
-    // Imagecache + imagefield image.
-    elseif (module_exists('imagefield') && module_exists('imagecache')) {
-      return lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node, $view_preset, $lightbox_preset);
-    }
   }
-}
-
-/**
- * Function to set up the data needed for
- * theme_imagefield_image_imagecache_lightbox2().
- *
- * @param $field
- *   The field the action is being performed on.
- * @param $item
- *   An array, keyed by column, of the data stored for this item in this field.
- * @param $formatter
- *   The formatter to use for the field.
- * @param $node
- *   The node object.
- * @param $view_preset
- *   The imagecache preset to be displayed on the node or in the view.
- * @param $lightbox_preset
- *   The imagecache preset to be displayed in the lightbox.
- */
-function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node, $view_preset, $lightbox_preset) {
-  if (isset($item['filepath'])) {
-    $filepath = &$item['filepath'];
-  }
-  elseif (!empty($item['fid'])) {
-    $file = _imagefield_file_load($item['fid']);
-    $filepath = &$file['filepath'];
-  }
-  else {
-    return '';
-  }
-
-  $item = array_merge($item, (array)$file);
-  $item['filepath'] = $filepath;
-  $item['lightbox_preset'] = $lightbox_preset;
-
-  $rules = array();
-  if (function_exists('imagecache_presets')) {
-    $presets = imagecache_presets();
-    foreach ($presets as $preset_id => $preset_info) {
-      $rules[$preset_id] = $preset_info['presetname'];
-    }
-  }
-  else {
-    $rules = _imagecache_get_presets();
-  }
-  if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
-    $rel = 'lightbox';
-    if (strpos($formatter, 'lightshow2][') !== FALSE) {
-      $rel = 'lightshow';
-    }
-    elseif (strpos($formatter, 'lightframe2][') !== FALSE) {
-      $rel = 'lightframe';
-    }
-    return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field, $item, $node, $rel);
-  }
-
 }
 
 /**
  * Implementation of hook_theme().
  */
 function lightbox2_theme() {
-  return array(
-    'imagefield_image_imagecache_lightbox2' => array(
-      'function' => 'imagefield_image_imagecache_lightbox2',
-      'arguments' => array('view_preset' => NULL, 'field' => NULL, 'item' => NULL, 'node' => NULL, 'rel' => 'lightbox'),
+  $theme = array(
+    'lightbox2_image' => array(
+      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
+      'file' => 'lightbox2.formatter.inc',
     ),
+    // Emfield theme functions.
     'lightbox2_video_cck' => array(
-      'function' => 'lightbox2_video_cck',
       'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'options' => array()),
     ),
     'lightbox2_image_ncck' => array(
-      'function' => 'lightbox2_image_ncck',
       'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'options' => array()),
     ),
-    'lightbox2_image' => array(
-      'function' => 'lightbox2_image',
-      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
-    ),
+    // Filefield theme functions.
     'lightbox2_formatter_filefield_lightframe' => array(
       'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
     ),
     'lightbox2_file_formatter_lightbox2_iframe' => array(
       'arguments' => array('file' => NULL, 'field' => NULL, 'file_formatter_settings' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+    ),
+    // Global imagecache + imagefield theme functions.
+    'lightbox2_formatter_imagefield' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+    ),
+    'imagefield_image_imagecache_lightbox2' => array(
+      'arguments' => array('view_preset' => NULL, 'field' => NULL, 'item' => NULL, 'node' => NULL, 'rel' => 'lightbox'),
+      'file' => 'lightbox2.formatter.inc',
     ),
   );
-}
 
-/**
- * Generate the HTML output for imagefield + imagecache images so they can be
- * opened in a lightbox by clicking on the image on the node page or in a view.
- *
- * @param $view_preset
- *   The imagecache preset to be displayed on the node or in the view.
- * @param $field
- *   The field the action is being performed on.
- * @param $item
- *   An array, keyed by column, of the data stored for this item in this field.
- * @param $node
- *   The node object.
- * @param $rel
- *   The type of lightbox to open: lightbox, lightshow or lightframe.
- */
-function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $node, $rel = 'lightbox') {
+  // Additional imagecache + imagefield theme functions, by preset.
+  if (module_exists("imagecache")) {
 
-  // Can't show current node page in a lightframe on the node page.
-  // Switch instead to show it in a lightbox.
-  if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
-    $rel = 'lightbox';
-    $item['lightbox_preset'] = 'original';
-  }
-  $orig_rel = $rel;
+    $theme['lightbox2_formatter_imagefield__lightframe2__original__node'] = array(
+      'arguments' => array('element' => NULL),
+      'function' => 'theme_lightbox2_formatter_imagefield',
+      'file' => 'lightbox2.formatter.inc',
+    );
 
-  // Set up the caption.
-  $node_link = '';
-  $attributes = array();
-  if (!empty($item['nid'])) {
-    $target = variable_get('lightbox2_node_link_target', FALSE);
-    if (!empty($target)) {
-      $attributes = array('target' => $target);
+    foreach (imagecache_presets() as $src) {
+      $theme['lightbox2_formatter_imagefield__lightbox2__'. $src['presetname'] .'__original'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightshow2__'. $src['presetname'] .'__original'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightbox2__original__'. $src['presetname']] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightshow2__original__'. $src['presetname']] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightframe2__'. $src['presetname'] .'__node'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+
+      foreach (imagecache_presets() as $dest) {
+        $theme['lightbox2_formatter_imagefield__lightbox2__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+          'arguments' => array('element' => NULL),
+          'function' => 'theme_lightbox2_formatter_imagefield',
+          'file' => 'lightbox2.formatter.inc',
+        );
+        $theme['lightbox2_formatter_imagefield__lightshow2__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+          'arguments' => array('element' => NULL),
+          'function' => 'theme_lightbox2_formatter_imagefield',
+          'file' => 'lightbox2.formatter.inc',
+        );
+      }
     }
-    $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
-    if (!empty($node_link_text)) {
-      $node_link .= '<br /><br />'. l($node_link_text, 'node/'. $item['nid'], array('attributes' => $attributes));
-    }
   }
 
-  if ($orig_rel == 'lightframe') {
-    $frame_width = variable_get('lightbox2_default_frame_width', 600);
-    $frame_height = variable_get('lightbox2_default_frame_height', 400);
-    $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
-    $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
-  }
-  $image_title = (!empty($item['title']) ? $item['title'] : $item['alt']);
-  if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
-    $node = node_load($node->nid);
-    $image_title = $node->title;
-  }
-  $caption = $image_title . $node_link;
-
-
-  // Set up the rel attribute.
-  $imagefield_grouping = variable_get('lightbox2_imagefield_group_node_id', 1);
-  if ($imagefield_grouping == 1) {
-    $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
-  }
-  elseif ($imagefield_grouping == 2 && !empty($item['nid'])) {
-    $rel = $rel .'['. $item['nid'] .']['. $caption .']';
-  }
-  elseif ($imagefield_grouping == 3 && !empty($item['nid'])) {
-    $rel = $rel .'['. $field['field_name'] . $item['nid'] .']['. $caption .']';
-  }
-  else {
-    $rel = $rel .'[]['. $caption .']';
-  }
-
-
-  $link_attributes = array(
-    'rel' => $rel,
-  );
-
-  if ($view_preset == 'original') {
-    $image = theme('lightbox2_image', $item['filepath'], $item['alt'], $item['title'], $attributes);
-  }
-  else {
-    $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
-  }
-  if ($item['lightbox_preset'] == 'node') {
-    $output = l($image, 'node/'. $node->nid .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
-  }
-  elseif ($item['lightbox_preset'] == 'original') {
-    $output = l($image, file_create_url($item['filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
-  }
-  else {
-    $output = l($image, lightbox2_imagecache_create_url($item['lightbox_preset'], $item['filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
-  }
-
-  return $output;
+  return $theme;
 }
 
 /**
@@ -1199,32 +1104,6 @@ function lightbox2_exclude_these_paths() {
   return ($action == 'page_disable' ? 0 : 1);
 }
 
-/**
- * Theme function for displaying the lightbox2 trigger image in an imagefield.
- */
-function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = NULL) {
-  $attributes = drupal_attributes($attributes);
-  $image = '<img src="'. file_create_url($path) .'" alt="'.  check_plain($alt) .'" title="'. check_plain($title) .'" '. $attributes .' />';
-  return $image;
-}
-
-/**
- * Implementation of the imagecache_create_url() function for integration with
- * imagecache module versions prior to imagecache 2.
- */
-function lightbox2_imagecache_create_url($preset, $filepath) {
-  if (function_exists('imagecache_create_url')) {
-    return imagecache_create_url($preset, $filepath);
-  }
-  else {
-    $dirpath = file_directory_path();
-    $dirlen = drupal_strlen($dirpath);
-    if (drupal_substr($filepath, 0, $dirlen + 1) == $dirpath .'/') {
-      $filepath = drupal_substr($filepath, $dirlen + 1);
-    }
-    return file_create_url(file_directory_path() .'/imagecache/'. $preset .'/'. $filepath);
-  }
-}
 
 function lightbox2_preprocess_page(&$variables) {
   if (arg(0) != 'node' || arg(2) != 'lightbox2') {
@@ -1377,52 +1256,6 @@ function lightbox2_file_formatter_info() {
     ),
   );
 }
-
-/**
- * Theme function for the lightbox iframe filefield formatter.
- */
-function theme_lightbox2_formatter_filefield_lightframe($element) {
-  $file = $element['#item'];
-  $field = content_fields($element['#field_name']);
-  if (!filefield_view_access($field['field_name']) || empty($file['list'])) {
-    return '';
-  }
-  if (empty($file['fid']) || !is_file($file['filepath'])) {
-    return '';
-  }
-  $file = (object)$file;
-  if (!lightbox2_check_filefield_extension($file, $field)) {
-    return '';
-  }
-  drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
-  return '<div class="filefield-item">'. theme('lightbox2_file_formatter_lightbox2_iframe', $file, $field, NULL) .'</div>';
-}
-
-/**
- * Theme function for the lightbox iframe filefield formatter.
- */
-function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_formatter_settings) {
-  $path = $file->filepath;
-  $url = file_create_url($path);
-  $icon = theme('filefield_icon', $file);
-  $description = $file->description;
-
-  $target = variable_get('lightbox2_node_link_target', FALSE);
-  if (!empty($target)) {
-    $attributes = array('target' => $target);
-  }
-  $node_link = '';
-  $node_link_text = check_plain(variable_get('lightbox2_node_link_text', 'View Image Details'));
-  if (!empty($node_link_text)) {
-    $node_link .= '<br /><br />'. l($node_link_text, $url, array('attributes' => $attributes));
-  }
-
-  // Only files with supported extensions make it this far, so no need to check here.
-  $link_attributes = array('rel' => 'lightframe[]['. $description . $node_link .']');
-
-  return '<div class="filefield-formatter-lightbox2-iframe">'. $icon . l($description, $url, array('attributes' => $link_attributes)) .'</div>';
-}
-
 
 /**
  * Suitability callback function for the filefield formatter.
