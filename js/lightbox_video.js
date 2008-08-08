@@ -43,7 +43,7 @@ var Lightvideo = {
       'quality="high" wmode="transparent" ' + flashvars + ' ' +
       'height="' + Lightbox.modalHeight + '" ' +
       'width="' + Lightbox.modalWidth + ' ' +
-      '">';
+      '"></embed>';
   },
 
 
