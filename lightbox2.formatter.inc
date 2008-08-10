@@ -227,3 +227,148 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
 
   return '<div class="filefield-formatter-lightbox2-iframe">'. $icon . l($description, $url, array('attributes' => $link_attributes)) .'</div>';
 }
+
+/**
+ * Generate the HTML output to open embedded cck images in a lightbox.
+ */
+function theme_lightbox2_formatter_emimage($element) {
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  $item = $element['#item'];
+  $formatter = $element['#formatter'];
+  $node = node_load($element['#node']->nid);
+
+  list($tmp, $lightbox_type) = explode('_', $formatter, 2);
+  $field['lightbox_type'] = $lightbox_type;
+  $formatter = "emimage";
+
+  return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
+}
+
+/**
+ * Generate the HTML output to open embedded cck images in a lightbox.
+ */
+function theme_lightbox2_emimage($field, $item, $formatter, $node) {
+
+  $lightbox_type = $field['lightbox_type'];
+
+  if ($item['value'] && $item['provider']) {
+    $rel = 'lightbox';
+    if ($lightbox_type == 'lightshow2') {
+      $rel = 'lightshow';
+    }
+    elseif ($lightbox_type == 'lightframe2') {
+      $rel = 'lightframe';
+    }
+    if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
+      $rel = 'lightbox';
+    }
+    $orig_rel = $rel;
+
+    $code = $item['value'];
+    $width = $field['widget']['thumbnail_width'] == '' ? variable_get('emimage_default_full_width', EMIMAGE_DEFAULT_FULL_WIDTH) : $field['widget']['thumbnail_width'];
+    $height = $field['widget']['thumbnail_height'] == '' ? variable_get('emimage_default_full_height', EMIMAGE_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
+    $link = $field['widget']['thumbnail_link'] ? $field['widget']['thumbnail_link'] : variable_get('emimage_default_thumbnail_link', EMIMAGE_DEFAULT_THUMBNAIL_LINK);
+    if ($link == EMIMAGE_LINK_CONTENT) {
+      $link = 'node/'. $node->nid;
+    }
+    elseif ($link == EMIMAGE_LINK_PROVIDER) {
+      $link = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'embedded_link', $code, $item['data']);
+    }
+    else {
+      $link = NULL;
+    }
+    $attributes = array();
+    if ($width) {
+      $attributes['width'] = $width;
+    }
+    if ($height) {
+      $attributes['height'] = $height;
+    }
+    $target = variable_get('lightbox2_node_link_target', FALSE);
+    if (!empty($target)) {
+      $attributes['target'] = $target;
+    }
+
+    // Set up the caption.
+    $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
+    if (!empty($node_link_text) && !empty($link)) {
+      $node_link = '<br /><br />'. l($node_link_text, $link, array('attributes' => $attributes));
+    }
+    $title = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'image_title', $code, $item['data']);
+    $caption = $title . $node_link;
+
+    // Set up url and image.
+    $url = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'image_url', $code, $width, $height, "emimage", $field, $item, $node);
+    $image = theme('image', $url, $title, $title, $attributes, FALSE);
+
+    // Set up rel attribute.
+    $image_grouping = variable_get('lightbox2_emimage_group_node_id', 1);
+    if ($image_grouping == 1) {
+      $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
+    }
+    elseif ($image_grouping == 2 && !empty($node->nid)) {
+      $rel = $rel .'['. $node->nid .']['. $caption .']';
+    }
+    elseif ($image_grouping == 3 && !empty($node->nid)) {
+      $rel = $rel .'['. $field['field_name'] . $node->nid .']['. $caption .']';
+    }
+    else {
+      $rel = $rel .'[]['. $caption .']';
+    }
+
+    if ($orig_rel != 'lightframe') {
+      $link_attributes = array('rel' => $rel);
+      $full_width = $field['widget']['full_width'] == '' ? variable_get('emimage_default_full_width', EMIMAGE_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
+      $full_height = $field['widget']['full_height'] == '' ? variable_get('emimage_default_full_height', EMIMAGE_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
+      $full_image_url = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'image_url', $code, $full_width, $full_height, "emimage", $field, $item, $node);
+      $output = l($image, $full_image_url, array('attributes' => $link_attributes, 'html' => TRUE));
+    }
+    else {
+      $frame_width = variable_get('lightbox2_default_frame_width', 600);
+      $frame_height = variable_get('lightbox2_default_frame_height', 400);
+      $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
+      $rel = preg_replace('/\]\[/', "|$frame_size][", $rel);
+      $link_attributes = array('rel' => $rel);
+      $output = l($image, $link .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
+    }
+  }
+
+  return $output;
+}
+
+/**
+ * Generate the HTML output to open embedded cck videos in a lightbox.
+ */
+function theme_lightbox2_formatter_emvideo_lightvideo($element) {
+  if (!variable_get('lightbox2_enable_video', FALSE)) {
+    return;
+  }
+  $field = content_fields($element['#field_name'], $element['#type_name']);
+  $item = $element['#item'];
+  $formatter = "emvideo";
+  $node = node_load($element['#node']->nid);
+  $options = array(); // TODO?
+
+  return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
+}
+
+/**
+ * Generate the HTML output to open embedded cck videos in a lightbox.
+ */
+function theme_lightbox2_emvideo($field, $item, $formatter, $node) {
+
+  $thumbnail = theme('emvideo_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
+
+  $destination = 'video-cck/lightbox2/'. $node->nid .'/'. $field['widget']['video_width'] .'/'. $field['widget']['video_height'] .'/'. $field['field_name'] .'/'. $item['provider'] .'/'. $item['value'];
+  $width = $field['widget']['video_width'] + 20;
+  $height = $field['widget']['video_height'] + 20;
+  if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)) {
+    $width = $field['widget']['video_width'] + 40;
+    $height = $field['widget']['video_height'] + 40;
+  }
+  $rel = 'lightframe[|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
+
+  $output = l($thumbnail, $destination, array('attributes' => array('rel' => $rel, 'class' => $field['type_name']), 'html' => TRUE));
+  return $output;
+}
+

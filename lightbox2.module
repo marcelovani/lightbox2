@@ -261,9 +261,9 @@ function lightbox2_menu() {
     'type' => MENU_LOCAL_TASK,
     'weight' => 3,
   );
-  if (module_exists('emfield') && module_exists('video_cck')) {
+  if (module_exists('emfield') && module_exists('emvideo')) {
     $items['video-cck/lightbox2'] = array(
-      'page callback' => 'lightbox2_video_cck',
+      'page callback' => 'lightbox2_emvideo',
       'access callback' => 'user_access',
       'access arguments' => array('access content'),
       'type' => MENU_CALLBACK,
@@ -720,7 +720,7 @@ function lightbox2_add_files() {
  *
  * Add certain lightbox and imagecache formatters to CCK image fields if
  * the imagefield.module and the imagecache.module exist.  Add additional
- * formatters if emfield, image_ncck and/or video_cck modules exist.
+ * formatters if emfield, emimage and/or emvideo modules exist.
  */
 function lightbox2_field_formatter_info() {
   $formatters = array();
@@ -775,24 +775,24 @@ function lightbox2_field_formatter_info() {
     // Adding them now so they are in some sort of sensible order.
     $formatters = array_merge($lightbox, $slideshow, $iframe);
   }
-  if (module_exists('emfield') && module_exists('image_ncck')) {
-    $formatters['lightbox2][image_ncck'] = array(
+  if (module_exists('emfield') && module_exists('emimage')) {
+    $formatters['emimage_lightbox2'] = array(
       'label' => t('Lightbox2: Image Thumbnail -> Original'),
-      'field types' => array('image_ncck'),
+      'field types' => array('emimage'),
     );
-    $formatters['lightshow2][image_ncck'] = array(
+    $formatters['emimage_lightshow2'] = array(
       'label' => t('Lightbox2 slideshow: Image Thumbnail -> Original'),
-      'field types' => array('image_ncck'),
+      'field types' => array('emimage'),
     );
-    $formatters['lightframe2][image_ncck'] = array(
+    $formatters['emimage_lightframe2'] = array(
       'label' => t('Lightbox2 iframe: Image Thumbnail -> Content'),
-      'field types' => array('image_ncck'),
+      'field types' => array('emimage'),
     );
   }
-  if (variable_get('lightbox2_enable_video', FALSE) && module_exists('emfield') && module_exists('video_cck')) {
-    $formatters['lightvideo'] = array(
+  if (variable_get('lightbox2_enable_video', FALSE) && module_exists('emfield') && module_exists('emvideo')) {
+    $formatters['emvideo_lightvideo'] = array(
       'label' => t('Lightbox2: Image Thumbnail -> Full Size Video'),
-      'field types' => array('video_cck'),
+      'field types' => array('emvideo'),
     );
   }
   if (module_exists('filefield')) {
@@ -807,32 +807,6 @@ function lightbox2_field_formatter_info() {
 
 
 /**
- * Implementation of hook_field_formatter().
- */
-function lightbox2_field_formatter($field, $item, $formatter, $node) {
-
-  // Emfield video fields.
-  if ($formatter == 'lightvideo' && variable_get('lightbox2_enable_video', FALSE)) {
-    if (module_exists('emfield') && module_exists('video_cck')) {
-      $formatter = 'video_cck';
-      return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
-    }
-  }
-
-  // Image fields - emfield.
-  elseif (strpos($formatter, 'lightbox2][') !== FALSE || strpos($formatter, 'lightshow2][') !== FALSE || strpos($formatter, 'lightframe2][') !== FALSE) {
-    list($lightbox_type, $view_preset, $lightbox_preset) = explode('][', $formatter, 3);
-
-    // Emfield image field.
-    if ($view_preset == 'image_ncck' && module_exists('emfield') && module_exists('image_ncck')) {
-      $formatter = $view_preset;
-      $field['lightbox_type'] = $lightbox_type;
-      return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
-    }
-  }
-}
-
-/**
  * Implementation of hook_theme().
  */
 function lightbox2_theme() {
@@ -842,11 +816,36 @@ function lightbox2_theme() {
       'file' => 'lightbox2.formatter.inc',
     ),
     // Emfield theme functions.
-    'lightbox2_video_cck' => array(
+    'lightbox2_emimage' => array(
       'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'options' => array()),
+      'file' => 'lightbox2.formatter.inc',
     ),
-    'lightbox2_image_ncck' => array(
-      'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'options' => array()),
+    'lightbox2_formatter_emimage' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+    ),
+    'lightbox2_formatter_emimage_lightbox2' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+      'function' => 'theme_lightbox2_formatter_emimage',
+    ),
+    'lightbox2_formatter_emimage_lightshow2' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+      'function' => 'theme_lightbox2_formatter_emimage',
+    ),
+    'lightbox2_formatter_emimage_lightframe2' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+      'function' => 'theme_lightbox2_formatter_emimage',
+    ),
+    'lightbox2_formatter_emvideo_lightvideo' => array(
+      'arguments' => array('element' => NULL),
+      'file' => 'lightbox2.formatter.inc',
+    ),
+    'lightbox2_emvideo' => array(
+      'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL),
+      'file' => 'lightbox2.formatter.inc',
     ),
     // Filefield theme functions.
     'lightbox2_formatter_filefield_lightframe' => array(
@@ -923,38 +922,6 @@ function lightbox2_theme() {
 }
 
 /**
- * Generate the HTML output to open embedded cck videos in a lightbox.
- *
- * @param $field
- *   The field the action is being performed on.
- * @param $item
- *   An array, keyed by column, of the data stored for this item in this field.
- * @param $formatter
- *   The formatter to use for the field.
- * @param $node
- *   The node object.
- * @param $options
- *   Array of options available, including the width and height of the video
- *   thumbnail.
- */
-function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = array()) {
-
-  $thumbnail = theme('video_cck_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
-
-  $destination = 'video-cck/lightbox2/'. $node->nid .'/'. $field['widget']['video_width'] .'/'. $field['widget']['video_height'] .'/'. $field['field_name'] .'/'. $item['provider'] .'/'. $item['value'];
-  $width = $field['widget']['video_width'] + 20;
-  $height = $field['widget']['video_height'] + 20;
-  if (isset($_SERVER['HTTP_USER_AGENT']) && (strpos($_SERVER['HTTP_USER_AGENT'], 'MSIE') !== FALSE)) {
-    $width = $field['widget']['video_width'] + 40;
-    $height = $field['widget']['video_height'] + 40;
-  }
-  $rel = 'lightframe[|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
-
-  $output = l($thumbnail, $destination, array('attributes' => array('rel' => $rel, 'class' => $field['type_name']), 'html' => TRUE));
-  return $output;
-}
-
-/**
  * Configures settings and outputs the video.
  *
  * @param nid
@@ -970,7 +937,7 @@ function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = 
  * @param id
  *   The video id.
  */
-function lightbox2_video_cck($nid, $width, $height, $field_name, $provider, $id) {
+function lightbox2_emvideo($nid, $width, $height, $field_name, $provider, $id) {
   $field = array();
   $field['widget']['video_width'] = $width;
   $field['widget']['video_height'] = $height;
@@ -983,108 +950,7 @@ function lightbox2_video_cck($nid, $width, $height, $field_name, $provider, $id)
       break;
     }
   }
-  print theme('video_cck_video_video', $field, $item, 'video_video', $node);
-}
-
-/**
- * Generate the HTML output to open embedded cck images in a lightbox.
- *
- * @param $field
- *   The field the action is being performed on.
- * @param $item
- *   An array, keyed by column, of the data stored for this item in this field.
- * @param $formatter
- *   The formatter to use for the field.
- * @param $node
- *   The node object.
- * @param $options
- *   Array of options available.  Not used in this theme function but required
- *   by the invoked emfield function.
- */
-function theme_lightbox2_image_ncck($field, $item, $formatter, $node, $options = array()) {
-  if ($item['value'] && $item['provider']) {
-    $rel = 'lightbox';
-    if ($field['lightbox_type'] == 'lightshow2') {
-      $rel = 'lightshow';
-    }
-    elseif ($field['lightbox_type'] == 'lightframe2') {
-      $rel = 'lightframe';
-    }
-    if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
-      $rel = 'lightbox';
-    }
-    $orig_rel = $rel;
-
-    $code = $item['value'];
-    $width = $field['widget']['thumbnail_width'] == '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['thumbnail_width'];
-    $height = $field['widget']['thumbnail_height'] == '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['thumbnail_height'];
-    $link = $field['widget']['thumbnail_link'] ? $field['widget']['thumbnail_link'] : variable_get('image_ncck_default_thumbnail_link', IMAGE_NCCK_DEFAULT_THUMBNAIL_LINK);
-    if ($link == IMAGE_NCCK_LINK_CONTENT) {
-      $link = 'node/'. $node->nid;
-    }
-    elseif ($link == IMAGE_NCCK_LINK_PROVIDER) {
-      $link = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'embedded_link', $code, $item['data']);
-    }
-    else {
-      $link = NULL;
-    }
-    $attributes = array();
-    if ($width) {
-      $attributes['width'] = $width;
-    }
-    if ($height) {
-      $attributes['height'] = $height;
-    }
-    $target = variable_get('lightbox2_node_link_target', FALSE);
-    if (!empty($target)) {
-      $attributes['target'] = $target;
-    }
-
-    // Set up the caption.
-    $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
-    if (!empty($node_link_text) && !empty($link)) {
-      $node_link = '<br /><br />'. l($node_link_text, $link, array('attributes' => $attributes));
-    }
-    $title = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_title', $code, $item['data']);
-    $caption = $title . $node_link;
-
-    // Set up url and image.
-    $url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $width, $height, $formatter, $field, $item, $node);
-    $image = theme('image', $url, $title, $title, $attributes, FALSE);
-
-    // Set up rel attribute.
-    $image_grouping = variable_get('lightbox2_image_ncck_group_node_id', 1);
-    if ($image_grouping == 1) {
-      $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
-    }
-    elseif ($image_grouping == 2 && !empty($node->nid)) {
-      $rel = $rel .'['. $node->nid .']['. $caption .']';
-    }
-    elseif ($image_grouping == 3 && !empty($node->nid)) {
-      $rel = $rel .'['. $field['field_name'] . $node->nid .']['. $caption .']';
-    }
-    else {
-      $rel = $rel .'[]['. $caption .']';
-    }
-
-    if ($orig_rel != 'lightframe') {
-      $link_attributes = array('rel' => $rel);
-      $full_width = $field['widget']['full_width'] == '' ? variable_get('image_ncck_default_full_width', IMAGE_NCCK_DEFAULT_FULL_WIDTH) : $field['widget']['full_width'];
-      $full_height = $field['widget']['full_height'] == '' ? variable_get('image_ncck_default_full_height', IMAGE_NCCK_DEFAULT_FULL_HEIGHT) : $field['widget']['full_height'];
-      $full_image_url = module_invoke('emfield', 'include_invoke', 'image_ncck', $item['provider'], 'image_url', $code, $full_width, $full_height, $formatter, $field, $item, $node);
-      $output = l($image, $full_image_url, array('attributes' => $link_attributes, 'html' => TRUE));
-    }
-    else {
-      $frame_width = variable_get('lightbox2_default_frame_width', 600);
-      $frame_height = variable_get('lightbox2_default_frame_height', 400);
-      $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
-      $rel = preg_replace('/\]\[/', "|$frame_size][", $rel);
-      $link_attributes = array('rel' => $rel);
-      $output = l($image, $link .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
-    }
-  }
-  return $output;
-
+  print theme('emvideo_video_video', $field, $item, 'video_video', $node);
 }
 
 /**
