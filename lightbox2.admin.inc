@@ -182,7 +182,7 @@ function lightbox2_general_settings_form() {
 
   // Define cck settings fieldset.
   /* ------------------------------------ */
-  if ((module_exists('emfield') && module_exists('image_ncck')) || (module_exists('imagefield') && module_exists('imagecache'))) {
+  if ((module_exists('emfield') && module_exists('emimage')) || (module_exists('imagefield') && module_exists('imagecache'))) {
     $form['cck_options'] = array(
       '#type' => 'fieldset',
       '#title' => t('CCK Display Settings'),
@@ -197,8 +197,8 @@ function lightbox2_general_settings_form() {
       3 => t('Group by Field Name and Node Id'),
     );
 
-    // Add checkbox for emfield image_ncck grouping.
-    if (module_exists('emfield') && module_exists('image_ncck')) {
+    // Add checkbox for emfield emimage grouping.
+    if (module_exists('emfield') && module_exists('emimage')) {
       $form['cck_options']['lightbox2_image_ncck_group_node_id'] = array(
         '#type' => 'select',
         '#title' => t('Select Emfield Image Grouping in Views'),
@@ -210,7 +210,7 @@ function lightbox2_general_settings_form() {
 
     // Add checkbox for imagefield grouping.
     if (module_exists('imagefield') && module_exists('imagecache')) {
-      $form['imagefield_options']['lightbox2_imagefield_group_node_id'] = array(
+      $form['cck_options']['lightbox2_imagefield_group_node_id'] = array(
         '#type' => 'select',
         '#title' => t('Select Imagefield Grouping in Views'),
         '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
