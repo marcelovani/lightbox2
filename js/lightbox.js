@@ -1039,11 +1039,22 @@ var Lightbox = {
   },
 
   checkKey: function(keys, key, code) {
-    return (keys.indexOf(key) != -1 || keys.indexOf(code) != -1);
+    return (keys.indexOf(key) != -1 || keys.indexOf(String(code)) != -1);
   }
 
 
 };
+
+if (!Array.indexOf){
+  Array.prototype.indexOf = function(obj){
+    for (var i = 0; i < this.length; i++){
+      if (this[i] == obj){
+        return i;
+      }
+    }
+    return -1;
+  }
+}
 
 // Initialize the lightbox.
 Drupal.behaviors.initLightbox = function (context) {
