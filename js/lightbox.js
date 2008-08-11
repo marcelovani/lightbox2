@@ -150,7 +150,8 @@ var Lightbox = {
       $('#bottomNav').append(close + zoom + zoomOut + pause + play);
     }
     else {
-      $('#imageContainer').append(image + bottomNav);
+      $('#outerImageContainer').append(bottomNav);
+      $('#imageContainer').append(image);
       $('#bottomNav').append(close + zoom + zoomOut);
       $('#imageData').append(hoverNav + details);
       $('#imageDetails').append(caption + numberDisplay + pause + play);
