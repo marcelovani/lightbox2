@@ -10,24 +10,7 @@
  * This script is distributed via Drupal.org with permission from Lokesh Dhakar.
  * Under GPL license.
  *    Mailto: bugzie@gmail.com
- *
- * Table of Contents
- * -----------------
- * Configuration
- *
- * Functions
- * - getPageScroll()
- * - getPageSize()
- * - pause()
- * - getKey()
- * - listenKey()
- * - showLightbox()
- * - hideLightbox()
- * - initLightbox()
  */
-
-
-
 
 //
 // getPageScroll()
