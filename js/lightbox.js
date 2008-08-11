@@ -1033,22 +1033,11 @@ var Lightbox = {
   },
 
   checkKey: function(keys, key, code) {
-    return (keys.indexOf(key) != -1 || keys.indexOf(String(code)) != -1);
+    return (jQuery.inArray(key, keys) != -1 || jQuery.inArray(String(code), keys) != -1);
   }
 
 
 };
-
-if (!Array.indexOf) {
-  Array.prototype.indexOf = function(obj) {
-    for (var i = 0; i < this.length; i++) {
-      if (this[i] == obj) {
-        return i;
-      }
-    }
-    return -1;
-  }
-}
 
 // Initialize the lightbox.
 if (Drupal.jsEnabled) {
