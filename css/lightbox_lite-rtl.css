@@ -52,18 +52,11 @@
   clear: both;
 }
 
-#overlay img {
-  border: none;
-}
-
 #overlay {
-  background-image: url(../images/overlay.png);
-}
-
-* html #overlay {
   background-color: #333;
-  back\ground-color: transparent;
-  background-image: url(../images/blank.gif);
-  filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../images/overlay.png", sizingMethod="scale");
+  -moz-opacity: 0.6;
+  -khtml-opacity: 0.6;
+  opacity: 0.6;
+  filter:alpha(opacity=60);
 }
 
