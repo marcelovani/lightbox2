@@ -135,7 +135,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
     $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
   }
-  $image_title = (!empty($item['title']) ? $item['title'] : $item['alt']);
+  $image_title = (!empty($item['data']['title']) ? $item['data']['title'] : $item['data']['alt']);
   if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
     $node = node_load($node->nid);
     $image_title = $node->title;
@@ -146,13 +146,13 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   // Set up the rel attribute.
   $imagefield_grouping = variable_get('lightbox2_imagefield_group_node_id', 1);
   if ($imagefield_grouping == 1) {
-    $rel = $rel .'['. $field['field_name'] .']['. $caption .']';
+    $rel = $rel .'['. $field .']['. $caption .']';
   }
   elseif ($imagefield_grouping == 2 && !empty($item['nid'])) {
     $rel = $rel .'['. $item['nid'] .']['. $caption .']';
   }
   elseif ($imagefield_grouping == 3 && !empty($item['nid'])) {
-    $rel = $rel .'['. $field['field_name'] . $item['nid'] .']['. $caption .']';
+    $rel = $rel .'['. $field . $item['nid'] .']['. $caption .']';
   }
   else {
     $rel = $rel .'[]['. $caption .']';
@@ -164,10 +164,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   );
 
   if ($view_preset == 'original') {
-    $image = theme('lightbox2_image', $item['filepath'], $item['alt'], $item['title'], $attributes);
+    $image = theme('lightbox2_image', $item['filepath'], $item['data']['alt'], $item['data']['title'], $attributes);
   }
   else {
-    $image = theme('imagecache', $view_preset, $item['filepath'], $item['alt'], $item['title'], $attributes);
+    $image = theme('imagecache', $view_preset, $item['filepath'], $item['data']['alt'], $item['data']['title'], $attributes);
   }
   if ($item['lightbox_preset'] == 'node') {
     $output = l($image, 'node/'. $node->nid .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
