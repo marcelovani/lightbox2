@@ -25,6 +25,7 @@ var Lightbox = {
   resizeSpeed: 'normal', // Controls the speed of the lightbox resizing animation.
   fadeInSpeed: 'normal', // Controls the speed of the image appearance.
   slideDownSpeed: 'slow', // Controls the speed of the image details appearance.
+  minWidth: 240,
   borderSize : 10,
   boxColor : 'fff',
   fontColor : '000',
@@ -485,6 +486,8 @@ var Lightbox = {
 
   // resizeContainer()
   resizeContainer: function(imgWidth, imgHeight) {
+
+    imgWidth = (imgWidth < Lightbox.minWidth ? Lightbox.minWidth : imgWidth);
 
     this.widthCurrent = $('#outerImageContainer').width();
     this.heightCurrent = $('#outerImageContainer').height();
