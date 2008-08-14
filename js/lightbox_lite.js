@@ -146,8 +146,8 @@ function hideLightbox() {
     }
   }
 
-  // disable keypress listener
-  document.onkeypress = '';
+  // disable keydown listener
+  document.onkeydown = '';
 }
 
 
@@ -159,7 +159,7 @@ function getKey(e) {
     escapeKey = 27;
   }
   else { // mozilla
-    keycode = e.which;
+    keycode = e.keyCode;
     escapeKey = e.DOM_VK_ESCAPE;
   }
   key = String.fromCharCode(keycode).toLowerCase();
@@ -169,7 +169,7 @@ function getKey(e) {
 
 
 // listenKey()
-function listenKey () { document.onkeypress = getKey; }
+function listenKey () { document.onkeydown = getKey; }
 
 
 function imgLoadingError(image, objImage, objLink) {
@@ -267,7 +267,7 @@ function showLightbox(objLink) {
     arrayPageSize = getPageSize();
     objOverlay.style.height = (arrayPageSize[1] + 'px');
 
-    // Check for 'x' keypress
+    // Check for 'x' keydown
     listenKey();
 
     return false;
