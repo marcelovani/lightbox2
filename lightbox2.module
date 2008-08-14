@@ -531,6 +531,7 @@ function lightbox2_general_settings_form() {
   $form['advanced_options']['keyboard_shortcuts'] = array(
     '#type' => 'fieldset',
     '#title' => t('Keyboard Shortcuts'),
+    '#description' => t('Configure the keyboard shortcuts for controlling the lightbox.  These options do not apply to the Lightbox2 Lite version, which uses the default "Close Keys" (c, x and esc) to close the lightbox.'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
