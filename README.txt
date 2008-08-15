@@ -13,7 +13,6 @@ CONTENTS OF THIS FILE
     - Turning the Image Caption into a Link
   * Keyboard Shortcuts
   * Known Issues
-    - Lightbox Lite in IE
     - Keyboard Shortcuts in Opera
 
 
@@ -213,10 +212,13 @@ have been escaped.
 
 KEYBOARD SHORTCUTS
 ------------------
-Not all of the keyboard shortcuts work in the Opera browser, for example 'z' for
-toggling the zoom and 'spacebar' for toggling play / pause in slideshows.  This
-can be overcome by updating your shortcut settings in the Opera preferences
-editor.
+Not all of the default keyboard shortcuts work in the Opera browser, for example
+'z' for toggling the zoom and 'spacebar' for toggling play / pause in
+slideshows.  This can be overcome by updating your shortcut settings in the
+Opera preferences editor.
+
+The default keyboard shortcuts are listed below.  You can override these on
+admin/settings/lightbox2.
 
 Close : x, o, c, ESC
 Previous Image : p, Left Arrow
@@ -228,25 +230,9 @@ Toggle Play / Pause : Spacebar (slideshow only)
 KNOWN ISSUES
 ------------
 
-Lightbox Lite in IE
---------------------
-There is an issue with Lightbox Lite in IE browsers but only for sites where
-Drupal is installed in a subdirectory.  In such instances, the overlay.png image
-can not be found.  To overcome this issue you will need to edit the
-lightbox2/css/lightbox_lite.css file and change the path to this image.  By
-default the line is set to:
-
-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="../images/overlay.png", sizingMethod="scale");
-
-You will need to change the image path on this line to be the full path, e.g.
-
-filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src="/sites/all/modules/lightbox2/images/overlay.png", sizingMethod="scale");
-
-See http://drupal.org/node/185866 for more details.
-
 Keyboard Shortcuts in Opera
 ---------------------------
-Not all of the keyboard shortcuts work in the Opera browser, for example 'z' for
-toggling the zoom and 'spacebar' for toggling play / pause in slideshows.  This
-can be overcome by updating your shortcut settings in the Opera preferences
-editor.
+Not all of the default keyboard shortcuts work in the Opera browser, for example
+'z' for toggling the zoom and 'spacebar' for toggling play / pause in
+slideshows.  This can be overcome by updating your shortcut settings in the
+Opera preferences editor.
