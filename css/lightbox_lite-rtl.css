@@ -54,9 +54,6 @@
 
 #overlay {
   background-color: #333;
-  -moz-opacity: 0.6;
-  -khtml-opacity: 0.6;
   opacity: 0.6;
-  filter:alpha(opacity=60);
 }
 
