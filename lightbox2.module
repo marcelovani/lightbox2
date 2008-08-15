@@ -454,7 +454,7 @@ function lightbox2_general_settings_form() {
   $form['lightbox2_page_init']['lightbox2_page_list'] = array(
     '#type' => 'textarea',
     '#title' => t('Pages'),
-    '#description' => t('List one page per line as Drupal paths.  The % character is a wildcard.  Example paths are "node/add/page" and "node/add/%".  Use &lt;front&gt; to match the front page.'),
+    '#description' => t('List one page per line as Drupal paths.  The % and * characters are wildcards.  Example paths are "node/add/page" and "node/add/*".  Use &lt;front&gt; to match the front page.'),
     '#default_value' => variable_get('lightbox2_page_list', ''),
   );
 
@@ -2018,7 +2018,7 @@ function lightbox2_exclude_these_paths() {
       if ($page == "<front>") {
         $page = "";
       }
-      $page = preg_replace('/%/', '.*?', preg_quote($page, '/'));
+      $page = preg_replace(array('/\\\\\*/', '/%/'), '.*?', preg_quote($page, '/'));
       $pattern = '/^'. $page .'$/';
       if (preg_match($pattern, $_REQUEST['q'])) {
         return ($action == 'page_disable' ? 1 : 0);
