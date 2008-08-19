@@ -273,7 +273,7 @@ var Lightbox = {
     var i = 0;
 
     if ($(imageLink).attr('id') == 'lightboxAutoModal') {
-     rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
+      rel_style = rel_parts["style"];
       Lightbox.imageArray.push(['#lightboxAutoModal > *', title, rel_style, 1]);
     }
     else {
@@ -284,14 +284,14 @@ var Lightbox = {
 
       // Handle iframes with no grouping.
       else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
-        rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
+        rel_style = rel_parts["style"];
         Lightbox.imageArray.push([imageLink.href, title, rel_style]);
       }
 
       // Handle video.
       else if (rel == "lightvideo") {
         // rel_group contains style information for videos.
-        rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
+        rel_style = rel_group;
         Lightbox.imageArray.push([imageLink.href, title, rel_style]);
       }
 
@@ -307,7 +307,7 @@ var Lightbox = {
             if (rel_data["rel"] == rel) {
               if (rel_data["group"] == rel_group) {
                 if (Lightbox.isLightframe || Lightbox.isModal) {
-                  rel_style = (!rel_data["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data["style"]);
+                  rel_style = rel_data["style"];
                 }
                 Lightbox.imageArray.push([anchor.href, anchor_title, rel_style]);
               }
@@ -982,6 +982,7 @@ var Lightbox = {
     var stylesArray = styles.split(';');
     item.width = Lightbox.iframe_width;
     item.height = Lightbox.iframe_height;
+    item.srolling = "auto";
     for (var i = 0; i< stylesArray.length; i++) {
       if (stylesArray[i].indexOf('width:') >= 0) {
         var w = stylesArray[i].replace('width:', '');
