@@ -127,7 +127,7 @@ var Lightbox = {
       </div>';
     var loading = '<div id="loading"><a href="#" id="loadingLink"></a></div>';
     var modal = '<div id="modalContainer" style="display: none;"></div>';
-    var frame = '<div id="frameContainer" style="display: none;"><iframe id="lightboxFrame" style="display: none;" src="/"></iframe></div>';
+    var frame = '<div id="frameContainer" style="display: none;"></div>';
     var imageContainer = '<div id="imageContainer" style="display: none;"></div>';
     var details = '<div id="imageDetails"></div>';
     var bottomNav = '<div id="bottomNav"></div>';
@@ -176,10 +176,6 @@ var Lightbox = {
       $('#bottomNavZoom, #bottomNavZoomOut').css({'bottom': Lightbox.borderSize + 'px', 'right': Lightbox.borderSize + 'px'});
     }
 
-    if (!Lightbox.iframe_border) {
-      $('#lightboxFrame').css({'border': 'none'});
-      $('#lightboxFrame').attr('frameborder', '0');
-    }
 
     // Force navigation links to always be displayed
     if (s.force_show_nav) {
@@ -222,7 +218,7 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[@rel^='lightmodal'], area[@rel^='lightmodal']").click(function() {
+    $("a[@rel^='lightmodal'], area[@rel^='lightmodal'], #lightboxAutoModal").click(function() {
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       return false;
@@ -276,55 +272,60 @@ var Lightbox = {
     var rel_style = null;
     var i = 0;
 
-
-    // Handle lightbox images with no grouping.
-    if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
-      Lightbox.imageArray.push([imageLink.href, title]);
+    if ($(imageLink).attr('id') == 'lightboxAutoModal') {
+     rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
+      Lightbox.imageArray.push(['#lightboxAutoModal > *', title, rel_style, 1]);
     }
+    else {
+      // Handle lightbox images with no grouping.
+      if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
+        Lightbox.imageArray.push([imageLink.href, title]);
+      }
 
-    // Handle iframes with no grouping.
-    else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
-      rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
-      Lightbox.imageArray.push([imageLink.href, title, rel_style]);
-    }
+      // Handle iframes with no grouping.
+      else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
+        rel_style = (!rel_parts["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_parts["style"]);
+        Lightbox.imageArray.push([imageLink.href, title, rel_style]);
+      }
 
-    // Handle video.
-    else if (rel == "lightvideo") {
-      // rel_group contains style information for videos.
-      rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
-      Lightbox.imageArray.push([imageLink.href, title, rel_style]);
-    }
+      // Handle video.
+      else if (rel == "lightvideo") {
+        // rel_group contains style information for videos.
+        rel_style = (!rel_group ? 'width: 400px; height: 400px;' : rel_group);
+        Lightbox.imageArray.push([imageLink.href, title, rel_style]);
+      }
 
-    // Handle iframes and lightbox & slideshow images.
-    else if (rel == 'lightbox' || rel == 'lightshow' || rel == 'lightframe' || rel == 'lightmodal') {
+      // Handle iframes and lightbox & slideshow images.
+      else if (rel == 'lightbox' || rel == 'lightshow' || rel == 'lightframe' || rel == 'lightmodal') {
 
-      // Loop through anchors and add them to imageArray.
-      for (i = 0; i < anchors.length; i++) {
-        anchor = anchors[i];
-        if (anchor.href && $(anchor).attr('rel')) {
-          var rel_data = Lightbox.parseRel(anchor);
-          var anchor_title = (rel_data["title"] ? rel_data["title"] : anchor.title);
-          if (rel_data["rel"] == rel) {
-            if (rel_data["group"] == rel_group) {
-              if (Lightbox.isLightframe || Lightbox.isModal) {
-                rel_style = (!rel_data["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data["style"]);
+        // Loop through anchors and add them to imageArray.
+        for (i = 0; i < anchors.length; i++) {
+          anchor = anchors[i];
+          if (anchor.href && $(anchor).attr('rel')) {
+            var rel_data = Lightbox.parseRel(anchor);
+            var anchor_title = (rel_data["title"] ? rel_data["title"] : anchor.title);
+            if (rel_data["rel"] == rel) {
+              if (rel_data["group"] == rel_group) {
+                if (Lightbox.isLightframe || Lightbox.isModal) {
+                  rel_style = (!rel_data["style"] ? 'width: '+ Lightbox.iframe_width +'px; height: '+ Lightbox.iframe_height +'px; scrolling: auto;' : rel_data["style"]);
+                }
+                Lightbox.imageArray.push([anchor.href, anchor_title, rel_style]);
               }
-              Lightbox.imageArray.push([anchor.href, anchor_title, rel_style]);
             }
           }
         }
-      }
 
-      // Remove duplicates.
-      for (i = 0; i < Lightbox.imageArray.length; i++) {
-        for (j = Lightbox.imageArray.length-1; j > i; j--) {
-          if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
-            Lightbox.imageArray.splice(j,1);
+        // Remove duplicates.
+        for (i = 0; i < Lightbox.imageArray.length; i++) {
+          for (j = Lightbox.imageArray.length-1; j > i; j--) {
+            if (Lightbox.imageArray[i][0] == Lightbox.imageArray[j][0]) {
+              Lightbox.imageArray.splice(j,1);
+            }
           }
         }
-      }
-      while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
-        Lightbox.imageNum++;
+        while (Lightbox.imageArray[Lightbox.imageNum][0] != imageLink.href) {
+          Lightbox.imageNum++;
+        }
       }
     }
 
@@ -377,7 +378,7 @@ var Lightbox = {
       if (!Lightbox.alternative_layout) {
         $('#imageContainer').hide();
       }
-      $('#frameContainer, #modalContainer, #lightboxImage, #lightboxFrame').hide();
+      $('#frameContainer, #modalContainer, #lightboxImage').hide();
       $('#hoverNav, #prevLink, #nextLink, #frameHoverNav, #framePrevLink, #frameNextLink').hide();
       $('#imageDataContainer, #numberDisplay, #bottomNavZoom, #bottomNavZoomOut').hide();
 
@@ -441,6 +442,12 @@ var Lightbox = {
 
       // Set up frame size, etc.
       else if (Lightbox.isLightframe) {
+        var src = Lightbox.imageArray[Lightbox.activeImage][0];
+        $('#frameContainer').append('<iframe id="lightboxFrame" style="display: none;" src="'+src+'"></iframe>');
+        if (!Lightbox.iframe_border) {
+          $('#lightboxFrame').css({'border': 'none'});
+          $('#lightboxFrame').attr('frameborder', '0');
+        }
         var iframe = document.getElementById('lightboxFrame');
         var iframeStyles = Lightbox.imageArray[Lightbox.activeImage][2];
         iframe = Lightbox.setStyles(iframe, iframeStyles);
@@ -549,9 +556,6 @@ var Lightbox = {
         else {
           $('#lightboxFrame').css({'zIndex': '10500'}).fadeIn(Lightbox.fadeInSpeed);
         }
-        try {
-          document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
-        } catch(e) {}
       }
       else {
         if (Lightbox.isVideo) {
@@ -559,7 +563,13 @@ var Lightbox = {
           $("#modalContainer").click(function() { return false; } );
         }
         else {
-          $('#modalContainer').load(Lightbox.imageArray[Lightbox.activeImage][0]);
+          var src = unescape(Lightbox.imageArray[Lightbox.activeImage][0]);
+          if (Lightbox.imageArray[Lightbox.activeImage][3]) {
+            $(src).appendTo("#modalContainer");
+          }
+          else {
+            $("#modalContainer").load(src);
+          }
           $('#modalContainer').unbind('click');
         }
         $('#modalContainer').css({'zIndex': '10500'}).show();
@@ -828,18 +838,10 @@ var Lightbox = {
       $('#lightshowPause, #lightshowPlay').hide();
     }
     else if (Lightbox.isLightframe) {
-      document.getElementById("lightboxFrame").src = '';
-      if ($.browser.safari) {
-        var iFrame = document.getElementById("lightboxFrame");
-        var parent = iFrame.parentNode;
-        parent.removeChild(iFrame);
-        parent.appendChild(iFrame);
-      }
-      $('#lightboxFrame, #frameContainer').hide();
+      $('#frameContainer').empty().hide();
     }
     else if (Lightbox.isVideo || Lightbox.isModal) {
-      $('#modalContainer').hide();
-      $('#modalContainer').html("");
+      $('#modalContainer').hide().html("");
     }
   },
 
@@ -959,8 +961,9 @@ var Lightbox = {
   // parseRel()
   parseRel: function (link) {
     var parts = [];
+    parts["rel"] = parts["title"] = parts["group"] = parts["style"] = null;
+    if (!$(link).attr('rel')) return parts;
     parts["rel"] = $(link).attr('rel').match(/\w+/)[0];
-    parts["title"] = parts["group"] = parts["style"] = null;
 
     if ($(link).attr('rel').match(/\[(.*)\]/)) {
       var info = $(link).attr('rel').match(/\[(.*?)\]/)[1].split('|');
@@ -975,6 +978,7 @@ var Lightbox = {
 
   // setStyles()
   setStyles: function(item, styles) {
+    if (!styles) return item;
     var stylesArray = styles.split(';');
     for (var i = 0; i< stylesArray.length; i++) {
       if (stylesArray[i].indexOf('width:') >= 0) {
@@ -1047,5 +1051,6 @@ var Lightbox = {
 if (Drupal.jsEnabled) {
   $(document).ready(function(){
     Lightbox.initialize();
+    $('#lightboxAutoModal').triggerHandler('click');
   });
 }
