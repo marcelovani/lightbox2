@@ -987,6 +987,8 @@ var Lightbox = {
   setStyles: function(item, styles) {
     if (!styles) return item;
     var stylesArray = styles.split(';');
+    item.width = Lightbox.iframe_width;
+    item.height = Lightbox.iframe_height;
     for (var i = 0; i< stylesArray.length; i++) {
       if (stylesArray[i].indexOf('width:') >= 0) {
         var w = stylesArray[i].replace('width:', '');
