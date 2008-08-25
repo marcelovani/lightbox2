@@ -990,11 +990,12 @@ var Lightbox = {
 
   // setStyles()
   setStyles: function(item, styles) {
-    if (!styles) return item;
-    var stylesArray = styles.split(';');
     item.width = Lightbox.iframe_width;
     item.height = Lightbox.iframe_height;
     item.srolling = "auto";
+
+    if (!styles) return item;
+    var stylesArray = styles.split(';');
     for (var i = 0; i< stylesArray.length; i++) {
       if (stylesArray[i].indexOf('width:') >= 0) {
         var w = stylesArray[i].replace('width:', '');
