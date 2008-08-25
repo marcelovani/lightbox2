@@ -37,6 +37,7 @@ function lightbox2_lite_general_handler(event) {
     $("select[@name=lightbox2_image_ncck_group_node_id]").attr("disabled", "disabled");
     $("select[@name=lightbox2_imagefield_group_node_id]").attr("disabled", "disabled");
     $("input[@name=lightbox2_imagefield_use_node_title]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_disable_close_click]").attr("disabled", "disabled");
     $("input[@name=lightbox2_border_size]").attr("disabled", "disabled");
     $("input[@name=lightbox2_box_color]").attr("disabled", "disabled");
     $("input[@name=lightbox2_font_color]").attr("disabled", "disabled");
@@ -61,6 +62,7 @@ function lightbox2_lite_general_handler(event) {
     $("select[@name=lightbox2_image_ncck_group_node_id]").removeAttr("disabled");
     $("select[@name=lightbox2_imagefield_group_node_id]").removeAttr("disabled");
     $("input[@name=lightbox2_imagefield_use_node_title]").removeAttr("disabled");
+    $("input[@name=lightbox2_disable_close_click]").removeAttr("disabled");
     $("input[@name=lightbox2_border_size]").removeAttr("disabled");
     $("input[@name=lightbox2_box_color]").removeAttr("disabled");
     $("input[@name=lightbox2_font_color]").removeAttr("disabled");

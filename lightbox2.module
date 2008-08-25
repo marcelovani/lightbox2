@@ -634,6 +634,7 @@ function lightbox2_add_files() {
     'top_position' => variable_get('lightbox2_top_position', ''),
     'overlay_opacity' => variable_get('lightbox2_overlay_opacity', 0.8),
     'overlay_color' => variable_get('lightbox2_overlay_color', '000'),
+    'disable_close_click' => variable_get('lightbox2_disable_close_click', TRUE),
     'resize_sequence' => variable_get('lightbox2_resize_sequence', 0),
     'resize_speed' => 1000 * variable_get('lightbox2_resize_speed', 0.4),
     'fade_in_speed' => 1000 * variable_get('lightbox2_fadein_speed', 0.4),
