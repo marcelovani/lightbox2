@@ -20,6 +20,7 @@
 var Lightbox = {
   overlayOpacity : 0.8, // Controls transparency of shadow overlay.
   overlayColor : '000', // Controls colour of shadow overlay.
+  disableCloseClick : true,
   // Controls the order of the lightbox resizing animation sequence.
   resizeSequence: 0, // 0: simultaneous, 1: width then height, 2: height then width.
   resizeSpeed: 'normal', // Controls the speed of the lightbox resizing animation.
@@ -85,6 +86,7 @@ var Lightbox = {
     var s = Drupal.settings.lightbox2;
     Lightbox.overlayOpacity = s.overlay_opacity;
     Lightbox.overlayColor = s.overlay_color;
+    Lightbox.disableCloseClick = s.disable_close_click;
     Lightbox.resizeSequence = s.resize_sequence;
     Lightbox.resizeSpeed = s.resize_speed;
     Lightbox.fadeInSpeed = s.fade_in_speed;
@@ -159,7 +161,9 @@ var Lightbox = {
     }
 
     // Setup onclick handlers.
-    $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
+    if (Lightbox.disableCloseClick) {
+      $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
+    }
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeData(Lightbox.activeImage - 1); return false; } );
     $('#nextLink, #frameNextLink').click(function() { Lightbox.changeData(Lightbox.activeImage + 1); return false; } );
@@ -193,27 +197,35 @@ var Lightbox = {
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
     $("a[@rel^='lightbox'], area[@rel^='lightbox']").click(function() {
-      $('#lightbox').unbind('click');
-      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      if (Lightbox.disableCloseClick) {
+        $('#lightbox').unbind('click');
+        $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      }
       Lightbox.start(this, false, false, false, false);
       return false;
     });
     $("a[@rel^='lightshow'], area[@rel^='lightshow']").click(function() {
-      $('#lightbox').unbind('click');
-      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      if (Lightbox.disableCloseClick) {
+        $('#lightbox').unbind('click');
+        $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      }
       Lightbox.start(this, true, false, false, false);
       return false;
     });
     $("a[@rel^='lightframe'], area[@rel^='lightframe']").click(function() {
-      $('#lightbox').unbind('click');
-      $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      if (Lightbox.disableCloseClick) {
+        $('#lightbox').unbind('click');
+        $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+      }
       Lightbox.start(this, false, true, false, false);
       return false;
     });
     if (Lightbox.enableVideo) {
       $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function() {
-        $('#lightbox').unbind('click');
-        $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+        if (Lightbox.disableCloseClick) {
+          $('#lightbox').unbind('click');
+          $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
+        }
         Lightbox.start(this, false, false, true, false);
         return false;
       });
