@@ -135,7 +135,8 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
     $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
   }
-  $image_title = (!empty($item['data']['title']) ? $item['data']['title'] : $item['data']['alt']);
+  $image_data = unserialize($item['data']);
+  $image_title = (!empty($image_data['title']) ? $image_data['title'] : $image_data['alt']);
   if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
     $node = node_load($node->nid);
     $image_title = $node->title;
@@ -164,10 +165,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
   );
 
   if ($view_preset == 'original') {
-    $image = theme('lightbox2_image', $item['filepath'], $item['data']['alt'], $item['data']['title'], $attributes);
+    $image = theme('lightbox2_image', $item['filepath'], $image_data['alt'], $image_data['title'], $attributes);
   }
   else {
-    $image = theme('imagecache', $view_preset, $item['filepath'], $item['data']['alt'], $item['data']['title'], $attributes);
+    $image = theme('imagecache', $view_preset, $item['filepath'], $image_data['alt'], $image_data['title'], $attributes);
   }
   if ($item['lightbox_preset'] == 'node') {
     $output = l($image, 'node/'. $node->nid .'/lightbox2', array('attributes' => $link_attributes, 'html' => TRUE));
