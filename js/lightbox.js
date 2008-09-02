@@ -655,7 +655,7 @@ var Lightbox = {
 
     $("#imageDataContainer").hide();
 
-    var caption = Drupal.checkPlain(Lightbox.imageArray[Lightbox.activeImage][1]);
+    var caption = Lightbox.imageArray[Lightbox.activeImage][1];
     if (!caption) caption = '&nbsp;';
     $('#caption').html(caption).css({'zIndex': '10500'}).show();
 
