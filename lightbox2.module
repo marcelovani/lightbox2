@@ -1268,7 +1268,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
         return t('Links to inline or modal content with \'rel="lightmodal"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
       }
       elseif ($delta == 6) {
-        return t('It\'s possible to show webpage content in the lightbox, using iframes.  In this case the "rel" attribute should be set to "lightframe".  However, users can do this without any filters to be enabled.  To prevent users from adding iframes to the site in this manner, then please enable this option.') .'</p>';
+        return t('It\'s possible to show webpage content in the lightbox, using iframes.  In this case the "rel" attribute should be set to "lightframe".  However, users can do this without any filters to be enabled.  To prevent users from adding iframes to the site in this manner, then please enable this option.');
       }
 
     case 'process':
