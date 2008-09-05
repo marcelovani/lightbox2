@@ -54,6 +54,9 @@ INSTALLATION
 4. Configure the module at admin/settings/lightbox2.
 5. Modify your image links to open in a lightbox where necessary, see "Adding
    Lightbox Functionality to your Images' section below.
+6. If you need to play flv files, then you may need to install a FLV player.
+   There are a number of freely available ones on the Internet, including
+   http://www.jeroenwijering.com/
 
 
 ADDING LIGHTBOX FUNCTIONALITY TO YOUR IMAGES
