@@ -179,6 +179,9 @@ var Lightbox = {
     if (Lightbox.alternative_layout) {
       $('#bottomNavZoom, #bottomNavZoomOut').css({'bottom': Lightbox.borderSize + 'px', 'right': Lightbox.borderSize + 'px'});
     }
+    else if (Lightbox.rtl == 1 && $.browser.msie) {
+      $('#bottomNavZoom, #bottomNavZoomOut').css({'left': '0px'});
+    }
 
     // Force navigation links to always be displayed
     if (s.force_show_nav) {
