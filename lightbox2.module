@@ -680,6 +680,7 @@ function lightbox2_add_files() {
     'iframe_border' => variable_get('lightbox2_frame_border', 1),
     // Video settings.
     'enable_video' => variable_get('lightbox2_enable_video', FALSE),
+    'flvPlayer' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
   );
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 

@@ -25,25 +25,25 @@ var Lightvideo = {
     }
     else {
       Lightbox.videoId = href;
-      Lightvideo.createEmbed(href, "flvvideo", "#ffffff");
+      href = Lightbox.flvPlayer + '?file=' + href;
+      Lightvideo.createEmbed(href, "flvplayer", "#ffffff");
     }
   },
 
   // createEmbed()
   createEmbed: function(href, id, color, variables) {
     var bgcolor = 'bgcolor="' + color + '"';
-    var flashvars = "";
+    var flashvars = '';
     if (variables) {
       flashvars = variables;
     }
-
     Lightbox.modalHTML = '<embed type="application/x-shockwave-flash" ' +
       'src="' + href + '" ' +
       'id="' + id + '" name="' + id + '" ' + bgcolor + ' ' +
       'quality="high" wmode="transparent" ' + flashvars + ' ' +
       'height="' + Lightbox.modalHeight + '" ' +
-      'width="' + Lightbox.modalWidth + ' ' +
-      '"></embed>';
+      'width="' + Lightbox.modalWidth + '" ' +
+      '></embed>';
   },
 
 
