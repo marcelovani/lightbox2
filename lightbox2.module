@@ -2038,6 +2038,14 @@ function lightbox2_exclude_these_paths() {
       if ($page == "<front>") {
         $page = "";
       }
+      $alias = drupal_get_path_alias($page);
+      if ($alias != $page) {
+        $alias = preg_replace(array('/\\\\\*/', '/%/'), '.*?', preg_quote($alias, '/'));
+        $pattern = '/^'. $alias .'$/';
+        if (preg_match($pattern, $_REQUEST['q'])) {
+          return ($action == 'page_disable' ? 1 : 0);
+        }
+      }
       $page = preg_replace(array('/\\\\\*/', '/%/'), '.*?', preg_quote($page, '/'));
       $pattern = '/^'. $page .'$/';
       if (preg_match($pattern, $_REQUEST['q'])) {
