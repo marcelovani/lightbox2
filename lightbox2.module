@@ -2031,7 +2031,10 @@ function lightbox2_exclude_these_paths() {
     $pages = explode("\n", $page_list);
 
     foreach ($pages as $page) {
-      $page = rtrim($page);
+      $page = trim($page);
+      if (empty($page)) {
+        continue;
+      }
       if ($page == "<front>") {
         $page = "";
       }
