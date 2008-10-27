@@ -200,7 +200,7 @@ var Lightbox = {
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
-    $("a[@rel^='lightbox'], area[@rel^='lightbox']").click(function(e) {
+    $("a[@rel^='lightbox']:not(.lightbox-processed), area[@rel^='lightbox']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -209,7 +209,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[@rel^='lightshow'], area[@rel^='lightshow']").click(function(e) {
+    $("a[@rel^='lightshow']:not(.lightbox-processed), area[@rel^='lightshow']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -218,7 +218,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[@rel^='lightframe'], area[@rel^='lightframe']").click(function(e) {
+    $("a[@rel^='lightframe']:not(.lightbox-processed), area[@rel^='lightframe']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -228,7 +228,7 @@ var Lightbox = {
       return false;
     });
     if (Lightbox.enableVideo) {
-      $("a[@rel^='lightvideo'], area[@rel^='lightvideo']").click(function(e) {
+      $("a[@rel^='lightvideo']:not(.lightbox-processed), area[@rel^='lightvideo']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
         if (Lightbox.disableCloseClick) {
           $('#lightbox').unbind('click');
           $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -238,7 +238,7 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[@rel^='lightmodal'], area[@rel^='lightmodal'], #lightboxAutoModal").click(function(e) {
+    $("a[@rel^='lightmodal']:not(.lightbox-processed), area[@rel^='lightmodal']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
@@ -1076,7 +1076,10 @@ var Lightbox = {
 
 // Initialize the lightbox.
 Drupal.behaviors.initLightbox = function (context) {
-  Lightbox.initialize();
-  $('#lightboxAutoModal').triggerHandler('click');
+  $('body:not(.lightbox-processed)', context).addClass('lightbox-processed').each(function() {
+    Lightbox.initialize();
+    $('#lightboxAutoModal').triggerHandler('click');
+    return false; // Break the each loop.
+  });
 };
 
