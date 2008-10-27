@@ -79,8 +79,8 @@ var Lightbox = {
 
 
   // initialize()
-  // Constructor runs on completion of the DOM loading. Calls initList
-  // and then the function inserts html at the bottom of the page which is used
+  // Constructor runs on completion of the DOM loading.
+  // The function inserts html at the bottom of the page which is used
   // to display the shadow overlay and the image container.
   initialize: function() {
 
@@ -117,9 +117,6 @@ var Lightbox = {
     Lightbox.iframe_border = s.iframe_border;
     Lightbox.enableVideo = s.enable_video;
     Lightbox.flvPlayer = s.flvPlayer;
-
-    // Attach lightbox to any links with lightbox rels.
-    Lightbox.initList();
 
     // Make the lightbox divs.
     var output = '<div id="overlay" style="display: none;"></div>\
@@ -1081,5 +1078,8 @@ Drupal.behaviors.initLightbox = function (context) {
     $('#lightboxAutoModal').triggerHandler('click');
     return false; // Break the each loop.
   });
+
+  // Attach lightbox to any links with lightbox rels.
+  Lightbox.initList();
 };
 
