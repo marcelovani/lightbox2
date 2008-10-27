@@ -94,6 +94,8 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
  * Generate the HTML output for imagefield + imagecache images so they can be
  * opened in a lightbox by clicking on the image on the node page or in a view.
  *
+ * This actually also handles filefields + imagecache images too.
+ *
  * @param $view_preset
  *   The imagecache preset to be displayed on the node or in the view.
  * @param $field
@@ -106,7 +108,6 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
  *   The type of lightbox to open: lightbox, lightshow or lightframe.
  */
 function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item, $node, $rel = 'lightbox') {
-
   // Can't show current node page in a lightframe on the node page.
   // Switch instead to show it in a lightbox.
   if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
@@ -140,6 +141,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $image_data = unserialize($item['data']);
   }
   $image_title = (!empty($image_data['title']) ? $image_data['title'] : $image_data['alt']);
+  $image_title = (!empty($title) ? $title : $image_data['description']); // If filefield, we need the description field text instead.
   if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
     $node = node_load($node->nid);
     $image_title = $node->title;
@@ -214,7 +216,7 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
   $path = $file->filepath;
   $url = file_create_url($path);
   $icon = theme('filefield_icon', $file);
-  $description = $file->description;
+  $description = $file->data['description'];
 
   $target = variable_get('lightbox2_node_link_target', FALSE);
   if (!empty($target)) {

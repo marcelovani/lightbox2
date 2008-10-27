@@ -727,7 +727,8 @@ function lightbox2_add_files() {
 function lightbox2_field_formatter_info() {
   $formatters = array();
   $lightbox = $slideshow = $iframe = array();
-  if (module_exists('imagefield') && module_exists('imagecache')) {
+  // Handle imagefield and filefield images.
+  if (module_exists('imagecache') && (module_exists('imagecache') || module_exists('filefield'))) {
     $rules = array();
     if (function_exists('imagecache_presets')) {
       $presets = imagecache_presets();
@@ -740,37 +741,37 @@ function lightbox2_field_formatter_info() {
     }
     $iframe['imagefield__lightframe2__original__node'] = array(
       'label' => 'Lightbox2 iframe: original->node page',
-      'field types' => array('image'),
+      'field types' => array('image', 'filefield'),
     );
     foreach ($rules as $ruleid => $view_rule) {
       $lightbox['imagefield__lightbox2__original__'. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
       );
       $lightbox['imagefield__lightbox2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2: '. $view_rule .'->original',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
       );
       $slideshow['imagefield__lightshow2__original__'. $view_rule] = array(
         'label' => 'Lightbox2 slideshow: original->'. $view_rule,
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
       );
       $slideshow['imagefield__lightshow2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
       );
       $iframe['imagefield__lightframe2__'. $view_rule .'__node'] = array(
         'label' => 'Lightbox2 iframe: '. $view_rule .'->node page',
-        'field types' => array('image'),
+        'field types' => array('image', 'filefield'),
       );
       foreach ($rules as $rid => $lightbox_rule) {
         $lightbox['imagefield__lightbox2__'. $view_rule .'__'. $lightbox_rule] = array(
           'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
-          'field types' => array('image'),
+          'field types' => array('image', 'filefield'),
         );
         $slideshow['imagefield__lightshow2__'. $view_rule .'__'. $lightbox_rule] = array(
           'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
-          'field types' => array('image'),
+          'field types' => array('image', 'filefield'),
         );
       }
     }
@@ -800,7 +801,7 @@ function lightbox2_field_formatter_info() {
   if (module_exists('filefield')) {
     $formatters['filefield_lightframe'] = array(
       'label' => t('Lightbox2 iframe'),
-      'field types' => array('file'),
+      'field types' => array('filefield'),
     );
   }
 
@@ -1122,6 +1123,11 @@ function lightbox2_file_formatter_info() {
       'title' => t('Lightbox2 iframe'),
       'description' => t('Displays all kinds of files in a popup lightbox in an iframe.'),
     ),
+    'lightbox2_image' => array(
+      'suitability callback' => 'lightbox2_check_filefield_image_extension',
+      'title' => t('Lightbox2 image'),
+      'description' => t('Displays image files in a popup lightbox.'),
+    ),
   );
 }
 
@@ -1141,26 +1147,57 @@ function lightbox2_check_filefield_extension($file, $field) {
 }
 
 /**
+ * Suitability callback function for the image filefield formatter.
+ *
+ * @param $file
+ *   The file object, containing filepath, mime type, etc.
+ * @param $field
+ *   CCK field information.
+ * @return
+ *   True if file extension is supported.
+ */
+function lightbox2_check_filefield_image_extension($file, $field) {
+  $ext = array_pop(explode('.', $file->filename));
+  return lightbox2_supported_file_extension($ext, 'image');
+}
+
+
+/**
  * Check whether a given file extension is supported by the lightbox iframe.
  *
  * @param $ext
  *   File extension
+ * @param $type
+ *   Type of file extensions to check.
  * @return
  *   TRUE if extension is supported.
  */
-function lightbox2_supported_file_extension($ext) {
-  $extensions = array(
-    // Image extensions.
-    'png', 'jpg', 'jpeg', 'gif', 'bmp',
-    // Movie extensions.
-    'dv', 'mov', 'moov', 'movie', 'mp4',
-    'asf', 'wm', 'wmv', 'avi', 'mpg', 'mpeg',
-    // Website extensions.
-    'asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4',
-    'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs',
-    // Other extensions.
-    'pdf',
-  );
+function lightbox2_supported_file_extension($ext, $type = 'all') {
+  $image_extensions = array('png', 'jpg', 'jpeg', 'gif', 'bmp');
+  $movie_extensions = array('dv', 'mov', 'moov', 'movie', 'mp4', 'asf', 'wm', 'wmv', 'avi', 'mpg', 'mpeg');
+  $web_extensions = array('asp', 'aspx', 'cgi', 'cfm', 'htm', 'html', 'pl', 'php', 'php3', 'php4', 'php5', 'phtml', 'rb', 'rhtml', 'shtml', 'txt', 'vbs');
+  $misc_extensions = array('pdf');
+
+  $extensions = array();
+  switch ($type) {
+    case 'image':
+      $extensions = $image_extensions;
+      break;
+    case 'movie':
+      $extensions = $movie_extensions;
+      break;
+    case 'web':
+      $extensions = $web_extensions;
+      break;
+    case 'misc':
+      $extensions = $misc_extensions;
+      break;
+    case 'all':
+    default:
+      $extensions = array_merge($image_extensions, $movie_extensions, $web_extensions, $misc_extensions);
+      break;
+  }
+
   if (in_array(drupal_strtolower($ext), $extensions)) {
     return TRUE;
   }
