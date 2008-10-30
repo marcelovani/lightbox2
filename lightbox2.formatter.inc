@@ -57,7 +57,7 @@ function lightbox2_imagefield_image_imagecache($field, $item, $formatter, $node,
     $filepath = &$item['filepath'];
   }
   elseif (!empty($item['fid'])) {
-    $file = _imagefield_file_load($item['fid']);
+    $file = field_file_load($item['fid']);
     $filepath = &$file['filepath'];
   }
   else {
