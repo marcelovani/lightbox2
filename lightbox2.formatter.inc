@@ -141,7 +141,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $image_data = unserialize($item['data']);
   }
   $image_title = (!empty($image_data['title']) ? $image_data['title'] : $image_data['alt']);
-  $image_title = (!empty($title) ? $title : $image_data['description']); // If filefield, we need the description field text instead.
+  $image_title = (!empty($image_title) ? $image_title : $image_data['description']); // If filefield, we need the description field text instead.
   if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
     $node = node_load($node->nid);
     $image_title = $node->title;
