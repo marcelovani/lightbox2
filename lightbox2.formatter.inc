@@ -216,11 +216,11 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
   $path = $file->filepath;
   $url = file_create_url($path);
   $icon = theme('filefield_icon', $file);
-  $description = $file->data['description'];
-  if (is_string($description)) {
-    $data = unserialize($file->data);
-    $description = $data['description'];
+  $file_data = $file->data;
+  if (is_string($file_data)) {
+    $file_data = unserialize($file->data);
   }
+  $description = $file_data['description'];
 
   $target = variable_get('lightbox2_node_link_target', FALSE);
   if (!empty($target)) {
