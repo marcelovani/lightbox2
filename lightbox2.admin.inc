@@ -82,7 +82,7 @@ function lightbox2_general_settings_form() {
   $form['layout_fieldset']['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Image count text'),
-    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".'),
+    '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".  Leave blank for text not to appear.'),
     '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
   );
 
@@ -90,7 +90,7 @@ function lightbox2_general_settings_form() {
   $form['layout_fieldset']['lightbox2_page_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Page count text'),
-    '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".'),
+    '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".  Leave blank for text not to appear.'),
     '#default_value' => variable_get('lightbox2_page_count_str', 'Page !current of !total'),
   );
 
@@ -673,7 +673,7 @@ function lightbox2_auto_image_handling_settings_form() {
   $form['lightbox2_general_options']['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for image page link'),
-    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.'),
+    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.  Leave this blank for the link not to appear.'),
     '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
   );
 
