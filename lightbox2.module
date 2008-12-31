@@ -968,10 +968,7 @@ function lightbox2_exclude_these_paths() {
     // Retrieve Drupal alias for the current path (if exists).
     $alias = drupal_get_path_alias($_GET['q']);
 
-    if (drupal_match_path($_GET['q'], $page_list)) {
-      return ($action == 'page_disable' ? 1 : 0);
-    }
-    elseif (drupal_match_path($alias, $page_list)) {
+    if (drupal_match_path($_GET['q'], $page_list) || drupal_match_path($alias, $page_list)) {
       return ($action == 'page_disable' ? 1 : 0);
     }
   }
