@@ -1806,7 +1806,9 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field, $item
     $frame_size = 'width:'. $frame_width .'px; height:'. $frame_height .'px;';
     $rel = preg_replace('/\]$/', "|$frame_size]", $rel);
   }
-  $image_title = (!empty($item['title']) ? $item['title'] : $item['alt']);
+  $image_title = $item['description'];
+  $image_title = (!empty($image_title) ? $image_title : $item['title']);
+  $image_title = (!empty($image_title) ? $image_title : $item['alt']);
   if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
     $node = node_load($node->nid);
     $image_title = $node->title;
