@@ -286,27 +286,40 @@ var Lightbox = {
     var rel_style = null;
     var i = 0;
 
+    // Set the title for image alternative text.
+    var alt = imageLink.title;
+    if (!alt) {
+      var img = $(imageLink).find("img");
+      if (img && $(img).attr("alt")) {
+        alt = $(img).attr("alt");
+      }
+      else {
+        alt = title;
+      }
+    }
+
+
     if ($(imageLink).attr('id') == 'lightboxAutoModal') {
       rel_style = rel_parts["style"];
-      Lightbox.imageArray.push(['#lightboxAutoModal > *', title, rel_style, 1]);
+      Lightbox.imageArray.push(['#lightboxAutoModal > *', title, alt, rel_style, 1]);
     }
     else {
       // Handle lightbox images with no grouping.
       if ((rel == 'lightbox' || rel == 'lightshow') && !rel_group) {
-        Lightbox.imageArray.push([imageLink.href, title]);
+        Lightbox.imageArray.push([imageLink.href, title, alt]);
       }
 
       // Handle iframes with no grouping.
       else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
         rel_style = rel_parts["style"];
-        Lightbox.imageArray.push([imageLink.href, title, rel_style]);
+        Lightbox.imageArray.push([imageLink.href, title, alt, rel_style]);
       }
 
       // Handle video.
       else if (rel == "lightvideo") {
         // rel_group contains style information for videos.
         rel_style = rel_group;
-        Lightbox.imageArray.push([imageLink.href, title, rel_style]);
+        Lightbox.imageArray.push([imageLink.href, title, alt, rel_style]);
       }
 
       // Handle iframes and lightbox & slideshow images.
@@ -323,7 +336,7 @@ var Lightbox = {
                 if (Lightbox.isLightframe || Lightbox.isModal) {
                   rel_style = rel_data["style"];
                 }
-                Lightbox.imageArray.push([anchor.href, anchor_title, rel_style]);
+                Lightbox.imageArray.push([anchor.href, anchor_title, alt, rel_style]);
               }
             }
           }
@@ -407,7 +420,7 @@ var Lightbox = {
         imgPreloader.onload = function() {
           var photo = document.getElementById('lightboxImage');
           photo.src = Lightbox.imageArray[Lightbox.activeImage][0];
-          photo.alt = Lightbox.imageArray[Lightbox.activeImage][1];
+          photo.alt = Lightbox.imageArray[Lightbox.activeImage][2];
 
           var imageWidth = imgPreloader.width;
           var imageHeight = imgPreloader.height;
@@ -454,7 +467,7 @@ var Lightbox = {
         };
 
         imgPreloader.src = Lightbox.imageArray[Lightbox.activeImage][0];
-        imgPreloader.alt = Lightbox.imageArray[Lightbox.activeImage][1];
+        imgPreloader.alt = Lightbox.imageArray[Lightbox.activeImage][2];
       }
 
       // Set up frame size, etc.
@@ -466,13 +479,13 @@ var Lightbox = {
           $('#lightboxFrame').attr('frameborder', '0');
         }
         var iframe = document.getElementById('lightboxFrame');
-        var iframeStyles = Lightbox.imageArray[Lightbox.activeImage][2];
+        var iframeStyles = Lightbox.imageArray[Lightbox.activeImage][3];
         iframe = Lightbox.setStyles(iframe, iframeStyles);
         Lightbox.resizeContainer(parseInt(iframe.width, 10), parseInt(iframe.height, 10));
       }
       else if (Lightbox.isVideo || Lightbox.isModal) {
         var container = document.getElementById('modalContainer');
-        var modalStyles = Lightbox.imageArray[Lightbox.activeImage][2];
+        var modalStyles = Lightbox.imageArray[Lightbox.activeImage][3];
         container = Lightbox.setStyles(container, modalStyles);
         if (Lightbox.isVideo) {
           Lightbox.modalHeight =  parseInt(container.height, 10);
@@ -581,7 +594,7 @@ var Lightbox = {
         }
         else {
           var src = unescape(Lightbox.imageArray[Lightbox.activeImage][0]);
-          if (Lightbox.imageArray[Lightbox.activeImage][3]) {
+          if (Lightbox.imageArray[Lightbox.activeImage][4]) {
             $(src).appendTo("#modalContainer");
           }
           else {
