@@ -682,7 +682,7 @@ var Lightbox = {
     var numberDisplay = null;
     if (Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;
-      if (!Lightbox.isLightframe) {
+      if (!Lightbox.isLightframe && !Lightbox.isModal) {
         numberDisplay = s.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       else {
@@ -740,7 +740,7 @@ var Lightbox = {
     // All other types of content.
     else {
 
-      if (Lightbox.isLightframe && !Lightbox.alternative_layout) {
+      if ((Lightbox.isLightframe || Lightbox.isModal) && !Lightbox.alternative_layout) {
         $('#frameHoverNav').css({'zIndex': '10500'}).show();
         $('#hoverNav').css({'zIndex': '10500'}).hide();
         prevLink = '#framePrevLink';
