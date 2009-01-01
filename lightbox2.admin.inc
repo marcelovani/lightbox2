@@ -452,46 +452,48 @@ function lightbox2_general_settings_form() {
  * numeric.
  */
 function lightbox2_general_settings_form_validate($form, &$form_state) {
-  $border_size = $form_state['values']['lightbox2_border_size'];
-  $box_hex_colour = $form_state['values']['lightbox2_box_color'];
-  $font_hex_colour = $form_state['values']['lightbox2_font_color'];
-  $top_position = $form_state['values']['lightbox2_top_position'];
-  $overlay_hex_colour = $form_state['values']['lightbox2_overlay_color'];
-  $resize_speed = $form_state['values']['lightbox2_resize_speed'];
-  $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
-  $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
+  if ($form_state['values']['op'] == 'Save configuration') {
+    $border_size = $form_state['values']['lightbox2_border_size'];
+    $box_hex_colour = $form_state['values']['lightbox2_box_color'];
+    $font_hex_colour = $form_state['values']['lightbox2_font_color'];
+    $top_position = $form_state['values']['lightbox2_top_position'];
+    $overlay_hex_colour = $form_state['values']['lightbox2_overlay_color'];
+    $resize_speed = $form_state['values']['lightbox2_resize_speed'];
+    $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
+    $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
 
-  if (!_lightbox2_validate_hex_color($overlay_hex_colour)) {
-    form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
-  }
-
-  if (!$form_state['values']['lightbox2_lite']) {
-    if (!is_numeric($border_size) || $border_size < 0) {
-      form_set_error('lightbox2_border_size', t('You must enter a size greater than 0 pixels.'));
+    if (!_lightbox2_validate_hex_color($overlay_hex_colour)) {
+      form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
     }
 
-    if (!_lightbox2_validate_hex_color($box_hex_colour)) {
-      form_set_error('lightbox2_border_color', t('You must enter a properly formed hex value.'));
-    }
+    if (!$form_state['values']['lightbox2_lite']) {
+      if (!is_numeric($border_size) || $border_size < 0) {
+        form_set_error('lightbox2_border_size', t('You must enter a size greater than 0 pixels.'));
+      }
 
-    if (!_lightbox2_validate_hex_color($font_hex_colour)) {
-      form_set_error('lightbox2_font_color', t('You must enter a properly formed hex value.'));
-    }
+      if (!_lightbox2_validate_hex_color($box_hex_colour)) {
+        form_set_error('lightbox2_border_color', t('You must enter a properly formed hex value.'));
+      }
 
-    if (!empty($top_position) && (!is_numeric($top_position) || $top_position < 0)) {
-      form_set_error('lightbox2_top_position', t('You must enter a size greater than 0 pixels.  Leave blank for default positioning.'));
-    }
+      if (!_lightbox2_validate_hex_color($font_hex_colour)) {
+        form_set_error('lightbox2_font_color', t('You must enter a properly formed hex value.'));
+      }
 
-    if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {
-      form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
-    }
+      if (!empty($top_position) && (!is_numeric($top_position) || $top_position < 0)) {
+        form_set_error('lightbox2_top_position', t('You must enter a size greater than 0 pixels.  Leave blank for default positioning.'));
+      }
 
-    if (!is_numeric($fadein_speed) || $fadein_speed <= 0 || $fadein_speed >= 10) {
-      form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
-    }
+      if (!is_numeric($resize_speed) || $resize_speed <= 0 || $resize_speed >= 10) {
+        form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
+      }
 
-    if (!is_numeric($slide_down_speed) || $slide_down_speed <= 0 || $slide_down_speed >= 10) {
-      form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
+      if (!is_numeric($fadein_speed) || $fadein_speed <= 0 || $fadein_speed >= 10) {
+        form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
+      }
+
+      if (!is_numeric($slide_down_speed) || $slide_down_speed <= 0 || $slide_down_speed >= 10) {
+        form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
+      }
     }
   }
 }
