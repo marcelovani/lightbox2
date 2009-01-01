@@ -373,6 +373,7 @@ var Lightbox = {
     $('#frameContainer, #modalContainer, #lightboxImage').hide();
     $('#hoverNav, #prevLink, #nextLink, #frameHoverNav, #framePrevLink, #frameNextLink').hide();
     $('#imageDataContainer, #numberDisplay, #bottomNavZoom, #bottomNavZoomOut').hide();
+    $('#outerImageContainer').css({'width': '250px', 'height': '250px'});
     $('#lightbox').css({
       'zIndex': '10500',
       'top': lightboxTop + 'px',
