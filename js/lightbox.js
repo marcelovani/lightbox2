@@ -473,7 +473,7 @@ var Lightbox = {
       // Set up frame size, etc.
       else if (Lightbox.isLightframe) {
         var src = Lightbox.imageArray[Lightbox.activeImage][0];
-        $('#frameContainer').append('<iframe id="lightboxFrame" style="display: none;" src="'+src+'"></iframe>');
+        $('#frameContainer').html('<iframe id="lightboxFrame" style="display: none;" src="'+src+'"></iframe>');
         if (!Lightbox.iframe_border) {
           $('#lightboxFrame').css({'border': 'none'});
           $('#lightboxFrame').attr('frameborder', '0');
