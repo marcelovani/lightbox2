@@ -357,6 +357,9 @@ var Lightbox = {
     var arrayPageScroll = Lightbox.getPageScroll();
     var lightboxTop = arrayPageScroll[1] + (Lightbox.topPosition == '' ? (arrayPageSize[3] / 10) : Lightbox.topPosition) * 1;
     var lightboxLeft = arrayPageScroll[0];
+    $('#frameContainer, #modalContainer, #lightboxImage').hide();
+    $('#hoverNav, #prevLink, #nextLink, #frameHoverNav, #framePrevLink, #frameNextLink').hide();
+    $('#imageDataContainer, #numberDisplay, #bottomNavZoom, #bottomNavZoomOut').hide();
     $('#lightbox').css({
       'zIndex': '10500',
       'top': lightboxTop + 'px',
@@ -675,7 +678,9 @@ var Lightbox = {
       $('#numberDisplay').html(numberDisplay).css({'zIndex': '10500'}).show();
     }
 
-    $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed);
+    $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed, function() {
+      $("#bottomNav").show();
+    });
     if (Lightbox.rtl == 1) {
       $("#bottomNav").css({'float': 'left'});
     }

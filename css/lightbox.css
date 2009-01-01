@@ -196,9 +196,7 @@
 #bottomNavClose {
   display: block;
   background: url(../images/close.gif) left no-repeat;
-  position: relative;
-  top: 33px;
-  right: 0px;
+  margin-top: 33px;
   float: right;
   padding-top: 0.7em;
   height: 26px;
@@ -237,8 +235,7 @@
 }
 
 #lightshowPlay {
-  position: relative;
-  top: 42px;
+  margin-top: 42px;
   float: right;
   margin-right: 5px;
   margin-bottom: 1px;
@@ -248,8 +245,7 @@
 }
 
 #lightshowPause {
-  position: relative;
-  top: 42px;
+  margin-top: 42px;
   float: right;
   margin-right: 5px;
   margin-bottom: 1px;
