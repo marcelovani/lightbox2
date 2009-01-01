@@ -480,6 +480,14 @@ var Lightbox = {
       else if (Lightbox.isLightframe) {
         var src = Lightbox.imageArray[Lightbox.activeImage][0];
         $('#frameContainer').html('<iframe id="lightboxFrame" style="display: none;" src="'+src+'"></iframe>');
+
+        // Enable swf support in Gecko browsers.
+        if ($.browser.mozilla && src.indexOf('.swf') != -1) {
+          setTimeout(function () {
+            document.getElementById("lightboxFrame").src = Lightbox.imageArray[Lightbox.activeImage][0];
+          }, 1000);
+        }
+
         if (!Lightbox.iframe_border) {
           $('#lightboxFrame').css({'border': 'none'});
           $('#lightboxFrame').attr('frameborder', '0');
