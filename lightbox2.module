@@ -834,6 +834,7 @@ function lightbox2_general_settings_form_validate($form_id, $form_values) {
       form_set_error('lightbox2_slidedown_speed', t('You must enter a duration between 0 and 10 seconds.'));
     }
   }
+  cache_clear_all();
 }
 
 /**
