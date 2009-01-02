@@ -541,6 +541,10 @@ var Lightbox = {
     var widthNew = (imgWidth  + (Lightbox.borderSize * 2));
     var heightNew = (imgHeight  + (Lightbox.borderSize * 2));
 
+    // Ensure loading icon is in the center.
+    var loadingLeft = (widthNew - 32) / 2;
+    $('#loading').css({'left': loadingLeft + 'px'});
+
     // Scalars based on change from old to new.
     this.xScale = ( widthNew / this.widthCurrent) * 100;
     this.yScale = ( heightNew / this.heightCurrent) * 100;
