@@ -314,21 +314,14 @@ var Lightbox = {
         Lightbox.imageArray.push([imageLink.href, title, alt]);
       }
 
-      // Handle iframes with no grouping.
-      else if ((rel == 'lightframe' || rel == 'lightmodal') && !rel_group) {
+      // Handle other items with no grouping.
+      else if (!rel_group) {
         rel_style = rel_parts["style"];
         Lightbox.imageArray.push([imageLink.href, title, alt, rel_style]);
       }
 
-      // Handle video.
-      else if (rel == "lightvideo") {
-        // rel_group contains style information for videos.
-        rel_style = rel_group;
-        Lightbox.imageArray.push([imageLink.href, title, alt, rel_style]);
-      }
-
-      // Handle iframes and lightbox & slideshow images.
-      else if (rel == 'lightbox' || rel == 'lightshow' || rel == 'lightframe' || rel == 'lightmodal') {
+      // Handle grouped items.
+      else {
 
         // Loop through anchors and add them to imageArray.
         for (i = 0; i < anchors.length; i++) {
@@ -541,10 +534,6 @@ var Lightbox = {
     var widthNew = (imgWidth  + (Lightbox.borderSize * 2));
     var heightNew = (imgHeight  + (Lightbox.borderSize * 2));
 
-    // Ensure loading icon is in the center.
-    var loadingLeft = (widthNew - 32) / 2;
-    $('#loading').css({'left': loadingLeft + 'px'});
-
     // Scalars based on change from old to new.
     this.xScale = ( widthNew / this.widthCurrent) * 100;
     this.yScale = ( heightNew / this.heightCurrent) * 100;
@@ -753,7 +742,7 @@ var Lightbox = {
     // All other types of content.
     else {
 
-      if ((Lightbox.isLightframe || Lightbox.isModal) && !Lightbox.alternative_layout) {
+      if ((Lightbox.isLightframe || Lightbox.isModal || Lightbox.isVideo) && !Lightbox.alternative_layout) {
         $('#frameHoverNav').css({'zIndex': '10500'}).show();
         $('#hoverNav').css({'zIndex': '10500'}).hide();
         prevLink = '#framePrevLink';
