@@ -684,8 +684,11 @@ var Lightbox = {
     var numberDisplay = null;
     if (Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;
-      if (!Lightbox.isLightframe && !Lightbox.isModal) {
+      if (!Lightbox.isLightframe && !Lightbox.isModal && !Lightbox.isVideo) {
         numberDisplay = s.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
+      }
+      else if (Lightbox.isVideo) {
+        numberDisplay = s.video_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       else {
         numberDisplay = s.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);

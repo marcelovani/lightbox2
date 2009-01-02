@@ -647,6 +647,7 @@ function lightbox2_add_files() {
     'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
+    'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
