@@ -837,13 +837,6 @@ function lightbox2_general_settings_form_validate($form_id, $form_values) {
 }
 
 /**
- * Submit function for the general configuration form.
- */
-function lightbox2_general_settings_form_submit($form_id, $form_values) {
-  cache_clear_all();
-}
-
-/**
  * Validation function for the slideshow configuration form.
  *
  * Ensure that the slideshow interval submitted is numeric.
