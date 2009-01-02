@@ -499,6 +499,13 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
 }
 
 /**
+ * Submit function for the general configuration form.
+ */
+function lightbox2_general_settings_form_submit($form, &$form_state) {
+  cache_clear_all();
+}
+
+/**
  * Configuration form for controlling the slideshow behaviour.
  */
 function lightbox2_slideshow_settings_form() {
