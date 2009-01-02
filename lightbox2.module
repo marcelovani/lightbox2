@@ -1258,3 +1258,45 @@ function lightbox2_form_user_login_alter(&$form, $form_state, $form_id = "user_l
   }
 }
 
+/**
+ * Implementation of hook_link_alter().
+ *
+ * Add a lightbox2 rel attribute to the image link sizes on the image node.
+ */
+function lightbox2_link_alter(&$links, $node) {
+  $image_node_handler = variable_get('lightbox2_image_node', 0);
+
+  // Only operate on image nodes and if automatic handling for image nodes is
+  // enabled.
+  if ($node->type != 'image' && $image_node_handler) {
+    return;
+  }
+  $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
+
+  // Change original ('') to '_original'.
+  if (isset($trigger_sizes[''])) {
+    unset($trigger_sizes['']);
+    $trigger_sizes['_original'] = '_original';
+  }
+
+  $rel = '';
+  switch ($image_node_handler) {
+    case 1: // Lightbox.
+    case 2: // Lightbox grouped.
+    case 3: // Slideshow.
+      $rel = 'lightbox';
+      break;
+    case 4: // Lightframe.
+    case 5: // Lightframe grouped.
+      $rel = 'lightframe';
+      break;
+  }
+  $rel = $rel .'[]['. $node->title .']';
+  foreach ($trigger_sizes as $size) {
+    if (isset($links['image_size_'. $size])) {
+      $links['image_size_'. $size]['attributes']['rel'] = $rel;
+      $links['image_size_'. $size]['href'] = $node->images[$size];
+      unset($links['image_size_'. $size]['query']);
+    }
+  }
+}
