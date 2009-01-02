@@ -12,6 +12,7 @@ CONTENTS OF THIS FILE
     - Inline Content Support
     - Turning the Image Caption into a Link
   * Keyboard Shortcuts
+  * Translation of Configured Strings
   * Known Issues
     - Keyboard Shortcuts in Opera
 
@@ -228,6 +229,20 @@ Previous Image : p, Left Arrow
 Next Image : n, Right Arrow
 Toggle Zoom : z (not available in slideshow)
 Toggle Play / Pause : Spacebar (slideshow only)
+
+
+TRANSLATION OF CONFIGURED STRINGS
+----------------------------------
+In order to translate the lightbox2 configuration strings, such as the text for
+the "View Image Details" link and the image count, please install the i18n:
+internationalization module and follow the instructions at 
+http://drupal.org/node/134002. The "i18n_variables" you will need to configure
+for the lightbox2 module are:
+
+* lightbox2_node_link_text - the text to display as the link to the image details page (e.g. "View Image Details")
+* lightbox2_image_count_str - image count text (e.g. "Image !current of !total")
+* lightbox2_page_count_str - page count text (e.g. "Page !current of !total")
+* lightbox2_video_count_str - video count text (e.g. "Video !current of !total")
 
 
 KNOWN ISSUES
