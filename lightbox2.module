@@ -300,7 +300,7 @@ function lightbox2_general_settings_form() {
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
   // Enable translation of default strings for potx.
-  $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'));
+  $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'), t('Video !current of !total'));
 
   // Define Lightbox2 layout fieldset.
   /* --------------------------------- */
@@ -368,6 +368,14 @@ function lightbox2_general_settings_form() {
     '#title' => t('Page count text'),
     '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".  Leave blank for text not to appear.'),
     '#default_value' => variable_get('lightbox2_page_count_str', 'Page !current of !total'),
+  );
+
+  // Add text box for video count for grouping.
+  $form['layout_fieldset']['lightbox2_video_count_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Video count text'),
+    '#description' => t('This text is used to display the count underneath video content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current video and !total for the total number of videos in the group.  For example, "Video !current of !total".  Leave blank for text not to appear.'),
+    '#default_value' => variable_get('lightbox2_video_count_str', 'Video !current of !total'),
   );
 
 
@@ -1505,6 +1513,7 @@ function lightbox2_add_files() {
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
     'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
+    'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     // Automatic image handling settings.
     'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
