@@ -709,7 +709,7 @@ function lightbox2_auto_image_handling_settings_form() {
   $form['lightbox2_general_options']['lightbox2_download_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for image original link'),
-    '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.'),
+    '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.  Leave this blank for the link not to appear.'),
     '#default_value' => variable_get('lightbox2_download_link_text', 'Download Original'),
   );
 
