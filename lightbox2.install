@@ -84,6 +84,8 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_custom_class_handler');
   variable_del('lightbox2_custom_trigger_classes');
   variable_del('lightbox2_node_link_text');
+  variable_del('lightbox2_download_link_text');
+  variable_del('lightbox2_node_link_separator');
   variable_del('lightbox2_node_link_target');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_disable_nested_acidfree_galleries');

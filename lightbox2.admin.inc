@@ -23,7 +23,7 @@ function lightbox2_general_settings_form() {
   drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
 
   // Enable translation of default strings for potx.
-  $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'));
+  $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'), t('Video !current of !total'), t('Download Original'));
 
   // Define Lightbox2 layout fieldset.
   /* --------------------------------- */
@@ -92,6 +92,14 @@ function lightbox2_general_settings_form() {
     '#title' => t('Page count text'),
     '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".  Leave blank for text not to appear.'),
     '#default_value' => variable_get('lightbox2_page_count_str', 'Page !current of !total'),
+  );
+
+  // Add text box for video count for grouping.
+  $form['layout_fieldset']['lightbox2_video_count_str'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Video count text'),
+    '#description' => t('This text is used to display the count underneath video content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current video and !total for the total number of videos in the group.  For example, "Video !current of !total".  Leave blank for text not to appear.'),
+    '#default_value' => variable_get('lightbox2_video_count_str', 'Video !current of !total'),
   );
 
   // Define Lightbox2 zoom fieldset.
@@ -678,6 +686,8 @@ function lightbox2_auto_image_handling_settings_form() {
     '#collapsible' => TRUE,
     '#collapsed' => FALSE,
   );
+
+
   // Add text box for link text to node.
   $form['lightbox2_general_options']['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
@@ -693,6 +703,22 @@ function lightbox2_auto_image_handling_settings_form() {
     '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
     '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
     '#return_value' => '_blank',
+  );
+
+  // Add text box for link text to node.
+  $form['lightbox2_general_options']['lightbox2_download_link_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text for image original link'),
+    '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.'),
+    '#default_value' => variable_get('lightbox2_download_link_text', 'Download Original'),
+  );
+
+  // Add text box for link separator.
+  $form['lightbox2_general_options']['lightbox2_node_link_separator'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Link separator'),
+    '#description' => t('This is the text that will appear to separate the image links underneath the image in the lightbox.'),
+    '#default_value' => variable_get('lightbox2_node_link_separator', ' - '),
   );
 
 

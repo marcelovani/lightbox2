@@ -192,16 +192,9 @@ asx, wmv, mov and swf videos should all be supported.  A number of video provide
  * Implementation of hook_perm().
  */
 function lightbox2_perm() {
-  return array('administer lightbox2');
+  return array('administer lightbox2', 'download original image');
 }
 
-
-/**
- * Implementation of hook_access().
- */
-function lightbox2_access($op, $node, $account) {
-  return user_access('administer lightbox2');
-}
 
 /**
  * Implementation of hook_menu().
@@ -682,7 +675,16 @@ function lightbox2_add_files() {
     // Video settings.
     'enable_video' => variable_get('lightbox2_enable_video', FALSE),
     'flvPlayer' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
+    'download_link_text' => '',
+    'node_link_separator' => '',
   );
+
+  // Only supply these if the user has the correct permissions.
+  if (user_access('download original image')) {
+    $js_settings['download_link_text'] = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
+    $js_settings['node_link_separator'] = check_plain(variable_get('lightbox2_node_link_separator', ' - '));
+  }
+
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
 
 
@@ -816,12 +818,12 @@ function lightbox2_field_formatter_info() {
 function lightbox2_theme() {
   $theme = array(
     'lightbox2_image' => array(
-      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => NULL),
+      'arguments' => array('path' => NULL, 'alt' => '', 'title' => '', 'attributes' => array()),
       'file' => 'lightbox2.formatter.inc',
     ),
     // Emfield theme functions.
     'lightbox2_emimage' => array(
-      'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'options' => array()),
+      'arguments' => array('field' => NULL, 'item' => NULL, 'formatter' => NULL, 'node' => NULL, 'args' => array()),
       'file' => 'lightbox2.formatter.inc',
     ),
     'lightbox2_formatter_emimage' => array(
@@ -866,7 +868,7 @@ function lightbox2_theme() {
       'file' => 'lightbox2.formatter.inc',
     ),
     'imagefield_image_imagecache_lightbox2' => array(
-      'arguments' => array('view_preset' => NULL, 'field' => NULL, 'item' => NULL, 'node' => NULL, 'rel' => 'lightbox'),
+      'arguments' => array('view_preset' => NULL, 'field_name' => NULL, 'item' => NULL, 'node' => NULL, 'rel' => 'lightbox', 'args' => array()),
       'file' => 'lightbox2.formatter.inc',
     ),
   );

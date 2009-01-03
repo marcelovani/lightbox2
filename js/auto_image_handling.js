@@ -44,6 +44,8 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Set the image node link text.
         var link_text = settings.node_link_text;
+        var download_link_text = settings.download_link_text;
+        var node_link_separator = settings.node_link_separator;
 
         // Set the rel attribute.
         var rel = "lightbox";
@@ -66,6 +68,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         // string (e.g. /en) prepended to the URL.
         var id = null;
         var href = $(child).attr("src");
+        var download = null;
         var orig_href = $(this).attr("href");
         var pattern = new RegExp(settings.file_path);
         if (orig_href.match(pattern)) {
@@ -133,6 +136,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               rel = rel_type + "["+ id +"]";
             }
           }
+          download = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), "").replace(/(image\/view\/\d+)(\/[\w\-]*)/, "$1/_original");
           if (lightframe) {
             frame_href = orig_href + "/lightbox2";
           }
@@ -153,7 +157,10 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         if (!custom_class) {
           var title_link = "";
           if (link_text.length) {
-            title_link = "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
+            title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
+          }
+          if (download_link_text.length) {
+            title_link = title_link + node_link_separator + "<a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
           }
           rel = rel + "[" + alt + title_link + "]";
           $(this).attr({
