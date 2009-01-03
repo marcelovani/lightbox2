@@ -109,7 +109,7 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
  *   Args may override internal processes: caption, rel_grouping.
  */
 function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, $item, $node, $rel = 'lightbox', $args = array()) {
-  if(!isset($args['lightbox_preset'])) {
+  if (!isset($args['lightbox_preset'])) {
     $args['lightbox_preset'] = 'original';
   }
   // Can't show current node page in a lightframe on the node page.
@@ -142,7 +142,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
 
   // Enforce image alt.
   $image_tag_alt = '';
-  if(!empty($item_data['alt'])) {
+  if (!empty($item_data['alt'])) {
     $image_tag_alt = $item_data['alt'];
   }
   elseif (!empty($image_title)) {
@@ -171,7 +171,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   $caption = $image_title;
   if (count($node_links)) {
     $separator = check_plain(variable_get('lightbox2_node_link_separator', ' - '));
-    $caption .= '<br /><br />' . implode($separator, $node_links);
+    $caption .= '<br /><br />'. implode($separator, $node_links);
   }
   if (isset($args['caption'])) {
     $caption = $args['caption']; // Override caption.
@@ -197,7 +197,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
     $full_rel = $rel .'['. $field_name .'_'. $item['nid'] .']['. $caption .']';
   }
   elseif (isset($args['rel_grouping'])) {
-    $full_rel = $rel .'['.$args['rel_grouping'].']['. $caption .']';
+    $full_rel = $rel .'['. $args['rel_grouping'] .']['. $caption .']';
   }
   else {
     $full_rel = $rel .'[]['. $caption .']';
@@ -353,7 +353,7 @@ function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array
     // @TODO original download link possible with emfield?
 
     $caption = $title . $node_link;
-    if(isset($args['caption'])) {
+    if (isset($args['caption'])) {
       $caption = $args['caption']; // Override caption.
     }
 
@@ -373,7 +373,7 @@ function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array
       $full_rel = $rel .'['. $field['field_name'] .'_'. $node->nid .']['. $caption .']';
     }
     elseif (isset($args['rel_grouping'])) {
-      $full_rel = $rel .'['.$args['rel_grouping'].']['. $caption .']';
+      $full_rel = $rel .'['. $args['rel_grouping'] .']['. $caption .']';
     }
     else {
       $rel = $full_rel .'[]['. $caption .']';
