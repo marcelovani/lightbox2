@@ -1234,8 +1234,20 @@ function sort_by_length($a, $b) {
  */
 function lightbox2_login() {
   print drupal_get_form('user_login');
+  /*
+  if (module_exists('openid')) {
+    $path = drupal_get_path('module', 'openid');
+    $file = base_path() . $path .'/openid.js';
+    print '<script type="text/javascript">$.getScript("'. $file .'");</script>';
+  }
+  */
+
+  // drupal_add_js() with 'inline' didn't seem to work, possibly because this is
+  // AJAX loaded content.
+  print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
   exit;
 }
+
 /**
  * Implementation of hook_form_alter().
  *
