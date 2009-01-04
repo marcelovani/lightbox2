@@ -775,6 +775,7 @@ var Lightbox = {
       }
     }
 
+    // Don't enable keyboard shortcuts so forms will work.
     if (!Lightbox.isModal) {
       this.enableKeyboardNav();
     }

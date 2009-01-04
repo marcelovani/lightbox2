@@ -676,13 +676,11 @@ function lightbox2_add_files() {
     'enable_video' => variable_get('lightbox2_enable_video', FALSE),
     'flvPlayer' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
     'download_link_text' => '',
-    'node_link_separator' => '',
   );
 
   // Only supply these if the user has the correct permissions.
   if (user_access('download original image') && user_access('view original images')) {
     $js_settings['download_link_text'] = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
-    $js_settings['node_link_separator'] = check_plain(variable_get('lightbox2_node_link_separator', ' - '));
   }
 
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');

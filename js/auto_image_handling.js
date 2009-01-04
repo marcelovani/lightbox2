@@ -45,7 +45,6 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         // Set the image node link text.
         var link_text = settings.node_link_text;
         var download_link_text = settings.download_link_text;
-        var node_link_separator = settings.node_link_separator;
 
         // Set the rel attribute.
         var rel = "lightbox";
@@ -160,7 +159,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
           }
           if (download_link_text.length) {
-            title_link = title_link + node_link_separator + "<a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
+            title_link = title_link + " - <a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
           }
           rel = rel + "[" + alt + title_link + "]";
           $(this).attr({

@@ -170,8 +170,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
 
   $caption = $image_title;
   if (count($node_links)) {
-    $separator = check_plain(variable_get('lightbox2_node_link_separator', ' - '));
-    $caption .= '<br /><br />'. implode($separator, $node_links);
+    $caption .= '<br /><br />'. implode(" - ", $node_links);
   }
   if (isset($args['caption'])) {
     $caption = $args['caption']; // Override caption.

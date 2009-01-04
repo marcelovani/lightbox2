@@ -91,14 +91,12 @@ function image_node_handler(event) {
 
       $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
       $("input[@name=lightbox2_download_link_text]").removeAttr("disabled");
-      $("input[@name=lightbox2_node_link_separator]").removeAttr("disabled");
       $("input[@name=lightbox2_node_link_target]").removeAttr("disabled");
       $("input[@name=lightbox2_imagefield_group_node_id]").removeAttr("disabled");
     }
     else {
       $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
       $("input[@name=lightbox2_download_link_text]").attr("disabled", "disabled");
-      $("input[@name=lightbox2_node_link_separator]").attr("disabled", "disabled");
       $("input[@name=lightbox2_node_link_target]").attr("disabled", "disabled");
       $("input[@name=lightbox2_imagefield_group_node_id]").attr("disabled", "disabled");
     }
@@ -137,7 +135,6 @@ function lightbox2_lite_auto_handler(event) {
     $("select[@name=lightbox2_image_node]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_text]").attr("disabled", "disabled");
     $("input[@name=lightbox2_download_link_text]").attr("disabled", "disabled");
-    $("input[@name=lightbox2_node_link_separator]").attr("disabled", "disabled");
     $("input[@name=lightbox2_node_link_target]").attr("disabled", "disabled");
     $("input[@name=lightbox2_imagefield_group_node_id]").attr("disabled", "disabled");
     $("select[@name=lightbox2_display_image_size]").attr("disabled", "disabled");
@@ -176,7 +173,6 @@ function lightbox2_lite_auto_handler(event) {
     $("textarea[@name=lightbox2_custom_trigger_classes]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_text]").removeAttr("disabled");
     $("input[@name=lightbox2_download_link_text]").removeAttr("disabled");
-    $("input[@name=lightbox2_node_link_separator]").removeAttr("disabled");
     $("input[@name=lightbox2_node_link_target]").removeAttr("disabled");
     $("input[@name=lightbox2_imagefield_group_node_id]").removeAttr("disabled");
     $("select[@name=lightbox2_display_image_size]").removeAttr("disabled");
