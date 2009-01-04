@@ -15,17 +15,17 @@ var Lightvideo = {
     }
     else if (href.match(/\.mov/i)) {
       if (navigator.plugins && navigator.plugins.length) {
-        Lightbox.modalHTML ='<object id="qtboxMovie" type="video/quicktime" codebase="http://www.apple.com/qtactivex/qtplugin.cab" data="'+href+'" width="'+Lightbox.modalWidth+'" height="'+Lightbox.modalHeight+'"><param name="src" value="'+href+'" /><param name="scale" value="aspect" /><param name="controller" value="true" /><param name="autoplay" value="true" /><param name="bgcolor" value="#000000" /><param name="enablejavascript" value="true" /></object>';
+        Lightbox.modalHTML ='<object id="qtboxMovie" type="video/quicktime" codebase="http://www.apple.com/qtactivex/qtplugin.cab" data="'+href+'" width="'+Lightbox.modalWidth+'" height="'+Lightbox.modalHeight+'"><param name="allowFullScreen" value="true"></param><param name="src" value="'+href+'" /><param name="scale" value="aspect" /><param name="controller" value="true" /><param name="autoplay" value="true" /><param name="bgcolor" value="#000000" /><param name="enablejavascript" value="true" /></object>';
       } else {
-        Lightbox.modalHTML = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab" width="'+Lightbox.modalWidth+'" height="'+Lightbox.modalHeight+'" id="qtboxMovie"><param name="src" value="'+href+'" /><param name="scale" value="aspect" /><param name="controller" value="true" /><param name="autoplay" value="true" /><param name="bgcolor" value="#000000" /><param name="enablejavascript" value="true" /></object>';
+        Lightbox.modalHTML = '<object classid="clsid:02BF25D5-8C17-4B23-BC80-D3488ABDDC6B" codebase="http://www.apple.com/qtactivex/qtplugin.cab" width="'+Lightbox.modalWidth+'" height="'+Lightbox.modalHeight+'" id="qtboxMovie"><param name="allowFullScreen" value="true"></param><param name="src" value="'+href+'" /><param name="scale" value="aspect" /><param name="controller" value="true" /><param name="autoplay" value="true" /><param name="bgcolor" value="#000000" /><param name="enablejavascript" value="true" /></object>';
       }
     }
     else if (href.match(/\.wmv/i) || href.match(/\.asx/i)) {
-      Lightbox.modalHTML = '<object NAME="Player" WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" type="application/x-oleobject" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6"><param NAME="URL" VALUE="'+href+'"></param><param NAME="AUTOSTART" VALUE="false"></param><param name="showControls" value="true"></param><embed WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" SRC="'+href+'" TYPE="application/x-oleobject" AUTOSTART="false"></embed></object>';
+      Lightbox.modalHTML = '<object NAME="Player" WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" type="application/x-oleobject" CLASSID="CLSID:6BF52A52-394A-11d3-B153-00C04F79FAA6"><param name="allowFullScreen" value="true"></param><param NAME="URL" VALUE="'+href+'"></param><param NAME="AUTOSTART" VALUE="false"></param><param name="showControls" value="true"></param><embed WIDTH="'+Lightbox.modalWidth+'" HEIGHT="'+Lightbox.modalHeight+'" align="left" hspace="0" SRC="'+href+'" TYPE="application/x-oleobject" AUTOSTART="false"></embed></object>';
     }
     else {
       Lightbox.videoId = href;
-						href = Lightbox.flvPlayer + '?file=' + href;
+      href = Lightbox.flvPlayer + '?file=' + href;
       Lightvideo.createEmbed(href, "flvplayer", "#ffffff");
     }
   },
@@ -37,13 +37,13 @@ var Lightvideo = {
     if (variables) {
       flashvars = variables;
     }
-
     Lightbox.modalHTML = '<embed type="application/x-shockwave-flash" ' +
       'src="' + href + '" ' +
       'id="' + id + '" name="' + id + '" ' + bgcolor + ' ' +
       'quality="high" wmode="transparent" ' + flashvars + ' ' +
       'height="' + Lightbox.modalHeight + '" ' +
       'width="' + Lightbox.modalWidth + '" ' +
+      'allowfullscreen="true" ' +
       '></embed>';
   },
 
@@ -74,7 +74,7 @@ var Lightvideo = {
       var results = pattern.exec(href);
       if (results !== null) {
         Lightbox.videoId = results[1];
-        Lightvideo.createEmbed("http://www.youtube.com/v/"+Lightbox.videoId, "flvvideo", "#ffffff");
+        Lightvideo.createEmbed("http://www.youtube.com/v/"+Lightbox.videoId + '&fs=1', "flvvideo", "#ffffff");
         return true;
       }
     }
@@ -94,7 +94,7 @@ var Lightvideo = {
       var results = pattern.exec(href);
       if (results !== null) {
         Lightbox.videoId = results[1];
-        Lightvideo.createEmbed("http://video.google.com/googleplayer.swf?docId="+Lightbox.videoId+"&hl=en", "flvvideo", "#ffffff");
+        Lightvideo.createEmbed("http://video.google.com/googleplayer.swf?docId="+Lightbox.videoId+"&hl=en", "flvvideo", "#ffffff", 'flashvars="fs=true"');
         return true;
       }
     }
