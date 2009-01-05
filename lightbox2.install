@@ -34,6 +34,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_enable_login');
   variable_del('lightbox2_enable_video');
   variable_del('lightbox2_flv_player_path');
+  variable_del('lightbox2_flv_player_flashvars');
   variable_del('lightbox2_page_init_action');
   variable_del('lightbox2_page_list');
   variable_del('lightbox2_disable_these_urls');

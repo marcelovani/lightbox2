@@ -169,6 +169,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
   );
 
+  // Add textfield for FLV Player flashvars.
+  $form['video_fieldset']['lightbox2_flv_player_flashvars'] = array(
+    '#type' => 'textfield',
+    '#title' => t('FLV Player flashvars'),
+    '#description' => t('Flashvars for the FLV Player, e.g. "autoplay=1".'),
+    '#default_value' => variable_get('lightbox2_flv_player_flashvars', ''),
+  );
+
   // Add fieldset for page specific lightbox2 settings.
   $form['lightbox2_page_init'] = array(
     '#type' => 'fieldset',
@@ -469,6 +477,17 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
     $resize_speed = $form_state['values']['lightbox2_resize_speed'];
     $fadein_speed = $form_state['values']['lightbox2_fadein_speed'];
     $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
+    $flv_player_path = $form_state['values']['lightbox2_flv_player_path'];
+
+    if ($flv_player_path != '' && $form_state['values']['lightbox2_enable_video']) {
+      if (strpos($flv_player_path, base_path()) === 0) {
+        $flv_player_path = drupal_substr($flv_player_path, drupal_strlen(base_path()));
+      }
+      if (!file_exists($flv_player_path)) {
+        form_set_error('lightbox2_flv_player_path', t("FLV player path doesn't exist."));
+      }
+    }
+
 
     if (!_lightbox2_validate_hex_color($overlay_hex_colour)) {
       form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));

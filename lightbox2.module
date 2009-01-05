@@ -616,6 +616,8 @@ function lightbox2_add_files() {
   $custom_trigger_classes = rtrim($custom_trigger_classes, ",");
   $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
+  $enable_video = variable_get('lightbox2_enable_video', FALSE);
+
   // Load the javascript settings.
   $js_settings = array(
     'rtl' => $language->direction,
@@ -643,6 +645,7 @@ function lightbox2_add_files() {
     'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
+    'download_link_text' => '',
     // Automatic image handling settings.
     'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
     'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
@@ -673,10 +676,12 @@ function lightbox2_add_files() {
     'iframe_height' => variable_get('lightbox2_default_frame_height', 400),
     'iframe_border' => variable_get('lightbox2_frame_border', 1),
     // Video settings.
-    'enable_video' => variable_get('lightbox2_enable_video', FALSE),
-    'flvPlayer' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
-    'download_link_text' => '',
+    'enable_video' => $enable_video,
   );
+  if ($enable_video) {
+    $js_settings['flvPlayer'] = check_plain(variable_get('lightbox2_flv_player_path', '/flvplayer.swf'));
+    $js_settings['flvFlashvars'] = check_plain(variable_get('lightbox2_flv_player_flashvars', ''));
+  }
 
   // Only supply these if the user has the correct permissions.
   if (user_access('download original image') && user_access('view original images')) {
@@ -1248,7 +1253,7 @@ function lightbox2_login() {
       var fileref=document.createElement("link");
       fileref.setAttribute("rel", "stylesheet");
       fileref.setAttribute("type", "text/css");
-      fileref.setAttribute("href", "' .$css_file .'");
+      fileref.setAttribute("href", "'. $css_file .'");
       document.getElementsByTagName("head")[0].appendChild(fileref);
       </script>';
   }
