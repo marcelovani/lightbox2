@@ -772,7 +772,15 @@ function lightbox2_slideshow_settings_form() {
     '#size' => 20,
   );
 
-  // Add checkbox for slideshow automatic exit.
+   // Add checkbox for slideshow automatic start.
+  $form['lightbox2_slideshow_automatic_start'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically start slideshow'),
+    '#description' => t('When enabled the slideshow will automatically start.'),
+    '#default_value' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
+  );
+
+ // Add checkbox for slideshow automatic exit.
   $form['lightbox2_slideshow_automatic_exit'] = array(
     '#type' => 'checkbox',
     '#title' => t('Automatically exit slideshow'),
@@ -1571,6 +1579,7 @@ function lightbox2_add_files() {
     'enable_acidfree_videos' => variable_get('lightbox2_enable_acidfree_videos', FALSE),
     // Slideshow settings.
     'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
+    'slideshow_automatic_start' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
     'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
     'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
     'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),

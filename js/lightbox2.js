@@ -124,6 +124,7 @@ function lightbox2_lite_auto_handler(event) {
     // Disable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_automatic_start]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_show_play_pause]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_pause_on_prev_click]").attr("disabled", "disabled");
@@ -155,6 +156,7 @@ function lightbox2_lite_auto_handler(event) {
     // Enable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_automatic_start]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_show_play_pause]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_pause_on_prev_click]").removeAttr("disabled");
