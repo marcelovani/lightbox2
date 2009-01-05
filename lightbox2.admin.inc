@@ -173,7 +173,7 @@ function lightbox2_general_settings_form() {
   $form['video_fieldset']['lightbox2_flv_player_flashvars'] = array(
     '#type' => 'textfield',
     '#title' => t('FLV Player flashvars'),
-    '#description' => t('Flashvars for the FLV Player, e.g. "autoplay=1".'),
+    '#description' => t('Flashvars for the FLV Player where supported, e.g. "autoplay=1&playerMode=normal".'),
     '#default_value' => variable_get('lightbox2_flv_player_flashvars', ''),
   );
 
