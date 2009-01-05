@@ -564,6 +564,14 @@ function lightbox2_slideshow_settings_form() {
     '#size' => 20,
   );
 
+   // Add checkbox for slideshow automatic start.
+  $form['lightbox2_slideshow_automatic_start'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Automatically start slideshow'),
+    '#description' => t('When enabled the slideshow will automatically start.'),
+    '#default_value' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
+  );
+
   // Add checkbox for slideshow automatic exit.
   $form['lightbox2_slideshow_automatic_exit'] = array(
     '#type' => 'checkbox',

@@ -68,6 +68,7 @@ function lightbox2_uninstall() {
 
   // Remove slideshow settings.
   variable_del('lightbox2_slideshow_interval');
+  variable_del('lightbox2_slideshow_automatic_start');
   variable_del('lightbox2_slideshow_automatic_exit');
   variable_del('lightbox2_slideshow_show_play_pause');
   variable_del('lightbox2_slideshow_pause_on_next_click');

@@ -674,6 +674,7 @@ function lightbox2_add_files() {
     'enable_acidfree_videos' => variable_get('lightbox2_enable_acidfree_videos', TRUE),
     // Slideshow settings.
     'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
+    'slideshow_automatic_start' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
     'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
     'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
     'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),

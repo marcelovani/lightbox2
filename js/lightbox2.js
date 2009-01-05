@@ -30,6 +30,7 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_disable_zoom]").attr("disabled", "disabled");
     $("input[@name=lightbox2_enable_video]").attr("disabled", "disabled");
     $("input[@name=lightbox2_enable_login]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_enable_contact]").attr("disabled", "disabled");
     $("input[@name=lightbox2_image_count_str]").attr("disabled", "disabled");
     $("input[@name=lightbox2_video_count_str]").attr("disabled", "disabled");
     $("input[@name=lightbox2_page_count_str]").attr("disabled", "disabled");
@@ -56,6 +57,7 @@ function lightbox2_lite_general_handler(event) {
     $("input[@name=lightbox2_disable_zoom]").removeAttr("disabled");
     $("input[@name=lightbox2_enable_video]").removeAttr("disabled");
     $("input[@name=lightbox2_enable_login]").removeAttr("disabled");
+    $("input[@name=lightbox2_enable_contact]").removeAttr("disabled");
     $("input[@name=lightbox2_image_count_str]").removeAttr("disabled");
     $("input[@name=lightbox2_video_count_str]").removeAttr("disabled");
     $("input[@name=lightbox2_page_count_str]").removeAttr("disabled");
@@ -125,6 +127,7 @@ function lightbox2_lite_auto_handler(event) {
 
     // Disable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").attr("disabled", "disabled");
+    $("input[@name=lightbox2_slideshow_automatic_start]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_show_play_pause]").attr("disabled", "disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").attr("disabled", "disabled");
@@ -157,6 +160,7 @@ function lightbox2_lite_auto_handler(event) {
 
     // Enable slideshow options.
     $("input[@name=lightbox2_slideshow_interval]").removeAttr("disabled");
+    $("input[@name=lightbox2_slideshow_automatic_start]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_automatic_exit]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_show_play_pause]").removeAttr("disabled");
     $("input[@name=lightbox2_slideshow_pause_on_next_click]").removeAttr("disabled");

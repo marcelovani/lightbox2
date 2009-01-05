@@ -52,6 +52,7 @@ var Lightbox = {
   // Slideshow options.
   slideInterval : 5000, // In milliseconds.
   showPlayPause : true,
+  autoStart : true,
   autoExit : true,
   pauseOnNextClick : false, // True to pause the slideshow when the "Next" button is clicked.
   pauseOnPrevClick : true, // True to pause the slideshow when the "Prev" button is clicked.
@@ -108,6 +109,7 @@ var Lightbox = {
     Lightbox.disableZoom = s.disable_zoom;
     Lightbox.slideInterval = s.slideshow_interval;
     Lightbox.showPlayPause = s.show_play_pause;
+    Lightbox.autoStart = s.slideshow_automatic_start;
     Lightbox.autoExit = s.slideshow_automatic_exit;
     Lightbox.pauseOnNextClick = s.pause_on_next_click;
     Lightbox.pauseOnPrevClick = s.pause_on_previous_click;
@@ -252,7 +254,7 @@ var Lightbox = {
   // imageArray.
   start: function(imageLink, slideshow, lightframe, lightvideo, lightmodal) {
 
-    Lightbox.isPaused = false;
+    Lightbox.isPaused = !Lightbox.autoStart;
 
     // Replaces hideSelectBoxes() and hideFlash() calls in original lightbox2.
     Lightbox.toggleSelectsFlash('hide');
