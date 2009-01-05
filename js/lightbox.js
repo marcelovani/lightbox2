@@ -64,6 +64,7 @@ var Lightbox = {
   // Video and modal options.
   enableVideo : false,
   flvPlayer : '/flvplayer.swf',
+  flvFlashvars : '',
   isModal : false,
   isVideo : false,
   videoId : false,
@@ -116,7 +117,10 @@ var Lightbox = {
     Lightbox.iframe_height = s.iframe_height;
     Lightbox.iframe_border = s.iframe_border;
     Lightbox.enableVideo = s.enable_video;
-    Lightbox.flvPlayer = s.flvPlayer;
+    if (s.enable_video) {
+      Lightbox.flvPlayer = s.flvPlayer;
+      Lightbox.flvFlashvars = s.flvFlashvars;
+    }
 
     // Attach lightbox to any links with lightbox rels.
     Lightbox.initList();
