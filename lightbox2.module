@@ -277,6 +277,12 @@ function lightbox2_menu() {
     'access callback' => 'user_is_anonymous',
     'type' => MENU_CALLBACK,
   );
+  $items['contact/lightbox2'] = array(
+    'title' => 'Contact',
+    'page callback' => 'lightbox2_contact',
+    'access arguments' => array('access site-wide contact form'),
+    'type' => MENU_CALLBACK,
+  );
 
   return $items;
 }
@@ -646,6 +652,8 @@ function lightbox2_add_files() {
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     'download_link_text' => '',
+    'enable_login' => variable_get('lightbox2_enable_login', FALSE),
+    'enable_contact' => module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'),
     // Automatic image handling settings.
     'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
     'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
@@ -709,8 +717,8 @@ function lightbox2_add_files() {
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
     }
-    if ($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) {
-      drupal_add_js($path .'/js/lightbox_login.js', 'module', $js_location);
+    if (($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) || (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'))) {
+      drupal_add_js($path .'/js/lightbox_modal.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
@@ -1262,6 +1270,21 @@ function lightbox2_login() {
   // AJAX loaded content.
   print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
   exit;
+}
+
+/**
+ * Get the contact form.
+ */
+function lightbox2_contact() {
+  if (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form')) {
+    $path = drupal_get_path('module', 'contact');
+    include_once($path .'/contact.pages.inc');
+    print drupal_get_form('contact_mail_page');
+    // drupal_add_js() with 'inline' didn't seem to work, possibly because this is
+    // AJAX loaded content.
+    print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
+    exit;
+  }
 }
 
 /**

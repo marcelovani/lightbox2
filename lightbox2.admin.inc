@@ -127,21 +127,29 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_disable_zoom', FALSE),
   );
 
-  // Define Lightbox2 login fieldset.
-  /* -------------------------------- */
-  $form['login_fieldset'] = array(
+  // Define Lightbox2 modal form fieldset.
+  /* -------------------------------------- */
+  $form['modal_form_fieldset'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Login settings'),
+    '#title' => t('Modal form settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
 
   // Add checkbox for login support.
-  $form['login_fieldset']['lightbox2_enable_login'] = array(
+  $form['modal_form_fieldset']['lightbox2_enable_login'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable login support'),
     '#description' => t('Enabling this option will modify all login links so that the login form appears in a lightbox.'),
     '#default_value' => variable_get('lightbox2_enable_login', FALSE),
+  );
+
+  // Add checkbox for contact form support.
+  $form['modal_form_fieldset']['lightbox2_enable_contact'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable contact form support'),
+    '#description' => t('Enabling this option will modify all contact links so that the contact form appears in a lightbox.'),
+    '#default_value' => variable_get('lightbox2_enable_contact', FALSE),
   );
 
   // Define Lightbox2 video fieldset.
