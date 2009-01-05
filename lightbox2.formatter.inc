@@ -9,6 +9,17 @@
 
 /**
  * Theme function for displaying the lightbox2 trigger image in an imagefield.
+ *
+ * @param $path
+ *   The path to the image to be displayed.
+ * @param $alt
+ *   The image alternative text.
+ * @param $title
+ *   The image title.
+ * @param $attributes
+ *   An array of image attributes, e.g. class name.
+ * @return
+ *   HTML output for displaying the image.
  */
 function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = array()) {
   $attributes_html = drupal_attributes($attributes);
@@ -18,6 +29,11 @@ function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = arra
 
 /**
  * Handler for Lightbox2 display of imagecache + imagefield CCK fields.
+ *
+ * @param $element
+ *   The CCK field element.
+ * @return
+ *   HTML output for displaying the image and link.
  */
 function theme_lightbox2_formatter_imagefield($element) {
   if (!module_exists("imagecache") || !module_exists("imagefield")) {
@@ -51,6 +67,8 @@ function theme_lightbox2_formatter_imagefield($element) {
  *   The imagecache preset to be displayed on the node or in the view.
  * @param $lightbox_preset
  *   The imagecache preset to be displayed in the lightbox.
+ * @return
+ *   The themed imagefield + imagecache image and link.
  */
 function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset) {
   // Load file data if missing
@@ -107,6 +125,8 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
  *   The type of lightbox to open: lightbox, lightshow or lightframe.
  * @param $args
  *   Args may override internal processes: caption, rel_grouping.
+ * @return
+ *   The themed imagefield + imagecache image and link.
  */
 function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, $item, $node, $rel = 'lightbox', $args = array()) {
   if (!isset($args['lightbox_preset'])) {
@@ -230,6 +250,11 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
 
 /**
  * Theme function for the lightbox iframe filefield formatter.
+ *
+ * @param $element
+ *   The CCK field element.
+ * @return
+ *   The themed link to the file, with lightframe support.
  */
 function theme_lightbox2_formatter_filefield_lightframe($element) {
   $file = $element['#item'];
@@ -250,6 +275,15 @@ function theme_lightbox2_formatter_filefield_lightframe($element) {
 
 /**
  * Theme function for the lightbox iframe filefield formatter.
+ *
+ * @param $file
+ *   Filefield file object.
+ * @param $field
+ *   The CCK field the action is being performed on.
+ * @param $file_formatter_settings
+ *   File formatter settings; ignored.
+ * @return
+ *   Themed link to filefield.
  */
 function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_formatter_settings) {
   $path = $file->filepath;
@@ -280,6 +314,11 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
 
 /**
  * Generate the HTML output to open embedded cck images in a lightbox.
+ *
+ * @param $element
+ *   The CCK field element.
+ * @return
+ *   The themed link to the embedded image.
  */
 function theme_lightbox2_formatter_emimage($element) {
   $field = content_fields($element['#field_name'], $element['#type_name']);
@@ -296,6 +335,19 @@ function theme_lightbox2_formatter_emimage($element) {
 
 /**
  * Generate the HTML output to open embedded cck images in a lightbox.
+ *
+ * @param $field
+ *   The CCK field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ * @param $args
+ *   Args may override internal processes: caption, rel_grouping.
+ * @return
+ *   Themed embedded media field image and link.
  */
 function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array()) {
 
@@ -400,6 +452,11 @@ function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array
 
 /**
  * Generate the HTML output to open embedded cck videos in a lightbox.
+ *
+ * @param $element
+ *   The CCK field element.
+ * @return
+ *   HTML output for displaying the video and link.
  */
 function theme_lightbox2_formatter_emvideo_lightvideo($element) {
   if (!variable_get('lightbox2_enable_video', FALSE)) {
@@ -415,6 +472,17 @@ function theme_lightbox2_formatter_emvideo_lightvideo($element) {
 
 /**
  * Generate the HTML output to open embedded cck videos in a lightbox.
+ *
+ * @param $field
+ *   The CCK field the action is being performed on.
+ * @param $item
+ *   An array, keyed by column, of the data stored for this item in this field.
+ * @param $formatter
+ *   The formatter to use for the field.
+ * @param $node
+ *   The node object.
+ * @return
+ *   Themed link to the embedded media field video.
  */
 function theme_lightbox2_emvideo($field, $item, $formatter, $node) {
 
