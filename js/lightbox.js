@@ -1083,6 +1083,17 @@ var Lightbox = {
     }
   },
 
+  triggerLightbox: function (rel_type, rel_group) {
+    if (rel_type.length) {
+      if (rel_group && rel_group.length) {
+        $("a[@rel^='" + rel_type +"\[" + rel_group + "\]'], area[@rel^='" + rel_type +"\[" + rel_group + "\]']").eq(0).trigger("click");
+      }
+      else {
+        $("a[@rel^='" + rel_type +"'], area[@rel^='" + rel_type +"']").eq(0).trigger("click");
+      }
+    }
+  },
+
   detectMacFF2: function() {
     var ua = navigator.userAgent.toLowerCase();
     if (/firefox[\/\s](\d+\.\d+)/.test(ua)) {
