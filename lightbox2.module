@@ -623,6 +623,8 @@ function lightbox2_add_files() {
   $image_node_sizes = '('. rtrim($image_node_sizes, "|") .')';
 
   $enable_video = variable_get('lightbox2_enable_video', FALSE);
+  $enable_login = $user->uid == 0 && variable_get('lightbox2_enable_login', FALSE);
+  $enable_contact = module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form');
 
   // Load the javascript settings.
   $js_settings = array(
@@ -652,8 +654,8 @@ function lightbox2_add_files() {
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     'download_link_text' => '',
-    'enable_login' => variable_get('lightbox2_enable_login', FALSE),
-    'enable_contact' => module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'),
+    'enable_login' => $enable_login,
+    'enable_contact' => $enable_contact,
     // Automatic image handling settings.
     'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
     'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
@@ -718,7 +720,7 @@ function lightbox2_add_files() {
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
     }
-    if (($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) || (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'))) {
+    if ($enable_login || $enable_contact) {
       drupal_add_js($path .'/js/lightbox_modal.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
