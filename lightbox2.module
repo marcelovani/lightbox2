@@ -2270,7 +2270,7 @@ function sort_by_length($a, $b) {
  * Get the user login form.
  */
 function lightbox2_login() {
-  print drupal_get_form('user_login');
+  print drupal_get_form('user_login_block');
 
   // If the OpenID module is enabled, the javascript and css may not exist
   // on the page, so add them dynamically.
@@ -2282,7 +2282,7 @@ function lightbox2_login() {
     $css_file = base_path() . $path .'/openid.css';
 
     // Load the javascript dynamically.
-    print '<script type="text/javascript">$.getScript("'. $js_file .'", function () {if ($.isFunction(Drupal.behaviors.openid)) { Drupal.behaviors.openid(document); } });</script>';
+    print '<script type="text/javascript">$.getScript("'. $js_file .'", function () {if ($.isFunction(Drupal.openid)) { Drupal.openid(document); } });</script>';
 
     // Load the css file dynamically.
     print '<script type="text/javascript">
@@ -2293,10 +2293,6 @@ function lightbox2_login() {
       document.getElementsByTagName("head")[0].appendChild(fileref);
       </script>';
   }
-
-  // drupal_add_js() with 'inline' didn't seem to work, possibly because this is
-  // AJAX loaded content.
-  print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
 
   exit;
 }
@@ -2331,10 +2327,8 @@ function lightbox2_contact() {
  *   Return the structure of the form.
  */
 function lightbox2_form_alter($form_id, &$form) {
-  if ($form_id == 'user_login' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
-    $form['#action'] = url('user/login', 'destination='. $_GET['destination']);
-    $form['name']['#size'] = 25;
-    $form['pass']['#size'] = 25;
+  if ($form_id == 'user_login_block' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
+    $form['#action'] = url('user/login/lightbox2', 'destination='. $_GET['destination']);
   }
 }
 
