@@ -1247,7 +1247,7 @@ function sort_by_length($a, $b) {
  * Get the user login form.
  */
 function lightbox2_login() {
-  print drupal_get_form('user_login');
+  print drupal_get_form('user_login_block');
 
   // If the OpenID module is enabled, the javascript and css may not exist
   // on the page, so add them dynamically.
@@ -1301,16 +1301,14 @@ function lightbox2_contact() {
  * @param $form_state
  *   General variable, used to control the processing of the form.
  * @param $form_id
- *   The default is "user_login"; hold the page where the function is being
+ *   The default is "user_login_block"; hold the page where the function is being
  *   used.
  * @return
  *   Return the structure of the form.
  */
-function lightbox2_form_user_login_alter(&$form, $form_state, $form_id = "user_login") {
-  if ($form_id == 'user_login' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
-    $form['#action'] = url('user/login', array('query' => 'destination='. $_GET['destination']));
-    $form['name']['#size'] = 25;
-    $form['pass']['#size'] = 25;
+function lightbox2_form_user_login_block_alter(&$form, $form_state, $form_id = "user_login_block") {
+  if ($form_id == 'user_login_block' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
+    $form['#action'] = url('user/login/lightbox2', array('query' => 'destination='. $_GET['destination']));
   }
 }
 
