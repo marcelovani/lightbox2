@@ -261,6 +261,12 @@ function lightbox2_menu($may_cache) {
       'access' => !$user->uid,
       'type' => MENU_CALLBACK,
     );
+    $items['contact/lightbox2'] = array(
+      'title' => 'Contact',
+      'callback' => 'lightbox2_contact',
+      'access' => user_access('access site-wide contact form'),
+      'type' => MENU_CALLBACK,
+    );
   }
   else {
     if (lightbox2_exclude_these_paths() != 1) {
@@ -407,19 +413,27 @@ function lightbox2_general_settings_form() {
 
   // Define Lightbox2 login fieldset.
   /* -------------------------------- */
-  $form['login_fieldset'] = array(
+  $form['modal_form_fieldset'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Login settings'),
+    '#title' => t('Modal form settings'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
 
   // Add checkbox for login support.
-  $form['login_fieldset']['lightbox2_enable_login'] = array(
+  $form['modal_form_fieldset']['lightbox2_enable_login'] = array(
     '#type' => 'checkbox',
     '#title' => t('Enable login support'),
     '#description' => t('Enabling this option will modify all login links so that the login form appears in a lightbox.'),
     '#default_value' => variable_get('lightbox2_enable_login', FALSE),
+  );
+
+  // Add checkbox for contact form support.
+  $form['modal_form_fieldset']['lightbox2_enable_contact'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Enable contact form support'),
+    '#description' => t('Enabling this option will modify all contact links so that the contact form appears in a lightbox.'),
+    '#default_value' => variable_get('lightbox2_enable_contact', FALSE),
   );
 
   // Define Lightbox2 video fieldset.
@@ -1535,6 +1549,8 @@ function lightbox2_add_files() {
     'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
     'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
+    'enable_login' => variable_get('lightbox2_enable_login', FALSE),
+    'enable_contact' => module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'),
     // Automatic image handling settings.
     'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
     'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
@@ -1595,8 +1611,8 @@ function lightbox2_add_files() {
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', 'module', $js_location);
     }
-    if ($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) {
-      drupal_add_js($path .'/js/lightbox_login.js', 'module', $js_location);
+    if (($user->uid == 0 && variable_get('lightbox2_enable_login', FALSE)) || (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form'))) {
+      drupal_add_js($path .'/js/lightbox_modal.js', 'module', $js_location);
     }
     drupal_add_js($path .'/js/lightbox.js', 'module', $js_location);
 
@@ -2273,6 +2289,22 @@ function lightbox2_login() {
 
   exit;
 }
+
+/**
+ * Get the contact form.
+ */
+function lightbox2_contact() {
+  if (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form')) {
+    $path = drupal_get_path('module', 'contact');
+    include_once($path .'/contact.pages.inc');
+    print drupal_get_form('contact_mail_page');
+    // drupal_add_js() with 'inline' didn't seem to work, possibly because this is
+    // AJAX loaded content.
+    print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
+    exit;
+  }
+}
+
 /**
  * Implementation of hook_form_alter().
  *
