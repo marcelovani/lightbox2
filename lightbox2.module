@@ -360,6 +360,23 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_loop_items', FALSE),
   );
 
+  // Add checkbox for node link target.
+  $form['layout_fieldset']['lightbox2_node_link_target'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Open image page in new window'),
+    '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
+    '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
+    '#return_value' => '_blank',
+  );
+
+  // Add text box for link text to node.
+  $form['layout_fieldset']['lightbox2_node_link_text'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Text for image page link'),
+    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.  Leave blank for text not to appear.'),
+    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
+  );
+
   // Add text box for image count for grouping.
   $form['layout_fieldset']['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
@@ -984,32 +1001,6 @@ function lightbox2_auto_image_handling_settings_form() {
   $form['image_node_options'] = array(
     '#value' => t('These options allow automatic URL re-formatting of images.  This removes the need for you to add \'rel="lightbox"\' to each image link throughout your site.  You can select which image sizes will trigger the lightbox and configure a list of image CSS classes which should also have their URLs automatically re-formatted.  This feature is not available when using Lightbox2 Lite.'),
   );
-
-  // Define general settings fieldset.
-  /* --------------------------------- */
-  $form['lightbox2_general_options'] = array(
-    '#type' => 'fieldset',
-    '#title' => t('General settings'),
-    '#collapsible' => TRUE,
-    '#collapsed' => FALSE,
-  );
-  // Add text box for link text to node.
-  $form['lightbox2_general_options']['lightbox2_node_link_text'] = array(
-    '#type' => 'textfield',
-    '#title' => t('Text for image page link'),
-    '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.  Leave blank for text not to appear.'),
-    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
-  );
-
-  // Add checkbox for node link target.
-  $form['lightbox2_general_options']['lightbox2_node_link_target'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Open image page in new window'),
-    '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
-    '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
-    '#return_value' => '_blank',
-  );
-
 
   // Define handler settings fieldset.
   /* --------------------------------- */
