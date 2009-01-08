@@ -1258,11 +1258,11 @@ function lightbox2_filter_tips($delta, $format, $long = FALSE) {
       return t('Links to video content with \'rel="lightvideo"\' in the &lt;a&gt; tag will appear in a Lightbox when clicked on.');
     }
     else {
-      $output = '<p>'. t('It\'s possible to show video content in the lightbox.  In this case the "rel" attribute should be set to <code>lightvideo</code>.  It\'s not possible to group videos but it is possible to control the size of the lightbox by setting the "width" and "height" properties.  The properties can be configured like <code>lightvideo[width:300px; height: 200px;][caption]</code>.  The properties should all be of the format "property: value;" - note the closing semi-colon.  If no properties are set, then the default width and height of 400px will be used.  See below for more detailed examples.') .'</p>';
+      $output = '<p>'. t('It\'s possible to show video content in the lightbox.  In this case the "rel" attribute should be set to <code>lightvideo</code>.  It\'s possible to group videos and to control the size of the lightbox by setting the "width" and "height" properties.  The properties can be configured like <code>lightvideo[group|width:300px; height: 200px;][caption]</code>.  The properties should all be of the format "property: value;" - note the closing semi-colon.  If no properties are set, then the default width and height of 400px will be used.  See below for more detailed examples.') .'</p>';
       $output .= '<p>'. t('Basic example:') .'<br />';
       $output .= t('<code>&lt;a href=&quot;http://video.google.com/videoplay?docid=1811233136844420765&quot; rel=&quot;lightvideo&quot;&gt;Google video example - default size&lt;/a&gt;</code>') .'</p>';
       $output .= '<p>'. t('Controlling lightbox size example:') .'<br />';
-      $output .= t('<code>&lt;a href=&quot;http://video.google.com/videoplay?docid=1811233136844420765&quot; rel=&quot;lightvideo[width:400px; height:300px;][caption]&quot;&gt;Google video example - custom size&lt;/a&gt;</code>') .'</p>';
+      $output .= t('<code>&lt;a href=&quot;http://video.google.com/videoplay?docid=1811233136844420765&quot; rel=&quot;lightvideo[group|width:400px; height:300px;][caption]&quot;&gt;Google video example - custom size&lt;/a&gt;</code>') .'</p>';
       $output .= '<p>'. t('Supported video formats include asx, wmv, mov and swf.  A number of online video providers are also supported, including YouTube and Google Video.  For a full list of the current supported video providers please see the documentation on drupal.org.') .'</p>';
       return $output;
     }
