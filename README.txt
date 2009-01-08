@@ -20,8 +20,9 @@ CONTENTS OF THIS FILE
 INTRODUCTION
 ------------
 Maintainers:
-  Mark Ashmead (http://drupal.org/user/52392)
   Stella Power (http://drupal.org/user/66894)
+  Daniel F. Kudwien (http://drupal.org/user/54136)
+  Mark Ashmead (http://drupal.org/user/52392)
 
 Documentation: http://drupal.org/node/144469
 
@@ -108,11 +109,11 @@ slideshow by doing:
 Video
 =====
 It's possible to show video content in the lightbox.  In this case the "rel"
-attribute should be set to "lightvideo".  It's not possible to group
-videos but it is possible to control the size of the lightbox by setting the
-'width' and 'height' properties.  The properties can be configured like
-"lightvideo[width:300px; height: 200px;]" and
-"lightvideo[width:300px; height: 200px;][my caption]".  The properties should
+attribute should be set to "lightvideo".  It's possible to group videos and 
+to control the size of the lightbox by setting the 'width' and 'height
+properties.  The properties can be configured like
+"lightvideo[group|width:300px; height: 200px;]" and
+"lightvideo[|width:300px; height: 200px;][my caption]".  The properties should
 all be of the format "property: value;" - note the closing semi-colon.  If no
 properties are set, then the default width and height of 400px will be used.
 See below for more detailed examples.
@@ -125,9 +126,15 @@ Basic example with caption:
 <a href="http://video.google.com/videoplay?docid=1811233136844420765"
 rel="lightvideo[][my caption]">Google video example - default size</a>
 
+Grouped example:
+<a href="http://video.google.com/videoplay?docid=29023498723974239479"
+rel="lightvideo[group][caption 1]">Grouped example 1</a>
+<a href="http://video.google.com/videoplay?docid=1811233136844420765"
+rel="lightvideo[group][caption 2]">Grouped example 2</a>
+
 Controlling lightbox size example:
 <a href="http://video.google.com/videoplay?docid=1811233136844420765"
-rel="lightvideo[width:400px; height:300px;][my caption]">Google video example -
+rel="lightvideo[|width:400px; height:300px;][my caption]">Google video example -
 custom size</a>
 
 Supported Video Formats
@@ -214,6 +221,7 @@ following way:
 Note, the < and > characters have been changed to their HTML entities, and the "
 have been escaped.
 
+
 KEYBOARD SHORTCUTS
 ------------------
 Not all of the default keyboard shortcuts work in the Opera browser, for example
@@ -236,13 +244,7 @@ TRANSLATION OF CONFIGURED STRINGS
 In order to translate the lightbox2 configuration strings, such as the text for
 the "View Image Details" link and the image count, please install the i18n:
 internationalization module and follow the instructions at 
-http://drupal.org/node/134002. The "i18n_variables" you will need to configure
-for the lightbox2 module are:
-
-* lightbox2_node_link_text - the text to display as the link to the image details page (e.g. "View Image Details")
-* lightbox2_image_count_str - image count text (e.g. "Image !current of !total")
-* lightbox2_page_count_str - page count text (e.g. "Page !current of !total")
-* lightbox2_video_count_str - video count text (e.g. "Video !current of !total")
+http://drupal.org/node/134002.
 
 
 KNOWN ISSUES
