@@ -241,7 +241,7 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[@rel^='lightmodal']:not(.lightbox-processed), area[@rel^='lightmodal']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[@rel^='lightmodal']:not(.lightbox-processed), area[@rel^='lightmodal']:not(.lightbox-processed), #lightboxAutoModal:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
@@ -1116,11 +1116,11 @@ var Lightbox = {
 Drupal.behaviors.initLightbox = function (context) {
   $('body:not(.lightbox-processed)', context).addClass('lightbox-processed').each(function() {
     Lightbox.initialize();
-    $('#lightboxAutoModal').triggerHandler('click');
     return false; // Break the each loop.
   });
 
   // Attach lightbox to any links with lightbox rels.
   Lightbox.initList();
+  $('#lightboxAutoModal').triggerHandler('click');
 };
 
