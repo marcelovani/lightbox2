@@ -753,7 +753,7 @@ function lightbox2_field_formatter_info() {
   $formatters = array();
   $lightbox = $slideshow = $iframe = array();
   // Handle imagefield and filefield images.
-  if (module_exists('imagecache') && (module_exists('imagecache') || module_exists('filefield'))) {
+  if (module_exists('imagecache') && (module_exists('imagefield') || module_exists('filefield'))) {
     $rules = array();
     if (function_exists('imagecache_presets')) {
       $presets = imagecache_presets();
