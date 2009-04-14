@@ -257,3 +257,7 @@
 .lightbox_hide_image {
   display: none;
 }
+
+#lightboxImage {
+  -ms-interpolation-mode: bicubic;
+}
