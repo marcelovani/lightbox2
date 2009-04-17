@@ -335,12 +335,22 @@ var Lightbox = {
           if (anchor.href && $(anchor).attr('rel')) {
             var rel_data = Lightbox.parseRel(anchor);
             var anchor_title = (rel_data["title"] ? rel_data["title"] : anchor.title);
+            img_alt = anchor.title;
+            if (!img_alt) {
+              var anchor_img = $(anchor).find("img");
+              if (anchor_img && $(anchor_img).attr("alt")) {
+                img_alt = $(anchor_img).attr("alt");
+              }
+              else {
+                img_alt = title;
+              }
+            }
             if (rel_data["rel"] == rel) {
               if (rel_data["group"] == rel_group) {
                 if (Lightbox.isLightframe || Lightbox.isModal) {
                   rel_style = rel_data["style"];
                 }
-                Lightbox.imageArray.push([anchor.href, anchor_title, alt, rel_style]);
+                Lightbox.imageArray.push([anchor.href, anchor_title, img_alt, rel_style]);
               }
             }
           }
