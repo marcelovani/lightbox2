@@ -18,6 +18,7 @@
  */
 
 var Lightbox = {
+  auto_modal : false,
   overlayOpacity : 0.8, // Controls transparency of shadow overlay.
   overlayColor : '000', // Controls colour of shadow overlay.
   disableCloseClick : true,
@@ -237,7 +238,13 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[@rel^='lightmodal'], area[@rel^='lightmodal'], #lightboxAutoModal").click(function() {
+    $("a[@rel^='lightmodal'], area[@rel^='lightmodal']").click(function() {
+      $('#lightbox').unbind('click');
+      Lightbox.start(this, false, false, false, true);
+      return false;
+    });
+    $("#lightboxAutoModal").click(function() {
+      Lightbox.auto_modal = true;
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       return false;
@@ -893,7 +900,10 @@ var Lightbox = {
       $('#frameContainer').empty().hide();
     }
     else if (Lightbox.isVideo || Lightbox.isModal) {
-      $('#modalContainer').hide().html("");
+      if (!Lightbox.auto_modal) {
+        $('#modalContainer').hide().html("");
+      }
+      Lightbox.auto_modal = false;
     }
   },
 
