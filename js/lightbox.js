@@ -18,6 +18,7 @@
  */
 
 var Lightbox = {
+  auto_modal : false,
   overlayOpacity : 0.8, // Controls transparency of shadow overlay.
   overlayColor : '000', // Controls colour of shadow overlay.
   disableCloseClick : true,
@@ -199,11 +200,15 @@ var Lightbox = {
   // Loops through anchor tags looking for 'lightbox', 'lightshow' and
   // 'lightframe', etc, references and applies onclick events to appropriate
   // links. You can rerun after dynamically adding images w/ajax.
-  initList : function() {
+  initList : function(context) {
+
+    if (context == undefined || context == null) {
+      context = document;
+    }
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
-    $("a[rel^='lightbox']:not(.lightbox-processed), area[rel^='lightbox']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightbox']:not(.lightbox-processed), area[rel^='lightbox']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -212,7 +217,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[rel^='lightshow']:not(.lightbox-processed), area[rel^='lightshow']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightshow']:not(.lightbox-processed), area[rel^='lightshow']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -221,7 +226,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[rel^='lightframe']:not(.lightbox-processed), area[rel^='lightframe']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightframe']:not(.lightbox-processed), area[rel^='lightframe']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -231,7 +236,7 @@ var Lightbox = {
       return false;
     });
     if (Lightbox.enableVideo) {
-      $("a[rel^='lightvideo']:not(.lightbox-processed), area[rel^='lightvideo']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+      $("a[rel^='lightvideo']:not(.lightbox-processed), area[rel^='lightvideo']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
         if (Lightbox.disableCloseClick) {
           $('#lightbox').unbind('click');
           $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -241,7 +246,14 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[rel^='lightmodal']:not(.lightbox-processed), area[rel^='lightmodal']:not(.lightbox-processed), #lightboxAutoModal:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightmodal']:not(.lightbox-processed), area[rel^='lightmodal']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
+      $('#lightbox').unbind('click');
+      Lightbox.start(this, false, false, false, true);
+      if (e.preventDefault) { e.preventDefault(); }
+      return false;
+    });
+    $("#lightboxAutoModal:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
+      Lightbox.auto_modal = true;
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
@@ -901,7 +913,10 @@ var Lightbox = {
       $('#frameContainer').empty().hide();
     }
     else if (Lightbox.isVideo || Lightbox.isModal) {
-      $('#modalContainer').hide().html("");
+      if (!Lightbox.auto_modal) {
+        $('#modalContainer').hide().html("");
+      }
+      Lightbox.auto_modal = false;
     }
   },
 
@@ -1130,7 +1145,7 @@ Drupal.behaviors.initLightbox = function (context) {
   });
 
   // Attach lightbox to any links with lightbox rels.
-  Lightbox.initList();
-  $('#lightboxAutoModal').triggerHandler('click');
+  Lightbox.initList(context);
+  $('#lightboxAutoModal', context).triggerHandler('click');
 };
 
