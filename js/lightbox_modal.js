@@ -10,11 +10,13 @@ function lightbox2_login() {
 }
 
 function lightbox2_contact() {
-  $("a[@href*='/contact'], a[@href*='?q=contact']").each(function() {
-    $(this).attr({
-      href: this.href.replace(/contact?/,"contact/lightbox2"),
-      rel: 'lightmodal[|width:450px; height:450px;]'
-    });
+  $("a[@href$='/contact'], a[@href$='?q=contact']").each(function() {
+    if (!this.href.match('admin/build/contact')) {
+      $(this).attr({
+        href: this.href.replace(/contact?/,"contact/lightbox2"),
+        rel: 'lightmodal[|width:450px; height:450px;]'
+      });
+    }
   });
 }
 
