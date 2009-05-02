@@ -203,7 +203,7 @@ var Lightbox = {
 
     // Attach lightbox to any links with rel 'lightbox', 'lightshow' or
     // 'lightframe', etc.
-    $("a[@rel^='lightbox']:not(.lightbox-processed), area[@rel^='lightbox']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightbox']:not(.lightbox-processed), area[rel^='lightbox']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -212,7 +212,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[@rel^='lightshow']:not(.lightbox-processed), area[@rel^='lightshow']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightshow']:not(.lightbox-processed), area[rel^='lightshow']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -221,7 +221,7 @@ var Lightbox = {
       if (e.preventDefault) { e.preventDefault(); }
       return false;
     });
-    $("a[@rel^='lightframe']:not(.lightbox-processed), area[@rel^='lightframe']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightframe']:not(.lightbox-processed), area[rel^='lightframe']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       if (Lightbox.disableCloseClick) {
         $('#lightbox').unbind('click');
         $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -231,7 +231,7 @@ var Lightbox = {
       return false;
     });
     if (Lightbox.enableVideo) {
-      $("a[@rel^='lightvideo']:not(.lightbox-processed), area[@rel^='lightvideo']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+      $("a[rel^='lightvideo']:not(.lightbox-processed), area[rel^='lightvideo']:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
         if (Lightbox.disableCloseClick) {
           $('#lightbox').unbind('click');
           $('#lightbox').click(function() { Lightbox.end('forceClose'); } );
@@ -241,7 +241,7 @@ var Lightbox = {
         return false;
       });
     }
-    $("a[@rel^='lightmodal']:not(.lightbox-processed), area[@rel^='lightmodal']:not(.lightbox-processed), #lightboxAutoModal:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
+    $("a[rel^='lightmodal']:not(.lightbox-processed), area[rel^='lightmodal']:not(.lightbox-processed), #lightboxAutoModal:not(.lightbox-processed)").addClass('lightbox-processed').click(function(e) {
       $('#lightbox').unbind('click');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
@@ -1096,10 +1096,10 @@ var Lightbox = {
   triggerLightbox: function (rel_type, rel_group) {
     if (rel_type.length) {
       if (rel_group && rel_group.length) {
-        $("a[@rel^='" + rel_type +"\[" + rel_group + "\]'], area[@rel^='" + rel_type +"\[" + rel_group + "\]']").eq(0).trigger("click");
+        $("a[rel^='" + rel_type +"\[" + rel_group + "\]'], area[rel^='" + rel_type +"\[" + rel_group + "\]']").eq(0).trigger("click");
       }
       else {
-        $("a[@rel^='" + rel_type +"'], area[@rel^='" + rel_type +"']").eq(0).trigger("click");
+        $("a[rel^='" + rel_type +"'], area[rel^='" + rel_type +"']").eq(0).trigger("click");
       }
     }
   },
