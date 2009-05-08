@@ -344,7 +344,7 @@ var Lightbox = {
         // Loop through anchors and add them to imageArray.
         for (i = 0; i < anchors.length; i++) {
           anchor = anchors[i];
-          if (anchor.href && $(anchor).attr('rel')) {
+          if (anchor.href && typeof(anchor.href) == "string" && $(anchor).attr('rel')) {
             var rel_data = Lightbox.parseRel(anchor);
             var anchor_title = (rel_data["title"] ? rel_data["title"] : anchor.title);
             img_alt = anchor.title;
