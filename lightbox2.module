@@ -2182,6 +2182,9 @@ function lightbox2_filefield_formatter($field, $item, $formatter, $node) {
             : $item['filepath'];
     $icon = theme('filefield_icon', $item);
     $description = $item['description'];
+    if (empty($description)) {
+      $description = $item['filename'];
+    }
 
     $node_link = '';
     if (!empty($node_link_text) && !empty($link)) {
