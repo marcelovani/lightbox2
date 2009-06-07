@@ -183,7 +183,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
       $node_links[] = l($node_link_text, 'node/'. $item['nid'], array('attributes' => $attributes));
     }
     $download_link_text = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
-    if (!empty($download_link_text) && user_access('download original image') && user_access('view imagefield uploads')) {
+    if (!empty($download_link_text) && user_access('download original image')) {
       $node_links[] = l($download_link_text, $item['filepath'], array('attributes' => array('target' => '_blank', 'id' => 'download_link_text')));
     }
   }
