@@ -98,7 +98,7 @@ function lightbox2_general_settings_form() {
   $form['layout_fieldset']['lightbox2_download_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for image original link'),
-    '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.  Leave this blank for the link not to appear.'),
+    '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.  Leave this blank for the link not to appear.  It will only appear for images uploaded via the "image" or "imagefield" modules.  Users will need the "download original image" permission, but also either the "view original images" or "view imagefield uploads" permission, depending on the module in use.'),
     '#default_value' => variable_get('lightbox2_download_link_text', 'Download Original'),
   );
 
