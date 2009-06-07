@@ -294,6 +294,9 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
     $file_data = unserialize($file->data);
   }
   $description = $file_data['description'];
+  if (empty($description)) {
+    $description = $file->filename;
+  }
   $attributes = array();
   $attributes['id'] = 'node_link_text';
   $target = variable_get('lightbox2_node_link_target', FALSE);
