@@ -770,7 +770,7 @@ function lightbox2_auto_image_handling_settings_form() {
     $sizes = _image_get_sizes();
     foreach ($sizes as $size_key => $size) {
       if ($size_key == 'original' or $size_key == '_original')  {
-        $size_key = '';
+        $size_key = 'original';
       }
       $size_options[$size_key] = $size['label'];
     }
@@ -778,7 +778,7 @@ function lightbox2_auto_image_handling_settings_form() {
       '#type' => 'select',
       '#title' => t('Lightbox image display size'),
       '#options' => $size_options,
-      '#default_value' => variable_get('lightbox2_display_image_size', ''),
+      '#default_value' => variable_get('lightbox2_display_image_size', 'original'),
       '#description' => t('Select which image size will be loaded in the lightbox.  This only applies to images uploaded with the Image module.'),
     );
 

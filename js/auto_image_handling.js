@@ -45,6 +45,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         // Set the image node link text.
         var link_text = settings.node_link_text;
         var download_link_text = settings.download_link_text;
+        var rewrite = 1;
 
         // Set the rel attribute.
         var rel = "lightbox";
@@ -103,6 +104,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               frame_href = orig_href + "/lightbox2";
             }
           }
+          else {
+            rewrite = 0;
+          }
         }
 
         // Handle "inline" images.
@@ -143,6 +147,9 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               frame_href = orig_href + "/lightbox2";
             }
           }
+          else {
+            rewrite = 0;
+          }
         }
 
         // Modify the image url.
@@ -157,33 +164,35 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         if (lightframe) {
           href = frame_href;
         }
-        if (!custom_class) {
-          var title_link = "";
-          if (link_text.length) {
-            title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
-          }
-          if (download_link_text.length) {
-            title_link = title_link + " - <a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
-          }
-          rel = rel + "[" + alt + title_link + "]";
-          $(this).attr({
-            rel: rel,
-            href: href
-          });
-        }
-        else {
-          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
-            rel = rel_type + "[" + $(child).attr("class") + "]";
-            if ($(child).parents("div.block-image").attr("class")) {
-              id = $(child).parents("div.block-image").attr("id");
-              rel = rel_type + "["+ id +"]";
+        if (rewrite) {
+          if (!custom_class) {
+            var title_link = "";
+            if (link_text.length) {
+              title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
             }
+            if (download_link_text.length) {
+              title_link = title_link + " - <a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
+            }
+            rel = rel + "[" + alt + title_link + "]";
+            $(this).attr({
+              rel: rel,
+              href: href
+            });
           }
-          rel = rel + "[" + alt + "]";
-          $(this).attr({
-            rel: rel,
-            href: orig_href
-          });
+          else {
+            if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
+              rel = rel_type + "[" + $(child).attr("class") + "]";
+              if ($(child).parents("div.block-image").attr("class")) {
+                id = $(child).parents("div.block-image").attr("id");
+                rel = rel_type + "["+ id +"]";
+              }
+            }
+            rel = rel + "[" + alt + "]";
+            $(this).attr({
+              rel: rel,
+              href: orig_href
+            });
+          }
         }
       }
     }

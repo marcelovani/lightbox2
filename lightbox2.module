@@ -586,7 +586,9 @@ function lightbox2_add_files() {
     foreach ($trigger_sizes as $size) {
       $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
-        $triggers = "img._original, img.image-_original,";
+        if (user_access('view original images')) {
+          $triggers = "img._original, img.image-_original,";
+        }
       }
       else {
         $image_node_sizes .= "\.$size|";
@@ -633,6 +635,10 @@ function lightbox2_add_files() {
   $enable_video = variable_get('lightbox2_enable_video', FALSE);
   $enable_login = $user->uid == 0 && variable_get('lightbox2_enable_login', FALSE);
   $enable_contact = module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form');
+  $display_image_size = variable_get('lightbox2_display_image_size', 'original');
+  if ($display_image_size == 'original' && user_access('view original images')) {
+    $display_image_size = '';
+  }
 
   // Load the javascript settings.
   $js_settings = array(
@@ -670,7 +676,7 @@ function lightbox2_add_files() {
     'keys_next' => variable_get('lightbox2_keys_next', 'n 39'),
     'keys_zoom' => variable_get('lightbox2_keys_zoom', 'z'),
     'keys_play_pause' => variable_get('lightbox2_keys_play_pause', '32'),
-    'display_image_size' => variable_get('lightbox2_display_image_size', ''),
+    'display_image_size' => $display_image_size,
     'image_node_sizes' => $image_node_sizes,
     'trigger_lightbox_classes' => $trigger_lightbox_classes,
     'trigger_lightbox_group_classes' => $trigger_lightbox_group_classes,
