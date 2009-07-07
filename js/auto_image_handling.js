@@ -93,13 +93,15 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         else if ($(child).attr("class").match("image-img_assist_custom")) {
           // Image assist uses "+" signs for spaces which doesn't work for
           // normal links.
-          orig_href = orig_href.replace(/\+/, " ");
-          href = $(child).attr("src").replace(new RegExp("\\.img_assist_custom"), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size));
-          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
-            rel = rel_type + "[node_images]";
-          }
-          if (lightframe) {
-            frame_href = orig_href + "/lightbox2";
+          if (settings.display_image_size != "original") {
+            orig_href = orig_href.replace(/\+/, " ");
+            href = $(child).attr("src").replace(new RegExp("\\.img_assist_custom"), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size));
+            if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
+              rel = rel_type + "[node_images]";
+            }
+            if (lightframe) {
+              frame_href = orig_href + "/lightbox2";
+            }
           }
         }
 
@@ -127,17 +129,19 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
 
         // Set the href attribute.
         else if (settings.image_node_sizes != '()' && !custom_class) {
-          href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/[\w\-]*)/, ((settings.display_image_size === "")?"$1/_original":"$1/"+ settings.display_image_size));
-          if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
-            rel = rel_type + "[node_images]";
-            if ($(child).parents("div.block-multiblock,div.block-image").attr("class")) {
-              id = $(child).parents("div.block-multiblock,div.block-image").attr("id");
-              rel = rel_type + "["+ id +"]";
+          if (settings.display_image_size != "original") {
+            href = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size)).replace(/(image\/view\/\d+)(\/[\w\-]*)/, ((settings.display_image_size === "")?"$1/_original":"$1/"+ settings.display_image_size));
+            if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
+              rel = rel_type + "[node_images]";
+              if ($(child).parents("div.block-multiblock,div.block-image").attr("class")) {
+                id = $(child).parents("div.block-multiblock,div.block-image").attr("id");
+                rel = rel_type + "["+ id +"]";
+              }
             }
-          }
-          download = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), "").replace(/(image\/view\/\d+)(\/[\w\-]*)/, "$1/_original");
-          if (lightframe) {
-            frame_href = orig_href + "/lightbox2";
+            download = $(child).attr("src").replace(new RegExp(settings.image_node_sizes), "").replace(/(image\/view\/\d+)(\/[\w\-]*)/, "$1/_original");
+            if (lightframe) {
+              frame_href = orig_href + "/lightbox2";
+            }
           }
         }
 
