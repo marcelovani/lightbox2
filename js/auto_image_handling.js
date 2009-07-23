@@ -20,6 +20,9 @@ function parse_url(url, param) {
 
 
 function lightbox2_init_triggers(classes, rel_type, custom_class) {
+  if (classes == '' || rel_type == 0) {
+    return;
+  }
   var settings = Drupal.settings.lightbox2;
 
   var link_target  = "";
