@@ -131,6 +131,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             id = $(child).parents("div.block-gallery").attr("id");
             rel = rel_type + "["+ id +"]";
           }
+          download = href;
         }
 
 
@@ -173,7 +174,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             if (link_text.length) {
               title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
             }
-            if (download_link_text.length) {
+            if (download_link_text.length && download) {
               title_link = title_link + " - <a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
             }
             rel = rel + "[" + alt + title_link + "]";
