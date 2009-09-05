@@ -1375,3 +1375,12 @@ function lightbox2_link_alter(&$links, $node) {
     }
   }
 }
+
+/**
+ * Implementation of hook_views_api().
+ */
+function lightbox2_views_api() {
+  return array(
+    'api' => '2.0',
+  );
+}
