@@ -184,7 +184,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
     }
     $download_link_text = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
     if (!empty($download_link_text) && user_access('download original image')) {
-      $node_links[] = l($download_link_text, $item['filepath'], array('attributes' => array('target' => '_blank', 'id' => 'download_link_text')));
+      $node_links[] = l($download_link_text, file_create_url($item['filepath']), array('attributes' => array('target' => '_blank', 'id' => 'download_link_text')));
     }
   }
 
