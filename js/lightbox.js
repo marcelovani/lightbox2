@@ -643,7 +643,7 @@ var Lightbox = {
     // Handle display of image content.
     else {
       $('#imageContainer').show();
-      if($.browser.safari) {
+      if ($.browser.safari) {
         $('#lightboxImage').css({'zIndex': '10500'}).show();
       }
       else {
@@ -949,20 +949,20 @@ var Lightbox = {
   // Returns array with page width, height and window width, height.
   // Core code from - quirksmode.com.
   // Edit for Firefox by pHaez.
+
   getPageSize : function() {
 
     var xScroll, yScroll;
 
-    if (document.body.scrollHeight > document.body.offsetHeight) { // all but Explorer Mac
-      xScroll = document.body.scrollWidth;
-      yScroll = document.body.scrollHeight;
-    }
-    else if (window.innerHeight && window.scrollMaxY) {
+    if (window.innerHeight && window.scrollMaxY) {
       xScroll = window.innerWidth + window.scrollMaxX;
       yScroll = window.innerHeight + window.scrollMaxY;
     }
-    // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
-    else {
+    else if (document.body.scrollHeight > document.body.offsetHeight) { // All but Explorer Mac.
+      xScroll = document.body.scrollWidth;
+      yScroll = document.body.scrollHeight;
+    }
+    else { // Explorer Mac...would also work in Explorer 6 Strict, Mozilla and Safari.
       xScroll = document.body.offsetWidth;
       yScroll = document.body.offsetHeight;
     }
@@ -978,8 +978,7 @@ var Lightbox = {
       }
       windowHeight = self.innerHeight;
     }
-    // Explorer 6 Strict Mode.
-    else if (document.documentElement && document.documentElement.clientHeight) {
+    else if (document.documentElement && document.documentElement.clientHeight) { // Explorer 6 Strict Mode.
       windowWidth = document.documentElement.clientWidth;
       windowHeight = document.documentElement.clientHeight;
     }
@@ -987,26 +986,21 @@ var Lightbox = {
       windowWidth = document.body.clientWidth;
       windowHeight = document.body.clientHeight;
     }
-
-
-    // For small pages with total height less then height of the viewport.
+    // For small pages with total height less than height of the viewport.
     if (yScroll < windowHeight) {
       pageHeight = windowHeight;
     }
     else {
       pageHeight = yScroll;
     }
-
-
-    // For small pages with total width less then width of the viewport.
+    // For small pages with total width less than width of the viewport.
     if (xScroll < windowWidth) {
-      pageWidth = windowWidth;
-    }
-    else {
       pageWidth = xScroll;
     }
-
-    arrayPageSize = [pageWidth, pageHeight, windowWidth, windowHeight];
+    else {
+      pageWidth = windowWidth;
+    }
+    arrayPageSize = new Array(pageWidth,pageHeight,windowWidth,windowHeight);
     return arrayPageSize;
   },
 
