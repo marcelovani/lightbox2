@@ -717,6 +717,10 @@ function lightbox2_field_formatter_info() {
       'label' => 'Lightbox2 iframe: original->node page',
       'field types' => array('image', 'filefield'),
     );
+    $iframe['imagefield__lightframe2__link__node'] = array(
+      'label' => 'Lightbox2 iframe: link->node page',
+      'field types' => array('image', 'filefield'),
+    );
     foreach ($rules as $ruleid => $view_rule) {
       $lightbox['imagefield__lightbox2__original__'. $view_rule] = array(
         'label' => 'Lightbox2: original->'. $view_rule,
@@ -726,12 +730,20 @@ function lightbox2_field_formatter_info() {
         'label' => 'Lightbox2: '. $view_rule .'->original',
         'field types' => array('image', 'filefield'),
       );
+      $lightbox['imagefield__lightbox2__link__'. $view_rule] = array(
+        'label' => 'Lightbox2: link->'. $view_rule,
+        'field types' => array('image', 'filefield'),
+      );
       $slideshow['imagefield__lightshow2__original__'. $view_rule] = array(
         'label' => 'Lightbox2 slideshow: original->'. $view_rule,
         'field types' => array('image', 'filefield'),
       );
       $slideshow['imagefield__lightshow2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
+        'field types' => array('image', 'filefield'),
+      );
+      $slideshow['imagefield__lightshow2__link__'. $view_rule] = array(
+        'label' => 'Lightbox2 slideshow: link->'. $view_rule,
         'field types' => array('image', 'filefield'),
       );
       $iframe['imagefield__lightframe2__'. $view_rule .'__node'] = array(
@@ -852,6 +864,11 @@ function lightbox2_theme() {
       'function' => 'theme_lightbox2_formatter_imagefield',
       'file' => 'lightbox2.formatter.inc',
     );
+    $theme['lightbox2_formatter_imagefield__lightframe2__link__node'] = array(
+      'arguments' => array('element' => NULL),
+      'function' => 'theme_lightbox2_formatter_imagefield',
+      'file' => 'lightbox2.formatter.inc',
+    );
 
     foreach (imagecache_presets() as $src) {
       $theme['lightbox2_formatter_imagefield__lightbox2__'. $src['presetname'] .'__original'] = array(
@@ -875,6 +892,16 @@ function lightbox2_theme() {
         'file' => 'lightbox2.formatter.inc',
       );
       $theme['lightbox2_formatter_imagefield__lightframe2__'. $src['presetname'] .'__node'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightbox2__link__'. $src['presetname']] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightshow2__link__'. $src['presetname']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',

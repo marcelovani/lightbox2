@@ -95,7 +95,7 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
   else {
     $rules = _imagecache_get_presets();
   }
-  if ($view_preset == 'original' || in_array($view_preset, (array) $rules)) {
+  if ($view_preset == 'link' || $view_preset == 'original' || in_array($view_preset, (array) $rules)) {
     $rel = 'lightbox';
     if (strpos($formatter, '__lightshow2__') !== FALSE) {
       $rel = 'lightshow';
@@ -229,6 +229,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   $attributes = array();
   if ($view_preset == 'original') {
     $image = theme('lightbox2_image', $item['filepath'], $image_tag_alt, $image_tag_title, $attributes);
+  }
+  elseif ($view_preset == 'link') {
+    // Not actually an image, just a text link.
+    $image = variable_get('lightbox2_view_image_text', 'View image');
   }
   else {
     $image = theme('imagecache', $view_preset, $item['filepath'], $image_tag_alt, $image_tag_title, $attributes);

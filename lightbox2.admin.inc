@@ -280,6 +280,13 @@ function lightbox2_general_settings_form() {
         '#description' => t('By default, the caption for imagefields is the image title text configured.  If no title is configured, then the alt text will be used.  This option allows you to override that and always display the node title as the image caption.'),
         '#default_value' => variable_get('lightbox2_imagefield_use_node_title', FALSE),
       );
+      $form['cck_options']['lightbox2_view_image_text'] = array(
+        '#type' => 'textfield',
+        '#title' => t('Text to view image'),
+        '#description' => t('This is the text that can appear when linking to the image using CCK imagefields.'),
+        '#default_value' => variable_get('lightbox2_view_image_text', 'View image'),
+      );
+
     }
   }
 

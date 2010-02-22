@@ -41,6 +41,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_disable_these_urls');
   variable_del('lightbox2_imagefield_group_node_id');
   variable_del('lightbox2_imagefield_use_node_title');
+  variable_del('lightbox2_view_image_text');
   variable_del('lightbox2_image_ncck_group_node_id');
   // Advanced settings.
   variable_del('lightbox2_js_location');
