@@ -16,7 +16,9 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
 
     $options['trigger_field'] = array('default' => '');
     $options['popup'] = array('default' => '');
+    $options['title'] = array('default' => '');
     $options['rel_group'] = array('default' => TRUE);
+    $options['custom_group'] = array('default' => '');
     $options['height'] = array('default' => '400px');
     $options['width'] = array('default' => '600px');
 
@@ -43,7 +45,7 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       '#description' => t('Select the field that should be turned into the trigger for the lightbox.  Only fields that appear before this one in the field list may be used.'),
       '#options' => $fields,
       '#default_value' => $this->options['trigger_field'],
-      '#weight' => -10,
+      '#weight' => -12,
     );
 
     $form['popup'] = array(
@@ -51,13 +53,30 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       '#title' => t('Popup'),
       '#description' => t('Combine tokens from the "Replacement patterns" below and html to create what the lightbox popup will become.'),
       '#default_value' => $this->options['popup'],
-      '#weight' => -9,
+      '#weight' => -11,
+    );
+
+    $form['title'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Title'),
+      '#description' => t('Combine tokens from the "Replacement patterns" below and html to create the title shown under the lightbox. Leave empty for no title.'),
+      '#default_value' => $this->options['title'],
+      '#weight' => -10,
     );
 
     $form['rel_group'] = array(
       '#type' => 'checkbox',
-      '#title' => t('Enable Lightbox grouping'),
+      '#title' => t('Automatic generated Lightbox group'),
+      '#description' => t('Enable Lightbox grouping using a generated group name for this view.'),
       '#default_value' => $this->options['rel_group'],
+      '#weight' => -9,
+    );
+
+    $form['custom_group'] = array(
+      '#type' => 'textfield',
+      '#title' => t('Custom Lightbox group'),
+      '#description' => t('Enable Lightbox grouping with a given string as group. Overrides the automatically generated group name above.'),
+      '#default_value' => $this->options['custom_group'],
       '#weight' => -8,
     );
 
@@ -104,23 +123,26 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
 
       // We don't actually use the link, but we need it there for lightbox to function.
       if (empty($link)) {
-        //Get the path name.
+        // Get the path name.
         $path = isset($_GET['q']) ? $_GET['q'] : '<front>';
         $link = url($path, array('absolute' => TRUE));
       }
 
-      //Get the token information and generate the value for the popup.
+      // Get the token information and generate the value for the popup and the
+      // title.
       $tokens = $this->get_render_tokens($this->options['alter']);
       $popup = filter_xss_admin($this->options['popup']);
+      $title = filter_xss_admin($this->options['title']);
       $popup = strtr($popup, $tokens);
+      $title = strtr($title, $tokens);
 
       $i++;
 
       // The outside div is there to hide all of the divs because if the specific lightbox
       // div is hidden it won't show up as a lightbox.  We also specify a group
       // in the rel attribute in order to link the whole View together for paging.
-      $group_name = ($this->options['rel_group'] ?  'lightbox-popup-{$this->view->name}' : '');
-      return "<a href='$link #lightbox-popup-{$i}'  rel='lightmodal[{$group_name}|width:" . ($this->options['width'] ? $this->options['width'] : '600px') . ';height:' . ($this->options['height'] ? $this->options['height'] : '600px') . "]'>". $tokens["[{$this->options['trigger_field']}]"] ."</a>
+      $group_name = !empty($this->options['custom_group']) ? $this->options['custom_group'] : ($this->options['rel_group'] ? 'lightbox-popup-' . $this->view->name . '-' . implode('/', $this->view->args) : '');
+      return "<a href='$link #lightbox-popup-{$i}'  rel='lightmodal[{$group_name}|width:" . ($this->options['width'] ? $this->options['width'] : '600px') . ';height:' . ($this->options['height'] ? $this->options['height'] : '600px') . "][" . $title . "]'>". $tokens["[{$this->options['trigger_field']}]"] ."</a>
                 <div style='display: none;'><div id='lightbox-popup-{$i}' class='lightbox-popup'>$popup</div></div>";
     }
     else {
