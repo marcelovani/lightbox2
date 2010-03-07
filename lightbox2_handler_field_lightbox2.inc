@@ -16,7 +16,7 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
 
     $options['trigger_field'] = array('default' => '');
     $options['popup'] = array('default' => '');
-    $options['title'] = array('default' => '');
+    $options['caption'] = array('default' => '');
     $options['rel_group'] = array('default' => TRUE);
     $options['custom_group'] = array('default' => '');
     $options['height'] = array('default' => '400px');
@@ -56,11 +56,11 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       '#weight' => -11,
     );
 
-    $form['title'] = array(
+    $form['caption'] = array(
       '#type' => 'textfield',
-      '#title' => t('Title'),
-      '#description' => t('Combine tokens from the "Replacement patterns" below and html to create the title shown under the lightbox. Leave empty for no title.'),
-      '#default_value' => $this->options['title'],
+      '#title' => t('Caption'),
+      '#description' => t('Combine tokens from the "Replacement patterns" below and html to create the caption shown under the lightbox. Leave empty for no caption.'),
+      '#default_value' => $this->options['caption'],
       '#weight' => -10,
     );
 
@@ -129,12 +129,12 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       }
 
       // Get the token information and generate the value for the popup and the
-      // title.
+      // caption.
       $tokens = $this->get_render_tokens($this->options['alter']);
       $popup = filter_xss_admin($this->options['popup']);
-      $title = filter_xss_admin($this->options['title']);
+      $caption = filter_xss_admin($this->options['caption']);
       $popup = strtr($popup, $tokens);
-      $title = strtr($title, $tokens);
+      $caption = strtr($caption, $tokens);
 
       $i++;
 
@@ -142,7 +142,7 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       // div is hidden it won't show up as a lightbox.  We also specify a group
       // in the rel attribute in order to link the whole View together for paging.
       $group_name = !empty($this->options['custom_group']) ? $this->options['custom_group'] : ($this->options['rel_group'] ? 'lightbox-popup-' . $this->view->name . '-' . implode('/', $this->view->args) : '');
-      return "<a href='$link #lightbox-popup-{$i}'  rel='lightmodal[{$group_name}|width:" . ($this->options['width'] ? $this->options['width'] : '600px') . ';height:' . ($this->options['height'] ? $this->options['height'] : '600px') . "][" . $title . "]'>". $tokens["[{$this->options['trigger_field']}]"] ."</a>
+      return "<a href='$link #lightbox-popup-{$i}'  rel='lightmodal[{$group_name}|width:" . ($this->options['width'] ? $this->options['width'] : '600px') . ';height:' . ($this->options['height'] ? $this->options['height'] : '600px') . "][" . $caption . "]'>". $tokens["[{$this->options['trigger_field']}]"] ."</a>
                 <div style='display: none;'><div id='lightbox-popup-{$i}' class='lightbox-popup'>$popup</div></div>";
     }
     else {
