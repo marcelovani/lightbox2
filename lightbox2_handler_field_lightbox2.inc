@@ -110,7 +110,7 @@ class lightbox2_handler_field_lightbox2 extends views_handler_field {
       }
 
       //Get the token information and generate the value for the popup.
-      $tokens = $this->get_render_tokens();
+      $tokens = $this->get_render_tokens($this->options['alter']);
       $popup = filter_xss_admin($this->options['popup']);
       $popup = strtr($popup, $tokens);
 
