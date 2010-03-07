@@ -215,6 +215,9 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   elseif ($imagefield_grouping == 3 && !empty($item['nid'])) {
     $full_rel = $rel .'['. $field_name .'_'. $item['nid'] .']['. $caption .']';
   }
+  elseif ($imagefield_grouping == 4 ) {
+    $full_rel = $rel .'[allnodes]['. $caption .']';
+  }
   elseif (isset($args['rel_grouping'])) {
     $full_rel = $rel .'['. $args['rel_grouping'] .']['. $caption .']';
   }

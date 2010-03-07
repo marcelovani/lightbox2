@@ -252,6 +252,7 @@ function lightbox2_general_settings_form() {
       1 => t('Group by field name'),
       2 => t('Group by node id'),
       3 => t('Group by field name and node id'),
+      4 => t('Group all nodes and fields'),
     );
 
     // Add checkbox for emfield emimage grouping.
