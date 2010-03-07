@@ -623,8 +623,7 @@ var Lightbox = {
       }
       else {
         if (Lightbox.isVideo) {
-          $("#modalContainer").html(Lightbox.modalHTML);
-          $("#modalContainer").click(function() { return false; } );
+          $("#modalContainer").html(Lightbox.modalHTML).click(function(){return false;}).css('zIndex', '10500').show();
         }
         else {
           var src = unescape(Lightbox.imageArray[Lightbox.activeImage][0]);
@@ -632,11 +631,13 @@ var Lightbox = {
             $(src).appendTo("#modalContainer");
           }
           else {
-            $("#modalContainer").load(src);
+            // Use a callback to show the new image, otherwise you get flicker.
+            $("#modalContainer").hide().load(src, function () {$('#modalContainer').css({'zIndex': '10500'}).show();});
           }
           $('#modalContainer').unbind('click');
         }
-        $('#modalContainer').css({'zIndex': '10500'}).show();
+        // This might be needed in the Lightframe section above.
+        //$('#modalContainer').css({'zIndex': '10500'}).show();
       }
     }
 
@@ -782,7 +783,9 @@ var Lightbox = {
 
       // If not first image in set, display prev image button.
       if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage !== 0) {
-        $(prevLink).css({'zIndex': '10500'}).show().click(function() {
+        // Unbind any other click handlers, otherwise this adds a new click handler
+        // each time the arrow is clicked.
+        $(prevLink).css({'zIndex': '10500'}).show().unbind().click(function() {
           Lightbox.changeData(Lightbox.activeImage - 1); return false;
         });
       }
@@ -793,7 +796,9 @@ var Lightbox = {
 
       // If not last image in set, display next image button.
       if ((Lightbox.total > 1 && Lightbox.loopItems) || Lightbox.activeImage != (Lightbox.total - 1)) {
-        $(nextLink).css({'zIndex': '10500'}).show().click(function() {
+        // Unbind any other click handlers, otherwise this adds a new click handler
+        // each time the arrow is clicked.
+        $(nextLink).css({'zIndex': '10500'}).show().unbind().click(function() {
           Lightbox.changeData(Lightbox.activeImage + 1); return false;
         });
       }
