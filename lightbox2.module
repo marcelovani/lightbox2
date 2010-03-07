@@ -242,6 +242,11 @@ function lightbox2_menu() {
  * Implementation of hook_init().
  */
 function lightbox2_init() {
+  // Insert support
+  if (module_exists('insert')) {
+    module_load_include('inc', 'lightbox2', 'lightbox2.insert');
+  }
+
   if (lightbox2_exclude_these_paths() != 1) {
     lightbox2_add_files();
   }
@@ -920,6 +925,15 @@ function lightbox2_theme() {
         );
       }
     }
+  }
+
+  // Additional Insert theme functions.
+  if (module_exists('insert')) {
+    // Theme functions in lightbox2.insert.inc.
+    $theme['lightbox2_insert_image'] = array(
+      'arguments' => array('item' => NULL, 'widget' => NULL, 'type' => NULL, 'image_preset_name' => NULL, 'link_preset_name' => NULL),
+      'template' => 'lightbox2-insert-image',
+    );
   }
 
   return $theme;
