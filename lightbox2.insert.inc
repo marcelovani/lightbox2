@@ -10,7 +10,16 @@
  * Implementation of hook_insert_styles().
  */
 function lightbox2_insert_styles() {
-  $insert_styles = lightbox2_field_formatter_info();
+  $cck_formatters = lightbox2_field_formatter_info();
+  $insert_styles = array();
+  // Reformat CCK formatter ids as Insert style ids.
+  foreach ($cck_formatters as $formatter_id => $formatter_info) {
+    // Currently only the "imagefield--lightbox2" formatters are implemented as styles.
+    if (preg_match('/^imagefield__lightbox2__([^_]+)__([^_]+)$/', $formatter_id, $matches)) {
+      $style_id = 'lightbox2--' . $matches[1] . '--' . $matches[2];
+      $insert_styles[$style_id] = $formatter_info;
+    }
+  }
   return $insert_styles;
 }
 
