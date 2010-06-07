@@ -248,6 +248,9 @@ var Lightbox = {
     }
     $("a[rel^='lightmodal']:not(.lightbox-processed), area[rel^='lightmodal']:not(.lightbox-processed)", context).addClass('lightbox-processed').click(function(e) {
       $('#lightbox').unbind('click');
+      // Add classes from the link to the lightbox div - don't include lightbox-processed
+      $('#lightbox').addClass($(this).attr('class'));
+      $('#lightbox').removeClass('lightbox-processed');
       Lightbox.start(this, false, false, false, true);
       if (e.preventDefault) { e.preventDefault(); }
       return false;

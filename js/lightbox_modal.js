@@ -6,6 +6,7 @@ function lightbox2_login() {
       href: this.href.replace(/user\/login?/,"user/login/lightbox2"),
       rel: 'lightmodal[|width:250px; height:210px;]'
     });
+    $(this).addClass('lightmodal-login');
   });
 }
 
@@ -16,6 +17,7 @@ function lightbox2_contact() {
         href: this.href.replace(/contact?/,"contact/lightbox2"),
         rel: 'lightmodal[|width:450px; height:450px;]'
       });
+      $(this).addClass('lightmodal-contact');
     }
   });
 }
