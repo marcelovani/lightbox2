@@ -26,6 +26,7 @@ var Lightvideo = {
     else {
       Lightbox.videoId = href;
       href = Lightbox.flvPlayer + '?file=' + href;
+      variables = '';
       if (Lightbox.flvFlashvars.length) {
         variables = Lightbox.flvFlashvars;
         href = href + '&' + Lightbox.flvFlashvars;
