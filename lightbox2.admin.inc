@@ -629,7 +629,7 @@ function lightbox2_slideshow_settings_form() {
   );
 
   // Add checkbox for "pausing on prev click".
-  $form['lightbox2_slideshow_pause_on_prev_click'] = array(
+  $form['lightbox2_slideshow_pause_on_previous_click'] = array(
     '#type' => 'checkbox',
     '#title' => t('Pause slideshow on "Previous Image" click'),
     '#description' => t('When enabled the slideshow is automatically paused, and the previous image shown, when the "Previous" button is clicked.'),
