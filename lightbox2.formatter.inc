@@ -30,6 +30,9 @@ function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = arra
 /**
  * Handler for Lightbox2 display of imagecache + imagefield CCK fields.
  *
+ * The compact view shows only the first image in a multiple imagefield but
+ * shows all images in the lightbox.
+ *
  * @param $element
  *   The CCK field element.
  * @return
@@ -45,7 +48,8 @@ function theme_lightbox2_formatter_imagefield($element) {
   $formatter = $element['#formatter'];
   $node = node_load($element['#item']['nid']);
 
-  if (strpos($formatter, '__lightbox2__') !== FALSE || strpos($formatter, '__lightshow2__') !== FALSE || strpos($formatter, '__lightframe2__') !== FALSE) {
+  if (strpos($formatter, '__lightbox2__') !== FALSE || strpos($formatter, '__lightshow2__') !== FALSE || strpos($formatter, '__lightframe2__') !== FALSE
+    || strpos($formatter, '__lightbox2_compact__') !== FALSE || strpos($formatter, '__lightshow2_compact__') !== FALSE || strpos($formatter, '__lightframe2_compact__') !== FALSE) {
     list($tmp, $lightbox_type, $view_preset, $lightbox_preset) = explode('__', $formatter, 4);
     return lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset);
   }
@@ -100,8 +104,18 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
     if (strpos($formatter, '__lightshow2__') !== FALSE) {
       $rel = 'lightshow';
     }
+    elseif (strpos($formatter, '__lightshow2_compact__') !== FALSE) {
+      $rel = 'lightshow';
+      $args['compact'] = TRUE;
+    }
     elseif (strpos($formatter, '__lightframe2__') !== FALSE) {
       $rel = 'lightframe';
+    }
+    
+    // Check if this is a compact display.
+    list($tmp, $lightbox_type, $tmp) = explode('__', $formatter, 3);
+    if ($lightbox_type == 'lightbox2_compact') {
+      $args['compact'] = TRUE;
     }
     return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field_name, $item, $node, $rel, $args);
   }
@@ -229,9 +243,11 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
     'rel' => $full_rel,
   );
 
-
   $attributes = array();
-  if ($view_preset == 'original') {
+  if (isset($args['compact']) && $item['#delta']) {
+    $image = '';
+  }
+  elseif ($view_preset == 'original') {
     $image = theme('lightbox2_image', $item['filepath'], $image_tag_alt, $image_tag_title, $attributes);
   }
   elseif ($view_preset == 'link') {

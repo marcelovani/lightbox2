@@ -733,8 +733,16 @@ function lightbox2_field_formatter_info() {
         'label' => 'Lightbox2: original->'. $view_rule,
         'field types' => array('image', 'filefield'),
       );
+      $lightbox['imagefield__lightbox2_compact__original__'. $view_rule] = array(
+        'label' => 'Lightbox2: original->'. $view_rule . ' compact',
+        'field types' => array('image', 'filefield'),
+      );
       $lightbox['imagefield__lightbox2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2: '. $view_rule .'->original',
+        'field types' => array('image', 'filefield'),
+      );
+      $lightbox['imagefield__lightbox2_compact__'. $view_rule .'__original'] = array(
+        'label' => 'Lightbox2: '. $view_rule .'->original compact',
         'field types' => array('image', 'filefield'),
       );
       $lightbox['imagefield__lightbox2__link__'. $view_rule] = array(
@@ -745,8 +753,16 @@ function lightbox2_field_formatter_info() {
         'label' => 'Lightbox2 slideshow: original->'. $view_rule,
         'field types' => array('image', 'filefield'),
       );
+      $slideshow['imagefield__lightshow2_compact__original__'. $view_rule] = array(
+        'label' => 'Lightbox2 slideshow: original->'. $view_rule . ' compact',
+        'field types' => array('image', 'filefield'),
+      );
       $slideshow['imagefield__lightshow2__'. $view_rule .'__original'] = array(
         'label' => 'Lightbox2 slideshow: '. $view_rule .'->original',
+        'field types' => array('image', 'filefield'),
+      );
+      $slideshow['imagefield__lightshow2_compact__'. $view_rule .'__original'] = array(
+        'label' => 'Lightbox2 slideshow: '. $view_rule .'->original compact',
         'field types' => array('image', 'filefield'),
       );
       $slideshow['imagefield__lightshow2__link__'. $view_rule] = array(
@@ -762,8 +778,16 @@ function lightbox2_field_formatter_info() {
           'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule,
           'field types' => array('image', 'filefield'),
         );
+        $lightbox['imagefield__lightbox2_compact__'. $view_rule .'__'. $lightbox_rule] = array(
+          'label' => 'Lightbox2: '. $view_rule .'->'. $lightbox_rule . ' compact',
+          'field types' => array('image', 'filefield'),
+        );
         $slideshow['imagefield__lightshow2__'. $view_rule .'__'. $lightbox_rule] = array(
           'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule,
+          'field types' => array('image', 'filefield'),
+        );
+        $slideshow['imagefield__lightshow2_compact__'. $view_rule .'__'. $lightbox_rule] = array(
+          'label' => 'Lightbox2 slideshow: '. $view_rule .'->'. $lightbox_rule . ' compact',
           'field types' => array('image', 'filefield'),
         );
       }
@@ -883,7 +907,17 @@ function lightbox2_theme() {
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
       );
+      $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['presetname'] .'__original'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
       $theme['lightbox2_formatter_imagefield__lightshow2__'. $src['presetname'] .'__original'] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['presetname'] .'__original'] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -893,7 +927,17 @@ function lightbox2_theme() {
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
       );
+      $theme['lightbox2_formatter_imagefield__lightbox2_compact__original__'. $src['presetname']] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
       $theme['lightbox2_formatter_imagefield__lightshow2__original__'. $src['presetname']] = array(
+        'arguments' => array('element' => NULL),
+        'function' => 'theme_lightbox2_formatter_imagefield',
+        'file' => 'lightbox2.formatter.inc',
+      );
+      $theme['lightbox2_formatter_imagefield__lightshow2_compact__original__'. $src['presetname']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -920,7 +964,17 @@ function lightbox2_theme() {
           'function' => 'theme_lightbox2_formatter_imagefield',
           'file' => 'lightbox2.formatter.inc',
         );
+        $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+          'arguments' => array('element' => NULL),
+          'function' => 'theme_lightbox2_formatter_imagefield',
+          'file' => 'lightbox2.formatter.inc',
+        );
         $theme['lightbox2_formatter_imagefield__lightshow2__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+          'arguments' => array('element' => NULL),
+          'function' => 'theme_lightbox2_formatter_imagefield',
+          'file' => 'lightbox2.formatter.inc',
+        );
+        $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['presetname'] .'__'. $dest['presetname']] = array(
           'arguments' => array('element' => NULL),
           'function' => 'theme_lightbox2_formatter_imagefield',
           'file' => 'lightbox2.formatter.inc',
