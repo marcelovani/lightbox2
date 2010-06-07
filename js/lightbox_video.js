@@ -25,7 +25,7 @@ var Lightvideo = {
     }
     else {
       Lightbox.videoId = href;
-      href = Lightbox.flvPlayer + '?file=' + href;
+      href = Drupal.settings.basePath + Lightbox.flvPlayer + '?file=' + href;
       variables = '';
       if (Lightbox.flvFlashvars.length) {
         variables = Lightbox.flvFlashvars;
