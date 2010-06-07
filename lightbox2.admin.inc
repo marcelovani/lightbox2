@@ -86,6 +86,14 @@ function lightbox2_general_settings_form() {
     '#return_value' => '_blank',
   );
 
+  // Show caption
+  $form['layout_fieldset']['lightbox2_show_caption'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show image caption'),
+    '#description' => t('Unset this to always hide the image caption (usually the title).'),
+    '#default_value' => variable_get('lightbox2_show_caption', TRUE),
+  );
+
   // Add text box for link text to node.
   $form['layout_fieldset']['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',

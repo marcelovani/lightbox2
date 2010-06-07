@@ -111,7 +111,7 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
     elseif (strpos($formatter, '__lightframe2__') !== FALSE) {
       $rel = 'lightframe';
     }
-    
+
     // Check if this is a compact display.
     list($tmp, $lightbox_type, $tmp) = explode('__', $formatter, 3);
     if ($lightbox_type == 'lightbox2_compact') {

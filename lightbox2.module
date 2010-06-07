@@ -610,6 +610,7 @@ function lightbox2_add_files() {
     'disable_resize' => variable_get('lightbox2_disable_resize', FALSE),
     'disable_zoom' => variable_get('lightbox2_disable_zoom', FALSE),
     'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
+    'show_caption' => variable_get('lightbox2_show_caption', TRUE),
     'loop_items' => variable_get('lightbox2_loop_items', FALSE),
     'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),

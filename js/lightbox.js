@@ -110,6 +110,7 @@ var Lightbox = {
     Lightbox.disableZoom = s.disable_zoom;
     Lightbox.slideInterval = s.slideshow_interval;
     Lightbox.showPlayPause = s.show_play_pause;
+    Lightbox.showCaption = s.show_caption;
     Lightbox.autoStart = s.slideshow_automatic_start;
     Lightbox.autoExit = s.slideshow_automatic_exit;
     Lightbox.pauseOnNextClick = s.pause_on_next_click;
@@ -707,12 +708,15 @@ var Lightbox = {
 
     $("#imageDataContainer").hide();
 
-    var caption = Lightbox.imageArray[Lightbox.activeImage][1];
-    if (!caption) caption = '&nbsp;';
-    $('#caption').html(caption).css({'zIndex': '10500'}).show();
+    var s = Drupal.settings.lightbox2;
+
+    if (s.show_caption) {
+      var caption = Lightbox.imageArray[Lightbox.activeImage][1];
+      if (!caption) caption = '&nbsp;';
+      $('#caption').html(caption).css({'zIndex': '10500'}).show();
+    }
 
     // If image is part of set display 'Image x of x'.
-    var s = Drupal.settings.lightbox2;
     var numberDisplay = null;
     if (Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;

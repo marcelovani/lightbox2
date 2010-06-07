@@ -43,6 +43,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_imagefield_use_node_title');
   variable_del('lightbox2_view_image_text');
   variable_del('lightbox2_image_ncck_group_node_id');
+  variable_del('lightbox2_show_caption');
   // Advanced settings.
   variable_del('lightbox2_js_location');
   variable_del('lightbox2_keys_close');
@@ -90,6 +91,7 @@ function lightbox2_uninstall() {
   variable_del('lightbox2_node_link_text');
   variable_del('lightbox2_download_link_text');
   variable_del('lightbox2_node_link_target');
+  variable_del('lightbox2_show_caption');
   variable_del('lightbox2_image_group');
   variable_del('lightbox2_disable_nested_acidfree_galleries');
   variable_del('lightbox2_acidfree_video');
