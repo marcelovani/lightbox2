@@ -134,7 +134,8 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   }
   // Can't show current node page in a lightframe on the node page.
   // Switch instead to show it in a lightbox.
-  if ($rel == 'lightframe' && arg(0) == 'node' && arg(1) == $node->nid) {
+  $on_image_node = (arg(0) == 'node') && (arg(1) == $node->nid);
+  if ($rel == 'lightframe' && $on_image_node) {
     $rel = 'lightbox';
   }
   $orig_rel = $rel;
@@ -179,7 +180,7 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
       $attributes['target'] = $target;
     }
     $node_link_text = variable_get('lightbox2_node_link_text', 'View Image Details');
-    if (!empty($node_link_text)) {
+    if (!$on_image_node && !empty($node_link_text)) {
       $node_links[] = l($node_link_text, 'node/'. $item['nid'], array('attributes' => $attributes));
     }
     $download_link_text = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
