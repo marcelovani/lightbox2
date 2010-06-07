@@ -587,15 +587,17 @@ function lightbox2_add_files() {
   if ($display_image_size == 'original' && user_access('view original images')) {
     $display_image_size = '';
   }
+  $font_color = variable_get('lightbox2_font_color', '000');
+  $box_color = variable_get('lightbox2_box_color', 'fff');
 
   // Load the javascript settings.
   $js_settings = array(
     'rtl' => $language->direction,
     'file_path' => base_path() .'(\w\w/)'. file_directory_path(),
     'default_image' => base_path() . $path .'/images/brokenimage.jpg',
-    'border_size' => (int)variable_get('lightbox2_border_size', 10),
-    'font_color' => variable_get('lightbox2_font_color', '000'),
-    'box_color' => variable_get('lightbox2_box_color', 'fff'),
+    'border_size' => (int) variable_get('lightbox2_border_size', 10),
+    'font_color' => !empty($font_color) ? $font_color : '000',
+    'box_color' => !empty($box_color) ? $box_color : '000',
     'top_position' => variable_get('lightbox2_top_position', ''),
     'overlay_opacity' => str_replace(',','.',(float)variable_get('lightbox2_overlay_opacity', 0.8)),
     'overlay_color' => variable_get('lightbox2_overlay_color', '000'),
