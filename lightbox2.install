@@ -176,3 +176,18 @@ function lightbox2_update_6001() {
   }
   return array();
 }
+
+/**
+ * 'lightbox2_slideshow_pause_on_previous_click' was mis-named as
+ * 'lightbox2_slideshow_pause_on_prev_click'.
+ */
+function lightbox2_update_6002() {
+  $vars = variable_init();
+  if (array_key_exists('lightbox2_slideshow_pause_on_prev_click', $vars)) {
+    $value = $vars['lightbox2_slideshow_pause_on_prev_click'];
+    variable_set('lightbox2_slideshow_pause_on_previous_click', $value);
+    variable_del('lightbox2_slideshow_pause_on_prev_click');
+  }
+  return array();
+}
+
