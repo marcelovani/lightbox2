@@ -509,7 +509,7 @@ function lightbox2_general_settings_form() {
  * numeric.
  */
 function lightbox2_general_settings_form_validate($form, &$form_state) {
-  if ($form_state['values']['op'] == 'Save configuration') {
+  if ($form_state['values']['op'] == t('Save configuration')) {
     $border_size = $form_state['values']['lightbox2_border_size'];
     $box_hex_colour = $form_state['values']['lightbox2_box_color'];
     $font_hex_colour = $form_state['values']['lightbox2_font_color'];
@@ -529,7 +529,6 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
       }
     }
 
-
     if (!_lightbox2_validate_hex_color($overlay_hex_colour)) {
       form_set_error('lightbox2_overlay_color', t('You must enter a properly formed hex value.'));
     }
@@ -540,7 +539,7 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
       }
 
       if (!_lightbox2_validate_hex_color($box_hex_colour)) {
-        form_set_error('lightbox2_border_color', t('You must enter a properly formed hex value.'));
+        form_set_error('lightbox2_box_color', t('You must enter a properly formed hex value.'));
       }
 
       if (!_lightbox2_validate_hex_color($font_hex_colour)) {
