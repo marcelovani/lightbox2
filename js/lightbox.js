@@ -126,7 +126,7 @@ var Lightbox = {
     }
 
     // Make the lightbox divs.
-    var output = '<div id="overlay" style="display: none;"></div>\
+    var output = '<div id="lightbox2-overlay" style="display: none;"></div>\
       <div id="lightbox" style="display: none;">\
         <div id="outerImageContainer"></div>\
         <div id="imageDataContainer" class="clearfix">\
@@ -168,7 +168,7 @@ var Lightbox = {
 
     // Setup onclick handlers.
     if (Lightbox.disableCloseClick) {
-      $('#overlay').click(function() { Lightbox.end(); return false; } ).hide();
+      $('#lightbox2-overlay').click(function() { Lightbox.end(); return false; } ).hide();
     }
     $('#loadingLink, #bottomNavClose').click(function() { Lightbox.end('forceClose'); return false; } );
     $('#prevLink, #framePrevLink').click(function() { Lightbox.changeData(Lightbox.activeImage - 1); return false; } );
@@ -273,7 +273,7 @@ var Lightbox = {
 
     // Stretch overlay to fill page and fade in.
     var arrayPageSize = Lightbox.getPageSize();
-    $("#overlay").hide().css({
+    $("#lightbox2-overlay").hide().css({
       'width': '100%',
       'zIndex': '10090',
       'height': arrayPageSize[1] + 'px',
@@ -281,16 +281,16 @@ var Lightbox = {
     });
     // Detect OS X FF2 opacity + flash issue.
     if (lightvideo && this.detectMacFF2()) {
-      $("#overlay").removeClass("overlay_default");
-      $("#overlay").addClass("overlay_macff2");
-      $("#overlay").css({'opacity' : null});
+      $("#lightbox2-overlay").removeClass("overlay_default");
+      $("#lightbox2-overlay").addClass("overlay_macff2");
+      $("#lightbox2-overlay").css({'opacity' : null});
     }
     else {
-      $("#overlay").removeClass("overlay_macff2");
-      $("#overlay").addClass("overlay_default");
-      $("#overlay").css({'opacity' : Lightbox.overlayOpacity});
+      $("#lightbox2-overlay").removeClass("overlay_macff2");
+      $("#lightbox2-overlay").addClass("overlay_default");
+      $("#lightbox2-overlay").css({'opacity' : Lightbox.overlayOpacity});
     }
-    $("#overlay").fadeIn(Lightbox.fadeInSpeed);
+    $("#lightbox2-overlay").fadeIn(Lightbox.fadeInSpeed);
 
 
     Lightbox.isSlideshow = slideshow;
@@ -685,7 +685,7 @@ var Lightbox = {
       var lightboxTop = (Lightbox.topPosition == '' ? (arrayPageSize[3] / 10) : Lightbox.topPosition) * 1;
       pageHeight = pageHeight + arrayPageScroll[1] + lightboxTop;
     }
-    $('#overlay').css({'height': pageHeight + 'px', 'width': arrayPageSize[0] + 'px'});
+    $('#lightbox2-overlay').css({'height': pageHeight + 'px', 'width': arrayPageSize[0] + 'px'});
 
     // Gecko browsers (e.g. Firefox, SeaMonkey, etc) don't handle pdfs as
     // expected.
@@ -902,7 +902,7 @@ var Lightbox = {
     }
     Lightbox.disableKeyboardNav();
     $('#lightbox').hide();
-    $("#overlay").fadeOut();
+    $("#lightbox2-overlay").fadeOut();
     Lightbox.isPaused = true;
     Lightbox.inprogress = false;
     // Replaces calls to showSelectBoxes() and showFlash() in original
