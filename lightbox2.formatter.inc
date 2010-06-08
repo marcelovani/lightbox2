@@ -239,8 +239,13 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   else {
     $full_rel = $rel .'[]['. $caption .']';
   }
+  $class = '';
+  if ($view_preset != 'original') {
+    $class = 'imagecache imagecache-' . $field_name . ' imagecache-' . $view_preset . ' imagecache-' . $field_name . '-' . $view_preset;
+  }
   $link_attributes = array(
     'rel' => $full_rel,
+    'class' => 'imagefield imagefield-lightbox2 imagefield-lightbox2-' . $view_preset . ' imagefield-' . $field_name . ' ' . $class,
   );
 
   $attributes = array();
