@@ -29,7 +29,6 @@ var Lightvideo = {
       variables = '';
       if (Lightbox.flvFlashvars.length) {
         variables = Lightbox.flvFlashvars;
-        href = href + '&' + Lightbox.flvFlashvars;
       }
 
       Lightvideo.createEmbed(href, "flvplayer", "#ffffff", variables);

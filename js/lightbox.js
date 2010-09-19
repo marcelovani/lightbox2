@@ -313,6 +313,9 @@ var Lightbox = {
     var rel_style = null;
     var i = 0;
 
+    if (rel_parts["flashvars"]) {
+      Lightbox.flvFlashvars = Lightbox.flvFlashvars + '&' + rel_parts["flashvars"];
+    }
 
     // Set the title for image alternative text.
     var alt = imageLink.title;
@@ -1043,7 +1046,7 @@ var Lightbox = {
   // parseRel()
   parseRel: function (link) {
     var parts = [];
-    parts["rel"] = parts["title"] = parts["group"] = parts["style"] = null;
+    parts["rel"] = parts["title"] = parts["group"] = parts["style"] = parts["flashvars"] = null;
     if (!$(link).attr('rel')) return parts;
     parts["rel"] = $(link).attr('rel').match(/\w+/)[0];
 
@@ -1051,6 +1054,9 @@ var Lightbox = {
       var info = $(link).attr('rel').match(/\[(.*?)\]/)[1].split('|');
       parts["group"] = info[0];
       parts["style"] = info[1];
+      if (parts["style"] != undefined && parts["style"].match(/flashvars:\s?(.*?);/)) {
+        parts["flashvars"] = parts["style"].match(/flashvars:\s?(.*?);/)[1];
+      }
     }
     if ($(link).attr('rel').match(/\[.*\]\[(.*)\]/)) {
       parts["title"] = $(link).attr('rel').match(/\[.*\]\[(.*)\]/)[1];
