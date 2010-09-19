@@ -530,8 +530,8 @@ var Lightbox = {
         var modalStyles = Lightbox.imageArray[Lightbox.activeImage][3];
         container = Lightbox.setStyles(container, modalStyles);
         if (Lightbox.isVideo) {
-          Lightbox.modalHeight =  parseInt(container.height, 10);
-          Lightbox.modalWidth =  parseInt(container.width, 10);
+          Lightbox.modalHeight =  parseInt(container.height, 10) - 10;
+          Lightbox.modalWidth =  parseInt(container.width, 10) - 10;
           Lightvideo.startVideo(Lightbox.imageArray[Lightbox.activeImage][0]);
         }
         Lightbox.resizeContainer(parseInt(container.width, 10), parseInt(container.height, 10));
