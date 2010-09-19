@@ -366,7 +366,7 @@ var Lightbox = {
             }
             if (rel_data["rel"] == rel) {
               if (rel_data["group"] == rel_group) {
-                if (Lightbox.isLightframe || Lightbox.isModal) {
+                if (Lightbox.isLightframe || Lightbox.isModal || Lightbox.isVideo) {
                   rel_style = rel_data["style"];
                 }
                 Lightbox.imageArray.push([anchor.href, anchor_title, img_alt, rel_style]);
