@@ -636,6 +636,7 @@ var Lightbox = {
           var src = unescape(Lightbox.imageArray[Lightbox.activeImage][0]);
           if (Lightbox.imageArray[Lightbox.activeImage][4]) {
             $(src).appendTo("#modalContainer");
+            $('#modalContainer').css({'zIndex': '10500'}).show();
           }
           else {
             // Use a callback to show the new image, otherwise you get flicker.
@@ -1037,7 +1038,7 @@ var Lightbox = {
       $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").show();
     }
     else if (state == 'hide') {
-      $("select:visible, embed:visible, object:visible").addClass("lightbox_hidden");
+      $("select:visible, embed:visible, object:visible").not('#lightboxAutoModal select, #lightboxAutoModal embed, #lightboxAutoModal object').addClass("lightbox_hidden");
       $("select.lightbox_hidden, embed.lightbox_hidden, object.lightbox_hidden").hide();
     }
   },
