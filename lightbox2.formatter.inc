@@ -513,14 +513,18 @@ function theme_lightbox2_formatter_emvideo_lightvideo($element) {
  *   The formatter to use for the field.
  * @param $node
  *   The node object.
+ * @param $options
+ *   Options array.
  * @return
  *   Themed link to the embedded media field video.
  */
-function theme_lightbox2_emvideo($field, $item, $formatter, $node) {
-
-  $options = array();
-  $thumbnail = theme('emvideo_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
-
+function theme_lightbox2_emvideo($field, $item, $formatter, $node, $options = array()) {
+  $thumbnail = isset($options['thumbnail']) ? $options['thumbnail'] : theme('emvideo_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
+  // if options title set use that, otherwise use video title if set in node,
+  // otherwise try node title, then widget thumbnail setting and fallback to
+  // default string.
+  $title = isset($options['title']) ? $options['title'] : (isset($item['data']['emthumb']['emthumb_title']) ? $item['data']['emthumb']['emthumb_title'] : (isset($node->title) ? $node->title : (isset($field['widget']['thumbnail_link_title']) ? $field['widget']['thumbnail_link_title'] : variable_get('emvideo_default_thumbnail_link_title', t('See video')))));
+  
   $destination = 'video-cck/lightbox2/'. $node->nid .'/'. $field['widget']['video_width'] .'/'. $field['widget']['video_height'] .'/'. $field['field_name'] .'/'. $item['provider'] .'/'. $item['value'];
   $width = $field['widget']['video_width'] + 20;
   $height = $field['widget']['video_height'] + 20;
@@ -528,9 +532,21 @@ function theme_lightbox2_emvideo($field, $item, $formatter, $node) {
     $width = $field['widget']['video_width'] + 40;
     $height = $field['widget']['video_height'] + 40;
   }
-  $rel_full = 'lightframe[|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
+  $rel_full = 'lightframe['. $field['type_name'] . '|width:'. $width .'px; height:'. $height .'px; overflow:visible;]';
 
-  $output = l($thumbnail, $destination, array('attributes' => array('rel' => $rel_full, 'class' => $field['type_name']), 'html' => TRUE));
+  $attributes = array(
+    'attributes' => array(
+      'title' => $title,
+      'class' => $field['type_name'],
+      'rel' => $rel_full,
+    ),
+    'query' => NULL,
+    'fragment' => NULL,
+    'absolute' => FALSE,
+    'html' => TRUE,
+  );
+
+  $output = l($thumbnail, $destination, $attributes);
   return $output;
 }
 

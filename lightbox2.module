@@ -1020,9 +1020,11 @@ function lightbox2_emvideo($nid, $width, $height, $field_name, $provider, $id) {
   $field['field_name'] = $field_name;
   $node = node_load($nid);
   $items = $node->$field_name;
-  foreach ($items as $item) {
-    if ($item['provider'] == $provider && $item['value'] == $id) {
-      break;
+  if (is_array($items)) {
+    foreach ($items as $item) {
+      if ($item['provider'] == $provider && $item['value'] == $id) {
+        break;
+      }
     }
   }
   print theme('emvideo_video_video', $field, $item, 'video_video', $node);
