@@ -127,8 +127,9 @@ var Lightbox = {
     }
 
     // Make the lightbox divs.
+    var layout_class = (s.use_alt_layout ? 'lightbox2-alt-layout' : 'lightbox2-orig-layout');
     var output = '<div id="lightbox2-overlay" style="display: none;"></div>\
-      <div id="lightbox" style="display: none;">\
+      <div id="lightbox" style="display: none;" class="' + layout_class + '">\
         <div id="outerImageContainer"></div>\
         <div id="imageDataContainer" class="clearfix">\
           <div id="imageData"></div>\
@@ -155,9 +156,9 @@ var Lightbox = {
     $('#outerImageContainer').append(modal + frame + imageContainer + loading);
     if (!s.use_alt_layout) {
       $('#imageContainer').append(image + hoverNav);
-      $('#imageData').append(frameNav + details + bottomNav);
+      $('#imageData').append(details + bottomNav);
       $('#imageDetails').append(caption + numberDisplay);
-      $('#bottomNav').append(close + zoom + zoomOut + pause + play);
+      $('#bottomNav').append(frameNav + close + zoom + zoomOut + pause + play);
     }
     else {
       $('#outerImageContainer').append(bottomNav);
@@ -448,6 +449,7 @@ var Lightbox = {
 
       // Preload image content, but not iframe pages.
       if (!Lightbox.isLightframe && !Lightbox.isVideo && !Lightbox.isModal) {
+        $("#lightbox #imageDataContainer").removeClass('lightbox2-alt-layout-data');
         imgPreloader = new Image();
         imgPreloader.onerror = function() { Lightbox.imgNodeLoadingError(this); };
 
@@ -506,6 +508,7 @@ var Lightbox = {
 
       // Set up frame size, etc.
       else if (Lightbox.isLightframe) {
+        $("#lightbox #imageDataContainer").addClass('lightbox2-alt-layout-data');
         var src = Lightbox.imageArray[Lightbox.activeImage][0];
         $('#frameContainer').html('<iframe id="lightboxFrame" style="display: none;" src="'+src+'"></iframe>');
 
@@ -526,6 +529,7 @@ var Lightbox = {
         Lightbox.resizeContainer(parseInt(iframe.width, 10), parseInt(iframe.height, 10));
       }
       else if (Lightbox.isVideo || Lightbox.isModal) {
+        $("#lightbox #imageDataContainer").addClass('lightbox2-alt-layout-data');
         var container = document.getElementById('modalContainer');
         var modalStyles = Lightbox.imageArray[Lightbox.activeImage][3];
         container = Lightbox.setStyles(container, modalStyles);
