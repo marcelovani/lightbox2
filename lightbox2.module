@@ -655,7 +655,7 @@ function lightbox2_add_files() {
     'enable_video' => $enable_video,
   );
   if ($enable_video) {
-    $js_settings['flvPlayer'] = check_plain(variable_get('lightbox2_flv_player_path', '/flvplayer.swf'));
+    $js_settings['flvPlayer'] = url(check_plain(variable_get('lightbox2_flv_player_path', '/flvplayer.swf')));
     $js_settings['flvFlashvars'] = check_plain(variable_get('lightbox2_flv_player_flashvars', ''));
   }
 
