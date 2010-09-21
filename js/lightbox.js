@@ -720,13 +720,13 @@ var Lightbox = {
 
     if (s.show_caption) {
       var caption = Lightbox.imageArray[Lightbox.activeImage][1];
-      if (!caption) caption = '&nbsp;';
+      if (!caption) caption = '';
       $('#caption').html(caption).css({'zIndex': '10500'}).show();
     }
 
     // If image is part of set display 'Image x of x'.
     var numberDisplay = null;
-    if (Lightbox.total > 1) {
+    if (s.image_count && Lightbox.total > 1) {
       var currentImage = Lightbox.activeImage + 1;
       if (!Lightbox.isLightframe && !Lightbox.isModal && !Lightbox.isVideo) {
         numberDisplay = s.image_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
@@ -738,6 +738,9 @@ var Lightbox = {
         numberDisplay = s.page_count.replace(/\!current/, currentImage).replace(/\!total/, Lightbox.total);
       }
       $('#numberDisplay').html(numberDisplay).css({'zIndex': '10500'}).show();
+    }
+    else {
+      $('#numberDisplay').hide();
     }
 
     $("#imageDataContainer").hide().slideDown(Lightbox.slideDownSpeed, function() {
