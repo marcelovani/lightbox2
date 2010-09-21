@@ -167,7 +167,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             if (link_text.length) {
               title_link = "<br /><a href=\"" + orig_href + "\" id=\"node_link_text\" "+ link_target +" >"+ link_text + "</a>";
             }
-            rel = rel + "[" + alt + title_link + "]";
+            rel = rel + "[" + img_title + title_link + "]";
             $(this).attr({
               rel: rel,
               href: href
@@ -181,7 +181,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
                 rel = rel_type + "["+ id +"]";
               }
             }
-            rel = rel + "[" + alt + "]";
+            rel = rel + "[" + img_title + "]";
             $(this).attr({
               rel: rel,
               href: orig_href
