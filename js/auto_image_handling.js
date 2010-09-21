@@ -94,12 +94,12 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         }
 
         // Handle "image-img_assist_custom" images.
-        else if ($(child).attr("class").match("image-img_assist_custom")) {
+        else if ($(child).filter("[class*=img_assist_custom]")) {
           // Image assist uses "+" signs for spaces which doesn't work for
           // normal links.
           if (settings.display_image_size != "original") {
             orig_href = orig_href.replace(/\+/, " ");
-            href = $(child).attr("src").replace(new RegExp("\\.img_assist_custom"), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size));
+            href = $(child).attr("src").replace(new RegExp("\\.img_assist_custom-[0-9]+x[0-9]+"), ((settings.display_image_size === "")?settings.display_image_size:"."+ settings.display_image_size));
             if (rel_type != "lightbox_ungrouped" && rel_type != "lightframe_ungrouped") {
               rel = rel_type + "[node_images]";
             }
