@@ -2357,7 +2357,7 @@ function lightbox2_link_alter(&$node, &$links) {
 
   // Only operate on image nodes and if automatic handling for image nodes is
   // enabled.
-  if ($node->type != 'image' && $image_node_handler) {
+  if (!$image_node_handler || ($node->type != 'image' && $image_node_handler)) {
     return;
   }
   $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
