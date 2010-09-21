@@ -1288,9 +1288,9 @@ function lightbox2_link_alter(&$links, $node) {
   }
   $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
 
-  // Change original ('') to '_original'.
-  if (isset($trigger_sizes[''])) {
-    unset($trigger_sizes['']);
+  // Change original ('original') to '_original'.
+  if (isset($trigger_sizes['original'])) {
+    unset($trigger_sizes['original']);
     $trigger_sizes['_original'] = '_original';
   }
 
