@@ -948,11 +948,11 @@ var Lightbox = {
 
     var xScroll, yScroll;
 
-    if (self.pageYOffset) {
+    if (self.pageYOffset || self.pageXOffset) {
       yScroll = self.pageYOffset;
       xScroll = self.pageXOffset;
     }
-    else if (document.documentElement && document.documentElement.scrollTop) {  // Explorer 6 Strict.
+    else if (document.documentElement && (document.documentElement.scrollTop || document.documentElement.scrollLeft)) {  // Explorer 6 Strict.
       yScroll = document.documentElement.scrollTop;
       xScroll = document.documentElement.scrollLeft;
     }
