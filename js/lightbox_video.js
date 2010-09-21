@@ -25,10 +25,13 @@ var Lightvideo = {
     }
     else {
       Lightbox.videoId = href;
-      href = Lightbox.flvPlayer + '?file=' + href;
-      if (Lightbox.flvFlashvars.length) {
-        variables = Lightbox.flvFlashvars;
-        href = href + '&' + Lightbox.flvFlashvars;
+      variables = '';
+      if (!href.match(/\.swf$/i)) {
+        href = Lightbox.flvPlayer + '?file=' + href;
+        if (Lightbox.flvFlashvars.length) {
+          variables = Lightbox.flvFlashvars;
+          href = href + '&' + Lightbox.flvFlashvars;
+        }
       }
 
       Lightvideo.createEmbed(href, "flvplayer", "#ffffff", variables);
