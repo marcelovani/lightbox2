@@ -1283,7 +1283,7 @@ function lightbox2_link_alter(&$links, $node) {
 
   // Only operate on image nodes and if automatic handling for image nodes is
   // enabled.  Also ensure $links is an array (bug in contemplate module).
-  if (($node->type != 'image' && $image_node_handler) || !is_array($links)) {
+  if (!$image_node_handler || ($node->type != 'image' && $image_node_handler) || !is_array($links)) {
     return;
   }
   $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
