@@ -141,16 +141,18 @@ var Lightbox = {
     var imageContainer = '<div id="imageContainer" style="display: none;"></div>';
     var details = '<div id="imageDetails"></div>';
     var bottomNav = '<div id="bottomNav"></div>';
-    var image = '<img id="lightboxImage" />';
+    var image = '<img id="lightboxImage" alt="" />';
     var hoverNav = '<div id="hoverNav"><a id="prevLink" href="#"></a><a id="nextLink" href="#"></a></div>';
     var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" href="#"></a><a id="frameNextLink" href="#"></a></div>';
+    var hoverNav = '<div id="hoverNav"><a id="prevLink" title="' + Drupal.t('Previous') + '" href="#"></a><a id="nextLink" title="' + Drupal.t('Next') + '" href="#"></a></div>';
+    var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" title="' + Drupal.t('Previous') + '" href="#"></a><a id="frameNextLink" title="' + Drupal.t('Next') + '" href="#"></a></div>';
     var caption = '<span id="caption"></span>';
     var numberDisplay = '<span id="numberDisplay"></span>';
-    var close = '<a id="bottomNavClose" href="#"></a>';
+    var close = '<a id="bottomNavClose" title="' + Drupal.t('Close') + ' href="#"></a>';
     var zoom = '<a id="bottomNavZoom" href="#"></a>';
     var zoomOut = '<a id="bottomNavZoomOut" href="#"></a>';
-    var pause = '<a id="lightshowPause" href="#" style="display: none;"></a>';
-    var play = '<a id="lightshowPlay" href="#" style="display: none;"></a>';
+    var pause = '<a id="lightshowPause" title="' + Drupal.t('Pause Slideshow') + ' href="#" style="display: none;"></a>';
+    var play = '<a id="lightshowPlay" title="' + Drupal.t('Play Slideshow') + ' href="#" style="display: none;"></a>';
 
     $("body").append(output);
     $('#outerImageContainer').append(modal + frame + imageContainer + loading);
