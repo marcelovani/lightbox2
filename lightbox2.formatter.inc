@@ -74,7 +74,7 @@ function theme_lightbox2_formatter_imagefield($element) {
  * @return
  *   The themed imagefield + imagecache image and link.
  */
-function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset) {
+function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset, $args = array()) {
   // Load file data if missing
   if (!isset($item['filepath']) && !empty($item['fid'])) {
     $file = field_file_load($item['fid']);
@@ -85,7 +85,6 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
     return '';
   }
 
-  $args = array();
   $args['lightbox_preset'] = $lightbox_preset;
 
   // Check view_preset for existence.
@@ -221,7 +220,10 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   // Set up the rel attribute.
   $full_rel = '';
   $imagefield_grouping = variable_get('lightbox2_imagefield_group_node_id', 1);
-  if ($imagefield_grouping == 1) {
+  if (isset($args['rel_grouping'])) {
+    $full_rel = $rel .'['. $args['rel_grouping'] .']['. $caption .']';
+  }
+  elseif ($imagefield_grouping == 1) {
     $full_rel = $rel .'['. $field_name .']['. $caption .']';
   }
   elseif ($imagefield_grouping == 2 && !empty($item['nid'])) {
@@ -232,9 +234,6 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   }
   elseif ($imagefield_grouping == 4 ) {
     $full_rel = $rel .'[allnodes]['. $caption .']';
-  }
-  elseif (isset($args['rel_grouping'])) {
-    $full_rel = $rel .'['. $args['rel_grouping'] .']['. $caption .']';
   }
   else {
     $full_rel = $rel .'[]['. $caption .']';
