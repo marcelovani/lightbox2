@@ -177,7 +177,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
             if (download_link_text.length && download) {
               title_link = title_link + " - <a href=\"" + download + "\" id=\"download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
             }
-            rel = rel + "[" + alt + title_link + "]";
+            rel = rel + "[" + img_title + title_link + "]";
             $(this).attr({
               rel: rel,
               href: href
@@ -191,7 +191,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
                 rel = rel_type + "["+ id +"]";
               }
             }
-            rel = rel + "[" + alt + "]";
+            rel = rel + "[" + img_title + "]";
             $(this).attr({
               rel: rel,
               href: orig_href
