@@ -528,7 +528,7 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
     $slide_down_speed = $form_state['values']['lightbox2_slidedown_speed'];
     $flv_player_path = $form_state['values']['lightbox2_flv_player_path'];
 
-    if ($flv_player_path != '' && $form_state['values']['lightbox2_enable_video']) {
+    if (!empty($flv_player_path) && $form_state['values']['lightbox2_enable_video']) {
       if (strpos($flv_player_path, base_path()) === 0) {
         $flv_player_path = drupal_substr($flv_player_path, drupal_strlen(base_path()));
       }
