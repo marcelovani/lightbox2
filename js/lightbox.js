@@ -695,7 +695,7 @@ var Lightbox = {
 
     $("#imageDataContainer").hide();
 
-    var caption = Lightbox.imageArray[Lightbox.activeImage][1];
+    var caption = Lightbox.filterXSS(Lightbox.imageArray[Lightbox.activeImage][1]);
     if (!caption) caption = '&nbsp;';
     $('#caption').html(caption).css({'zIndex': '10500'}).show();
 
@@ -1121,6 +1121,24 @@ var Lightbox = {
 
   checkKey: function(keys, key, code) {
     return (jQuery.inArray(key, keys) != -1 || jQuery.inArray(String(code), keys) != -1);
+  },
+
+  filterXSS: function(str, allowed_tags) {
+    var output = "";
+    $.ajax({
+      url: Drupal.settings.basePath + 'system/lightbox2/filter-xss',
+      data: {
+        'string' : str,
+        'allowed_tags' : allowed_tags,
+      },
+      type: "POST",
+      async: false,
+      dataType:  "json",
+      success: function(data) {
+        output = data;
+      }
+    });
+    return output;
   }
 
 

@@ -213,6 +213,14 @@ function lightbox2_menu($may_cache) {
   $items = array();
 
   if ($may_cache) {
+    $items[] = array(
+      'path' => 'system/lightbox2/filter-xss',
+      'title' => t('Filter XSS'),
+      'callback' => 'lightbox2_filter_xss',
+      'access' => TRUE,
+      'type' => MENU_CALLBACK,
+    );
+
     $items[] = array('path' => 'admin/settings/lightbox2',
       'title' => t('Lightbox2'),
       'callback' => 'lightbox2_settings_page',
@@ -255,13 +263,17 @@ function lightbox2_menu($may_cache) {
       'type' => MENU_LOCAL_TASK,
       'weight' => 3,
     );
-    if (module_exists('emfield') && module_exists('video_cck')) {
-      $items[] = array(
-        'path' => 'video-cck/lightbox2',
-        'callback' => 'lightbox2_video_cck',
-        'access' => user_access('access content'),
-        'type' => MENU_CALLBACK,
+    if (module_exists('emfield') && module_exists('video_cck') && arg(0) == 'video-cck' && arg(1) == 'lightbox2' && is_numeric(arg(2))) {
+      $node = node_load(arg(2));
+      if ($node->nid) {
+        $items[] = array(
+          'path' => 'video-cck/lightbox2/'. arg(2),
+          'callback' => 'lightbox2_video_cck',
+          'callback arguments' => array($node),
+          'access' => node_access('view', $node),
+          'type' => MENU_CALLBACK,
         );
+      }
     }
     $items[] = array('path' => 'user/login/lightbox2',
       'title' => t('Login'),
@@ -282,13 +294,16 @@ function lightbox2_menu($may_cache) {
     }
     if (module_exists('acidfree') && module_exists('video')) {
       if (arg(0) == 'node' && arg(2) == 'lightframevideo' && is_numeric(arg(1))) {
-        $items[] = array(
-          'path' => 'node/'. arg(1) .'/lightframevideo',
-          'callback' => 'lightbox2_acidfree_video',
-          'callback arguments' => array(arg(1)),
-          'access' => user_access('play video'),
-          'type' => MENU_CALLBACK,
+        $node = node_load(arg(1));
+        if ($node->nid) {
+          $items[] = array(
+            'path' => 'node/'. arg(1) .'/lightframevideo',
+            'callback' => 'lightbox2_acidfree_video',
+            'callback arguments' => array($node),
+            'access' => user_access('play video') && node_access('view', $node),
+            'type' => MENU_CALLBACK,
           );
+        }
       }
     }
   }
@@ -1955,8 +1970,8 @@ function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = 
 /**
  * Configures settings and outputs the video.
  *
- * @param nid
- *   The node id.
+ * @param node
+ *   The node object.
  * @param width
  *   The lightbox video width.
  * @param height
@@ -1968,13 +1983,26 @@ function theme_lightbox2_video_cck($field, $item, $formatter, $node, $options = 
  * @param id
  *   The video id.
  */
-function lightbox2_video_cck($nid, $width, $height, $field_name, $provider, $id) {
+function lightbox2_video_cck($node, $width, $height, $field_name, $provider, $id) {
   $field = array();
   $field['widget']['video_width'] = $width;
   $field['widget']['video_height'] = $height;
   $field['widget']['video_autoplay'] = 1;
   $field['field_name'] = $field_name;
-  $node = node_load($nid);
+
+  $type = $node->type;
+  if (module_exists('cck_field_perms') && $types = variable_get('cfp_types', null)) {
+    if ($types[$type]) {
+      $disallowed_fields = unserialize(variable_get('cfp_values', null));
+      if ($disallowed_fields && $disallowed_fields[$type][$field_name] != 0) {
+        if (!(user_access(_cfp_content_to_readable($type, $disallowed_field, 'view')))) {
+          drupal_access_denied();
+          return;
+        }
+      }
+    }
+  }
+
   $items = $node->$field_name;
   foreach ($items as $item) {
     if ($item['provider'] == $provider && $item['value'] == $id) {
@@ -2155,15 +2183,14 @@ function lightbox2_imagecache_create_url($preset, $filepath) {
 /**
  * Display the video object.
  *
- * Displays the video object for a specified nid.  It is used for * displaying
+ * Displays the video object for a specified nid.  It is used for displaying
  * videos in acidfree lists in a lightbox when the thumbnail is clicked on.  It
  * is only triggered for the url 'node/%nid/lightframevideo'.
  *
- * @param $nid
- *   Unique identifier of the node.
+ * @param $node
+ *   The $node object.
  */
-function lightbox2_acidfree_video($nid) {
-  $node = node_load($nid);
+function lightbox2_acidfree_video($node) {
   print theme('video_player', $node);
 }
 
@@ -2387,6 +2414,26 @@ function lightbox2_link_alter(&$node, &$links) {
       $links['image_size_'. $size]['href'] = $node->images[$size];
       unset($links['image_size_'. $size]['query']);
     }
+  }
+}
+
+function lightbox2_filter_xss() {
+  if (!empty($_POST['allowed_tags']) && $_POST['allowed_tags'] != 'undefined') {
+    $allowed_tags = explode(',', $_POST['allowed_tags']);
+    $output = filter_xss($_POST['string'], $allowed_tags);
+  }
+  else {
+    $output = filter_xss($_POST['string']);
+  }
+  lightbox2_drupal_json($output);
+}
+
+function lightbox2_drupal_json($var = NULL) {
+  // We are returning JavaScript, so tell the browser.
+  drupal_set_header('Content-Type: text/javascript; charset=utf-8');
+
+  if (isset($var)) {
+    echo drupal_to_js($var);
   }
 }
 

@@ -177,3 +177,11 @@ function lightbox2_update_4() {
   return array();
 }
 
+/**
+ * Menu paths changed.
+ */
+function lightbox2_update_5() {
+  menu_rebuild();
+  return array();
+}
+
