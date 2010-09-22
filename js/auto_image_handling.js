@@ -91,6 +91,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
               rel = rel_type + "["+ id +"]";
             }
           }
+          download = href;
         }
 
         // Handle "image-img_assist_custom" images.
