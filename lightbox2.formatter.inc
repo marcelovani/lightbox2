@@ -163,16 +163,16 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   $image_title = $item_data['description'];
   $image_title = (!empty($image_title) ? $image_title : $item_data['title']);
   $image_title = (!empty($image_title) ? $image_title : $item_data['alt']);
+  if (empty($image_title) || variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
+    $node = node_load($node->nid);
+    $image_title = $node->title;
+  }
 
   $image_tag_title = '';
   if (!empty($item_data['title'])) {
     $image_tag_title = $item_data['title'];
   }
 
-  if (variable_get('lightbox2_imagefield_use_node_title', FALSE)) {
-    $node = node_load($node->nid);
-    $image_title = $node->title;
-  }
 
   // Enforce image alt.
   $image_tag_alt = '';
