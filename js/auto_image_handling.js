@@ -95,7 +95,7 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
         }
 
         // Handle "image-img_assist_custom" images.
-        else if ($(child).filter("[class*=img_assist_custom]")) {
+        else if ($(child).filter("img[class*=img_assist_custom]").size()) {
           // Image assist uses "+" signs for spaces which doesn't work for
           // normal links.
           if (settings.display_image_size != "original") {
