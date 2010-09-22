@@ -153,6 +153,13 @@ function lightbox2_perm() {
 function lightbox2_menu() {
   $items = array();
 
+  $items['system/lightbox2/filter-xss'] = array(
+    'title' => 'Filter XSS',
+    'page callback' => 'lightbox2_filter_xss',
+    'access callback' => TRUE,
+    'type' => MENU_CALLBACK,
+  );
+
   $items['admin/settings/lightbox2'] = array(
     'title' => 'Lightbox2',
     'description' => 'Allows the user to configure the lightbox2 settings',
@@ -206,19 +213,20 @@ function lightbox2_menu() {
     'weight' => 3,
   );
   if (module_exists('emfield') && module_exists('emvideo')) {
-    $items['video-cck/lightbox2'] = array(
+    $items['video-cck/lightbox2/%node'] = array(
       'page callback' => 'lightbox2_emvideo',
-      'access callback' => 'user_access',
-      'access arguments' => array('access content'),
+      'page arguments' => array(2),
+      'access callback' => 'node_access',
+      'access arguments' => array('view', 2),
       'type' => MENU_CALLBACK,
     );
   }
   if (module_exists('acidfree') && module_exists('video')) {
-    $items['node/%nid/lightframevideo'] = array(
+    $items['node/%node/lightframevideo'] = array(
       'page callback' => 'lightbox2_acidfree_video',
       'page arguments' => array(1),
-      'access callback' => 'user_access',
-      'access arguments' => array('play video'),
+      'access callback' => 'lightbox2_acidfree_video_access',
+      'access arguments' => array(1),
       'type' => MENU_CALLBACK,
     );
   }
@@ -236,6 +244,16 @@ function lightbox2_menu() {
   );
 
   return $items;
+}
+
+/**
+ * Acidfree video access control.
+ */
+function lightbox2_acidfree_video_access($node) {
+  if (user_access('play video') && node_access('view', $node)) {
+    return TRUE;
+  }
+  return FALSE;
 }
 
 /**
@@ -1017,13 +1035,16 @@ function lightbox2_theme() {
  * @param id
  *   The video id.
  */
-function lightbox2_emvideo($nid, $width, $height, $field_name, $provider, $id) {
-  $field = array();
+function lightbox2_emvideo($node, $width, $height, $field_name, $provider, $id) {
+  $field = content_fields($field_name);
   $field['widget']['video_width'] = $width;
   $field['widget']['video_height'] = $height;
   $field['widget']['video_autoplay'] = 1;
-  $field['field_name'] = $field_name;
-  $node = node_load($nid);
+  if (!content_access('view', $field, NULL, $node)) {
+    drupal_access_denied();
+    return;
+  }
+
   $items = $node->$field_name;
   if (is_array($items)) {
     foreach ($items as $item) {
@@ -1080,15 +1101,14 @@ function lightbox2_preprocess_page(&$variables) {
 /**
  * Display the video object.
  *
- * Displays the video object for a specified nid.  It is used for * displaying
+ * Displays the video object for a specified nid.  It is used for displaying
  * videos in acidfree lists in a lightbox when the thumbnail is clicked on.  It
  * is only triggered for the url 'node/%nid/lightframevideo'.
  *
- * @param $nid
- *   Unique identifier of the node.
+ * @param $node
+ *   The $node object.
  */
-function lightbox2_acidfree_video($nid) {
-  $node = node_load($nid);
+function lightbox2_acidfree_video($node) {
   print theme('video_player', $node);
 }
 
@@ -1329,3 +1349,15 @@ function lightbox2_views_api() {
     'api' => '2.0',
   );
 }
+
+function lightbox2_filter_xss() {
+  if (!empty($_POST['allowed_tags']) && $_POST['allowed_tags'] != 'undefined') {
+    $allowed_tags = explode(',', $_POST['allowed_tags']);
+    $output = filter_xss($_POST['string'], $allowed_tags);
+  }
+  else {
+    $output = filter_xss($_POST['string']);
+  }
+  drupal_json($output);
+}
+
