@@ -854,16 +854,16 @@ function lightbox2_auto_image_handling_settings_form() {
   /* ----------------------- */
   $form['handler_options']['inline_options'] = array(
     '#type' => 'fieldset',
-    '#title' => t('Inline images'),
+    '#title' => t('Inline module images'),
     '#collapsible' => TRUE,
     '#collapsed' => TRUE,
   );
   // Add checkbox for inline image support.
   $form['handler_options']['inline_options']['lightbox2_inline'] = array(
     '#type' => 'select',
-    '#title' => t('Automatic handler for Inline images'),
+    '#title' => t('Automatic handler for Inline module images'),
     '#options' => $automatic_options,
-    '#description' => t('Choose how URLs for Inline images will be automatically handled.'),
+    '#description' => t('Choose how URLs for Inline module images will be automatically handled.'),
     '#default_value' => variable_get('lightbox2_inline', 0),
   );
 
