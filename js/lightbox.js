@@ -148,11 +148,11 @@ var Lightbox = {
     var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" title="' + Drupal.t('Previous') + '" href="#"></a><a id="frameNextLink" title="' + Drupal.t('Next') + '" href="#"></a></div>';
     var caption = '<span id="caption"></span>';
     var numberDisplay = '<span id="numberDisplay"></span>';
-    var close = '<a id="bottomNavClose" title="' + Drupal.t('Close') + ' href="#"></a>';
+    var close = '<a id="bottomNavClose" title="' + Drupal.t('Close') + '" href="#"></a>';
     var zoom = '<a id="bottomNavZoom" href="#"></a>';
     var zoomOut = '<a id="bottomNavZoomOut" href="#"></a>';
-    var pause = '<a id="lightshowPause" title="' + Drupal.t('Pause Slideshow') + ' href="#" style="display: none;"></a>';
-    var play = '<a id="lightshowPlay" title="' + Drupal.t('Play Slideshow') + ' href="#" style="display: none;"></a>';
+    var pause = '<a id="lightshowPause" title="' + Drupal.t('Pause Slideshow') + '" href="#" style="display: none;"></a>';
+    var play = '<a id="lightshowPlay" title="' + Drupal.t('Play Slideshow') + '" href="#" style="display: none;"></a>';
 
     $("body").append(output);
     $('#outerImageContainer').append(modal + frame + imageContainer + loading);
