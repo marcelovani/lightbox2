@@ -173,10 +173,10 @@ function lightbox2_init_triggers(classes, rel_type, custom_class) {
           if (!custom_class) {
             var title_link = "";
             if (link_text.length) {
-              title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"lightbox2_node_link_text\" "+ link_target +" >"+ link_text + "</a>";
+              title_link = "<br /><br /><a href=\"" + orig_href + "\" id=\"lightbox2-node-link-text\" "+ link_target +" >"+ link_text + "</a>";
             }
             if (download_link_text.length && download) {
-              title_link = title_link + " - <a href=\"" + download + "\" id=\"lightbox2_download_link_text\" target=\"_blank\">" + download_link_text + "</a>";
+              title_link = title_link + " - <a href=\"" + download + "\" id=\"lightbox2-download-link-text\" target=\"_blank\">" + download_link_text + "</a>";
             }
             rel = rel + "[" + img_title + title_link + "]";
             $(this).attr({
@@ -224,7 +224,7 @@ function lightbox2_init_acidfree_video() {
       var title = $(this).attr("title");
       var title_link = "";
       if (link_text.length) {
-        title_link = "<br /><a href=\"" + orig_href + "\" id=\"lightbox2_node_link_text\" "+ link_target +" >"+ link_text + "</a>";
+        title_link = "<br /><a href=\"" + orig_href + "\" id=\"lightbox2-node-link-text\" "+ link_target +" >"+ link_text + "</a>";
       }
 
       $(this).attr({
