@@ -69,6 +69,14 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_force_show_nav', FALSE),
   );
 
+  // Show caption
+  $form['layout_fieldset']['lightbox2_show_caption'] = array(
+    '#type' => 'checkbox',
+    '#title' => t('Show image caption'),
+    '#description' => t('Unset this to always hide the image caption (usually the title).'),
+    '#default_value' => variable_get('lightbox2_show_caption', TRUE),
+  );
+
   // Add checkbox for "looping through images'.
   $form['layout_fieldset']['lightbox2_loop_items'] = array(
     '#type' => 'checkbox',
@@ -86,16 +94,17 @@ function lightbox2_general_settings_form() {
     '#return_value' => '_blank',
   );
 
-  // Show caption
-  $form['layout_fieldset']['lightbox2_show_caption'] = array(
-    '#type' => 'checkbox',
-    '#title' => t('Show image caption'),
-    '#description' => t('Unset this to always hide the image caption (usually the title).'),
-    '#default_value' => variable_get('lightbox2_show_caption', TRUE),
+  // Define Lightbox2 text settings.
+  /* ------------------------------- */
+  $form['lightbox2_text_settings'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Text settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
   );
 
   // Add text box for link text to node.
-  $form['layout_fieldset']['lightbox2_node_link_text'] = array(
+  $form['lightbox2_text_settings']['lightbox2_node_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for image page link'),
     '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.  Leave this blank for the link not to appear.'),
@@ -103,16 +112,15 @@ function lightbox2_general_settings_form() {
   );
 
   // Add text box for link text to node.
-  $form['layout_fieldset']['lightbox2_download_link_text'] = array(
+  $form['lightbox2_text_settings']['lightbox2_download_link_text'] = array(
     '#type' => 'textfield',
     '#title' => t('Text for image original link'),
     '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.  Leave this blank for the link not to appear.  It will only appear for images uploaded via the "image" or "imagefield" modules.  Users will need the "download original image" permission, but also the "view original images" permission if using the "image" module.'),
     '#default_value' => variable_get('lightbox2_download_link_text', 'Download Original'),
   );
 
-
   // Add text box for image count for grouping.
-  $form['layout_fieldset']['lightbox2_image_count_str'] = array(
+  $form['lightbox2_text_settings']['lightbox2_image_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Image count text'),
     '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".  Leave blank for text not to appear.'),
@@ -120,7 +128,7 @@ function lightbox2_general_settings_form() {
   );
 
   // Add text box for page count for grouping.
-  $form['layout_fieldset']['lightbox2_page_count_str'] = array(
+  $form['lightbox2_text_settings']['lightbox2_page_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Page count text'),
     '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".  Leave blank for text not to appear.'),
@@ -128,12 +136,21 @@ function lightbox2_general_settings_form() {
   );
 
   // Add text box for video count for grouping.
-  $form['layout_fieldset']['lightbox2_video_count_str'] = array(
+  $form['lightbox2_text_settings']['lightbox2_video_count_str'] = array(
     '#type' => 'textfield',
     '#title' => t('Video count text'),
     '#description' => t('This text is used to display the count underneath video content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current video and !total for the total number of videos in the group.  For example, "Video !current of !total".  Leave blank for text not to appear.'),
     '#default_value' => variable_get('lightbox2_video_count_str', 'Video !current of !total'),
   );
+
+  // Add text box for video count for grouping.
+  $form['lightbox2_text_settings']['lightbox2_filter_xss_allowed_tags'] = array(
+    '#type' => 'textfield',
+    '#title' => t('Allowed HTML tags'),
+    '#description' => t('A list of comma separated HTML tags which are allowed to be used in the caption text area.'),
+    '#default_value' => variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd'),
+  );
+
 
   // Define Lightbox2 zoom fieldset.
   /* -------------------------------- */
@@ -218,7 +235,8 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_flv_player_flashvars', ''),
   );
 
-  // Add fieldset for page specific lightbox2 settings.
+  // Define Lightbox2 page specific settings fieldset.
+  /* ------------------------------------------------ */
   $form['lightbox2_page_init'] = array(
     '#type' => 'fieldset',
     '#title' => t('Page specific lightbox2 settings'),

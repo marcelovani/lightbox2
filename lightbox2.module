@@ -1351,12 +1351,14 @@ function lightbox2_views_api() {
 }
 
 function lightbox2_filter_xss() {
+  $allowed_tags = trim(variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd'));
+  $allowed_tags = (empty($allowed_tags) ? array() : preg_split('/[,\s]+/', $allowed_tags));
   if (!empty($_POST['allowed_tags']) && $_POST['allowed_tags'] != 'undefined') {
     $allowed_tags = explode(',', $_POST['allowed_tags']);
     $output = filter_xss($_POST['string'], $allowed_tags);
   }
   else {
-    $output = filter_xss($_POST['string']);
+    $output = filter_xss($_POST['string'], $allowed_tags);
   }
   drupal_json($output);
 }
