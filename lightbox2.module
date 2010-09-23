@@ -406,7 +406,7 @@ function lightbox2_filter($op, $delta = 0, $format = -1, $text = '') {
       if ($delta == 1) {
         $text = ' '. $text .' ';
         $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
-        $text = preg_replace('/<img\s+[^<]*src="/', 'rel="lightbox" src="', $text);
+        $text = preg_replace('/<img\s+([^>]*?)src="/', '<img \1rel="lightbox" src="', $text);
         $text = drupal_substr($text, 1, -1);
       }
       elseif ($delta == 6) {
