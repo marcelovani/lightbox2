@@ -1129,7 +1129,7 @@ var Lightbox = {
       url: Drupal.settings.lightbox2.base_path + 'system/lightbox2/filter-xss',
       data: {
         'string' : str,
-        'allowed_tags' : allowed_tags,
+        'allowed_tags' : allowed_tags
       },
       type: "POST",
       async: false,
