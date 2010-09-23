@@ -144,15 +144,15 @@ var Lightbox = {
     var image = '<img id="lightboxImage" alt="" />';
     var hoverNav = '<div id="hoverNav"><a id="prevLink" href="#"></a><a id="nextLink" href="#"></a></div>';
     var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" href="#"></a><a id="frameNextLink" href="#"></a></div>';
-    var hoverNav = '<div id="hoverNav"><a id="prevLink" title="' + Drupal.t('Previous') + '" href="#"></a><a id="nextLink" title="' + Drupal.t('Next') + '" href="#"></a></div>';
-    var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" title="' + Drupal.t('Previous') + '" href="#"></a><a id="frameNextLink" title="' + Drupal.t('Next') + '" href="#"></a></div>';
+    var hoverNav = '<div id="hoverNav"><a id="prevLink" title="Previous" href="#"></a><a id="nextLink" title="Next" href="#"></a></div>';
+    var frameNav = '<div id="frameHoverNav"><a id="framePrevLink" title="Previous" href="#"></a><a id="frameNextLink" title="Next" href="#"></a></div>';
     var caption = '<span id="caption"></span>';
     var numberDisplay = '<span id="numberDisplay"></span>';
-    var close = '<a id="bottomNavClose" title="' + Drupal.t('Close') + '" href="#"></a>';
+    var close = '<a id="bottomNavClose" title="Close" href="#"></a>';
     var zoom = '<a id="bottomNavZoom" href="#"></a>';
     var zoomOut = '<a id="bottomNavZoomOut" href="#"></a>';
-    var pause = '<a id="lightshowPause" title="' + Drupal.t('Pause Slideshow') + '" href="#" style="display: none;"></a>';
-    var play = '<a id="lightshowPlay" title="' + Drupal.t('Play Slideshow') + '" href="#" style="display: none;"></a>';
+    var pause = '<a id="lightshowPause" title="Pause Slideshow" href="#" style="display: none;"></a>';
+    var play = '<a id="lightshowPlay" title="Play Slideshow" href="#" style="display: none;"></a>';
 
     $("body").append(output);
     $('#outerImageContainer').append(modal + frame + imageContainer + loading);
@@ -1126,7 +1126,7 @@ var Lightbox = {
   filterXSS: function(str, allowed_tags) {
     var output = "";
     $.ajax({
-      url: Drupal.settings.basePath + 'system/lightbox2/filter-xss',
+      url: Drupal.settings.lightbox2.base_path + 'system/lightbox2/filter-xss',
       data: {
         'string' : str,
         'allowed_tags' : allowed_tags,
