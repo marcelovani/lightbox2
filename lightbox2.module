@@ -514,8 +514,8 @@ function lightbox2_general_settings_form() {
   $form['video_fieldset']['lightbox2_flv_player_path'] = array(
     '#type' => 'textfield',
     '#title' => t('Path to FLV Player'),
-    '#description' => t('The path to the FLV player, relative to Drupal root directory.'),
-    '#default_value' => variable_get('lightbox2_flv_player_path', '/flvplayer.swf'),
+    '#description' => t('The path to the FLV player, relative to Drupal root directory. No leading slashes.'),
+    '#default_value' => variable_get('lightbox2_flv_player_path', 'flvplayer.swf'),
   );
 
   // Add textfield for FLV Player flashvars.
@@ -1633,7 +1633,7 @@ function lightbox2_add_files() {
     'enable_video' => variable_get('lightbox2_enable_video', FALSE),
   );
   if ($enable_video) {
-    $js_settings['flvPlayer'] = url(check_plain(variable_get('lightbox2_flv_player_path', '/flvplayer.swf')));
+    $js_settings['flvPlayer'] = url(check_plain(trim(variable_get('lightbox2_flv_player_path', 'flvplayer.swf'), '/')));
     $js_settings['flvFlashvars'] = check_plain(variable_get('lightbox2_flv_player_flashvars', ''));
   }
   drupal_add_js(array('lightbox2' => $js_settings), 'setting');
