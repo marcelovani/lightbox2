@@ -511,7 +511,7 @@ function lightbox2_general_settings_form() {
     '#title' => t('Appearance duration'),
     '#size' => 5,
     '#maxlength' => 5,
-    '#description' => t('The duration (in seconds) of the lightbox appearance animation.  Enter a value between 0 and 10.'),
+    '#description' => t('The duration (in seconds) of the lightbox appearance animation.  Enter a positive number less than 10.'),
     '#default_value' => variable_get('lightbox2_fadein_speed', 0.4),
   );
 
