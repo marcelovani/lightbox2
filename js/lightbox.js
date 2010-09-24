@@ -627,7 +627,7 @@ var Lightbox = {
       Lightbox.updateDetails();
       if (Lightbox.isLightframe) {
         $('#frameContainer').show();
-        if ($.browser.safari) {
+        if ($.browser.safari || Lightbox.fadeInSpeed === 0) {
           $('#lightboxFrame').css({'zIndex': '10500'}).show();
         }
         else {
@@ -658,7 +658,7 @@ var Lightbox = {
     // Handle display of image content.
     else {
       $('#imageContainer').show();
-      if ($.browser.safari) {
+      if ($.browser.safari || Lightbox.fadeInSpeed === 0) {
         $('#lightboxImage').css({'zIndex': '10500'}).show();
       }
       else {

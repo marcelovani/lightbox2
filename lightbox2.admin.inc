@@ -580,7 +580,7 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
         form_set_error('lightbox2_resize_speed', t('You must enter a duration between 0 and 10 seconds.'));
       }
 
-      if (!is_numeric($fadein_speed) || $fadein_speed <= 0 || $fadein_speed >= 10) {
+      if (!is_numeric($fadein_speed) || $fadein_speed < 0 || $fadein_speed >= 10) {
         form_set_error('lightbox2_fadein_speed', t('You must enter a duration between 0 and 10 seconds.'));
       }
 
