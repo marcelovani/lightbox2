@@ -1,5 +1,4 @@
 <?php
-// $Id$
 /**
  * Enables the use of lightbox V2 which places images above your current page, not within.
  * This frees you from the constraints of the layout, particularly column widths.
