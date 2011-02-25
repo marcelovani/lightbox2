@@ -1,4 +1,3 @@
-; $Id$
 name = Lightbox2
 description = Enables Lightbox V2 for Drupal
 package = Javascript tools
