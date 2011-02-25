@@ -1,4 +1,3 @@
-// $Id$
 
 function lightbox2_login() {
   $("a[href*='/user/login'], a[href*='?q=user/login']").each(function() {
