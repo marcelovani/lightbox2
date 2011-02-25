@@ -1,4 +1,3 @@
-; $Id$
 name = Lightbox2
 description = Enables Lightbox2 for Drupal
 dependencies = jquery_update

@@ -1,4 +1,3 @@
-/* $Id$ */
 
 function alt_layout_handler(event) {
   if ($("input[@name=lightbox2_lite]:checked").val() != 1) {

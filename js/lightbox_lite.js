@@ -1,4 +1,3 @@
-/* $Id$ */
 
 /**
  * Lightbox JS: Fullsize Image Overlays
