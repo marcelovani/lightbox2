@@ -1155,13 +1155,12 @@ var Lightbox = {
     return (jQuery.inArray(key, keys) != -1 || jQuery.inArray(String(code), keys) != -1);
   },
 
-  filterXSS: function(str, allowed_tags) {
+  filterXSS: function(str) {
     var output = "";
     $.ajax({
       url: Drupal.settings.basePath + 'system/lightbox2/filter-xss',
       data: {
-        'string' : str,
-        'allowed_tags' : allowed_tags
+        'string' : str
       },
       type: "POST",
       async: false,
