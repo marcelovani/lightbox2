@@ -273,11 +273,8 @@ function lightbox2_menu() {
  * Implementation of hook_init().
  */
 function lightbox2_init() {
-  //if it is an ajax request, do not load any css and javascript
-  if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest') {
-    if (lightbox2_exclude_these_paths() != 1) {
+  if (lightbox2_exclude_these_paths() != 1) {
       lightbox2_add_files();
-    }
   }
 }
 
