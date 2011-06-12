@@ -1,4 +1,5 @@
 <?php
+// $Id: lightbox2_handler_field_lightbox2.inc,v 1.1.2.4 2010/03/07 21:38:39 snpower Exp $
 
 /**
  * A handler to provide a field that is completely custom by the administrator.

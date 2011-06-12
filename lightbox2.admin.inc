@@ -1,4 +1,5 @@
 <?php
+// $Id: lightbox2.admin.inc,v 1.1.2.38 2010/09/24 08:41:02 snpower Exp $
 
 /**
  * @file
@@ -797,9 +798,10 @@ function lightbox2_auto_image_handling_settings_form() {
     '#default_value' => variable_get('lightbox2_image_node', 0),
   );
 
+  /*
   // Add drop-down for list of available image sizes.
   if (module_exists('image')) {
-    $sizes = _image_get_sizes();
+    $sizes = image_get_sizes();
     foreach ($sizes as $size_key => $size) {
       if ($size_key == 'original' or $size_key == '_original')  {
         $size_key = 'original';
@@ -824,6 +826,7 @@ function lightbox2_auto_image_handling_settings_form() {
     );
 
   }
+  */
 
   // Add checkbox for disabling lightbox for gallery lists.
   $form['handler_options']['image_node_options']['lightbox2_disable_nested_galleries']  = array(

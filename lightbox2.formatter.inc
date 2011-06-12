@@ -1,4 +1,5 @@
 <?php
+// $Id: lightbox2.formatter.inc,v 1.1.2.30 2010/09/22 10:47:15 snpower Exp $
 
 /**
  * @file
@@ -20,10 +21,15 @@
  * @return
  *   HTML output for displaying the image.
  */
-function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = array()) {
-  $attributes_html = drupal_attributes($attributes);
-  $image = '<img src="'. file_create_url($path) .'" alt="'.  check_plain($alt) .'" title="'. check_plain($title) .'" '. $attributes_html .' />';
-  return $image;
+function theme_lightbox2_image($variables) {
+  $path = $variables['path'];
+  $item = $variables['item'];
+  $image_style = $variables['image_style'];
+  
+  $path['options']['attributes']['rel'] = 'lightbox';
+  $path['options']['attributes']['title'] = $item['alt'];
+  
+  return theme('image_formatter', array( 'item' => $item, 'path' => $path, 'image_style' => $image_style ) );
 }
 
 /**
@@ -37,9 +43,10 @@ function theme_lightbox2_image($path, $alt = '', $title = '', $attributes = arra
  * @return
  *   HTML output for displaying the image and link.
  */
-function theme_lightbox2_formatter_imagefield($element) {
-  if (!module_exists("imagecache") || !module_exists("imagefield")) {
-    return;
+function theme_lightbox2_formatter_imagefield($variables) {
+  $element = $variables['element'];
+  if (!module_exists("image")) {
+   return;
   }
 
   $field_name = $element['#field_name'];
@@ -73,7 +80,13 @@ function theme_lightbox2_formatter_imagefield($element) {
  * @return
  *   The themed imagefield + imagecache image and link.
  */
-function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset, $args = array()) {
+function lightbox2_imagefield_image_imagecache($variables) {
+  $field_name = $variables['field_name'];
+  $item = $variables['item'];
+  $formatter = $variables['formatter'];
+  $node = $variables['node'];
+  $view_preset = $variables['view_preset'];
+  $lightbox_preset = $variables['lightbox_preset'];
   // Load file data if missing
   if (!isset($item['filepath']) && !empty($item['fid'])) {
     $file = field_file_load($item['fid']);
@@ -115,7 +128,7 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
     if ($lightbox_type == 'lightbox2_compact') {
       $args['compact'] = TRUE;
     }
-    return theme('imagefield_image_imagecache_lightbox2', $view_preset, $field_name, $item, $node, $rel, $args);
+    return theme('imagefield_image_imagecache_lightbox2', array( 'view_preset' => $view_preset, 'field_name' => $field_name, 'item' => $item, 'node' => $node, 'rel' => $rel, 'args' => $args ) );
   }
 }
 
@@ -140,7 +153,13 @@ function lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $
  * @return
  *   The themed imagefield + imagecache image and link.
  */
-function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, $item, $node, $rel = 'lightbox', $args = array()) {
+function theme_imagefield_image_imagecache_lightbox2($variables) {
+  $view_preset = $variables['view_preset'];
+  $field_name = $variables['field_name'];
+  $item = $variables['item'];
+  $node = $variables['node'];
+  $rel = $variables['rel'];
+  $args = $variables['args'];
   if (!isset($args['lightbox_preset'])) {
     $args['lightbox_preset'] = 'original';
   }
@@ -251,14 +270,14 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
     $image = '';
   }
   elseif ($view_preset == 'original') {
-    $image = theme('lightbox2_image', $item['filepath'], $image_tag_alt, $image_tag_title, $attributes);
+    $image = theme('lightbox2_image', array( 'path' => $item['filepath'], 'alt' => $image_tag_alt, 'title' => $image_tag_title, 'attributes' => $attributes ) );
   }
   elseif ($view_preset == 'link') {
     // Not actually an image, just a text link.
     $image = variable_get('lightbox2_view_image_text', 'View image');
   }
   else {
-    $image = theme('imagecache', $view_preset, $item['filepath'], $image_tag_alt, $image_tag_title, $attributes);
+     $image = theme('imagecache', array( 'style_name' => $view_preset, 'path' => $item['filepath'], 'alt' => $image_tag_alt, 'title' => $image_tag_title, 'attributes' => $attributes ) );
   }
 
   if ($args['lightbox_preset'] == 'node') {
@@ -270,7 +289,6 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
   else {
     $output = l($image, imagecache_create_url($args['lightbox_preset'], $item['filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
   }
-
   return $output;
 }
 
@@ -283,7 +301,8 @@ function theme_imagefield_image_imagecache_lightbox2($view_preset, $field_name, 
  * @return
  *   The themed link to the file, with lightframe support.
  */
-function theme_lightbox2_formatter_filefield_lightframe($element) {
+function theme_lightbox2_formatter_filefield_lightframe($variables) {
+  $element = $variables['element'];
   $file = $element['#item'];
   $field = content_fields($element['#field_name']);
   if (!filefield_view_access($field['field_name']) || empty($file['list'])) {
@@ -297,7 +316,7 @@ function theme_lightbox2_formatter_filefield_lightframe($element) {
     return '';
   }
   drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
-  return '<div class="filefield-item">'. theme('lightbox2_file_formatter_lightbox2_iframe', $file, $field, NULL) .'</div>';
+   return '<div class="filefield-item">'. theme('lightbox2_file_formatter_lightbox2_iframe', array( 'file' => $file, 'field' => $field, 'file_formatter_settings' => NULL ) ) .'</div>';
 }
 
 /**
@@ -312,10 +331,13 @@ function theme_lightbox2_formatter_filefield_lightframe($element) {
  * @return
  *   Themed link to filefield.
  */
-function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_formatter_settings) {
+function theme_lightbox2_file_formatter_lightbox2_iframe($variables) {
+  $file = $variables['file'];
+  $field = $varbiables['field'];
+  $file_formatter_settings = $variables['file_formatter_settings'];
   $path = $file->filepath;
   $url = file_create_url($path);
-  $icon = theme('filefield_icon', $file);
+  $icon = theme('file_icon', array( 'file' => $file ) );
   $file_data = $file->data;
   if (is_string($file_data)) {
     $file_data = unserialize($file->data);
@@ -350,7 +372,8 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($file, $field, $file_fo
  * @return
  *   The themed link to the embedded image.
  */
-function theme_lightbox2_formatter_emimage($element) {
+function theme_lightbox2_formatter_emimage($variables) {
+  $element = $variables['element'];
   $field = content_fields($element['#field_name'], $element['#type_name']);
   $item = $element['#item'];
   $formatter = $element['#formatter'];
@@ -379,7 +402,12 @@ function theme_lightbox2_formatter_emimage($element) {
  * @return
  *   Themed embedded media field image and link.
  */
-function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array()) {
+function theme_lightbox2_emimage($variables) {
+  $field = $variables['field'];
+  $item = $variables['item'];
+  $formatter = $variables['formatter'];
+  $node = $variables['node'];
+  $args = $variables['args'];
 
   $lightbox_type = $field['lightbox_type'];
 
@@ -440,7 +468,7 @@ function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array
 
     // Set up url and image.
     $url = module_invoke('emfield', 'include_invoke', 'emimage', $item['provider'], 'image_url', $code, $width, $height, "emimage", $field, $item, $node);
-    $image = theme('image', $url, $title, $title, $attributes, FALSE);
+    $image = theme('image', array( 'path' => $url, 'alt' => $title, 'title' => $title, 'attributes' => $attributes, 'getsize' => FALSE ) );
 
     // Set up full rel attribute.
     $image_grouping = variable_get('lightbox2_emimage_group_node_id', 1);
@@ -488,7 +516,8 @@ function theme_lightbox2_emimage($field, $item, $formatter, $node, $args = array
  * @return
  *   HTML output for displaying the video and link.
  */
-function theme_lightbox2_formatter_emvideo_lightvideo($element) {
+function theme_lightbox2_formatter_emvideo_lightvideo($variables) {
+  $element = $variables['element'];
   if (!variable_get('lightbox2_enable_video', FALSE)) {
     return;
   }
@@ -516,7 +545,11 @@ function theme_lightbox2_formatter_emvideo_lightvideo($element) {
  * @return
  *   Themed link to the embedded media field video.
  */
-function theme_lightbox2_emvideo($field, $item, $formatter, $node, $options = array()) {
+function theme_lightbox2_emvideo($variables) {
+  $field = $variables['field'];
+  $item = $variables['item'];
+  $formatter = $variables['formatter'];
+  $node = $variables['node'];
   $thumbnail = isset($options['thumbnail']) ? $options['thumbnail'] : theme('emvideo_video_thumbnail', $field, $item, 'video_thumbnail', $node, TRUE, $options);
   // if options title set use that, otherwise use video title if set in node,
   // otherwise try node title, then widget thumbnail setting and fallback to

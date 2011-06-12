@@ -1,3 +1,4 @@
+/* $Id: lightbox.css,v 1.1.4.28 2010/09/22 10:47:15 snpower Exp $ */
 #lightbox {
   position: absolute;
   top: 40px;
@@ -39,7 +40,7 @@
   position: absolute;
   top: 40%;
   left: 45%;
-  *left: 0%;
+  /* left: 0%; */
 }
 
 #hoverNav {

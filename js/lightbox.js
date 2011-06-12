@@ -1,3 +1,4 @@
+/* $Id: lightbox.js,v 1.5.2.6.2.136 2010/09/24 08:39:40 snpower Exp $ */
 
 /**
  * jQuery Lightbox
@@ -15,7 +16,7 @@
  *
  * Slideshow, iframe and video functionality added by Stella Power.
  */
-
+(function($) {
 var Lightbox = {
   auto_modal : false,
   overlayOpacity : 0.8, // Controls transparency of shadow overlay.
@@ -1155,12 +1156,13 @@ var Lightbox = {
     return (jQuery.inArray(key, keys) != -1 || jQuery.inArray(String(code), keys) != -1);
   },
 
-  filterXSS: function(str) {
+  filterXSS: function(str, allowed_tags) {
     var output = "";
     $.ajax({
       url: Drupal.settings.basePath + 'system/lightbox2/filter-xss',
       data: {
-        'string' : str
+        'string' : str,
+        'allowed_tags' : allowed_tags
       },
       type: "POST",
       async: false,
@@ -1175,7 +1177,9 @@ var Lightbox = {
 };
 
 // Initialize the lightbox.
-Drupal.behaviors.initLightbox = function (context) {
+Drupal.behaviors.initLightbox = {
+  attach: function(context) {
+
   $('body:not(.lightbox-processed)', context).addClass('lightbox-processed').each(function() {
     Lightbox.initialize();
     return false; // Break the each loop.
@@ -1184,5 +1188,6 @@ Drupal.behaviors.initLightbox = function (context) {
   // Attach lightbox to any links with lightbox rels.
   Lightbox.initList(context);
   $('#lightboxAutoModal', context).triggerHandler('click');
+  }
 };
-
+})(jQuery);

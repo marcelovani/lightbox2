@@ -1,3 +1,4 @@
+/* $Id: auto_image_handling.js,v 1.1.4.33 2010/09/22 21:07:57 snpower Exp $ */
 
 // Image Node Auto-Format with Auto Image Grouping.
 // Original version by Steve McKenzie.

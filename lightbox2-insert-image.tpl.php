@@ -1,4 +1,5 @@
 <?php
+// $Id: lightbox2-insert-image.tpl.php,v 1.1.2.2 2010/09/22 10:16:30 snpower Exp $
 
 /**
  * @file

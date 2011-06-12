@@ -1,3 +1,4 @@
+/* $Id: lightbox2.js,v 1.1.4.39 2010/06/07 15:24:24 snpower Exp $ */
 
 function alt_layout_handler(event) {
   if ($("input[name=lightbox2_lite]:checked").val() != 1) {

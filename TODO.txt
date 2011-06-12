@@ -16,7 +16,7 @@ Not tested
 
 To do
   * Add a description in hook_permission
-  * There is is many filters without any action, look if this is really necessary,
+  * This is many filters without any action, look if this is really necessaary,
     if not, remove the ones without action
 
   
