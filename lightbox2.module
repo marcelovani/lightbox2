@@ -803,12 +803,11 @@ function lightbox2_add_files() {
  * formatters if emfield, emimage and/or emvideo modules exist.
  */
 function lightbox2_field_formatter_info() {
-  /*
   $formatters = array();
   $lightbox = $slideshow = $iframe = array();
   // Handle imagefield and filefield images.
   if (module_exists('image')) {
-    $rules = array();
+  	$rules = array();
     if (function_exists('image_styles')) {
       $presets = image_styles();
       foreach ($presets as $preset_id => $preset_info) {
@@ -918,7 +917,6 @@ function lightbox2_field_formatter_info() {
   }
 
   return $formatters;
-  */
 }
 
 /**
@@ -927,7 +925,7 @@ function lightbox2_field_formatter_info() {
  * Temporarily a (pretty much) straight copy of image's
  */
 function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
-  /*$element = array();
+  $element = array();
 
   // Check if the formatter involves a particular image style.
   $matches = array();
@@ -954,7 +952,7 @@ function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance
     );
   }
 
-  return $element;*/
+  return $element;
 }
 
 
@@ -1033,8 +1031,7 @@ function lightbox2_theme() {
     ),
   );
 
-  /*
-  // Additional imagecache + imagefield theme functions, by preset.
+   // Additional imagecache + imagefield theme functions, by preset.
   if (module_exists("image")) {
 
     $theme['lightbox2_formatter_imagefield__lightframe2__original__node'] = array(
@@ -1123,8 +1120,7 @@ function lightbox2_theme() {
       }
     }
   }
-   */
-
+  
   // Additional Insert theme functions.
   if (module_exists('insert')) {
     // Theme functions in lightbox2.insert.inc.
