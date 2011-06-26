@@ -774,7 +774,7 @@ function lightbox2_add_files() {
 
     // Check to see if any automatic image handling options are enabled.
     if ($image_node_handler || $flickr_image_handler || $gallery2_block_handler || $inline_image_handler || $image_assist_handler || $custom_triggers != '') {
-      //drupal_add_js($path .'/js/auto_image_handling.js', array( 'scope' => $js_location ) );
+      drupal_add_js($path .'/js/auto_image_handling.js', array( 'scope' => $js_location ) );
     }
     if (variable_get('lightbox2_enable_video', FALSE)) {
       drupal_add_js($path .'/js/lightbox_video.js', array( 'scope' => $js_location ) );
@@ -782,7 +782,7 @@ function lightbox2_add_files() {
     if ($enable_login || $enable_contact) {
       drupal_add_js($path .'/js/lightbox_modal.js', array( 'scope' => $js_location ) );
     }
-    drupal_add_js($path .'/js/prototype.js', array( 'scope' => $js_location ) );
+    //drupal_add_js($path .'/js/prototype.js', array( 'scope' => $js_location ) );
 	drupal_add_js($path .'/js/scriptaculous.js', array( 'scope' => $js_location ) );
 	drupal_add_js($path .'/js/lightbox.js', array( 'scope' => $js_location ) );
 
