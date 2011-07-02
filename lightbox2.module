@@ -1050,7 +1050,7 @@ function lightbox2_theme() {
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
       );
-      $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['presetname'] .'__original'] = array(
+      $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['name'] .'__original'] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -1059,7 +1059,7 @@ function lightbox2_theme() {
         'render element' => 'element',
         'function' => 'theme_lightbox2_formatter_imagefield',
       );
-      $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['presetname'] .'__original'] = array(
+      $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['name'] .'__original'] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -1068,17 +1068,17 @@ function lightbox2_theme() {
         'render element' => 'element',
         'function' => 'theme_lightbox2_formatter_imagefield',
       );
-      $theme['lightbox2_formatter_imagefield__lightbox2_compact__original__'. $src['presetname']] = array(
+      $theme['lightbox2_formatter_imagefield__lightbox2_compact__original__'. $src['name']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
       );
-	$theme['lightbox2_formatter_imagefield__lightshow2__original__'. $src['name']] = array(
+    	$theme['lightbox2_formatter_imagefield__lightshow2__original__'. $src['name']] = array(
         'render element' => 'element',
         'function' => 'theme_lightbox2_formatter_imagefield',
 
       );
-      $theme['lightbox2_formatter_imagefield__lightshow2_compact__original__'. $src['presetname']] = array(
+      $theme['lightbox2_formatter_imagefield__lightshow2_compact__original__'. $src['name']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -1087,12 +1087,12 @@ function lightbox2_theme() {
         'render element' => 'element',
         'function' => 'theme_lightbox2_formatter_imagefield',
       );
-      $theme['lightbox2_formatter_imagefield__lightbox2__link__'. $src['presetname']] = array(
+      $theme['lightbox2_formatter_imagefield__lightbox2__link__'. $src['name']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
       );
-      $theme['lightbox2_formatter_imagefield__lightshow2__link__'. $src['presetname']] = array(
+      $theme['lightbox2_formatter_imagefield__lightshow2__link__'. $src['name']] = array(
         'arguments' => array('element' => NULL),
         'function' => 'theme_lightbox2_formatter_imagefield',
         'file' => 'lightbox2.formatter.inc',
@@ -1103,7 +1103,7 @@ function lightbox2_theme() {
           'render element' => 'element',
           'function' => 'theme_lightbox2_formatter_imagefield',
         );
-        $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+        $theme['lightbox2_formatter_imagefield__lightbox2_compact__'. $src['name'] .'__'. $dest['name']] = array(
           'arguments' => array('element' => NULL),
           'function' => 'theme_lightbox2_formatter_imagefield',
           'file' => 'lightbox2.formatter.inc',
@@ -1112,7 +1112,7 @@ function lightbox2_theme() {
           'render element' => 'element',
           'function' => 'theme_lightbox2_formatter_imagefield',
         );
-        $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['presetname'] .'__'. $dest['presetname']] = array(
+        $theme['lightbox2_formatter_imagefield__lightshow2_compact__'. $src['name'] .'__'. $dest['name']] = array(
           'arguments' => array('element' => NULL),
           'function' => 'theme_lightbox2_formatter_imagefield',
           'file' => 'lightbox2.formatter.inc',
