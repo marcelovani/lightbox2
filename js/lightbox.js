@@ -16,8 +16,10 @@
  *
  * Slideshow, iframe and video functionality added by Stella Power.
  */
+
+var Lightbox;
 (function($) {
-var Lightbox = {
+Lightbox = {
   auto_modal : false,
   overlayOpacity : 0.8, // Controls transparency of shadow overlay.
   overlayColor : '000', // Controls colour of shadow overlay.
