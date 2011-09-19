@@ -25,6 +25,12 @@ function theme_lightbox2_image($variables) {
   $path = $variables['path'];
   $item = $variables['item'];
   $image_style = $variables['image_style'];
+
+  if(!$variables["lightbox_style"]) {
+    $path['path'] = file_create_url($item['uri']);
+  } else {
+    $path['path'] = image_style_url($variables["lightbox_style"],  $item['uri']);
+  }
   
   $path['options']['attributes']['rel'] = 'lightbox';
   $path['options']['attributes']['title'] = $item['alt'];

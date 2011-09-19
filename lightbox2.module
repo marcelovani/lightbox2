@@ -274,7 +274,7 @@ function lightbox2_menu() {
  */
 function lightbox2_init() {
   if (lightbox2_exclude_these_paths() != 1) {
-      lightbox2_add_files();
+    lightbox2_add_files();
   }
 }
 
@@ -804,7 +804,23 @@ function lightbox2_add_files() {
  */
 function lightbox2_field_formatter_info() {
   $formatters = array();
-  $lightbox = $slideshow = $iframe = array();
+  if (module_exists('image')) {
+    $image = $lightbox = image_styles();
+    foreach($image as $image_key => $image_value ) {
+      $formatters['lightbox2__image__' . $image_key . '__original'] = array(
+        'label' => 'Lightbox2: ' . $image_key . '->original',
+        'field types' => array('image'),
+      );
+      foreach($lightbox as $lightbox_key => $lightbox_value ) {
+        $formatters['lightbox2__image__' . $image_key . "__" . $lightbox_key] = array(
+          'label' => 'Lightbox2: ' . $image_key . '->' . $lightbox_key,
+          'field types' => array('image'),
+        );
+      }
+    }
+  }
+  return $formatters;
+  /*
   // Handle imagefield and filefield images.
   if (module_exists('image')) {
   	$rules = array();
@@ -915,8 +931,7 @@ function lightbox2_field_formatter_info() {
       'field types' => array('file'),
     );
   }
-
-  return $formatters;
+  */
 }
 
 /**
@@ -926,6 +941,30 @@ function lightbox2_field_formatter_info() {
  */
 function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
+  $pieces = explode('__', $display['type']);
+  $image_style = $pieces[2];
+  $lightbox_style = $pieces[3];
+  if($image_style == 'original') {
+    $image_style = NULL;
+  }
+  if($lightbox_style == 'original') {
+    $lightbox_style = NULL;
+  }
+  foreach ($items as $delta => $item) {
+    $uri = array(
+      'path' => file_create_url($item['uri']),
+      'options' => array(),
+    );
+    $element[$delta] = array(
+      '#theme' => 'lightbox2_image',
+      '#item' => $item,
+      '#image_style' => $image_style,
+      '#lightbox_style' => $lightbox_style,
+      '#path' => $uri,
+    );
+  }
+  return($element);
+  /*$element = array();
 
   // Check if the formatter involves a particular image style.
   //$matches = array();
@@ -954,14 +993,27 @@ function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance
     );
   }
 
-  return $element;
+  return $element;*/
 }
 
 
 /**
  * Implementation of hook_theme().
  */
-function lightbox2_theme() {
+function lightbox2_theme($existing, $type, $theme, $path) {
+  $theme = array();
+  $theme['lightbox2_image'] = array(
+    'variables' => array(
+      'item' => NULL,
+      'path' => NULL,
+      'image_style' => NULL,
+      'lightbox_style' => NULL,
+     ),
+    //'variables' => array(),
+  );
+  //return($theme);
+
+  /*
   $theme = array(
     'lightbox2_image' => array(
     'variables' => array(
@@ -1130,7 +1182,7 @@ function lightbox2_theme() {
       'arguments' => array('item' => NULL, 'widget' => NULL, 'type' => NULL, 'image_preset_name' => NULL, 'link_preset_name' => NULL),
       'template' => 'lightbox2-insert-image',
     );
-  }
+  }*/
   foreach ($theme as &$array) {
     $array['file'] = 'lightbox2.formatter.inc';
   }
