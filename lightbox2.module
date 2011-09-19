@@ -1524,7 +1524,7 @@ function lightbox2_link_alter(&$links, $node) {
  */
 function lightbox2_views_api() {
   return array(
-    'api' => '2.0',
+    'api' => '3.0',
   );
 }
 
