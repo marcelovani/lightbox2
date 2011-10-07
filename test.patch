@@ -1,0 +1,63 @@
+diff --git a/lightbox2.formatter.inc b/lightbox2.formatter.inc
+index 7169410..a5b0e52 100644
+--- a/lightbox2.formatter.inc
++++ b/lightbox2.formatter.inc
+@@ -31,9 +31,26 @@ function theme_lightbox2_image($variables) {
+   } else {
+     $path['path'] = image_style_url($variables["lightbox_style"],  $item['uri']);
+   }
++
++  // Lightbox type
++  $rel = 'lightbox';
++
++  // Grouping
++  $rel .= '[]';
++
++  // Title Start
++  $rel .= '[' . $item['title'];
++
++  // Download Link
++  if (user_access('download original image')) {
++    $rel .= '<p><a href="' . file_create_url($item['uri']) . '">' . variable_get('lightbox2_download_link_text', 'Download Original') . '</a></p>';
++  }
+   
+-  $path['options']['attributes']['rel'] = 'lightbox';
+-  $path['options']['attributes']['title'] = $item['alt'];
++  // Title End
++  $rel .= ']';
++
++  $path['options']['attributes']['rel'] = $rel;
++  $path['options']['attributes']['title'] = $item['title'];
+   
+   return theme('image_formatter', array( 'item' => $item, 'path' => $path, 'image_style' => $image_style ) );
+ }
+diff --git a/lightbox2.module b/lightbox2.module
+index a59de5c..d543c87 100644
+--- a/lightbox2.module
++++ b/lightbox2.module
+@@ -143,11 +143,13 @@ function lightbox2_help($path, $arg) {
+ function lightbox2_permission() {
+   return array(
+   'administer lightbox2' => array(
+-    'title' =>t('Administer Lightbox2')
++    'title' => t('Administer Lightbox2'),
++    'description' => t('Allow the user administer Lightbox2 settings'),
+ 	),
+ 	'download original image' => array(
+-	  'title' => t('Download Original')
+-	)
++	  'title' => t('Download Original'),
++    'description' => t('Create a link that allow the user download the original image'),
++	),
+   );
+ }
+ 
+@@ -1529,7 +1531,7 @@ function lightbox2_views_api() {
+ }
+ 
+ function lightbox2_filter_xss() {
+-  $allowed_tags = trim(variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd'));
++  $allowed_tags = trim(variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd, i'));
+   $allowed_tags = (empty($allowed_tags) ? array() : preg_split('/[,\s]+/', $allowed_tags));
+   if (!empty($_POST['allowed_tags']) && $_POST['allowed_tags'] != 'undefined') {
+     $allowed_tags = explode(',', $_POST['allowed_tags']);

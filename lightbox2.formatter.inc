@@ -31,9 +31,26 @@ function theme_lightbox2_image($variables) {
   } else {
     $path['path'] = image_style_url($variables["lightbox_style"],  $item['uri']);
   }
+
+  // Lightbox type
+  $rel = 'lightbox';
+
+  // Grouping
+  $rel .= '[]';
+
+  // Title Start
+  $rel .= '[' . $item['title'];
+
+  // Download Link
+  if (user_access('download original image')) {
+    $rel .= '<p><a href="' . file_create_url($item['uri']) . '">' . variable_get('lightbox2_download_link_text', 'Download Original') . '</a></p>';
+  }
   
-  $path['options']['attributes']['rel'] = 'lightbox';
-  $path['options']['attributes']['title'] = $item['alt'];
+  // Title End
+  $rel .= ']';
+
+  $path['options']['attributes']['rel'] = $rel;
+  $path['options']['attributes']['title'] = $item['title'];
   
   return theme('image_formatter', array( 'item' => $item, 'path' => $path, 'image_style' => $image_style ) );
 }
