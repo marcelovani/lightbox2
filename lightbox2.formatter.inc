@@ -49,7 +49,7 @@ function theme_lightbox2_image($variables) {
  * @return
  *   HTML output for displaying the image and link.
  */
-function theme_lightbox2_formatter_imagefield($variables) {
+/*function theme_lightbox2_formatter_imagefield($variables) {
   $element = $variables['element'];
   if (!module_exists("image")) {
    return;
@@ -65,7 +65,7 @@ function theme_lightbox2_formatter_imagefield($variables) {
     list($tmp, $lightbox_type, $view_preset, $lightbox_preset) = explode('__', $formatter, 4);
     return lightbox2_imagefield_image_imagecache($field_name, $item, $formatter, $node, $view_preset, $lightbox_preset);
   }
-}
+}*/
 
 /**
  * Function to set up the data needed for
@@ -86,7 +86,7 @@ function theme_lightbox2_formatter_imagefield($variables) {
  * @return
  *   The themed imagefield + imagecache image and link.
  */
-function lightbox2_imagefield_image_imagecache($variables) {
+/*function lightbox2_imagefield_image_imagecache($variables) {
   $field_name = $variables['field_name'];
   $item = $variables['item'];
   $formatter = $variables['formatter'];
@@ -159,7 +159,7 @@ function lightbox2_imagefield_image_imagecache($variables) {
  * @return
  *   The themed imagefield + imagecache image and link.
  */
-function theme_imagefield_image_imagecache_lightbox2($variables) {
+/*function theme_imagefield_image_imagecache_lightbox2($variables) {
   $view_preset = $variables['view_preset'];
   $field_name = $variables['field_name'];
   $item = $variables['item'];
@@ -296,7 +296,7 @@ function theme_imagefield_image_imagecache_lightbox2($variables) {
     $output = l($image, imagecache_create_url($args['lightbox_preset'], $item['filepath']), array('attributes' => $link_attributes, 'html' => TRUE));
   }
   return $output;
-}
+}*/
 
 
 /**
@@ -307,7 +307,7 @@ function theme_imagefield_image_imagecache_lightbox2($variables) {
  * @return
  *   The themed link to the file, with lightframe support.
  */
-function theme_lightbox2_formatter_filefield_lightframe($variables) {
+/*function theme_lightbox2_formatter_filefield_lightframe($variables) {
   $element = $variables['element'];
   $file = $element['#item'];
   $field = content_fields($element['#field_name']);
@@ -323,7 +323,7 @@ function theme_lightbox2_formatter_filefield_lightframe($variables) {
   }
   drupal_add_css(drupal_get_path('module', 'filefield') .'/filefield.css');
    return '<div class="filefield-item">'. theme('lightbox2_file_formatter_lightbox2_iframe', array( 'file' => $file, 'field' => $field, 'file_formatter_settings' => NULL ) ) .'</div>';
-}
+}*/
 
 /**
  * Theme function for the lightbox iframe filefield formatter.
@@ -337,7 +337,7 @@ function theme_lightbox2_formatter_filefield_lightframe($variables) {
  * @return
  *   Themed link to filefield.
  */
-function theme_lightbox2_file_formatter_lightbox2_iframe($variables) {
+/*function theme_lightbox2_file_formatter_lightbox2_iframe($variables) {
   $file = $variables['file'];
   $field = $varbiables['field'];
   $file_formatter_settings = $variables['file_formatter_settings'];
@@ -368,7 +368,7 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($variables) {
   $link_attributes = array('rel' => 'lightframe[]['. $description . $node_link .']');
 
   return '<div class="filefield-formatter-lightbox2-iframe">'. $icon . l($description, $url, array('attributes' => $link_attributes)) .'</div>';
-}
+}*/
 
 /**
  * Generate the HTML output to open embedded cck images in a lightbox.
@@ -378,7 +378,7 @@ function theme_lightbox2_file_formatter_lightbox2_iframe($variables) {
  * @return
  *   The themed link to the embedded image.
  */
-function theme_lightbox2_formatter_emimage($variables) {
+/*function theme_lightbox2_formatter_emimage($variables) {
   $element = $variables['element'];
   $field = content_fields($element['#field_name'], $element['#type_name']);
   $item = $element['#item'];
@@ -390,7 +390,7 @@ function theme_lightbox2_formatter_emimage($variables) {
   $formatter = "emimage";
 
   return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
-}
+}*/
 
 /**
  * Generate the HTML output to open embedded cck images in a lightbox.
@@ -408,7 +408,7 @@ function theme_lightbox2_formatter_emimage($variables) {
  * @return
  *   Themed embedded media field image and link.
  */
-function theme_lightbox2_emimage($variables) {
+/*function theme_lightbox2_emimage($variables) {
   $field = $variables['field'];
   $item = $variables['item'];
   $formatter = $variables['formatter'];
@@ -512,7 +512,7 @@ function theme_lightbox2_emimage($variables) {
   }
 
   return $output;
-}
+}*/
 
 /**
  * Generate the HTML output to open embedded cck videos in a lightbox.
@@ -522,7 +522,7 @@ function theme_lightbox2_emimage($variables) {
  * @return
  *   HTML output for displaying the video and link.
  */
-function theme_lightbox2_formatter_emvideo_lightvideo($variables) {
+/*function theme_lightbox2_formatter_emvideo_lightvideo($variables) {
   $element = $variables['element'];
   if (!variable_get('lightbox2_enable_video', FALSE)) {
     return;
@@ -533,7 +533,7 @@ function theme_lightbox2_formatter_emvideo_lightvideo($variables) {
   $node = node_load($element['#node']->nid);
 
   return module_invoke('emfield', 'emfield_field_formatter', $field, $item, $formatter, $node, 'lightbox2');
-}
+}*/
 
 /**
  * Generate the HTML output to open embedded cck videos in a lightbox.
@@ -551,7 +551,7 @@ function theme_lightbox2_formatter_emvideo_lightvideo($variables) {
  * @return
  *   Themed link to the embedded media field video.
  */
-function theme_lightbox2_emvideo($variables) {
+/*function theme_lightbox2_emvideo($variables) {
   $field = $variables['field'];
   $item = $variables['item'];
   $formatter = $variables['formatter'];
@@ -585,5 +585,4 @@ function theme_lightbox2_emvideo($variables) {
 
   $output = l($thumbnail, $destination, $attributes);
   return $output;
-}
-
+}*/
