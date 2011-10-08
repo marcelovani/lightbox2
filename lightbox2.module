@@ -808,16 +808,19 @@ function lightbox2_field_formatter_info() {
   $formatters = array();
   if (module_exists('image')) {
     $image = $lightbox = image_styles();
-    foreach($image as $image_key => $image_value ) {
-      $formatters['lightbox2__image__' . $image_key . '__original'] = array(
-        'label' => 'Lightbox2: ' . $image_key . '->original',
-        'field types' => array('image'),
-      );
-      foreach($lightbox as $lightbox_key => $lightbox_value ) {
-        $formatters['lightbox2__image__' . $image_key . "__" . $lightbox_key] = array(
-          'label' => 'Lightbox2: ' . $image_key . '->' . $lightbox_key,
+    $types = array('lightbox', 'lightshow');
+    foreach($types as $type) {
+      foreach($image as $image_key => $image_value ) {
+        $formatters['lightbox2__' . $type .'__' . $image_key . '__original'] = array(
+          'label' => 'Lightbox2: ' . $type . ': ' . $image_key . '->original',
           'field types' => array('image'),
         );
+        foreach($lightbox as $lightbox_key => $lightbox_value ) {
+          $formatters['lightbox2__' . $type .'__' . $image_key . "__" . $lightbox_key] = array(
+            'label' => 'Lightbox2: ' . $type . ': ' . $image_key . '->' . $lightbox_key,
+            'field types' => array('image'),
+          );
+        }
       }
     }
   }
@@ -944,6 +947,7 @@ function lightbox2_field_formatter_info() {
 function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance, $langcode, $items, $display) {
   $element = array();
   $pieces = explode('__', $display['type']);
+  $lightbox_type = $pieces[1];
   $image_style = $pieces[2];
   $lightbox_style = $pieces[3];
 
@@ -966,6 +970,7 @@ function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance
     $element[$delta] = array(
       '#theme' => 'lightbox2_image',
       '#item' => $item,
+      '#lightbox_type' => $lightbox_type,
       '#image_style' => $image_style,
       '#lightbox_style' => $lightbox_style,
       '#path' => $uri,
@@ -1016,6 +1021,7 @@ function lightbox2_theme($existing, $type, $theme, $path) {
     'variables' => array(
       'item' => NULL,
       'path' => NULL,
+      'lightbox_type' => NULL,
       'image_style' => NULL,
       'lightbox_style' => NULL,
       'node_id' => NULL,

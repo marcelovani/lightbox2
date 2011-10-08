@@ -35,7 +35,7 @@ function theme_lightbox2_image($variables) {
   }
 
   // Lightbox type
-  $rel = 'lightbox';
+  $rel = $variables['lightbox_type'];
 
   // Grouping
   $rel .= '[';
