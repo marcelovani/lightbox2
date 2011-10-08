@@ -25,6 +25,8 @@ function theme_lightbox2_image($variables) {
   $path = $variables['path'];
   $item = $variables['item'];
   $image_style = $variables['image_style'];
+  $node_id = $variables['node_id'];
+  $field_name = $variables['field_name'];
 
   if(!$variables["lightbox_style"]) {
     $path['path'] = file_create_url($item['uri']);
@@ -36,7 +38,32 @@ function theme_lightbox2_image($variables) {
   $rel = 'lightbox';
 
   // Grouping
-  $rel .= '[]';
+  $rel .= '[';
+  $group = variable_get('lightbox2_image_group_node_id', 1);
+
+  switch($group) {
+    // No groups
+    case '0':
+      dpm($group,'bla');
+      break;
+    // Group by field name
+    case '1':
+      $rel .= $field_name;
+      break;
+    // Group by node id
+    case '2':
+      $rel .= $node_id;
+      break;
+    // Group by field name and node id
+    case '3':
+      $rel .= $field_name . '_' . $node_id;
+      break;
+    // All nodes and fields in same group
+    case '4':
+      $rel .= 'group';
+      break;
+  }
+  $rel .= ']';
 
   // Title Start
   $rel .= '[' . $item['title'];

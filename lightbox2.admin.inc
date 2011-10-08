@@ -263,59 +263,30 @@ function lightbox2_general_settings_form() {
     '#default_value' => variable_get('lightbox2_page_list', ''),
   );
 
-  // Define cck settings fieldset.
+  // Define grouping settings fieldset.
   /* ------------------------------------ */
-  if ((module_exists('emfield') && module_exists('emimage')) || (module_exists('imagefield') && module_exists('imagecache'))) {
-    $form['cck_options'] = array(
-      '#type' => 'fieldset',
-      '#title' => t('CCK display settings'),
-      '#collapsible' => TRUE,
-      '#collapsed' => TRUE,
-    );
+  $form['group_options'] = array(
+    '#type' => 'fieldset',
+    '#title' => t('Group display settings'),
+    '#collapsible' => TRUE,
+    '#collapsed' => TRUE,
+  );
 
-    $cck_options = array(
-      0 => t('No grouping'),
-      1 => t('Group by field name'),
-      2 => t('Group by node id'),
-      3 => t('Group by field name and node id'),
-      4 => t('Group all nodes and fields'),
-    );
+  $group_options = array(
+    0 => t('No grouping'),
+    1 => t('Group by field name'),
+    2 => t('Group by node id'),
+    3 => t('Group by field name and node id'),
+    4 => t('Group all nodes and fields'),
+  );
 
-    // Add checkbox for emfield emimage grouping.
-    if (module_exists('emfield') && module_exists('emimage')) {
-      $form['cck_options']['lightbox2_image_ncck_group_node_id'] = array(
-        '#type' => 'select',
-        '#title' => t('Select Emfield Image grouping in Views'),
-        '#description' => t('By default, emfield images in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
-        '#options' => $cck_options,
-        '#default_value' => variable_get('lightbox2_image_ncck_group_node_id', 1),
-      );
-    }
-
-    // Add checkbox for imagefield grouping.
-    if (module_exists('imagefield') && module_exists('imagecache')) {
-      $form['cck_options']['lightbox2_imagefield_group_node_id'] = array(
-        '#type' => 'select',
-        '#title' => t('Select Imagefield grouping in Views'),
-        '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
-        '#options' => $cck_options,
-        '#default_value' => variable_get('lightbox2_imagefield_group_node_id', 1),
-      );
-      $form['cck_options']['lightbox2_imagefield_use_node_title'] = array(
-        '#type' => 'checkbox',
-        '#title' => t('Use node title as caption'),
-        '#description' => t('By default, the caption for imagefields is the image title text configured.  If no title is configured, then the alt text will be used.  This option allows you to override that and always display the node title as the image caption.'),
-        '#default_value' => variable_get('lightbox2_imagefield_use_node_title', FALSE),
-      );
-      $form['cck_options']['lightbox2_view_image_text'] = array(
-        '#type' => 'textfield',
-        '#title' => t('Text to view image'),
-        '#description' => t('This is the text that can appear when linking to the image using CCK imagefields.'),
-        '#default_value' => variable_get('lightbox2_view_image_text', 'View image'),
-      );
-
-    }
-  }
+  $form['group_options']['lightbox2_image_group_node_id'] = array(
+    '#type' => 'select',
+    '#title' => t('Select Imagefield grouping in Views'),
+    '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
+    '#options' => $group_options,
+    '#default_value' => variable_get('lightbox2_image_group_node_id', 1),
+  );
 
 
   // Define advanced settings fieldset.
