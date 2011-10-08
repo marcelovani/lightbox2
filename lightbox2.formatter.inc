@@ -44,7 +44,6 @@ function theme_lightbox2_image($variables) {
   switch($group) {
     // No groups
     case '0':
-      dpm($group,'bla');
       break;
     // Group by field name
     case '1':
