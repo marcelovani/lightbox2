@@ -20,7 +20,7 @@ function lightbox2_settings_page($op = NULL) {
 function lightbox2_general_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
 
   // Enable translation of default strings for potx.
   $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'), t('Video !current of !total'), t('Download Original'));
@@ -455,7 +455,7 @@ function lightbox2_general_settings_form() {
   );
   // Set animation help text.
   $form['advanced_options']['animation_settings']['animation_options_help'] = array(
-    '#value' => '<p>'. t("These options aren't available when using Lightbox2 Lite.") .'</p>',
+    '#value' => '<p>' . t("These options aren't available when using Lightbox2 Lite.") . '</p>',
   );
   $resize_sequence_options = array(
     t('Simultaneous'),
@@ -575,7 +575,7 @@ function lightbox2_general_settings_form_submit($form, &$form_state) {
 function lightbox2_slideshow_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(
@@ -661,7 +661,7 @@ function lightbox2_slideshow_settings_form_validate($form, &$form_state) {
 function lightbox2_iframe_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(
@@ -720,7 +720,7 @@ function lightbox2_iframe_settings_form_validate($form, &$form_state) {
 function lightbox2_auto_image_handling_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') .'/js/lightbox2.js', 'module');
+  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(

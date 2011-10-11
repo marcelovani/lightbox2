@@ -28,9 +28,10 @@ function theme_lightbox2_image($variables) {
   $node_id = $variables['node_id'];
   $field_name = $variables['field_name'];
 
-  if(!$variables["lightbox_style"]) {
+  if (!$variables["lightbox_style"]) {
     $path['path'] = file_create_url($item['uri']);
-  } else {
+  }
+  else {
     $path['path'] = image_style_url($variables["lightbox_style"],  $item['uri']);
   }
 
@@ -41,7 +42,7 @@ function theme_lightbox2_image($variables) {
   $rel .= '[';
   $group = variable_get('lightbox2_image_group_node_id', 1);
 
-  switch($group) {
+  switch ($group) {
     // No groups
     case '0':
       break;
