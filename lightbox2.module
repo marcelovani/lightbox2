@@ -786,7 +786,7 @@ function lightbox2_add_files() {
     }
     //drupal_add_js($path .'/js/prototype.js', array( 'scope' => $js_location, 'cache' => false ) );
     //drupal_add_js($path .'/js/scriptaculous.js', array( 'scope' => $js_location, 'cache' => false ) );
-    drupal_add_js($path . '/js/lightbox.js', array( 'scope' => $js_location , 'cache' => FALSE) );
+    drupal_add_js($path . '/js/lightbox.js', array( 'scope' => $js_location));
 
   }
   // Lightbox Lite.
