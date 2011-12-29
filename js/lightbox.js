@@ -1161,7 +1161,7 @@ Lightbox = {
   filterXSS: function(str, allowed_tags) {
     var output = "";
     $.ajax({
-      url: Drupal.settings.basePath + 'system/lightbox2/filter-xss',
+      url: Drupal.settings.basePath + '?q=system/lightbox2/filter-xss',
       data: {
         'string' : str,
         'allowed_tags' : allowed_tags
