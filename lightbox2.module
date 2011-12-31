@@ -1312,12 +1312,12 @@ function lightbox2_file_formatter_info() {
   return array(
     'lightbox2_iframe' => array(
       'suitability callback' => 'lightbox2_check_filefield_extension',
-      'title' => t('Lightbox2 iframe'),
+      'label' => t('Lightbox2 iframe'),
       'description' => t('Displays all kinds of files in a popup lightbox in an iframe.'),
     ),
     'lightbox2_image' => array(
       'suitability callback' => 'lightbox2_check_filefield_image_extension',
-      'title' => t('Lightbox2 image'),
+      'label' => t('Lightbox2 image'),
       'description' => t('Displays image files in a popup lightbox.'),
     ),
   );
