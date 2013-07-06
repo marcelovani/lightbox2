@@ -27,6 +27,7 @@ function theme_lightbox2_image($variables) {
   $image_style = $variables['image_style'];
   $node_id = $variables['node_id'];
   $field_name = $variables['field_name'];
+  $caption = $variables['caption'];
 
   if (!$variables["lightbox_style"]) {
     $path['path'] = file_create_url($item['uri']);
@@ -66,7 +67,26 @@ function theme_lightbox2_image($variables) {
   $rel .= ']';
 
   // Title Start
-  $rel .= '[' . $item['title'];
+  $rel .= '[';
+
+  switch($caption) {
+    case 'hidden':
+        break;
+    case 'filename':
+        $rel .= $item['filename'];
+        break;
+    case 'title':
+        $rel .= $item['title'];
+        break;
+    default:
+        $caption_display = array(
+            'label' => 'hidden',
+            );
+        $entity = entity_load('file', array($item['fid']));
+        $entity = $entity[$item['fid']];
+        $rel.=drupal_render(field_view_field('file', $entity, $caption, $caption_display));
+        break;
+  }
 
   // Download Link
   if (user_access('download original image')) {
