@@ -958,12 +958,7 @@ function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance
     $lightbox_style = NULL;
   }
 
-  if ($entity_type == 'node') {
-    $node_id = $entity->nid;
-  } 
-  else {
-    $node_id = 0;
-  }
+  $wrapper = entity_metadata_wrapper($entity_type, $entity);
 
   foreach ($items as $delta => $item) {
     $uri = array(
@@ -977,7 +972,7 @@ function lightbox2_field_formatter_view($entity_type, $entity, $field, $instance
       '#image_style' => $image_style,
       '#lightbox_style' => $lightbox_style,
       '#path' => $uri,
-      '#node_id' => $node_id,
+      '#node_id' => $wrapper->getIdentifier(),
       '#field_name' => $field['field_name'],
     );
   }
