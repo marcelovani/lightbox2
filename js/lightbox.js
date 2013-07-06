@@ -927,6 +927,8 @@ Lightbox = {
     $("#lightbox2-overlay").fadeOut();
     Lightbox.isPaused = true;
     Lightbox.inprogress = false;
+    Lightbox.imageArray = [];
+    Lightbox.imageNum = 0;
     // Replaces calls to showSelectBoxes() and showFlash() in original
     // lightbox2.
     Lightbox.toggleSelectsFlash('visible');
