@@ -84,7 +84,8 @@ function theme_lightbox2_image($variables) {
             );
         $entity = entity_load('file', array($item['fid']));
         $entity = $entity[$item['fid']];
-        $rel.=drupal_render(field_view_field('file', $entity, $caption, $caption_display));
+        $renderable_field = field_view_field('file', $entity, $caption, $caption_display);
+        $rel .= drupal_render($renderable_field);
         break;
   }
 
