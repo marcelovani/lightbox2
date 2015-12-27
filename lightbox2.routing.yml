@@ -1,0 +1,55 @@
+lightbox2.filter_xss:
+  path: /system/lightbox2/filter-xss
+  defaults:
+    _title: 'Filter XSS'
+    _controller: '\Drupal\lightbox2\Controller\DefaultController::lightbox2_filter_xss'
+  requirements:
+    _access: 'true'
+lightbox2.settings_page:
+  path: /admin/config/user-interface/lightbox2
+  defaults:
+    _title: Lightbox2
+    _controller: '\Drupal\lightbox2\Controller\DefaultController::lightbox2_settings_page'
+  requirements:
+    _permission: 'administer lightbox2'
+lightbox2.general_settings_form:
+  path: /admin/config/user-interface/lightbox2/general
+  defaults:
+    _title: General
+    _form: \Drupal\lightbox2\Form\Lightbox2GeneralSettingsForm
+  requirements:
+    _permission: 'administer lightbox2'
+lightbox2.slideshow_settings_form:
+  path: /admin/config/user-interface/lightbox2/slideshow
+  defaults:
+    _title: Slideshow
+    _form: \Drupal\lightbox2\Form\Lightbox2SlideshowSettingsForm
+  requirements:
+    _permission: 'administer lightbox2'
+lightbox2.iframe_settings_form:
+  path: /admin/config/user-interface/lightbox2/html_content
+  defaults:
+    _title: 'HTML Content'
+    _form: \Drupal\lightbox2\Form\Lightbox2IframeSettingsForm
+  requirements:
+    _permission: 'administer lightbox2'
+lightbox2.auto_image_handling_settings_form:
+  path: /admin/config/user-interface/lightbox2/automatic
+  defaults:
+    _title: 'Automatic image handling'
+    _form: \Drupal\lightbox2\Form\Lightbox2AutoImageHandlingSettingsForm
+  requirements:
+    _permission: 'administer lightbox2'
+lightbox2.login:
+  path: /user/login/lightbox2
+  defaults:
+    _title: Login
+    _controller: '\Drupal\lightbox2\Controller\DefaultController::lightbox2_login'
+  requirements: {  }
+lightbox2.contact:
+  path: /contact/lightbox2
+  defaults:
+    _title: Contact
+    _controller: '\Drupal\lightbox2\Controller\DefaultController::lightbox2_contact'
+  requirements:
+    _permission: 'access site-wide contact form'

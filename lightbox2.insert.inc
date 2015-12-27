@@ -30,7 +30,16 @@ function lightbox2_insert_content($item, $style, $widget) {
   if (preg_match('/^lightbox2--((?:-(?!-)|[^-])+)--((?:-(?!-)|[^-])+)$/', $style['name'], $matches)) {
     $image_preset_name = $matches[1];
     $link_preset_name = $matches[2];
-    return theme('lightbox2_insert_image', $item, $widget, 'view', $image_preset_name, $link_preset_name);
+    // @FIXME
+// theme() has been renamed to _theme() and should NEVER be called directly.
+// Calling _theme() directly can alter the expected output and potentially
+// introduce security issues (see https://www.drupal.org/node/2195739). You
+// should use renderable arrays instead.
+// 
+// 
+// @see https://www.drupal.org/node/2195739
+// return theme('lightbox2_insert_image', $item, $widget, 'view', $image_preset_name, $link_preset_name);
+
   }
   else {
     return '';
@@ -58,9 +67,12 @@ function template_preprocess_lightbox2_insert_image(&$vars) {
   $vars['linkurl'] = insert_create_url($linkpath);
 
   $vars['download_link'] = '';
-  $download_link_text = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
-  if (!empty($download_link_text) && user_access('download original image')) {
-    $vars['download_link'] = '<br /><br />' . l($download_link_text, $vars['linkurl'], array('attributes' => array('target' => '_blank', 'id' => 'lightbox2-download-link-text')));
+  $download_link_text = \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_download_link_text'));
+  if (!empty($download_link_text) && \Drupal::currentUser()->hasPermission('download original image')) {
+    // @FIXME
+// l() expects a Url object, created from a route name or external URI.
+// $vars['download_link'] = '<br /><br />' . l($download_link_text, $vars['linkurl'], array('attributes' => array('target' => '_blank', 'id' => 'lightbox2-download-link-text')));
+
   }
 
   $vars['class'] = !empty($vars['widget']['insert_class']) ? $vars['widget']['insert_class'] : '';

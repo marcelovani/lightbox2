@@ -1,0 +1,62 @@
+lightbox2_download_link_text: 'Download Original'
+lightbox2_lite: false
+lightbox2_use_alt_layout: false
+lightbox2_force_show_nav: false
+lightbox2_show_caption: true
+lightbox2_loop_items: false
+lightbox2_node_link_target: false
+lightbox2_node_link_text: 'View Image Details'
+lightbox2_image_count_str: 'Image !current of !total'
+lightbox2_page_count_str: 'Page !current of !total'
+lightbox2_video_count_str: 'Video !current of !total'
+lightbox2_filter_xss_allowed_tags: 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd, '
+lightbox2_disable_resize: false
+lightbox2_disable_zoom: false
+lightbox2_enable_login: false
+lightbox2_enable_contact: false
+lightbox2_enable_video: false
+lightbox2_flv_player_path: flvplayer.swf
+lightbox2_flv_player_flashvars: ''
+lightbox2_page_init_action: page_disable
+lightbox2_page_list: ''
+lightbox2_image_group_node_id: 1
+lightbox2_js_location: header
+lightbox2_disable_close_click: true
+lightbox2_keys_close: 'c x 27'
+lightbox2_keys_previous: 'p 37'
+lightbox2_keys_next: 'n 39'
+lightbox2_keys_zoom: z
+lightbox2_keys_play_pause: '32'
+lightbox2_border_size: 10
+lightbox2_box_color: fff
+lightbox2_font_color: '000'
+lightbox2_top_position: ''
+lightbox2_overlay_opacity: 0.8
+lightbox2_overlay_color: '000'
+lightbox2_resize_sequence: 0
+lightbox2_resize_speed: 0.4
+lightbox2_fadein_speed: 0.4
+lightbox2_slidedown_speed: 0.6
+lightbox2_slideshow_interval: 5
+lightbox2_slideshow_automatic_start: true
+lightbox2_slideshow_automatic_exit: true
+lightbox2_slideshow_show_play_pause: true
+lightbox2_slideshow_pause_on_next_click: false
+lightbox2_slideshow_pause_on_previous_click: true
+lightbox2_loop_slides: false
+lightbox2_default_frame_width: 600
+lightbox2_default_frame_height: 400
+lightbox2_frame_border: 1
+lightbox2_image_node: true
+lightbox2_disable_nested_galleries: true
+lightbox2_flickr: true
+lightbox2_gallery2_blocks: true
+lightbox2_inline: true
+lightbox2_image_assist_custom: true
+lightbox2_custom_class_handler: 0
+lightbox2_custom_trigger_classes: ''
+lightbox2_disable_nested_acidfree_galleries: true
+lightbox2_enable_acidfree_videos: true
+lightbox2_display_image_size: original
+lightbox2_image_group: true
+lightbox2_disable_these_urls: ''

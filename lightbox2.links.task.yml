@@ -1,0 +1,20 @@
+lightbox2.settings_page:
+  route_name: lightbox2.settings_page
+  title: General
+  weight: 0
+  base_route: lightbox2.settings_page
+lightbox2.slideshow_settings_form:
+  route_name: lightbox2.slideshow_settings_form
+  title: Slideshow
+  weight: 1
+  base_route: lightbox2.settings_page
+lightbox2.iframe_settings_form:
+  route_name: lightbox2.iframe_settings_form
+  title: 'HTML Content'
+  weight: 2
+  base_route: lightbox2.settings_page
+lightbox2.auto_image_handling_settings_form:
+  route_name: lightbox2.auto_image_handling_settings_form
+  title: 'Automatic image handling'
+  weight: 3
+  base_route: lightbox2.settings_page

@@ -10,7 +10,7 @@
  * The default lightbox2 settings page.
  */
 function lightbox2_settings_page($op = NULL) {
-  $output = drupal_get_form('lightbox2_general_settings_form');
+  $output = \Drupal::formBuilder()->getForm('lightbox2_general_settings_form');
   return $output;
 }
 
@@ -20,7 +20,15 @@ function lightbox2_settings_page($op = NULL) {
 function lightbox2_general_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+
 
   // Enable translation of default strings for potx.
   $default_strings = array(t('View Image Details'), t('Image !current of !total'), t('Page !current of !total'), t('Video !current of !total'), t('Download Original'));
@@ -36,7 +44,7 @@ function lightbox2_general_settings_form() {
 
   // Define Lightbox2 Lite fieldset.
   /* ------------------------------- */
-  $use_lite = variable_get('lightbox2_lite', FALSE);
+  $use_lite = \Drupal::config('lightbox2.settings')->get('lightbox2_lite');
   $form['layout_fieldset']['lightbox2_lite_options'] = array(
     '#type' => 'fieldset',
     '#title' => t('Lightbox2 lite'),
@@ -58,7 +66,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Use alternative layout'),
     '#description' => t('Enabling this option alters the layout of the lightbox elements. In the alternative layout the navigational links appear under the image with the caption text, instead of being overlayed on the image itself.  This doesn\'t apply when using Lightbox Lite.'),
-    '#default_value' => variable_get('lightbox2_use_alt_layout', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_use_alt_layout'),
   );
 
   // Add checkbox for force navigation display.
@@ -66,7 +74,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Force visibility of navigation links'),
     '#description' => t('When viewing grouped images, the navigational links to the next and previous images are only displayed when you hover over the image.  Checking this box forces these links to be displayed all the time.'),
-    '#default_value' => variable_get('lightbox2_force_show_nav', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_force_show_nav'),
   );
 
   // Show caption
@@ -74,7 +82,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Show image caption'),
     '#description' => t('Unset this to always hide the image caption (usually the title).'),
-    '#default_value' => variable_get('lightbox2_show_caption', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_show_caption'),
   );
 
   // Add checkbox for "looping through images'.
@@ -82,7 +90,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Continuous galleries'),
     '#description' => t('When viewing grouped images, the Next button on the last image will display the first image, while the Previous button on the first image will display the last image.'),
-    '#default_value' => variable_get('lightbox2_loop_items', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_loop_items'),
   );
 
   // Add checkbox for node link target.
@@ -90,7 +98,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Open image page in new window'),
     '#description' => t('This controls whether the link to the image page underneath the image is opened in a new window or the current window.'),
-    '#default_value' => variable_get('lightbox2_node_link_target', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_node_link_target'),
     '#return_value' => '_blank',
   );
 
@@ -108,7 +116,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Text for image page link'),
     '#description' => t('This is the text that will appear as the link to the image page underneath the image in the lightbox.  Leave this blank for the link not to appear.'),
-    '#default_value' => variable_get('lightbox2_node_link_text', 'View Image Details'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_node_link_text'),
   );
 
   // Add text box for link text to node.
@@ -116,7 +124,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Text for image original link'),
     '#description' => t('This is the text that will appear as the link to the original file underneath the image in the lightbox.  Leave this blank for the link not to appear.  It will only appear for images uploaded via the "image" or "imagefield" modules.  Users will need the "download original image" permission, but also the "view original images" permission if using the "image" module.'),
-    '#default_value' => variable_get('lightbox2_download_link_text', 'Download Original'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_download_link_text'),
   );
 
   // Add text box for image count for grouping.
@@ -124,7 +132,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Image count text'),
     '#description' => t('This text is used to display the image count underneath the image in the lightbox when image grouping is enabled.  Use !current as a placeholder for the number of the current image and !total for the total number of images in the group.  For example, "Image !current of !total".  Leave blank for text not to appear.'),
-    '#default_value' => variable_get('lightbox2_image_count_str', 'Image !current of !total'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_image_count_str'),
   );
 
   // Add text box for page count for grouping.
@@ -132,7 +140,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Page count text'),
     '#description' => t('This text is used to display the page count underneath HTML content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current page and !total for the total number of pages in the group.  For example, "Page !current of !total".  Leave blank for text not to appear.'),
-    '#default_value' => variable_get('lightbox2_page_count_str', 'Page !current of !total'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_page_count_str'),
   );
 
   // Add text box for video count for grouping.
@@ -140,7 +148,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Video count text'),
     '#description' => t('This text is used to display the count underneath video content displayed in the lightbox when using groups.  Use !current as a placeholder for the number of the current video and !total for the total number of videos in the group.  For example, "Video !current of !total".  Leave blank for text not to appear.'),
-    '#default_value' => variable_get('lightbox2_video_count_str', 'Video !current of !total'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_video_count_str'),
   );
 
   // Add text box for video count for grouping.
@@ -148,7 +156,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Allowed HTML tags'),
     '#description' => t('A list of comma separated HTML tags which are allowed to be used in the caption text area.'),
-    '#default_value' => variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_filter_xss_allowed_tags'),
   );
 
 
@@ -166,7 +174,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Disable resizing feature'),
     '#description' => t('By default, when the image being displayed in the lightbox is larger than the browser window, it is resized to fit within the window and a zoom button is provided for users who wish to view the image in its original size.  Checking this box will disable this feature and all images will be displayed without any resizing.'),
-    '#default_value' => variable_get('lightbox2_disable_resize', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_resize'),
   );
 
   // Add checkbox for zoom image.
@@ -174,7 +182,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Disable zoom in / out feature'),
     '#description' => t('When the image being displayed in the lightbox is resized to fit in the browser window, a "zoom in" button is shown.  This allows the user to zoom in to see the original full size image.  They will then see a "zoom out" button which will allow them to see the smaller resized version.  Checking this box will prevent these buttons from appearing.'),
-    '#default_value' => variable_get('lightbox2_disable_zoom', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_zoom'),
   );
 
   // Define Lightbox2 modal form fieldset.
@@ -191,7 +199,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Enable login support'),
     '#description' => t('Enabling this option will modify all login links so that the login form appears in a lightbox.'),
-    '#default_value' => variable_get('lightbox2_enable_login', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_enable_login'),
   );
 
   // Add checkbox for contact form support.
@@ -199,7 +207,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Enable contact form support'),
     '#description' => t('Enabling this option will modify all contact links so that the contact form appears in a lightbox.'),
-    '#default_value' => variable_get('lightbox2_enable_contact', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_enable_contact'),
   );
 
   // Define Lightbox2 video fieldset.
@@ -216,7 +224,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Enable video support'),
     '#description' => t('By default, video support is disabled in order to reduce the amount of javascript needed.  Checking this box will enable it.'),
-    '#default_value' => variable_get('lightbox2_enable_video', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_enable_video'),
   );
 
   // Add textfield for FLV Player path.
@@ -224,7 +232,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Path to FLV Player'),
     '#description' => t('The path to the FLV player, relative to Drupal root directory. No leading slashes.'),
-    '#default_value' => variable_get('lightbox2_flv_player_path', 'flvplayer.swf'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_flv_player_path'),
   );
 
   // Add textfield for FLV Player flashvars.
@@ -232,7 +240,7 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('FLV Player flashvars'),
     '#description' => t('Flashvars for the FLV Player where supported, e.g. "autoplay=1&playerMode=normal".'),
-    '#default_value' => variable_get('lightbox2_flv_player_flashvars', ''),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_flv_player_flashvars'),
   );
 
   // Define Lightbox2 page specific settings fieldset.
@@ -253,14 +261,14 @@ function lightbox2_general_settings_form() {
     '#type' => 'radios',
     '#options' => $page_options,
     '#title' => t('Enable lightbox2 on specific pages'),
-    '#default_value' => variable_get('lightbox2_page_init_action', 'page_disable'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_page_init_action'),
   );
   // Add text input for list of pages to take specific action on.
   $form['lightbox2_page_init']['lightbox2_page_list'] = array(
     '#type' => 'textarea',
     '#title' => t('Pages'),
     '#description' => t('List one page per line as Drupal paths.  The * character is a wildcard.  Example paths are "node/add/page" and "node/add/*".  Use &lt;front&gt; to match the front page.'),
-    '#default_value' => variable_get('lightbox2_page_list', ''),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_page_list'),
   );
 
   // Define grouping settings fieldset.
@@ -285,7 +293,7 @@ function lightbox2_general_settings_form() {
     '#title' => t('Select Imagefield grouping in Views'),
     '#description' => t('By default, imagefields in views are grouped by the field name they appear in the view in.  You can override that grouping here.'),
     '#options' => $group_options,
-    '#default_value' => variable_get('lightbox2_image_group_node_id', 1),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_image_group_node_id'),
   );
 
 
@@ -306,14 +314,14 @@ function lightbox2_general_settings_form() {
     '#title' => t('Location of javscript'),
     '#options' => array('header' => t('Header'), 'footer' => t('Footer')),
     '#description' => t('By default, the lightbox javascript files are loaded in the HTML header.  However, for sites using SWFObject to load their Flash content, the footer setting is recommended to prevent "Operation Aborted" errors in IE.  If using the footer setting, please note that not all themes correctly implement the footer region and may require a small change.'),
-    '#default_value' => variable_get('lightbox2_js_location', 'header'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_js_location'),
   );
 
   $form['advanced_options']['lightbox2_disable_close_click'] = array(
     '#type' => 'checkbox',
     '#title' => t('Click on overlay or lightbox to close it'),
     '#description' => t('Enable user to close lightbox by clicking on the lightbox itself or the overlay background.'),
-    '#default_value' => variable_get('lightbox2_disable_close_click', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_close_click'),
   );
 
   // Define keyboard shortcuts fieldset.
@@ -330,35 +338,35 @@ function lightbox2_general_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Close keys'),
     '#description' => t("A list of keys (or key codes) that a user may use to close the lightbox. Values should be separated by a space. Defaults to 'c x 27' (c, x, or esc)."),
-    '#default_value' => variable_get('lightbox2_keys_close', 'c x 27'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_close'),
   );
 
   $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_previous'] = array(
     '#type' => 'textfield',
     '#title' => t('Previous keys'),
     '#description' => t("A list of keys (or key codes) that a user may use to navigate to the previous item in the lightbox. Values should be separated by a space. Defaults to 'p 37' (p or left arrow)."),
-    '#default_value' => variable_get('lightbox2_keys_previous', 'p 37'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_previous'),
   );
 
   $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_next'] = array(
     '#type' => 'textfield',
     '#title' => t('Next keys'),
     '#description' => t("A list of keys (or key codes) that a user may use to navigate to the next item in the lightbox. Values should be separated by a space. Defaults to 'n 39' (n or right arrow)."),
-    '#default_value' => variable_get('lightbox2_keys_next', 'n 39'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_next'),
   );
 
   $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_zoom'] = array(
     '#type' => 'textfield',
     '#title' => t('Zoom keys'),
     '#description' => t("A list of keys (or key codes) that a user may use to zoom in / out of images in the lightbox. Values should be separated by a space. Defaults to 'z'."),
-    '#default_value' => variable_get('lightbox2_keys_zoom', 'z'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_zoom'),
   );
 
   $form['advanced_options']['keyboard_shortcuts']['lightbox2_keys_play_pause'] = array(
     '#type' => 'textfield',
     '#title' => t('Pause / play keys'),
     '#description' => t("A list of keys (or key codes) that a user may use to pause / play the lightbox. Values should be separated by a space. Defaults to '32' (spacebar)."),
-    '#default_value' => variable_get('lightbox2_keys_play_pause', '32'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_play_pause'),
   );
 
 
@@ -379,7 +387,7 @@ function lightbox2_general_settings_form() {
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter the size of the border in pixels to display around the image.'),
-    '#default_value' => variable_get('lightbox2_border_size', 10),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_border_size'),
   );
 
   $form['advanced_options']['skin_settings']['lightbox2_box_color'] = array(
@@ -389,7 +397,7 @@ function lightbox2_general_settings_form() {
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter a hexadecimal color value for the border.  For example <code>fff</code> or <code>ffffff</code> for white).'),
-    '#default_value' => variable_get('lightbox2_box_color', 'fff'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_box_color'),
   );
 
   $form['advanced_options']['skin_settings']['lightbox2_font_color'] = array(
@@ -399,7 +407,7 @@ function lightbox2_general_settings_form() {
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter a hexadecimal color value for the font.  For example <code>000</code> or <code>000000</code> for black).'),
-    '#default_value' => variable_get('lightbox2_font_color', '000'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_font_color'),
   );
 
   $form['advanced_options']['skin_settings']['lightbox2_top_position'] = array(
@@ -408,7 +416,7 @@ function lightbox2_general_settings_form() {
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter the position of the top of the lightbox in pixels.  Leave blank for automatic calculation.'),
-    '#default_value' => variable_get('lightbox2_top_position', ''),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_top_position'),
   );
 
 
@@ -431,7 +439,7 @@ function lightbox2_general_settings_form() {
     '#title' => t('Overlay opacity'),
     '#options' => $opacity_options,
     '#description' => t('The overlay opacity setting determines how visible the background page is behind the lightbox.  The opacity value can range from 0.0 to 1.0 where 0.0 is 100% transparent and 1.0 is 100% opaque.'),
-    '#default_value' => variable_get('lightbox2_overlay_opacity', 0.8),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_overlay_opacity'),
   );
 
   $form['advanced_options']['overlay_settings']['lightbox2_overlay_color'] = array(
@@ -441,7 +449,7 @@ function lightbox2_general_settings_form() {
     '#size' => 6,
     '#maxlength' => 6,
     '#description' => t('Enter a hexadecimal color value for the overlay.  For example <code>000</code> or <code>000000</code> for black).'),
-    '#default_value' => variable_get('lightbox2_overlay_color', '000'),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_overlay_color'),
   );
 
 
@@ -467,7 +475,7 @@ function lightbox2_general_settings_form() {
     '#title' => t('Resize sequence'),
     '#options' => $resize_sequence_options,
     '#description' => t('The sequence to use for the resizing animation.'),
-    '#default_value' => variable_get('lightbox2_resize_sequence', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_resize_sequence'),
   );
   $form['advanced_options']['animation_settings']['lightbox2_resize_speed'] = array(
     '#type' => 'textfield',
@@ -475,7 +483,7 @@ function lightbox2_general_settings_form() {
     '#size' => 5,
     '#maxlength' => 5,
     '#description' => t('The duration (in seconds) of the resizing animation.  Enter a value between 0 and 10.'),
-    '#default_value' => variable_get('lightbox2_resize_speed', 0.4),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_resize_speed'),
   );
   $form['advanced_options']['animation_settings']['lightbox2_fadein_speed'] = array(
     '#type' => 'textfield',
@@ -483,7 +491,7 @@ function lightbox2_general_settings_form() {
     '#size' => 5,
     '#maxlength' => 5,
     '#description' => t('The duration (in seconds) of the lightbox appearance animation.  Enter a positive number less than 10.'),
-    '#default_value' => variable_get('lightbox2_fadein_speed', 0.4),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_fadein_speed'),
   );
 
 
@@ -493,7 +501,7 @@ function lightbox2_general_settings_form() {
     '#size' => 5,
     '#maxlength' => 5,
     '#description' => t('The duration (in seconds) of the caption sliding-down animation.  Enter a value between 0 and 10.'),
-    '#default_value' => variable_get('lightbox2_slidedown_speed', 0.6),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slidedown_speed'),
   );
 
   return system_settings_form($form);
@@ -519,7 +527,7 @@ function lightbox2_general_settings_form_validate($form, &$form_state) {
 
     if (!empty($flv_player_path) && $form_state['values']['lightbox2_enable_video']) {
       if (strpos($flv_player_path, base_path()) === 0) {
-        $flv_player_path = drupal_substr($flv_player_path, drupal_strlen(base_path()));
+        $flv_player_path = \Drupal\Component\Utility\Unicode::substr($flv_player_path, \Drupal\Component\Utility\Unicode::strlen(base_path()));
       }
       if (!file_exists($flv_player_path)) {
         form_set_error('lightbox2_flv_player_path', t("FLV player path doesn't exist."));
@@ -575,12 +583,20 @@ function lightbox2_general_settings_form_submit($form, &$form_state) {
 function lightbox2_slideshow_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(
     '#type' => 'hidden',
-    '#value' => variable_get('lightbox2_lite', FALSE),
+    '#value' => \Drupal::config('lightbox2.settings')->get('lightbox2_lite'),
   );
 
 
@@ -589,7 +605,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Interval seconds'),
     '#description' => t('The slideshow interval is the length of time in seconds an image is visible before the slideshow shows the next image.'),
-    '#default_value' => variable_get('lightbox2_slideshow_interval', 5),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_interval'),
     '#size' => 20,
   );
 
@@ -598,7 +614,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Automatically start slideshow'),
     '#description' => t('When enabled the slideshow will automatically start.'),
-    '#default_value' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_automatic_start'),
   );
 
   // Add checkbox for slideshow automatic exit.
@@ -606,7 +622,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Automatically exit slideshow'),
     '#description' => t('When enabled the lightbox will automatically close after displaying the last image.'),
-    '#default_value' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_automatic_exit'),
   );
 
   // Add checkbox for showing hte play / pause button.
@@ -614,7 +630,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Show play / pause button'),
     '#description' => t('When enabled, a play / pause button will be shown in the slideshow allowing the user more control over their viewing experience.'),
-    '#default_value' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_show_play_pause'),
   );
 
   // Add checkbox for "pausing on next click".
@@ -622,7 +638,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Pause slideshow on "Next Image" click'),
     '#description' => t('When enabled the slideshow is automatically paused, and the following image shown, when the "Next" button is clicked.'),
-    '#default_value' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_pause_on_next_click'),
   );
 
   // Add checkbox for "pausing on prev click".
@@ -630,7 +646,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Pause slideshow on "Previous Image" click'),
     '#description' => t('When enabled the slideshow is automatically paused, and the previous image shown, when the "Previous" button is clicked.'),
-    '#default_value' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_pause_on_previous_click'),
   );
 
   // Add checkbox for "looping through slides'.
@@ -638,7 +654,7 @@ function lightbox2_slideshow_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Continuous loop'),
     '#description' => t('When enabled the slideshow will automatically start over after displaying the last slide.  This prevents the slideshow from automatically exiting when enabled.'),
-    '#default_value' => variable_get('lightbox2_loop_slides', FALSE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_loop_slides'),
   );
 
   return system_settings_form($form);
@@ -661,12 +677,20 @@ function lightbox2_slideshow_settings_form_validate($form, &$form_state) {
 function lightbox2_iframe_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(
     '#type' => 'hidden',
-    '#value' => variable_get('lightbox2_lite', FALSE),
+    '#value' => \Drupal::config('lightbox2.settings')->get('lightbox2_lite'),
   );
 
 
@@ -675,7 +699,7 @@ function lightbox2_iframe_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Default width'),
     '#description' => t('The default width of the iframe in pixels.'),
-    '#default_value' => variable_get('lightbox2_default_frame_width', 600),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_default_frame_width'),
     '#size' => 20,
   );
 
@@ -684,7 +708,7 @@ function lightbox2_iframe_settings_form() {
     '#type' => 'textfield',
     '#title' => t('Default height'),
     '#description' => t('The default height of the iframe in pixels.'),
-    '#default_value' => variable_get('lightbox2_default_frame_height', 400),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_default_frame_height'),
     '#size' => 20,
   );
 
@@ -693,7 +717,7 @@ function lightbox2_iframe_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Enable border'),
     '#description' => t('Enable iframe border.  You can modify the border style in your theme\'s css file using the iframe\'s id "lightboxFrame".'),
-    '#default_value' => variable_get('lightbox2_frame_border', 1),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_frame_border'),
   );
 
   return system_settings_form($form);
@@ -720,12 +744,20 @@ function lightbox2_iframe_settings_form_validate($form, &$form_state) {
 function lightbox2_auto_image_handling_settings_form() {
 
   // Add the javascript which disables / enables form elements.
-  drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(drupal_get_path('module', 'lightbox2') . '/js/lightbox2.js', 'module');
+
 
   // Set up a hidden variable.
   $form['lightbox2_lite'] = array(
     '#type' => 'hidden',
-    '#value' => variable_get('lightbox2_lite', FALSE),
+    '#value' => \Drupal::config('lightbox2.settings')->get('lightbox2_lite'),
   );
 
   $automatic_options = array(
@@ -766,7 +798,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for image nodes'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for image nodes will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_image_node', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_image_node'),
   );
 
   /*
@@ -804,7 +836,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#type' => 'checkbox',
     '#title' => t('Disable lightbox for gallery lists'),
     '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "image gallery" module.'),
-    '#default_value' => variable_get('lightbox2_disable_nested_galleries', TRUE),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_nested_galleries'),
   );
 
   // Define flickr fieldset.
@@ -821,7 +853,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Flickr images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for Flickr images will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_flickr', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_flickr'),
   );
 
   // Define gallery2 fieldset.
@@ -838,7 +870,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Gallery2 block images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for images, contained within Gallery2 image blocks, will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_gallery2_blocks', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_gallery2_blocks'),
   );
 
   // Define inline fieldset.
@@ -855,7 +887,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Inline module images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for Inline module images will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_inline', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_inline'),
   );
 
   // Define image assist fieldset.
@@ -872,7 +904,7 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for Image Assist custom size images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for custom size images, displayed by the Image Assist module, will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_image_assist_custom', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_image_assist_custom'),
   );
 
   // Define custom fieldset.
@@ -889,18 +921,18 @@ function lightbox2_auto_image_handling_settings_form() {
     '#title' => t('Automatic handler for custom class images'),
     '#options' => $automatic_options,
     '#description' => t('Choose how URLs for custom class images will be automatically handled.'),
-    '#default_value' => variable_get('lightbox2_custom_class_handler', 0),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_custom_class_handler'),
   );
   // Add text box for custom trigger classes.
   $form['handler_options']['custom_options']['lightbox2_custom_trigger_classes'] = array(
     '#type' => 'textarea',
     '#title' => t('Custom image trigger classes'),
     '#description' => t('List the image classes which should trigger the lightbox when clicked on.  Put each class on a separate line.'),
-    '#default_value' => variable_get('lightbox2_custom_trigger_classes', ''),
+    '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_custom_trigger_classes'),
   );
 
   // Add checkbox for disabling lightbox for acidfree gallery lists.
-  if (module_exists("acidfree")) {
+  if (\Drupal::moduleHandler()->moduleExists("acidfree")) {
     // Define acidfree settings fieldset.
     /* ---------------------------------- */
     $form['handler_options']['lightbox2_acidfree_options'] = array(
@@ -913,15 +945,15 @@ function lightbox2_auto_image_handling_settings_form() {
       '#type' => 'checkbox',
       '#title' => t('Disable lightbox for Acidfree gallery lists'),
       '#description' => t('Checking this box will disable the lightbox for images in gallery lists.  This means it is possible to open a gallery by clicking on the teaser image, but the lightbox will still appear when viewing images within the gallery.  This only applies to image galleries created with the "acidfree" module.'),
-      '#default_value' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
+      '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_nested_acidfree_galleries'),
     );
     // Add checkbox for enabling lightbox for acidfree videos.
-    if (module_exists("video")) {
+    if (\Drupal::moduleHandler()->moduleExists("video")) {
       $form['handler_options']['lightbox2_acidfree_options']['lightbox2_enable_acidfree_videos'] = array(
         '#type' => 'checkbox',
         '#title' => t('Enable lightbox for Acidfree videos'),
         '#description' => t('Checking this box will enable the display of acidfree videos in a lightbox.  This only applies to videos created by the "video" module and which appear in an acidfree gallery.'),
-        '#default_value' => variable_get('lightbox2_enable_acidfree_videos', FALSE),
+        '#default_value' => \Drupal::config('lightbox2.settings')->get('lightbox2_enable_acidfree_videos'),
       );
     }
   }

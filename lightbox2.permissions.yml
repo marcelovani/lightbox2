@@ -1,0 +1,6 @@
+'administer lightbox2':
+  title: 'Administer Lightbox2'
+  description: 'Allow the user administer Lightbox2 settings'
+'download original image':
+  title: 'Download Original'
+  description: 'Create a link that allow the user download the original image'

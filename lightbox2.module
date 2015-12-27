@@ -442,7 +442,7 @@ function _lightbox2_process_filter($text, $format) {
   $text = ' ' . $text . ' ';
   $text = preg_replace('/ShowItem/', 'DownloadItem', $text);
   $text = preg_replace('/src="/', 'rel="lightbox" src="', $text);
-  $text = drupal_substr($text, 1, -1);
+  $text = \Drupal\Component\Utility\Unicode::substr($text, 1, -1);
   return $text;
 }
 
@@ -508,14 +508,14 @@ function lightbox2_add_files() {
   $path = drupal_get_path('module', 'lightbox2');
 
   // Initialise some variables.
-  $inline_image_handler = variable_get('lightbox2_inline', 0);
-  $flickr_image_handler = variable_get('lightbox2_flickr', 0);
-  $gallery2_block_handler = variable_get('lightbox2_gallery2_blocks', 0);
-  $image_assist_handler = variable_get('lightbox2_image_assist_custom', 0);
-  $image_node_handler = variable_get('lightbox2_image_node', 0);
+  $inline_image_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_inline');
+  $flickr_image_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_flickr');
+  $gallery2_block_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_gallery2_blocks');
+  $image_assist_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_image_assist_custom');
+  $image_node_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_image_node');
 
   $custom_class_handler = 0;
-  switch (variable_get('lightbox2_custom_class_handler', 0)) {
+  switch (\Drupal::config('lightbox2.settings')->get('lightbox2_custom_class_handler')) {
     case 1:
       $custom_class_handler = 'lightbox_ungrouped';
       break;
@@ -620,12 +620,16 @@ function lightbox2_add_files() {
 
   // Image nodes.
   if ($image_node_handler) {
-    $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
+    // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/lightbox2.settings.yml and config/schema/lightbox2.schema.yml.
+$trigger_sizes = \Drupal::config('lightbox2.settings')->get('lightbox2_trigger_image_size');
     usort($trigger_sizes, "sort_by_length");
     foreach ($trigger_sizes as $size) {
       $triggers = "img.$size, img.image-$size,";
       if (empty($size)) {
-        if (user_access('view original images')) {
+        if (\Drupal::currentUser()->hasPermission('view original images')) {
           $triggers = "img._original, img.image-_original,";
         }
       }
@@ -653,7 +657,7 @@ function lightbox2_add_files() {
   }
 
   // Custom images.
-  $custom_triggers = variable_get('lightbox2_custom_trigger_classes', '');
+  $custom_triggers = \Drupal::config('lightbox2.settings')->get('lightbox2_custom_trigger_classes');
   $custom_trigger_classes = '';
   if ($custom_class_handler && !empty($custom_triggers)) {
     $trigger_classes = preg_split("/(\r\n|\n)/", $custom_triggers);
@@ -671,58 +675,63 @@ function lightbox2_add_files() {
   $custom_trigger_classes = rtrim($custom_trigger_classes, ",");
   $image_node_sizes = '(' . rtrim($image_node_sizes, "|") . ')';
 
-  $enable_video = variable_get('lightbox2_enable_video', FALSE);
-  $enable_login = $user->uid == 0 && variable_get('lightbox2_enable_login', FALSE);
-  $enable_contact = module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form');
-  $display_image_size = variable_get('lightbox2_display_image_size', 'original');
-  if ($display_image_size == 'original' && user_access('view original images')) {
+  $enable_video = \Drupal::config('lightbox2.settings')->get('lightbox2_enable_video');
+  $enable_login = $user->uid == 0 && \Drupal::config('lightbox2.settings')->get('lightbox2_enable_login');
+  $enable_contact = \Drupal::moduleHandler()->moduleExists('contact') && \Drupal::config('lightbox2.settings')->get('lightbox2_enable_contact') && \Drupal::currentUser()->hasPermission('access site-wide contact form');
+  $display_image_size = \Drupal::config('lightbox2.settings')->get('lightbox2_display_image_size');
+  if ($display_image_size == 'original' && \Drupal::currentUser()->hasPermission('view original images')) {
     $display_image_size = '';
   }
-  $font_color = variable_get('lightbox2_font_color', '000');
-  $box_color = variable_get('lightbox2_box_color', 'fff');
+  $font_color = \Drupal::config('lightbox2.settings')->get('lightbox2_font_color');
+  $box_color = \Drupal::config('lightbox2.settings')->get('lightbox2_box_color');
 
   $file_path = base_path() . '(\w\w/)' . file_default_scheme() . ':/';
-  if ( variable_get('file_downloads', 'FILE_DOWNLOADS_PUBLIC') == 'FILE_DOWNLOADS_PRIVATE' ) {
-    $file_path = base_path() . '(\w\w/)system/files';
-  }
+  // @FIXME
+// // @FIXME
+// // This looks like another module's variable. You'll need to rewrite this call
+// // to ensure that it uses the correct configuration object.
+// if ( variable_get('file_downloads', 'FILE_DOWNLOADS_PUBLIC') == 'FILE_DOWNLOADS_PRIVATE' ) {
+//     $file_path = base_path() . '(\w\w/)system/files';
+//   }
+
 
   // Load the javascript settings.
   $js_settings = array(
     'rtl' => $language->direction,
     'file_path' => $file_path,
     'default_image' => base_path() . $path . '/images/brokenimage.jpg',
-    'border_size' => (int) variable_get('lightbox2_border_size', 10),
+    'border_size' => (int) \Drupal::config('lightbox2.settings')->get('lightbox2_border_size'),
     'font_color' => !empty($font_color) ? $font_color : '000',
     'box_color' => !empty($box_color) ? $box_color : '000',
-    'top_position' => variable_get('lightbox2_top_position', ''),
-    'overlay_opacity' => str_replace(',', '.', variable_get('lightbox2_overlay_opacity', 0.8)),
-    'overlay_color' => variable_get('lightbox2_overlay_color', '000'),
-    'disable_close_click' => variable_get('lightbox2_disable_close_click', TRUE),
-    'resize_sequence' => (int)variable_get('lightbox2_resize_sequence', 0),
-    'resize_speed' => 1000 * str_replace(',', '.', variable_get('lightbox2_resize_speed', 0.4)),
-    'fade_in_speed' => 1000 * str_replace(',', '.', variable_get('lightbox2_fadein_speed', 0.4)),
-    'slide_down_speed' => 1000 * str_replace(',', '.', variable_get('lightbox2_slidedown_speed', 0.6)),
-    'use_alt_layout' => variable_get('lightbox2_use_alt_layout', FALSE),
-    'disable_resize' => variable_get('lightbox2_disable_resize', FALSE),
-    'disable_zoom' => variable_get('lightbox2_disable_zoom', FALSE),
-    'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
-    'show_caption' => variable_get('lightbox2_show_caption', TRUE),
-    'loop_items' => variable_get('lightbox2_loop_items', FALSE),
-    'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
-    'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
-    'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
-    'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
-    'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
+    'top_position' => \Drupal::config('lightbox2.settings')->get('lightbox2_top_position'),
+    'overlay_opacity' => str_replace(',', '.', \Drupal::config('lightbox2.settings')->get('lightbox2_overlay_opacity')),
+    'overlay_color' => \Drupal::config('lightbox2.settings')->get('lightbox2_overlay_color'),
+    'disable_close_click' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_close_click'),
+    'resize_sequence' => (int)\Drupal::config('lightbox2.settings')->get('lightbox2_resize_sequence'),
+    'resize_speed' => 1000 * str_replace(',', '.', \Drupal::config('lightbox2.settings')->get('lightbox2_resize_speed')),
+    'fade_in_speed' => 1000 * str_replace(',', '.', \Drupal::config('lightbox2.settings')->get('lightbox2_fadein_speed')),
+    'slide_down_speed' => 1000 * str_replace(',', '.', \Drupal::config('lightbox2.settings')->get('lightbox2_slidedown_speed')),
+    'use_alt_layout' => \Drupal::config('lightbox2.settings')->get('lightbox2_use_alt_layout'),
+    'disable_resize' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_resize'),
+    'disable_zoom' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_zoom'),
+    'force_show_nav' => \Drupal::config('lightbox2.settings')->get('lightbox2_force_show_nav'),
+    'show_caption' => \Drupal::config('lightbox2.settings')->get('lightbox2_show_caption'),
+    'loop_items' => \Drupal::config('lightbox2.settings')->get('lightbox2_loop_items'),
+    'node_link_text' => \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_node_link_text')),
+    'node_link_target' => \Drupal::config('lightbox2.settings')->get('lightbox2_node_link_target'),
+    'image_count' => \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_image_count_str')),
+    'video_count' => \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_video_count_str')),
+    'page_count' => \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_page_count_str')),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     'download_link_text' => '',
     'enable_login' => $enable_login,
     'enable_contact' => $enable_contact,
     // Automatic image handling settings.
-    'keys_close' => variable_get('lightbox2_keys_close', 'c x 27'),
-    'keys_previous' => variable_get('lightbox2_keys_previous', 'p 37'),
-    'keys_next' => variable_get('lightbox2_keys_next', 'n 39'),
-    'keys_zoom' => variable_get('lightbox2_keys_zoom', 'z'),
-    'keys_play_pause' => variable_get('lightbox2_keys_play_pause', '32'),
+    'keys_close' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_close'),
+    'keys_previous' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_previous'),
+    'keys_next' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_next'),
+    'keys_zoom' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_zoom'),
+    'keys_play_pause' => \Drupal::config('lightbox2.settings')->get('lightbox2_keys_play_pause'),
     'display_image_size' => $display_image_size,
     'image_node_sizes' => $image_node_sizes,
     'trigger_lightbox_classes' => $trigger_lightbox_classes,
@@ -732,69 +741,136 @@ function lightbox2_add_files() {
     'trigger_lightframe_group_classes' => $trigger_lightframe_group_classes,
     'custom_class_handler' => $custom_class_handler,
     'custom_trigger_classes' => $custom_trigger_classes,
-    'disable_for_gallery_lists' => variable_get('lightbox2_disable_nested_galleries', TRUE),
-    'disable_for_acidfree_gallery_lists' => variable_get('lightbox2_disable_nested_acidfree_galleries', TRUE),
-    'enable_acidfree_videos' => variable_get('lightbox2_enable_acidfree_videos', TRUE),
+    'disable_for_gallery_lists' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_nested_galleries'),
+    'disable_for_acidfree_gallery_lists' => \Drupal::config('lightbox2.settings')->get('lightbox2_disable_nested_acidfree_galleries'),
+    'enable_acidfree_videos' => \Drupal::config('lightbox2.settings')->get('lightbox2_enable_acidfree_videos'),
     // Slideshow settings.
-    'slideshow_interval' => variable_get('lightbox2_slideshow_interval', 5) * 1000,
-    'slideshow_automatic_start' => variable_get('lightbox2_slideshow_automatic_start', TRUE),
-    'slideshow_automatic_exit' => variable_get('lightbox2_slideshow_automatic_exit', TRUE),
-    'show_play_pause' => variable_get('lightbox2_slideshow_show_play_pause', TRUE),
-    'pause_on_next_click' => variable_get('lightbox2_slideshow_pause_on_next_click', FALSE),
-    'pause_on_previous_click' => variable_get('lightbox2_slideshow_pause_on_previous_click', TRUE),
-    'loop_slides' => variable_get('lightbox2_loop_slides', FALSE),
+    'slideshow_interval' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_interval') * 1000,
+    'slideshow_automatic_start' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_automatic_start'),
+    'slideshow_automatic_exit' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_automatic_exit'),
+    'show_play_pause' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_show_play_pause'),
+    'pause_on_next_click' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_pause_on_next_click'),
+    'pause_on_previous_click' => \Drupal::config('lightbox2.settings')->get('lightbox2_slideshow_pause_on_previous_click'),
+    'loop_slides' => \Drupal::config('lightbox2.settings')->get('lightbox2_loop_slides'),
     // Iframe settings.
-    'iframe_width' => (int)variable_get('lightbox2_default_frame_width', 600),
-    'iframe_height' => (int)variable_get('lightbox2_default_frame_height', 400),
-    'iframe_border' => (int)variable_get('lightbox2_frame_border', 1),
+    'iframe_width' => (int)\Drupal::config('lightbox2.settings')->get('lightbox2_default_frame_width'),
+    'iframe_height' => (int)\Drupal::config('lightbox2.settings')->get('lightbox2_default_frame_height'),
+    'iframe_border' => (int)\Drupal::config('lightbox2.settings')->get('lightbox2_frame_border'),
     // Video settings.
     'enable_video' => $enable_video,
     'useragent' => $_SERVER['HTTP_USER_AGENT'],
   );
   if ($enable_video) {
-    $js_settings['flvPlayer'] = url(check_plain(trim(variable_get('lightbox2_flv_player_path', 'flvplayer.swf'), '/')));
-    $js_settings['flvFlashvars'] = check_plain(variable_get('lightbox2_flv_player_flashvars', ''));
+    // @FIXME
+// url() expects a route name or an external URI.
+// $js_settings['flvPlayer'] = url(\Drupal\Component\Utility\Html::escape(trim(variable_get('lightbox2_flv_player_path', 'flvplayer.swf'), '/')));
+
+    $js_settings['flvFlashvars'] = \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_flv_player_flashvars'));
   }
 
   // Only supply these if the user has the correct permissions.
-  if (user_access('download original image') && user_access('view original images')) {
-    $js_settings['download_link_text'] = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
+  if (\Drupal::currentUser()->hasPermission('download original image') && \Drupal::currentUser()->hasPermission('view original images')) {
+    $js_settings['download_link_text'] = \Drupal\Component\Utility\Html::escape(\Drupal::config('lightbox2.settings')->get('lightbox2_download_link_text'));
   }
 
-  drupal_add_js(array('lightbox2' => $js_settings), array( 'type' => 'setting' ) );
+  // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js(array('lightbox2' => $js_settings), array( 'type' => 'setting' ) );
+
 
 
   // Check where we should load the javascript files - header or footer.
-  $js_location = variable_get('lightbox2_js_location', 'header');
+  $js_location = \Drupal::config('lightbox2.settings')->get('lightbox2_js_location');
 
   // Lightbox2 Plus.
-  if (!variable_get('lightbox2_lite', FALSE)) {
+  if (!\Drupal::config('lightbox2.settings')->get('lightbox2_lite')) {
     $css = $path . '/css/lightbox.css';
-    if (variable_get('lightbox2_use_alt_layout', FALSE)) {
+    if (\Drupal::config('lightbox2.settings')->get('lightbox2_use_alt_layout')) {
       $css = $path . '/css/lightbox_alt.css';
     }
-    drupal_add_css($css);
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_css($css);
+
 
     // Check to see if any automatic image handling options are enabled.
     if ($image_node_handler || $flickr_image_handler || $gallery2_block_handler || $inline_image_handler || $image_assist_handler || $custom_triggers != '') {
-      drupal_add_js($path . '/js/auto_image_handling.js', array( 'scope' => $js_location ) );
+      // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($path . '/js/auto_image_handling.js', array( 'scope' => $js_location ) );
+
     }
-    if (variable_get('lightbox2_enable_video', FALSE)) {
-      drupal_add_js($path . '/js/lightbox_video.js', array( 'scope' => $js_location ) );
+    if (\Drupal::config('lightbox2.settings')->get('lightbox2_enable_video')) {
+      // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($path . '/js/lightbox_video.js', array( 'scope' => $js_location ) );
+
     }
     if ($enable_login || $enable_contact) {
-      drupal_add_js($path . '/js/lightbox_modal.js', array( 'scope' => $js_location ) );
+      // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($path . '/js/lightbox_modal.js', array( 'scope' => $js_location ) );
+
     }
     //drupal_add_js($path .'/js/prototype.js', array( 'scope' => $js_location, 'cache' => false ) );
     //drupal_add_js($path .'/js/scriptaculous.js', array( 'scope' => $js_location, 'cache' => false ) );
-    drupal_add_js($path . '/js/lightbox.js', array( 'scope' => $js_location));
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($path . '/js/lightbox.js', array( 'scope' => $js_location));
+
 
   }
   // Lightbox Lite.
   else {
     $css = $path . '/css/lightbox_lite.css';
-    drupal_add_css($css);
-    drupal_add_js($path . '/js/lightbox_lite.js', array( 'scope' => $js_location ) );
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_css($css);
+
+    // @FIXME
+// The Assets API has totally changed. CSS, JavaScript, and libraries are now
+// attached directly to render arrays using the #attached property.
+// 
+// 
+// @see https://www.drupal.org/node/2169605
+// @see https://www.drupal.org/node/2408597
+// drupal_add_js($path . '/js/lightbox_lite.js', array( 'scope' => $js_location ) );
+
   }
 }
 
@@ -913,7 +989,7 @@ function lightbox2_field_formatter_settings_summary($field, $instance, $view_mod
  */
 function lightbox2_field_formatter_info() {
   $formatters = array();
-  if (module_exists('image')) {
+  if (\Drupal::moduleHandler()->moduleExists('image')) {
     $formatters['lightbox2'] = array(
       'label' => 'Lightbox2',
       'field types' => array('image'),
@@ -1351,8 +1427,8 @@ function lightbox2_emvideo($node, $width, $height, $field_name, $provider, $id) 
  * lightbox2_page_list and lightbox2_page_init_action.
  */
 function lightbox2_exclude_these_paths() {
-  $action = variable_get('lightbox2_page_init_action', 'page_disable');
-  $page_list = variable_get('lightbox2_page_list', '');
+  $action = \Drupal::config('lightbox2.settings')->get('lightbox2_page_init_action');
+  $page_list = \Drupal::config('lightbox2.settings')->get('lightbox2_page_list');
 
   if (!empty($page_list)) {
     // Retrieve Drupal alias for the current path (if exists).
@@ -1374,7 +1450,7 @@ function lightbox2_preprocess_page(&$variables) {
     return;
   }
   //Overwrite template_preprocess_page() region settings.
-  global $theme;
+  $theme = \Drupal::theme()->getActiveTheme()->getName();
   // Retrieve all block regions.
   $regions = system_region_list($theme);
   // Remove all region content assigned via blocks.
@@ -1488,7 +1564,7 @@ function lightbox2_supported_file_extension($ext, $type = 'all') {
       break;
   }
 
-  if (in_array(drupal_strtolower($ext), $extensions)) {
+  if (in_array(\Drupal\Component\Utility\Unicode::strtolower($ext), $extensions)) {
     return TRUE;
   }
 
@@ -1510,7 +1586,7 @@ function sort_by_length($a, $b) {
   if ($a == $b) {
     return 0;
   }
-  return (drupal_strlen($a) > drupal_strlen($b) ? -1 : 1);
+  return (\Drupal\Component\Utility\Unicode::strlen($a) > \Drupal\Component\Utility\Unicode::strlen($b) ? -1 : 1);
 }
 
 /**
@@ -1521,13 +1597,13 @@ function lightbox2_login() {
   // do not use lightbox2 for failed validation ie: bad password
   // instead, return the fully rendered Drupal page with errors.
   if (count($_POST)) {
-    return drupal_get_form('user_login_block');
+    return \Drupal::formBuilder()->getForm('user_login_block');
   }
   else {
-    print drupal_render(drupal_get_form('user_login_block'));
+    print \Drupal::service("renderer")->render(\Drupal::formBuilder()->getForm('user_login_block'));
     // If the OpenID module is enabled, the javascript and css may not exist
     // on the page, so add them dynamically.
-    if (module_exists('openid')) {
+    if (\Drupal::moduleHandler()->moduleExists('openid')) {
       $path = drupal_get_path('module', 'openid');
       $js_file = base_path() . $path . '/openid.js';
       $css_file = base_path() . $path . '/openid.css';
@@ -1556,10 +1632,10 @@ function lightbox2_login() {
  * Get the contact form.
  */
 function lightbox2_contact() {
-  if (module_exists('contact') && variable_get('lightbox2_enable_contact', FALSE) && user_access('access site-wide contact form')) {
+  if (\Drupal::moduleHandler()->moduleExists('contact') && \Drupal::config('lightbox2.settings')->get('lightbox2_enable_contact') && \Drupal::currentUser()->hasPermission('access site-wide contact form')) {
     $path = drupal_get_path('module', 'contact');
     include_once($path . '/contact.pages.inc');
-    print drupal_render(drupal_get_form('contact_site_form'));
+    print \Drupal::service("renderer")->render(\Drupal::formBuilder()->getForm('contact_site_form'));
     // drupal_add_js() with 'inline' didn't seem to work, possibly because this is
     // AJAX loaded content.
     print '<script type="text/javascript">Drupal.attachBehaviors();</script>';
@@ -1585,13 +1661,16 @@ function lightbox2_contact() {
  */
 function lightbox2_form_user_login_block_alter(&$form, $form_state, $form_id = "user_login_block") {
   if ($form_id == 'user_login_block' && arg(0) == 'user' && arg(1) == 'login' && arg(2) == 'lightbox2') {
-    $form['#action'] = url('user/login/lightbox2', array('query' => array('destination' => $_GET['destination'])));
+    // @FIXME
+// url() expects a route name or an external URI.
+// $form['#action'] = url('user/login/lightbox2', array('query' => array('destination' => $_GET['destination'])));
+
   }
 }
 
 function lightbox2_form_contact_site_form_alter(&$form, $form_state, $form_id = "contact_site_form") {
   if ($form_id == 'contact_site_form' && arg(0) == 'contact' && arg(1) == 'lightbox2') {
-    $form['#action'] = url('contact', array('query' => array('destination' => $_GET['destination'])));
+    $form['#action'] = \Drupal\Core\Url::fromRoute('contact.site_page');
   }
 }
 
@@ -1601,14 +1680,18 @@ function lightbox2_form_contact_site_form_alter(&$form, $form_state, $form_id = 
  * Add a lightbox2 rel attribute to the image link sizes on the image node.
  */
 function lightbox2_link_alter(&$links, $node) {
-  $image_node_handler = variable_get('lightbox2_image_node', 0);
+  $image_node_handler = \Drupal::config('lightbox2.settings')->get('lightbox2_image_node');
 
   // Only operate on image nodes and if automatic handling for image nodes is
   // enabled.  Also ensure $links is an array (bug in contemplate module).
   if (!$image_node_handler || ($node->type != 'image' && $image_node_handler) || !is_array($links)) {
     return;
   }
-  $trigger_sizes = variable_get('lightbox2_trigger_image_size', array('thumbnail'));
+  // @FIXME
+// Could not extract the default value because it is either indeterminate, or
+// not scalar. You'll need to provide a default value in
+// config/install/lightbox2.settings.yml and config/schema/lightbox2.schema.yml.
+$trigger_sizes = \Drupal::config('lightbox2.settings')->get('lightbox2_trigger_image_size');
 
   // Change original ('original') to '_original'.
   if (isset($trigger_sizes['original'])) {
@@ -1648,14 +1731,14 @@ function lightbox2_views_api() {
 }
 
 function lightbox2_filter_xss() {
-  $allowed_tags = trim(variable_get('lightbox2_filter_xss_allowed_tags', 'p, br, a, em, strong, cite, code, ul, ol, li, dl, dt, dd, '));
+  $allowed_tags = trim(\Drupal::config('lightbox2.settings')->get('lightbox2_filter_xss_allowed_tags'));
   $allowed_tags = (empty($allowed_tags) ? array() : preg_split('/[,\s]+/', $allowed_tags));
   if (!empty($_POST['allowed_tags']) && $_POST['allowed_tags'] != 'undefined') {
     $allowed_tags = explode(',', $_POST['allowed_tags']);
-    $output = filter_xss($_POST['string'], $allowed_tags);
+    $output = \Drupal\Component\Utility\Xss::filter($_POST['string'], $allowed_tags);
   }
   else {
-    $output = filter_xss($_POST['string'], $allowed_tags);
+    $output = \Drupal\Component\Utility\Xss::filter($_POST['string'], $allowed_tags);
   }
   drupal_json_output($output);
 }

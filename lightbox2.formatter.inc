@@ -41,7 +41,7 @@ function theme_lightbox2_image($variables) {
 
   // Grouping
   $rel .= '[';
-  $group = variable_get('lightbox2_image_group_node_id', 1);
+  $group = \Drupal::config('lightbox2.settings')->get('lightbox2_image_group_node_id');
 
   switch ($group) {
     // No groups
@@ -82,16 +82,16 @@ function theme_lightbox2_image($variables) {
         $caption_display = array(
             'label' => 'hidden',
             );
-        $entity = entity_load('file', array($item['fid']));
+        $entity = \Drupal::entityManager()->getStorage('file', array($item['fid']));
         $entity = $entity[$item['fid']];
-        $renderable_field = field_view_field('file', $entity, $caption, $caption_display);
-        $rel .= drupal_render($renderable_field);
+        $renderable_field = $entity->$caption->view($caption_display);
+        $rel .= \Drupal::service("renderer")->render($renderable_field);
         break;
   }
 
   // Download Link
-  if (user_access('download original image')) {
-    $rel .= '<p><a href="' . file_create_url($item['uri']) . '">' . variable_get('lightbox2_download_link_text', 'Download Original') . '</a></p>';
+  if (\Drupal::currentUser()->hasPermission('download original image')) {
+    $rel .= '<p><a href="' . file_create_url($item['uri']) . '">' . \Drupal::config('lightbox2.settings')->get('lightbox2_download_link_text') . '</a></p>';
   }
   
   // Title End
@@ -100,7 +100,16 @@ function theme_lightbox2_image($variables) {
   $path['options']['attributes']['rel'] = $rel;
   $path['options']['attributes']['title'] = $item['title'];
   
-  return theme('image_formatter', array( 'item' => $item, 'path' => $path, 'image_style' => $image_style ) );
+  // @FIXME
+// theme() has been renamed to _theme() and should NEVER be called directly.
+// Calling _theme() directly can alter the expected output and potentially
+// introduce security issues (see https://www.drupal.org/node/2195739). You
+// should use renderable arrays instead.
+// 
+// 
+// @see https://www.drupal.org/node/2195739
+// return theme('image_formatter', array( 'item' => $item, 'path' => $path, 'image_style' => $image_style ) );
+
 }
 
 /**

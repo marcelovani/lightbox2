@@ -1,0 +1,9 @@
+name: Lightbox2
+description: 'Enables Lightbox2 for Drupal'
+core: 8.x
+package: 'User interface'
+dependencies:
+  - entity
+version: 7.x-dev
+project: lightbox2
+type: module

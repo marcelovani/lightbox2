@@ -1,4 +1,6 @@
 <?php
+namespace Drupal\lightbox2;
+
 /**
  * @file
  * Contain the integration with views

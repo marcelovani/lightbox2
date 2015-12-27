@@ -1,0 +1,940 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans:600italic,400,700,600' rel='stylesheet' type='text/css' />
+    <style type="text/css">
+    <!--
+
+body {
+  width: 80%;
+  color: #343434;
+  margin: 1em auto;
+  font-family: 'Open Sans', Verdana, sans-serif;
+}
+
+details {
+  font-size: 18px;
+  line-height: 25px;
+  margin-bottom: 2em;
+  display: block;
+}
+
+details summary {
+  padding: 1em;
+  margin-bottom: 1em;
+  display: block;
+}
+
+details.error summary {
+  background-color: #ffd5d5;
+}
+
+details.warning summary {
+  background-color: #fff3bb;
+}
+
+a {
+  color: #095cb1;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+h5 {
+  font-size: 1em;
+}
+
+aside {
+  font-style: italic;
+  line-height: 20px;
+  font-size: 15px;
+}
+
+.group {
+  border: 1px solid #ececec;
+  padding: 1em;
+  display: block;
+}
+
+.group > summary {
+  padding: 0;
+  color: #c8c8c8;
+  margin-bottom: 0;;
+  font-weight: bold;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  display: block;
+}
+
+.group[open] > summary {
+  margin-bottom: 1em;
+}
+
+.group > details:last-child {
+  margin-bottom: 0;
+}
+
+    -->
+    </style>
+  </head>
+  <body>
+      <details open="true" class="group">
+      <summary>Caching</summary>
+          <details class="error">
+      <summary>The caching system has been rewritten.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1884796">Drupal 8 Cache API</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1272696">New cache API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 569</li>
+            </ul>
+                  <aside>Flagged by _function_call:cache_clear_all</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Configuration</summary>
+          <details class="warning">
+      <summary>Default configuration is deleted automatically.</summary>
+
+      
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 21</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 22</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 25</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 26</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 27</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 28</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 29</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 30</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 31</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 32</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 33</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 34</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 35</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 36</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 37</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 38</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 39</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 40</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 41</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 42</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 43</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 44</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 45</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 46</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 48</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 49</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 50</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 51</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 52</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 53</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 54</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 55</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 56</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 57</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 58</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 59</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 60</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 61</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 62</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 63</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 64</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 67</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 68</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 69</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 72</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 73</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 74</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 75</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 76</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 77</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 78</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 81</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 82</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 83</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 84</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 85</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 86</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 87</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 88</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 89</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 90</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 91</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 92</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 93</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 94</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 95</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 96</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 97</li>
+            </ul>
+                  <aside>Flagged by hook_uninstall</aside>    </details>
+    <details class="error">
+      <summary><code>variable_del()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 21</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 22</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 25</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 26</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 27</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 28</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 29</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 30</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 31</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 32</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 33</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 34</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 35</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 36</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 37</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 38</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 39</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 40</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 41</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 42</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 43</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 44</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 45</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 46</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 48</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 49</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 50</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 51</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 52</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 53</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 54</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 55</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 56</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 57</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 58</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 59</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 60</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 61</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 62</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 63</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 64</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 67</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 68</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 69</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 72</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 73</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 74</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 75</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 76</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 77</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 78</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 81</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 82</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 83</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 84</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 85</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 86</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 87</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 88</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 89</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 90</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 91</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 92</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 93</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 94</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 95</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 96</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 97</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 146</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 165</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 191</li>
+            </ul>
+                  <aside>Flagged by _function_call:variable_del</aside>    </details>
+    <details class="error">
+      <summary><code>variable_get()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 44</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 94</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.insert.inc, line 61</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 511</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 512</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 513</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 514</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 515</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 518</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 623</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 656</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 674</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 675</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 676</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 677</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 681</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 682</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 685</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 694</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 697</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 698</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 699</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 700</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 701</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 702</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 703</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 704</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 705</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 706</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 707</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 708</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 709</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 710</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 711</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 712</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 713</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 714</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 715</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 721</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 722</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 723</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 724</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 725</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 735</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 736</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 737</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 739</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 740</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 741</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 742</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 743</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 744</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 745</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 747</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 748</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 749</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 755</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 756</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 761</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 768</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 771</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 773</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 782</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1354</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1355</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1559</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1604</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1611</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1651</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 122</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 123</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 124</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 125</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 126</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 127</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 162</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 167</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 175</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 39</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 61</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 69</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 77</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 85</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 93</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 111</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 119</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 127</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 135</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 143</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 151</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 169</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 177</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 194</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 202</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 219</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 227</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 235</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 256</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 263</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 288</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 309</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 316</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 333</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 340</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 347</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 354</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 361</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 382</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 392</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 402</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 411</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 434</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 444</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 470</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 478</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 486</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 496</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 583</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 592</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 601</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 609</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 617</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 625</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 633</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 641</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 669</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 678</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 687</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 696</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 728</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 769</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 807</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 824</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 841</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 858</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 875</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 892</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 899</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 916</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 924</li>
+            </ul>
+                  <aside>Flagged by _function_call:variable_get</aside>    </details>
+    <details class="error">
+      <summary><code>variable_set()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2183531">The Variable API has been removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 131</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 134</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 137</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 140</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 143</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 163</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 164</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 168</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 169</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 177</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 190</li>
+            </ul>
+                  <aside>Flagged by _function_call:variable_set</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Entity API</summary>
+          <details class="error">
+      <summary><code>entity_load()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2266845">Entities are now classed objects implementing <code>EntityInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 85</li>
+            </ul>
+                  <aside>Flagged by _function_call:entity_load</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Field API</summary>
+          <details class="error">
+      <summary><code>hook_field_formatter_info()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1805846">Field formatters are now plugins</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 907</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:field_formatter_info</aside>    </details>
+    <details class="error">
+      <summary><code>hook_field_formatter_settings_form()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1805846">Field formatters are now plugins</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 838</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:field_formatter_settings_form</aside>    </details>
+    <details class="error">
+      <summary><code>hook_field_formatter_settings_summary()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1805846">Field formatters are now plugins</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 878</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:field_formatter_settings_summary</aside>    </details>
+    <details class="error">
+      <summary><code>hook_field_formatter_view()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1805846">Field formatters are now plugins</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1043</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:field_formatter_view</aside>    </details>
+    <details class="error">
+      <summary><code>field_view_field()</code> is now a method of <code>FieldItemInterface</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2208327"><code>field_view_field()</code> moved into <code>FieldItemInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 87</li>
+            </ul>
+                  <aside>Flagged by _function_call:field_view_field</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Form API</summary>
+          <details class="error">
+      <summary><code>drupal_get_form()</code> has moved into the FormBuilder service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2121003">Form generation functions moved into FormBuilder service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1524</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1527</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1562</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 13</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_get_form</aside>    </details>
+    <details class="error">
+      <summary><code>form_set_error()</code> is now a method of <code>FormStateInterface</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2121003">Form functions moved into <code>FormStateInterface</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 525</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 530</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 535</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 539</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 543</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 547</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 551</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 555</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 559</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 654</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 709</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 712</li>
+            </ul>
+                  <aside>Flagged by _function_call:form_set_error</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Info File</summary>
+          <details class="error">
+      <summary>Module info files' <code>core</code> key must have a value of <code>8.x</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Info files must contain a <code>type</code> key.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#type"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Many common dependencies have moved into core.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Modules no longer declare classes in their info file.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#files"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+    <details class="error">
+      <summary>Module info files' <code>configure</code> key must be a route name, not a path.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1935708#configure"><code>.info</code> files are now <code>.info.yml</code> files</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.info</li>
+            </ul>
+                  <aside>Flagged by info</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Menu/Routing</summary>
+          <details class="error">
+      <summary><code>hook_menu()</code> has been removed from Drupal 8.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1800686">All functionality of <code>hook_menu()</code> replaced</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2177901">Dynamic routes are now defined in <code>MODULE.routing.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2119699">Page callbacks have been converted to controller classes</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2089605">Route naming convention</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2165243">Contextual links are now plugins defined in <code>MODULE.links.contextual.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2007444">Local actions are now plugins defined in <code>MODULE.links.action.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2044515">Local tasks and now plugins defined in <code>MODULE.links.task.yml</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2228089">Menu links are now defined in <code>MODULE.links.menu.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 157</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:menu</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Miscellaneous</summary>
+          <details class="warning">
+      <summary>Many common functions, shared variables, and constants have been renamed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2324935">The global theme variables have been replaced by an ActiveTheme object</a></li>
+              </ul>
+      
+                      </details>
+    <details class="error">
+      <summary>Automated web tests must be in a PSR-4 namespace, and unit tests must be converted to PHPUnit.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1543796">Namespacing of automated tests has changed</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2301125"><code>getInfo()</code> in test classes replaced by doc comments</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1710766">Test classes should define a <code>$modules</code> property declaring dependencies</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1911318">SimpleTest tests now use empty &quot;testing&quot; profile by default</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/1829160">New <code>KernelTestBase</code> class for API-level integration tests</a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2012184">PHPUnit added to Drupal core</a></li>
+              </ul>
+      
+                      </details>
+    <details class="error">
+      <summary>Classes must be PSR-4 compliant.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2246699">PSR-4 compatible class loader in Drupal core</a></li>
+              </ul>
+      
+                      </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Rendering</summary>
+          <details class="error">
+      <summary><code>drupal_add_css()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_css()</code>, <code>drupal_add_js()</code> and <code>drupal_add_library()</code> removed in favor of <code>#attached</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2408597"><code>AssetResolverInterface</code> and <code>AttachedAssetsInterface</code> replace internal Asset API functions</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 776</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 796</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_add_css</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_add_js()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2169605"><code>drupal_add_css()</code>, <code>drupal_add_js()</code> and <code>drupal_add_library()</code> removed in favor of <code>#attached</code></a></li>
+                <li><a target="_blank" href="https://www.drupal.org/node/2408597"><code>AssetResolverInterface</code> and <code>AttachedAssetsInterface</code> replace internal Asset API functions</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 764</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 780</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 783</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 786</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 790</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 797</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 23</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 578</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 664</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 723</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_add_js</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_render()</code> has been removed.</summary>
+
+      
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 88</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1527</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1562</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_render</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>System</summary>
+          <details class="error">
+      <summary><code>hook_init()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2013014"><code>hook_init()</code> removed</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 274</li>
+            </ul>
+                  <aside>Flagged by _flag_hook:init</aside>    </details>
+    <details class="warning">
+      <summary>Static permissions are now defined in <code>MODULE.permissions.yml</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2311427">Defining permissions in <code>MODULE.permissions.yml</code></a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 140</li>
+            </ul>
+            <p class="fixable">This issue can be fixed automatically.</p>      <aside>Flagged by hook_permission</aside>    </details>
+    <details class="error">
+      <summary><code>l()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2346779"><code>l()</code> replaced by URL generation API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.insert.inc, line 63</li>
+            </ul>
+                  <aside>Flagged by _function_call:l</aside>    </details>
+    <details class="error">
+      <summary><code>module_invoke()</code> is now a method of the <code>module_handler</code> service.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1894902"><code>module_invoke()</code> replaced by <code>module_handler</code> service</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.install, line 13</li>
+            </ul>
+                  <aside>Flagged by _function_call:module_invoke</aside>    </details>
+    <details class="error">
+      <summary><code>url()</code> has been removed.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2346779"><code>url()</code> replaced by URL generation API</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2_handler_field_lightbox2.inc, line 128</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 755</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1588</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1594</li>
+            </ul>
+                  <aside>Flagged by _function_call:url</aside>    </details>
+    <details class="error">
+      <summary><code>user_access()</code> is now <code>AccountInterface::hasPermission()</code>.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2049309"><code>user_access()</code> got converted to a method on the user/account interface</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 93</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.insert.inc, line 62</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 628</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 676</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 678</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 760</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 760</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1559</li>
+            </ul>
+                  <aside>Flagged by _function_call:user_access</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Theme System</summary>
+          <details class="error">
+      <summary><code>theme()</code> has been renamed to <code>_theme()</code>, and should never be called directly.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/2195739"><code>theme()</code> renamed to <code>_theme()</code> and should not be called directly</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.formatter.inc, line 103</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.insert.inc, line 33</li>
+            </ul>
+                  <aside>Flagged by _function_call:theme</aside>    </details>
+
+    </details>
+      <details open="true" class="group">
+      <summary>Utilities</summary>
+          <details class="error">
+      <summary><code>drupal_strlen()</code> has been moved into the Unicode utility class.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1992584"><code>drupal_strlen()</code> moved into Unicode component</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1513</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1513</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 522</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_strlen</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_strtolower()</code> has been moved into the Unicode utility class.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1992584"><code>drupal_strtolower()</code> moved into Unicode component</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 1491</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_strtolower</aside>    </details>
+    <details class="error">
+      <summary><code>drupal_substr()</code> has been moved into the Unicode utility class.</summary>
+
+      
+            <h5>Documentation</h5>
+      <ul>
+                <li><a target="_blank" href="https://www.drupal.org/node/1992584"><code>drupal_substr()</code> moved into Unicode component</a></li>
+              </ul>
+      
+            <h5>Files Affected</h5>
+      <ul>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.module, line 445</li>
+              <li>/var/www/drupal8/public_html/modules/lightbox2/lightbox2.admin.inc, line 522</li>
+            </ul>
+                  <aside>Flagged by _function_call:drupal_substr</aside>    </details>
+
+    </details>
+    </body>
+</html>

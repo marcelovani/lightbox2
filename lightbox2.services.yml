@@ -1,0 +1,6 @@
+services:
+  init_subscriber:
+    class: Drupal\lightbox2\EventSubscriber\InitSubscriber
+    tags:
+      -
+        name: event_subscriber

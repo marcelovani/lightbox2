@@ -1,0 +1,128 @@
+lightbox2.settings:
+  type: mapping
+  label: Settings
+  mapping:
+    lightbox2_download_link_text:
+      type: string
+    lightbox2_lite:
+      type: boolean
+    lightbox2_use_alt_layout:
+      type: boolean
+    lightbox2_force_show_nav:
+      type: boolean
+    lightbox2_show_caption:
+      type: boolean
+    lightbox2_loop_items:
+      type: boolean
+    lightbox2_node_link_target:
+      type: boolean
+    lightbox2_node_link_text:
+      type: string
+    lightbox2_image_count_str:
+      type: string
+    lightbox2_page_count_str:
+      type: string
+    lightbox2_video_count_str:
+      type: string
+    lightbox2_filter_xss_allowed_tags:
+      type: string
+    lightbox2_disable_resize:
+      type: boolean
+    lightbox2_disable_zoom:
+      type: boolean
+    lightbox2_enable_login:
+      type: boolean
+    lightbox2_enable_contact:
+      type: boolean
+    lightbox2_enable_video:
+      type: boolean
+    lightbox2_flv_player_path:
+      type: string
+    lightbox2_flv_player_flashvars:
+      type: string
+    lightbox2_page_init_action:
+      type: string
+    lightbox2_page_list:
+      type: string
+    lightbox2_image_group_node_id:
+      type: integer
+    lightbox2_js_location:
+      type: string
+    lightbox2_disable_close_click:
+      type: boolean
+    lightbox2_keys_close:
+      type: string
+    lightbox2_keys_previous:
+      type: string
+    lightbox2_keys_next:
+      type: string
+    lightbox2_keys_zoom:
+      type: string
+    lightbox2_keys_play_pause:
+      type: string
+    lightbox2_border_size:
+      type: integer
+    lightbox2_box_color:
+      type: string
+    lightbox2_font_color:
+      type: string
+    lightbox2_top_position:
+      type: string
+    lightbox2_overlay_opacity:
+      type: double
+    lightbox2_overlay_color:
+      type: string
+    lightbox2_resize_sequence:
+      type: integer
+    lightbox2_resize_speed:
+      type: double
+    lightbox2_fadein_speed:
+      type: double
+    lightbox2_slidedown_speed:
+      type: double
+    lightbox2_slideshow_interval:
+      type: integer
+    lightbox2_slideshow_automatic_start:
+      type: boolean
+    lightbox2_slideshow_automatic_exit:
+      type: boolean
+    lightbox2_slideshow_show_play_pause:
+      type: boolean
+    lightbox2_slideshow_pause_on_next_click:
+      type: boolean
+    lightbox2_slideshow_pause_on_previous_click:
+      type: boolean
+    lightbox2_loop_slides:
+      type: boolean
+    lightbox2_default_frame_width:
+      type: integer
+    lightbox2_default_frame_height:
+      type: integer
+    lightbox2_frame_border:
+      type: integer
+    lightbox2_image_node:
+      type: boolean
+    lightbox2_disable_nested_galleries:
+      type: boolean
+    lightbox2_flickr:
+      type: boolean
+    lightbox2_gallery2_blocks:
+      type: boolean
+    lightbox2_inline:
+      type: boolean
+    lightbox2_image_assist_custom:
+      type: boolean
+    lightbox2_custom_class_handler:
+      type: integer
+    lightbox2_custom_trigger_classes:
+      type: string
+    lightbox2_disable_nested_acidfree_galleries:
+      type: boolean
+    lightbox2_enable_acidfree_videos:
+      type: boolean
+    lightbox2_display_image_size:
+      type: string
+    lightbox2_image_group:
+      type: boolean
+    lightbox2_disable_these_urls:
+      type: string
