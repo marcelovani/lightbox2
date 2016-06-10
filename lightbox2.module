@@ -708,11 +708,11 @@ function lightbox2_add_files() {
     'force_show_nav' => variable_get('lightbox2_force_show_nav', FALSE),
     'show_caption' => variable_get('lightbox2_show_caption', TRUE),
     'loop_items' => variable_get('lightbox2_loop_items', FALSE),
-    'node_link_text' => check_plain(variable_get('lightbox2_node_link_text', 'View Image Details')),
+    'node_link_text' => check_plain(t(variable_get('lightbox2_node_link_text', 'View Image Details'))),
     'node_link_target' => variable_get('lightbox2_node_link_target', FALSE),
-    'image_count' => check_plain(variable_get('lightbox2_image_count_str', 'Image !current of !total')),
-    'video_count' => check_plain(variable_get('lightbox2_video_count_str', 'Video !current of !total')),
-    'page_count' => check_plain(variable_get('lightbox2_page_count_str', 'Page !current of !total')),
+    'image_count' => check_plain(t(variable_get('lightbox2_image_count_str', 'Image !current of !total'))),
+    'video_count' => check_plain(t(variable_get('lightbox2_video_count_str', 'Video !current of !total'))),
+    'page_count' => check_plain(t(variable_get('lightbox2_page_count_str', 'Page !current of !total'))),
     'lite_press_x_close' => t('press !x to close', array('!x' => '<a href="#" onclick="hideLightbox(); return FALSE;"><kbd>x</kbd></a>')),
     'download_link_text' => '',
     'enable_login' => $enable_login,
@@ -758,7 +758,7 @@ function lightbox2_add_files() {
 
   // Only supply these if the user has the correct permissions.
   if (user_access('download original image') && user_access('view original images')) {
-    $js_settings['download_link_text'] = check_plain(variable_get('lightbox2_download_link_text', 'Download Original'));
+    $js_settings['download_link_text'] = check_plain(t(variable_get('lightbox2_download_link_text', 'Download Original')));
   }
 
   drupal_add_js(array('lightbox2' => $js_settings), array( 'type' => 'setting' ) );
