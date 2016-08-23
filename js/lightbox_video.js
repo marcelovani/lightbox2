@@ -86,7 +86,7 @@ Lightvideo = {
       var results = pattern.exec(href);
       if (results !== null) {
         Lightbox.videoId = results[1];
-        var href = "//www.youtube.com/embed/"+Lightbox.videoId;
+        var href = "https://www.youtube.com/embed/"+Lightbox.videoId;
         var variables = 'fs=1';
         if (Lightbox.flvFlashvars.length) {
           variables = variables + '&' + Lightbox.flvFlashvars;
