@@ -86,13 +86,20 @@ Lightvideo = {
       var results = pattern.exec(href);
       if (results !== null) {
         Lightbox.videoId = results[1];
-        var href = "http://www.youtube.com/v/"+Lightbox.videoId;
+        var href = "https://www.youtube.com/embed/"+Lightbox.videoId;
         var variables = 'fs=1';
         if (Lightbox.flvFlashvars.length) {
           variables = variables + '&' + Lightbox.flvFlashvars;
           href = href + '&' + variables;
         }
-        Lightvideo.createEmbed(href, "flvvideo", "#ffffff", variables);
+        var id = 'flvvideo';
+        Lightbox.modalHTML = '<iframe ' +
+          'src="' + href + '" ' +
+          'id="' + id + '" name="' + id + '" ' +
+          'height="' + Lightbox.modalHeight + '" ' +
+          'width="' + Lightbox.modalWidth + '" ' +
+          'frameborder="0" allowfullscreen' +
+          '></iframe>';
         return true;
       }
     }
