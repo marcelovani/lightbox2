@@ -27,7 +27,7 @@ function theme_lightbox2_image($variables) {
   $image_style = $variables['image_style'];
   $node_id = $variables['node_id'];
   $field_name = $variables['field_name'];
-  $caption = isset($variables['caption']) ? $variables['caption'] : 'hidden';
+  $caption = $variables['caption'];
 
   if (!$variables["lightbox_style"]) {
     $path['path'] = file_create_url($item['uri']);

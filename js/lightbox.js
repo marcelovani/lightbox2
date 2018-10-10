@@ -1072,9 +1072,8 @@ Lightbox = {
         parts["flashvars"] = parts["style"].match(/flashvars:\s?(.*?);/)[1];
       }
     }
-    if ($(link).attr('rel').match(/\[.*\]\[([\s\S]*)\]/)) {
-      var title = $(link).attr('rel').match(/\[.*\]\[([\s\S]*)\]/)[1];
-      parts["title"] = title.replace(/\n/g, '<br />');
+    if ($(link).attr('rel').match(/\[.*\]\[(.*)\]/)) {
+      parts["title"] = $(link).attr('rel').match(/\[.*\]\[(.*)\]/)[1];
     }
     return parts;
   },
